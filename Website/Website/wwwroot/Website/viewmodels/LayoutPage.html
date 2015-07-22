@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Website</title>
+    <link href="/Website/css/style.css" rel="stylesheet" />
+    <script src="/sys/webcomponentsjs/webcomponents.js"></script>
+    <link rel="import" href="/sys/polymer/polymer.html" />
+    <link rel="import" href="/sys/puppet-client/src/puppet-client.html" />
+    <link rel="import" href="/Website/elements/puppet-dom-bind.html" />
+    <link rel="import" href="/Website/elements/puppet-import.html" />
+</head>
+<body>
+    <template is="puppet-dom-bind" id="puppet-root">
+        <header>
+            <div class="video">
+                <div>Header video</div>
+                <iframe width="200" height="150" src="https://www.youtube.com/embed/Xp7HVA5CPjQ" frameborder="0" allowfullscreen></iframe>
+            </div>
+            <nav>
+                <ul>
+                    <li>
+                        <a href="/website">Home</a>
+                    </li>
+                    <li>
+                        <a href="/website/team">Team</a>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+        <section>
+            <puppet-import model="{{model.Content}}" path="model.Content" html="{{model.TemplateHtml}}"></puppet-import>
+        </section>
+        <footer>
+            Copyright &copy; 2015 Starcounter
+        </footer>
+    </template>
+    <puppet-client usewebsocket="false" ref="puppet-root"></puppet-client>
+    <script>
+        var root = document.getElementById("puppet-root");
+        var puppet = document.querySelector("puppet-client");
+
+        root.getSections = function (sections) {
+            return sections && sections.split(/,/gi);
+        };
+
+        root.getSectionModel = function (name) {
+            return root.model.Content[name].Value;
+        };
+
+        root.getSectionHtml = function (name) {
+            return root.model.Content[name].Html;
+        };
+
+        root.getSectionPath = function (name) {
+            return "model.Content." + name;
+        };
+
+        window.addEventListener("WebComponentsReady", function () {
+            
+        });
+    </script>
+</body>
+</html>
