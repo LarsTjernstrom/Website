@@ -100,13 +100,14 @@
                 });
             },
             notifyAll: function (operation, path, value) {
-                var imports = document.querySelectorAll("puppet-import");
+                var imports = document.querySelectorAll("puppet-import, website-section");
 
                 //this.notifyPath(path, value);
                 //this.notifyPatch(this, operation, path, value);
 
                 for (var i = 0; i < imports.length; i++) {
-                    var t = imports[i].template;
+                    var imp = imports[i];
+                    //var t = imports[i].template;
                     var p = imports[i].path;
 
                     if (p) {
@@ -115,11 +116,13 @@
                         if (reg.test(path)) {
                             p = path.replace(reg, "model");
                             //t.notifyPath(p, value);
-                            this.notifyPatch(t, operation, path, value, p);
+                            //this.notifyPatch(t, operation, path, value, p);
+                            this.notifyPatch(imp, operation, path, value, p);
                         }
                     } else {
                         //t.notifyPath(path, value);
-                        this.notifyPatch(t, operation, path, value);
+                        //this.notifyPatch(t, operation, path, value);
+                        this.notifyPatch(imp, operation, path, value);
                     }
                 }
 

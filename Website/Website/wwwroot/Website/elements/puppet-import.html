@@ -7,6 +7,16 @@
             oldHtml: null,
             is: "puppet-import",
             ready: function () {
+                this.originalNotifyPath = this.notifyPath;
+
+                this.notifyPath = function (path, value) {
+                    if (this.template) {
+                        this.template.notifyPath(path, value);
+                    }
+
+                    this.originalNotifyPath(path, value);
+                };
+
                 if (!this.content) {
                     return;
                 }

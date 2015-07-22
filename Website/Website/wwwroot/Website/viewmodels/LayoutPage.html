@@ -10,6 +10,7 @@
     <link rel="import" href="/sys/puppet-client/src/puppet-client.html" />
     <link rel="import" href="/Website/elements/puppet-dom-bind.html" />
     <link rel="import" href="/Website/elements/puppet-import.html" />
+    <link rel="import" href="/Website/elements/website-section.html" />
 </head>
 <body>
     <template is="puppet-dom-bind" id="puppet-root">
@@ -30,7 +31,7 @@
             </nav>
         </header>
         <section>
-            <puppet-import model="{{model.Content}}" path="model.Content" html="{{model.TemplateHtml}}"></puppet-import>
+            <puppet-import model="{{model.TemplateContent}}" path="model.TemplateContent" html="{{model.TemplateHtml}}"></puppet-import>
         </section>
         <footer>
             Copyright &copy; 2015 Starcounter

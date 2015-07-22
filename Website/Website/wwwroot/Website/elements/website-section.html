@@ -1,0 +1,55 @@
+﻿<dom-module id="website-section">
+    <style></style>
+    <template>
+        <template is="dom-repeat" items="{{applications}}">
+            <puppet-import model="{{getValue(item)}}" path="{{getPath(item)}}" html="{{getHtml(item)}}"></puppet-import>
+        </template>
+    </template>
+    <script>
+        Polymer({
+            is: "website-section",
+            ready: function () {
+            },
+            getHtml: function (name) {
+                return this.model[name].Html;
+            },
+            getValue: function (name) {
+                return this.model[name].Value;
+            },
+            getPath: function (name) {
+                return this.path + "." + name + ".Value";
+            },
+            properties: {
+                applications: {
+                    type: Array,
+                    value: [],
+                    notify: true
+                },
+                model: {
+                    type: Object,
+                    value: null,
+                    observer: "modelChanged"
+                },
+                path: {
+                    type: String,
+                    value: ""
+                }
+            },
+            modelChanged: function (newValue, oldValue) {
+                var apps = [];
+
+                for (var i in newValue) {
+                    if (newValue.hasOwnProperty(i) && newValue[i]) {
+                        apps.push(i);
+                    }
+                }
+
+                this.set("applications", []);
+
+                setTimeout(function () {
+                    this.set("applications", apps);
+                }.bind(this));
+            }
+        });
+    </script>
+</dom-module>
