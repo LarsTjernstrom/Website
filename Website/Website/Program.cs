@@ -100,7 +100,7 @@ namespace Website {
         static Json GetTeamValue() {
             System.Web.Script.Serialization.JavaScriptSerializer serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
 
-            return new Json(serializer.Serialize(new { People = people }));
+            return new Json(serializer.Serialize(new { People = people.Select(x => x.ToJson()) }));
         }
 
         static ContainerPage GetTeamPage() {
@@ -122,6 +122,7 @@ namespace Website {
 
             json.FirstName = person.FirstName;
             json.LastName = person.LastName;
+            //json.Person = person;
 
             return json;
         }

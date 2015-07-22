@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Website {
-    class Person {
+    class Person /*: Starcounter.Json*/ {
         public Person(string FirstName, string LastName) {
             this.Key = FirstName.ToLower();
             this.FirstName = FirstName;
@@ -17,5 +17,14 @@ namespace Website {
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Url { get; set; }
+
+        public object ToJson() {
+            return new {
+                this.Key,
+                this.FirstName,
+                this.LastName,
+                this.Url
+            };
+        }
     }
 }
