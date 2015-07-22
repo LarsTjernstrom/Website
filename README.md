@@ -19,7 +19,7 @@ The `content` region is different for each of the Website pages:
   
 ## Goals
 
-1. The `header` video does not interrput when you switch pages (because of page morphing)
+1. The `header` video does not interrupt when you switch pages (because of page morphing)
 2. All links work correctly if you open them in a new tab
 3. On a team member page, switching to another team member does not reload any template - only the data
 
