@@ -4,16 +4,17 @@ using System.Linq;
 using System.Collections.Generic;
 using Starcounter;
 using Website.ViewModels;
+using Website.Models;
 
 namespace Website {
     class Program {
-        static List<Person> people = new List<Person>() {
-            new Person("Konstantin", "Mi"),
-            new Person("Tomek", "Wytrębowicz"),
-            new Person("Marcin", "Warpechowski")
-        };
+        static LayoutPage GetLayoutPage() {
+            return Self.GET<LayoutPage>("/website/partial/layout");
+        }
 
         static void Main() {
+            GenerateData();
+
             Handle.GET("/website", () => {
                 LayoutPage master = GetLayoutPage();
 
@@ -22,56 +23,27 @@ namespace Website {
                 return master;
             });
 
-            Handle.GET("/website/team", () => {
-                LayoutPage master = GetLayoutPage();
-                dynamic content = master.TemplateContent;
+            Handle.GET("/website/partial/content/{?}", (string value) => {
+                string[] parts = value.Split(new char[] { '-' });
+                WebMap map = null;
 
-                if (content == null || master.TemplateName != "Default") {
-                    content = new Json();
-                    content.Sections = "Center";
-                    //content.Center = GetTeamPage();
-                    content.Center = (Json)Self.GET("/website/partial/team");
-
-                    //System.Exception: Cannot add the Center property to the template as the type Response is not supported for Json properties
-                    //content.Center = Self.GET("/website/partial/team");
-
-                    master.TemplateName = "Default";
-                    //master.TemplateHtml = @"<puppet-import model=""{{model.Center.Value}}"" path=""model.Center.Value"" html=""{{model.Center.Html}}""></puppet-import>";
-                    master.TemplateHtml = @"<website-section model=""{{model.Center}}"" path=""model.Content.Center""></website-section>";
-                    master.TemplateContent = content;
-                } else {
-                    content.Center.Value = GetTeamValue();
-                }
-                
-                return master;
-            });
-
-            Handle.GET("/website/team/{?}", (string Key) => {
-                LayoutPage master = GetLayoutPage();
-                dynamic content = master.TemplateContent;
-                
-                if (content == null || master.TemplateName != "Side") {
-                    content = new Json();
-                    content.Sections = "Side,Center";
-                    //content.Side = GetTeamPage();
-                    //content.Center = GetMemberPage(Key);
-                    content.Side = (Json)Self.GET("/website/partial/team");
-                    content.Center = (Json)Self.GET("/website/partial/team/" + Key);
-
-                    master.TemplateName = "Side";
-                    //master.TemplateHtml =
-                    //    @"<div class=""side""><puppet-import model=""{{model.Side.Value}}"" path=""model.Side.Value"" html=""{{model.Side.Html}}""></puppet-import></div>" +
-                    //    @"<div class=""center""><puppet-import model=""{{model.Center.Value}}"" path=""model.Center.Value"" html=""{{model.Center.Html}}""></puppet-import></div>";
-                    master.TemplateHtml =
-                        @"<div class=""side""><website-section model=""{{model.Side}}"" path=""model.Content.Side""></website-section></div>" +
-                        @"<div class=""center""><website-section model=""{{model.Center}}"" path=""model.Content.Center""></website-section></div>";
-                    master.TemplateContent = content;
-                } else {
-                    //content.Center.Value = GetMemberValue(Key);
-                    content.Center = (Json)Self.GET("/website/partial/team/" + Key);
+                if (parts.Length == 3) {
+                    map = Db.SQL<WebMap>("SELECT wm FROM Website.Models.WebMap wm WHERE wm.Section.Template.Name = ? AND wm.Section.Name = ? AND (wm.Content.Name = ? OR wm.Content.Name IS NULL)", parts[0], parts[1], parts[2]).First;
+                } else if (parts.Length == 2) {
+                    map = Db.SQL<WebMap>("SELECT wm FROM Website.Models.WebMap wm WHERE wm.Section.Template.Name = ? AND wm.Section.Name = ?", parts[0], parts[1]).First;
                 }
 
-                return master;
+                if (map == null) {
+                    return new ContainerPage();
+                }
+
+                ContainerPage json = new ContainerPage() {
+                    Key = string.Format("/{0}/{1}/{2}", map.Section.Template.Name, map.Section.Name, map.Content.Name),
+                    Html = map.Content.Html,
+                    Value = new Json(map.Content.Value)
+                };
+
+                return json;
             });
 
             Handle.GET("/website/partial/layout", () => {
@@ -91,65 +63,186 @@ namespace Website {
                 return page;
             });
 
-            Handle.GET("/website/partial/team", () => {
-                return GetTeamPage();
+            foreach (WebPage page in Db.SQL<WebPage>("SELECT wp FROM Website.Models.WebPage wp")) {
+                string url = "/website" + page.Url;
+
+                if (page.Url.Contains("{?}")) {
+                    AddHandleWithParameter(url, page);
+                } else {
+                    AddHandle(url, page);
+                }
+            }
+
+            PolyjuiceNamespace.Polyjuice.Map("/website/partial/content/@w", "/polyjuice/website/partial/content/@w");
+        }
+
+        static void AddHandle(string Url, WebPage Page) {
+            Handle.GET(Url, () => {
+                LayoutPage master = GetLayoutPage();
+                dynamic content = master.TemplateContent;
+
+                if (content == null || master.TemplateName != Page.Template.Name) {
+                    content = new Json();
+
+                    foreach (WebSection section in Page.Template.Sections) {
+                        ContainerPage json = (ContainerPage)Self.GET(GetContentUrl(section));
+                        content[section.Name] = json;
+                    }
+
+                    master.TemplateName = Page.Template.Name;
+                    master.TemplateHtml = Page.Template.Html;
+                    master.TemplateContent = content;
+                } else {
+                    foreach (WebSection section in Page.Template.Sections) {
+                        ContainerPage json = (ContainerPage)Self.GET(GetContentUrl(section));
+
+                        if (content[section.Name].Key != json.Key) {
+                            content[section.Name] = json;
+                        }
+                    }
+                }
+
+                return master;
             });
+        }
 
-            Handle.GET("/website/partial/team/{?}", (string Name) => {
-                return GetMemberPage(Name);
+        static void AddHandleWithParameter(string Url, WebPage Page) {
+            Handle.GET(Url, (string name) => {
+                LayoutPage master = GetLayoutPage();
+                dynamic content = master.TemplateContent;
+
+                if (content == null || master.TemplateName != Page.Template.Name) {
+                    content = new Json();
+
+                    foreach (WebSection section in Page.Template.Sections) {
+                        ContainerPage json = (ContainerPage)Self.GET(GetContentUrl(section, name));
+                        content[section.Name] = json;
+                    }
+
+                    master.TemplateName = Page.Template.Name;
+                    master.TemplateHtml = Page.Template.Html;
+                    master.TemplateContent = content;
+                } else {
+                    foreach (WebSection section in Page.Template.Sections) {
+                        ContainerPage json = (ContainerPage)Self.GET(GetContentUrl(section, name));
+
+                        if (content[section.Name].Key != json.Key) {
+                            content[section.Name] = json;
+                        }
+                    }
+                }
+
+                return master;
             });
-
-            PolyjuiceNamespace.Polyjuice.Map("/website/partial/team", "/polyjuice/default/center");
-            //PolyjuiceNamespace.Polyjuice.Map("/website/partial/team", "/polyjuice/side/side");
-            PolyjuiceNamespace.Polyjuice.Map("/website/partial/team/@w", "/polyjuice/side/center/@w");
         }
 
-        static string GetTeamHtml() {
-            return "<ul><template is='dom-repeat' items='{{model.People}}'><li><a href='{{item.Url}}'><span>{{item.FirstName}}</span> <span>{{item.LastName}}</span></a></li></template></ul>" +
-                        @"<iframe width=""200"" height=""150"" src=""https://www.youtube.com/embed/Xp7HVA5CPjQ"" frameborder=""0"" allowfullscreen></iframe>";
+        static string GetContentUrl(WebSection Section, string Name = null) {
+            if (string.IsNullOrEmpty(Name)) {
+                return string.Format("/website/partial/content/{0}-{1}", Section.Template.Name, Section.Name);
+            } else {
+                return string.Format("/website/partial/content/{0}-{1}-{2}", Section.Template.Name, Section.Name, Name);
+            }
         }
 
-        static Json GetTeamValue() {
-            System.Web.Script.Serialization.JavaScriptSerializer serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+        static void GenerateData() {
+            Db.Transact(() => {
+                WebPage item = Db.SQL<WebPage>("SELECT wp FROM Website.Models.WebPage wp").First;
 
-            return new Json(serializer.Serialize(new { People = people.Select(x => x.ToJson()) }));
-        }
+                if (item != null) {
+                    return;
+                }
 
-        static ContainerPage GetTeamPage() {
-            ContainerPage page = new ContainerPage() {
-                Html = GetTeamHtml(),
-                Value = GetTeamValue()
-            };
+                Db.SlowSQL("DELETE FROM Website.Models.WebPage");
+                Db.SlowSQL("DELETE FROM Website.Models.WebTemplate");
+                Db.SlowSQL("DELETE FROM Website.Models.WebContent");
+                Db.SlowSQL("DELETE FROM Website.Models.WebSection");
+                Db.SlowSQL("DELETE FROM Website.Models.WebMap");
 
-            return page;
-        }
+                WebTemplate defaultTemplate = new WebTemplate() {
+                    Name = "DefaultTemplate",
+                    Html = @"<div class=""single""><website-section model=""{{model.Center}}"" path=""model.Content.Center""></website-section></div>"
+                };
 
-        static string GetMemberHtml() {
-            return "<div>{{model.FirstName}}</div><div>{{model.LastName}}</div>";
-        }
+                WebTemplate sideTemplate = new WebTemplate() {
+                    Name = "SideTemplate",
+                    Html = @"<div class=""side""><website-section model=""{{model.Side}}"" path=""model.Content.Side""></website-section></div>" +
+                           @"<div class=""center""><website-section model=""{{model.Center}}"" path=""model.Content.Center""></website-section></div>"
+                };
 
-        static Json GetMemberValue(string Key) {
-            Person person = people.FirstOrDefault(x => x.Key == Key);
-            dynamic json = new Json();
+                WebSection section = new WebSection() {
+                    Template = defaultTemplate,
+                    Name = "Center"
+                };
 
-            json.FirstName = person.FirstName;
-            json.LastName = person.LastName;
-            //json.Person = person;
+                section = new WebSection() {
+                    Template = sideTemplate,
+                    Name = "Side"
+                };
 
-            return json;
-        }
+                section = new WebSection() { 
+                    Template = sideTemplate,
+                    Name = "Center"
+                };
 
-        static ContainerPage GetMemberPage(string Key) {
-            ContainerPage page = new ContainerPage() {
-                Html = GetMemberHtml(),
-                Value = GetMemberValue(Key)
-            };
+                WebPage teamPage = new WebPage() {
+                    Template = defaultTemplate,
+                    Url = "/team"
+                };
 
-            return page;
-        }
+                WebPage memberPage = new WebPage() {
+                    Template = sideTemplate,
+                    Url = "/team/{?}"
+                };
 
-        static LayoutPage GetLayoutPage() {
-            return Self.GET<LayoutPage>("/website/partial/layout");
+                WebContent content = new WebContent() {
+                    Html = "<ul><template is='dom-repeat' items='{{model.People}}'><li><a href='{{item.Url}}'><span>{{item.FirstName}}</span> <span>{{item.LastName}}</span></a></li></template></ul>" +
+                            @"<iframe width=""200"" height=""150"" src=""https://www.youtube.com/embed/Xp7HVA5CPjQ"" frameborder=""0"" allowfullscreen></iframe>",
+                    Value = "{\"People\":[{\"Key\":\"konstantin\",\"FirstName\":\"Konstantin\",\"LastName\":\"Mi\",\"Url\":\"/website/team/konstantin\"},{\"Key\":\"tomek\",\"FirstName\":\"Tomek\",\"LastName\":\"Wytrębowicz\",\"Url\":\"/website/team/tomek\"},{\"Key\":\"marcin\",\"FirstName\":\"Marcin\",\"LastName\":\"Warpechowski\",\"Url\":\"/website/team/marcin\"}]}"
+                };
+
+                WebMap map = new WebMap() {
+                    Content = content,
+                    Section = defaultTemplate.Sections.FirstOrDefault()
+                };
+
+                map = new WebMap() {
+                    Content = content,
+                    Section = sideTemplate.Sections.FirstOrDefault(x => x.Name == "Side")
+                };
+
+                content = new WebContent() {
+                    Name = "konstantin",
+                    Html = "<div>{{model.FirstName}}</div><div>{{model.LastName}}</div>",
+                    Value = "{\"Key\":\"konstantin\",\"FirstName\":\"Konstantin\",\"LastName\":\"Mi\",\"Url\":\"/website/team/konstantin\"}",
+                };
+
+                map = new WebMap() {
+                    Content = content,
+                    Section = sideTemplate.Sections.FirstOrDefault(x => x.Name == "Center")
+                };
+
+                content = new WebContent() {
+                    Name = "tomek",
+                    Html = "<div>{{model.FirstName}}</div><div>{{model.LastName}}</div>",
+                    Value = "{\"Key\":\"tomek\",\"FirstName\":\"Tomek\",\"LastName\":\"Wytrębowicz\",\"Url\":\"/website/team/tomek\"}",
+                };
+
+                map = new WebMap() {
+                    Content = content,
+                    Section = sideTemplate.Sections.FirstOrDefault(x => x.Name == "Center")
+                };
+
+                content = new WebContent() {
+                    Name = "marcin",
+                    Html = "<div>{{model.FirstName}}</div><div>{{model.LastName}}</div>",
+                    Value = "{\"Key\":\"marcin\",\"FirstName\":\"Marcin\",\"LastName\":\"Warpechowski\",\"Url\":\"/website/team/marcin\"}",
+                };
+
+                map = new WebMap() {
+                    Content = content,
+                    Section = sideTemplate.Sections.FirstOrDefault(x => x.Name == "Center")
+                };
+            });
         }
     }
 }

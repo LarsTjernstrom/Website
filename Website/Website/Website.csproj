@@ -68,11 +68,18 @@
     <Reference Include="System.Web.Extensions" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Person.cs" />
+    <Compile Include="Models\WebContent.cs" />
+    <Compile Include="Models\WebMap.cs" />
+    <Compile Include="Models\WebPage.cs" />
+    <Compile Include="Models\WebSection.cs" />
+    <Compile Include="Models\WebTemplate.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\ContainerPage.json.cs">
       <DependentUpon>ContainerPage.json</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\JsonCache.json.cs">
+      <DependentUpon>JsonCache.json</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\LayoutPage.json.cs">
       <DependentUpon>LayoutPage.json</DependentUpon>
@@ -95,6 +102,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <TypedJSON Include="ViewModels\JsonCache.json">
+      <Generator>MsBuild:Compile</Generator>
+    </TypedJSON>
     <TypedJSON Include="ViewModels\ContainerPage.json">
       <Generator>MsBuild:Compile</Generator>
     </TypedJSON>

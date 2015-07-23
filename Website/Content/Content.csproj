@@ -69,9 +69,17 @@
     <Compile Include="ViewModels\AdPage.json.cs">
       <DependentUpon>AdPage.json</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\JsonCache.json.cs">
+      <DependentUpon>JsonCache.json</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <TypedJSON Include="ViewModels\AdPage.json">
+      <Generator>MsBuild:Compile</Generator>
+    </TypedJSON>
+  </ItemGroup>
+  <ItemGroup>
+    <TypedJSON Include="ViewModels\JsonCache.json">
       <Generator>MsBuild:Compile</Generator>
     </TypedJSON>
   </ItemGroup>
