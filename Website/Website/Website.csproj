@@ -68,7 +68,6 @@
     <Reference Include="System.Web.Extensions" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\WebContent.cs" />
     <Compile Include="Models\WebMap.cs" />
     <Compile Include="Models\WebPage.cs" />
     <Compile Include="Models\WebSection.cs" />
@@ -83,6 +82,9 @@
     </Compile>
     <Compile Include="ViewModels\LayoutPage.json.cs">
       <DependentUpon>LayoutPage.json</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\ResultPage.json.cs">
+      <DependentUpon>ResultPage.json</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -102,6 +104,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <TypedJSON Include="ViewModels\ResultPage.json">
+      <Generator>MsBuild:Compile</Generator>
+    </TypedJSON>
     <TypedJSON Include="ViewModels\JsonCache.json">
       <Generator>MsBuild:Compile</Generator>
     </TypedJSON>

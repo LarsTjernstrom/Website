@@ -23,7 +23,7 @@ namespace Website {
                 return master;
             });
 
-            Handle.GET("/website/partial/content/{?}", (string value) => {
+            /*Handle.GET("/website/partial/content/{?}", (string value) => {
                 string[] parts = value.Split(new char[] { '-' });
                 WebMap map = null;
 
@@ -44,7 +44,7 @@ namespace Website {
                 };
 
                 return json;
-            });
+            });*/
 
             Handle.GET("/website/partial/layout", () => {
                 LayoutPage page = null;
@@ -73,20 +73,33 @@ namespace Website {
                 }
             }
 
-            PolyjuiceNamespace.Polyjuice.Map("/website/partial/content/@w", "/polyjuice/website/partial/content/@w");
+            //PolyjuiceNamespace.Polyjuice.Map("/website/partial/content/@w", "/polyjuice/website/partial/content/@w");
         }
 
         static void AddHandle(string Url, WebPage Page) {
             Handle.GET(Url, () => {
                 LayoutPage master = GetLayoutPage();
-                dynamic content = master.TemplateContent;
+                ResultPage content = master.TemplateContent as ResultPage;
 
                 if (content == null || master.TemplateName != Page.Template.Name) {
-                    content = new Json();
+                    content = new ResultPage();
 
                     foreach (WebSection section in Page.Template.Sections) {
-                        ContainerPage json = (ContainerPage)Self.GET(GetContentUrl(section));
-                        content[section.Name] = json;
+                        var sectionJson = content.Sections.Add();
+
+                        foreach (WebMap map in section.Maps.OrderBy(x => x.SortNumber)) {
+                            Json json = Self.GET<Json>(map.ForeignUrl, () => {
+                                return new ContainerPage() {
+                                    Html = string.Format("Website application: {0}.{1}", section.Template.Name, section.Name),
+                                    Key = map.GetObjectID()
+                                };
+                            });
+
+                            sectionJson.Rows.Add(json);
+                        }
+
+                        //ContainerPage json = (ContainerPage)Self.GET(GetContentUrl(section));
+                        //content[section.Name] = json;
                     }
 
                     master.TemplateName = Page.Template.Name;
@@ -94,11 +107,28 @@ namespace Website {
                     master.TemplateContent = content;
                 } else {
                     foreach (WebSection section in Page.Template.Sections) {
-                        ContainerPage json = (ContainerPage)Self.GET(GetContentUrl(section));
+                        int index = 0;
+
+                        foreach (WebMap map in section.Maps.OrderBy(x => x.SortNumber)) {
+                            var sectionJson = content.Sections.FirstOrDefault(x => x.Name == section.Name);
+
+                            if ((sectionJson.Rows[index] as ContainerPage).Key != map.GetObjectID()) {
+                                sectionJson.Rows[index] = Self.GET<ContainerPage>(map.ForeignUrl, () => {
+                                    return new ContainerPage() {
+                                        Html = string.Format("Website application: {0}.{1}", section.Template.Name, section.Name),
+                                        Key = map.GetObjectID()
+                                    };
+                                });
+                            }
+
+                            index++;
+                        }
+
+                        /*ContainerPage json = (ContainerPage)Self.GET(GetContentUrl(section));
 
                         if (content[section.Name].Key != json.Key) {
                             content[section.Name] = json;
-                        }
+                        }*/
                     }
                 }
 
@@ -115,8 +145,25 @@ namespace Website {
                     content = new Json();
 
                     foreach (WebSection section in Page.Template.Sections) {
-                        ContainerPage json = (ContainerPage)Self.GET(GetContentUrl(section, name));
-                        content[section.Name] = json;
+                        Arr<Json> result = new Arr<Json>();
+
+                        foreach (WebMap map in section.Maps.OrderBy(x => x.SortNumber)) {
+                            string url = map.ForeignUrl.Replace("{?}", name);
+
+                            ContainerPage json = Self.GET<ContainerPage>(url, () => {
+                                return new ContainerPage() {
+                                    Html = string.Format("Website application: {0}.{1}.{2}", section.Template.Name, section.Name, name),
+                                    Key = map.GetObjectID()
+                                };
+                            });
+
+                            result.Add(json);
+                        }
+
+                        //ContainerPage json = (ContainerPage)Self.GET(GetContentUrl(section));
+                        //content[section.Name] = json;
+
+                        content[section.Name] = result.ToArray();
                     }
 
                     master.TemplateName = Page.Template.Name;
@@ -124,11 +171,29 @@ namespace Website {
                     master.TemplateContent = content;
                 } else {
                     foreach (WebSection section in Page.Template.Sections) {
-                        ContainerPage json = (ContainerPage)Self.GET(GetContentUrl(section, name));
+                        Arr<Json> result = content[section.Name] as Arr<Json>;
+                        int index = 0;
+
+                        foreach (WebMap map in section.Maps.OrderBy(x => x.SortNumber)) {
+                            if ((result[index] as ContainerPage).Key != map.GetObjectID()) {
+                                string url = map.ForeignUrl.Replace("{?}", name);
+
+                                result[index] = Self.GET<ContainerPage>(url, () => {
+                                    return new ContainerPage() {
+                                        Html = string.Format("Website application: {0}.{1}.{2}", section.Template.Name, section.Name, name),
+                                        Key = map.GetObjectID()
+                                    };
+                                });
+                            }
+
+                            index++;
+                        }
+
+                        /*ContainerPage json = (ContainerPage)Self.GET(GetContentUrl(section));
 
                         if (content[section.Name].Key != json.Key) {
                             content[section.Name] = json;
-                        }
+                        }*/
                     }
                 }
 
@@ -149,12 +214,12 @@ namespace Website {
                 WebPage item = Db.SQL<WebPage>("SELECT wp FROM Website.Models.WebPage wp").First;
 
                 if (item != null) {
-                    return;
+                    //return;
                 }
 
                 Db.SlowSQL("DELETE FROM Website.Models.WebPage");
                 Db.SlowSQL("DELETE FROM Website.Models.WebTemplate");
-                Db.SlowSQL("DELETE FROM Website.Models.WebContent");
+                //Db.SlowSQL("DELETE FROM Website.Models.WebContent");
                 Db.SlowSQL("DELETE FROM Website.Models.WebSection");
                 Db.SlowSQL("DELETE FROM Website.Models.WebMap");
 
@@ -194,34 +259,37 @@ namespace Website {
                     Url = "/team/{?}"
                 };
 
-                WebContent content = new WebContent() {
+                /*WebContent content = new WebContent() {
                     Html = "<ul><template is='dom-repeat' items='{{model.People}}'><li><a href='{{item.Url}}'><span>{{item.FirstName}}</span> <span>{{item.LastName}}</span></a></li></template></ul>" +
                             @"<iframe width=""200"" height=""150"" src=""https://www.youtube.com/embed/Xp7HVA5CPjQ"" frameborder=""0"" allowfullscreen></iframe>",
                     Value = "{\"People\":[{\"Key\":\"konstantin\",\"FirstName\":\"Konstantin\",\"LastName\":\"Mi\",\"Url\":\"/website/team/konstantin\"},{\"Key\":\"tomek\",\"FirstName\":\"Tomek\",\"LastName\":\"Wytrębowicz\",\"Url\":\"/website/team/tomek\"},{\"Key\":\"marcin\",\"FirstName\":\"Marcin\",\"LastName\":\"Warpechowski\",\"Url\":\"/website/team/marcin\"}]}"
-                };
+                };*/
 
                 WebMap map = new WebMap() {
-                    Content = content,
-                    Section = defaultTemplate.Sections.FirstOrDefault()
+                    //Content = content,
+                    Section = defaultTemplate.Sections.FirstOrDefault(),
+                    ForeignUrl = "/content/team"
                 };
 
                 map = new WebMap() {
-                    Content = content,
-                    Section = sideTemplate.Sections.FirstOrDefault(x => x.Name == "Side")
+                    //Content = content,
+                    Section = sideTemplate.Sections.FirstOrDefault(x => x.Name == "Side"),
+                    ForeignUrl = "/content/team"
                 };
 
-                content = new WebContent() {
+                /*content = new WebContent() {
                     Name = "konstantin",
                     Html = "<div>{{model.FirstName}}</div><div>{{model.LastName}}</div>",
                     Value = "{\"Key\":\"konstantin\",\"FirstName\":\"Konstantin\",\"LastName\":\"Mi\",\"Url\":\"/website/team/konstantin\"}",
-                };
+                };*/
 
                 map = new WebMap() {
-                    Content = content,
-                    Section = sideTemplate.Sections.FirstOrDefault(x => x.Name == "Center")
+                    //Content = content,
+                    Section = sideTemplate.Sections.FirstOrDefault(x => x.Name == "Center"),
+                    ForeignUrl = "/content/team/{?}"
                 };
 
-                content = new WebContent() {
+                /*content = new WebContent() {
                     Name = "tomek",
                     Html = "<div>{{model.FirstName}}</div><div>{{model.LastName}}</div>",
                     Value = "{\"Key\":\"tomek\",\"FirstName\":\"Tomek\",\"LastName\":\"Wytrębowicz\",\"Url\":\"/website/team/tomek\"}",
@@ -241,7 +309,7 @@ namespace Website {
                 map = new WebMap() {
                     Content = content,
                     Section = sideTemplate.Sections.FirstOrDefault(x => x.Name == "Center")
-                };
+                };*/
             });
         }
     }

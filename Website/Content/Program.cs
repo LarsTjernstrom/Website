@@ -79,7 +79,37 @@ namespace Content {
                 return null;
             });
 
-            PolyjuiceNamespace.Polyjuice.Map("/content/partial/content/@w", "/polyjuice/website/partial/content/@w");
+            Handle.GET("/content/team", () => {
+                AdPage page = new AdPage();
+
+                page.Html = "<ul><template is='dom-repeat' items='{{model.People}}'><li><a href='{{item.Url}}'><span>{{item.FirstName}}</span> <span>{{item.LastName}}</span></a></li></template></ul>" +
+                            @"<iframe width=""200"" height=""150"" src=""https://www.youtube.com/embed/Xp7HVA5CPjQ"" frameborder=""0"" allowfullscreen></iframe>";
+                page.Value = new Json("{\"People\":[{\"Key\":\"konstantin\",\"FirstName\":\"Konstantin\",\"LastName\":\"Mi\",\"Url\":\"/website/team/konstantin\"},{\"Key\":\"tomek\",\"FirstName\":\"Tomek\",\"LastName\":\"Wytrębowicz\",\"Url\":\"/website/team/tomek\"},{\"Key\":\"marcin\",\"FirstName\":\"Marcin\",\"LastName\":\"Warpechowski\",\"Url\":\"/website/team/marcin\"}]}");
+
+                return page;
+            });
+
+            Handle.GET("/content/team/{?}", (string name) => {
+                AdPage page = new AdPage();
+
+                page.Html = "<div>{{model.FirstName}}</div><div>{{model.LastName}}</div>";
+                
+                switch (name) {
+                    case "konstantin":
+                        page.Value = new Json("{\"Key\":\"konstantin\",\"FirstName\":\"Konstantin\",\"LastName\":\"Mi\",\"Url\":\"/website/team/konstantin\"}");
+                        break;
+                    case "tomek":
+                        page.Value = new Json("{\"Key\":\"tomek\",\"FirstName\":\"Tomek\",\"LastName\":\"Wytrębowicz\",\"Url\":\"/website/team/tomek\"}");
+                        break;
+                    case "marcin":
+                        page.Value = new Json("{\"Key\":\"marcin\",\"FirstName\":\"Marcin\",\"LastName\":\"Warpechowski\",\"Url\":\"/website/team/marcin\"}");
+                        break;
+                }
+
+                return page;
+            });
+
+            //PolyjuiceNamespace.Polyjuice.Map("/content/partial/content/@w", "/polyjuice/website/partial/content/@w");
         }
 
         static JsonCache GetCache() {
