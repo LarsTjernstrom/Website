@@ -33,6 +33,14 @@
                 path: {
                     type: String,
                     value: ""
+                },
+                pathName: {
+                    type: String,
+                    value: ""
+                },
+                pathIndex: {
+                    type: String,
+                    value: ""
                 }
             },
             modelChanged: function (newValue, oldValue) {
@@ -49,6 +57,12 @@
                 setTimeout(function () {
                     this.set("applications", apps);
                 }.bind(this));
+            },
+            pathNameChanged: function (newValue, oldValue) {
+                this.path = newValue + "." + this.pathIndex;
+            },
+            pathIndexChanged: function (newValue, oldValue) {
+                this.path = this.pathName + "." + newValue;
             }
         });
     </script>
