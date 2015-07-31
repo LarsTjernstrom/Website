@@ -64,22 +64,39 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\Person.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModels\AdPage.json.cs">
-      <DependentUpon>AdPage.json</DependentUpon>
+    <Compile Include="ViewModels\DescriptionPage.json.cs">
+      <DependentUpon>DescriptionPage.json</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\JsonCache.json.cs">
-      <DependentUpon>JsonCache.json</DependentUpon>
+    <Compile Include="ViewModels\PersonPage.json.cs">
+      <DependentUpon>PersonPage.json</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\TeamAdPage.json.cs">
+      <DependentUpon>TeamAdPage.json</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\TeamPage.json.cs">
+      <DependentUpon>TeamPage.json</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <TypedJSON Include="ViewModels\AdPage.json">
+    <TypedJSON Include="ViewModels\TeamPage.json">
       <Generator>MsBuild:Compile</Generator>
     </TypedJSON>
   </ItemGroup>
   <ItemGroup>
-    <TypedJSON Include="ViewModels\JsonCache.json">
+    <TypedJSON Include="ViewModels\TeamAdPage.json">
+      <Generator>MsBuild:Compile</Generator>
+    </TypedJSON>
+  </ItemGroup>
+  <ItemGroup>
+    <TypedJSON Include="ViewModels\PersonPage.json">
+      <Generator>MsBuild:Compile</Generator>
+    </TypedJSON>
+  </ItemGroup>
+  <ItemGroup>
+    <TypedJSON Include="ViewModels\DescriptionPage.json">
       <Generator>MsBuild:Compile</Generator>
     </TypedJSON>
   </ItemGroup>

@@ -40,27 +40,19 @@ namespace Website {
                 string url = "/website" + page.Url;
 
                 if (page.Url.Contains("{?}")) {
-                    AddHandleWithParameter(url, page);
+                    Handle.GET(url, (string name) => {
+                        return HandleRequest(page, name);
+                    });
                 } else {
-                    AddHandle(url, page);
+                    Handle.GET(url, () => {
+                        return HandleRequest(page, null);
+                    });
                 }
             }
         }
 
         static LayoutPage GetLayoutPage() {
             return Self.GET<LayoutPage>("/website/partial/layout");
-        }
-
-        static void AddHandle(string Url, WebPage Page) {
-            Handle.GET(Url, () => {
-                return HandleRequest(Page, null);
-            });
-        }
-
-        static void AddHandleWithParameter(string Url, WebPage Page) {
-            Handle.GET(Url, (string name) => {
-                return HandleRequest(Page, name);
-            });
         }
 
         static LayoutPage HandleRequest(WebPage Page, string Name) {
@@ -76,17 +68,10 @@ namespace Website {
                     sectionJson.Name = section.Name;
 
                     foreach (WebMap map in section.Maps.OrderBy(x => x.SortNumber)) {
-                        string url;
-
-                        if (string.IsNullOrEmpty(Name)) {
-                            url = map.ForeignUrl;
-                        } else { 
-                            url = map.ForeignUrl.Replace("{?}", Name);
-                        }
+                        string url = FormatUrl(map.ForeignUrl, Name);
 
                         ContainerPage json = Self.GET<ContainerPage>(url, () => {
                             return new ContainerPage() {
-                                //Html = string.Format("Website application: {0}.{1}.{2}", section.Template.Name, section.Name, name),
                                 Key = url
                             };
                         });
@@ -105,18 +90,11 @@ namespace Website {
                     int index = 0;
 
                     foreach (WebMap map in maps) {
-                        string url;
-
-                        if (string.IsNullOrEmpty(Name)) {
-                            url = map.ForeignUrl;
-                        } else {
-                            url = map.ForeignUrl.Replace("{?}", Name);
-                        }
+                        string url = FormatUrl(map.ForeignUrl, Name);
 
                         if ((sectionJson.Rows[index] as ContainerPage).Key != url) {
                             sectionJson.Rows[index] = Self.GET<ContainerPage>(url, () => {
                                 return new ContainerPage() {
-                                    //Html = string.Format("Website application: {0}.{1}.{2}", section.Template.Name, section.Name, name),
                                     Key = url
                                 };
                             });
@@ -130,12 +108,20 @@ namespace Website {
             return master;
         }
 
+        static string FormatUrl(string Url, string Name) {
+            if (string.IsNullOrEmpty(Name)) {
+                return Url;
+            } else {
+                return Url.Replace("{?}", Name);
+            }
+        }
+
         static void GenerateData() {
             Db.Transact(() => {
                 WebPage item = Db.SQL<WebPage>("SELECT wp FROM Website.Models.WebPage wp").First;
 
                 if (item != null) {
-                    //return;
+                    return;
                 }
 
                 Db.SlowSQL("DELETE FROM Website.Models.WebPage");

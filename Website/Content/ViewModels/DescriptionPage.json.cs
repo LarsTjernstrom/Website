@@ -1,6 +1,6 @@
 using Starcounter;
 
 namespace Content.ViewModels {
-    partial class JsonCache : Json {
+    partial class DescriptionPage : Json {
     }
 }

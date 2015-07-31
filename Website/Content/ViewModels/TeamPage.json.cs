@@ -1,6 +1,6 @@
 using Starcounter;
 
 namespace Content.ViewModels {
-    partial class AdPage : Json {
+    partial class TeamPage : Json {
     }
 }
