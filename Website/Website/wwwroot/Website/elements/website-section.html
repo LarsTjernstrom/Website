@@ -2,7 +2,7 @@
     <style></style>
     <template>
         <template is="dom-repeat" items="{{applications}}">
-            <puppet-import model="{{getValue(item)}}" path="{{getPath(item)}}" html="{{getHtml(item)}}"></puppet-import>
+            <puppet-import model="{{getValue(item)}}" path="{{getPath(item)}}" content="{{getUrl(item)}}"></puppet-import>
         </template>
     </template>
     <script>
@@ -10,7 +10,7 @@
             is: "website-section",
             ready: function () {
             },
-            getHtml: function (name) {
+            getUrl: function (name) {
                 return this.model[name].Html;
             },
             getValue: function (name) {

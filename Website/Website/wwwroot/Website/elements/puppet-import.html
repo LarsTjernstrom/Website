@@ -17,16 +17,19 @@
                     this.originalNotifyPath(path, value);
                 };
 
+                this.loadContent();
+            },
+            loadContent: function () {
                 if (!this.content) {
                     return;
                 }
 
+                var that = this;
                 var req = new XMLHttpRequest();
 
                 req.onload = function () {
-                    this.set("html", this.responseText);
-                    //this.stampTemplate();
-                }.bind(this);
+                    that.set("html", this.responseText);
+                };
 
                 req.open("GET", this.content, true);
                 req.send();
@@ -66,7 +69,8 @@
                 },
                 content: {
                     type: String,
-                    value: null
+                    value: null,
+                    observer: "contentChanged"
                 },
                 model: {
                     type: Object,
@@ -85,6 +89,9 @@
             htmlChanged: function (newValue, oldValue) {
                 this.stampTemplate();
                 this.oldHtml = newValue;
+            },
+            contentChanged: function (newValue, oldValue) {
+                this.loadContent();
             }
         });
     </script>

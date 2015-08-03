@@ -1,0 +1,15 @@
+﻿<div class="nav">
+    <template is="dom-repeat" items="{{model.Sections.0.Rows}}">
+        <website-section model="{{item}}" pathname="model.sections.0.rows" pathindex="{{index}}"></website-section>
+    </template>
+</div>
+<div class="side">
+    <template is="dom-repeat" items="{{model.Sections.1.Rows}}">
+        <website-section model="{{item}}" pathname="model.sections.1.rows" pathindex="{{index}}"></website-section>
+    </template>
+</div>
+<div class="center">
+    <template is="dom-repeat" items="{{model.Sections.2.Rows}}">
+        <website-section model="{{item}}" pathname="model.sections.2.rows" pathindex="{{index}}"></website-section>
+    </template>
+</div>

@@ -9,23 +9,37 @@ namespace Content {
         static void Main() {
             GenerateData();
 
+            Handle.GET("/content/navigation", () => {
+                NavigationPage page = new NavigationPage();
+
+                page.Html = "/Content/viewmodels/NavigationPage.html";
+
+                return page;
+            });
+
             Handle.GET("/content/team", () => {
                 TeamPage page = new TeamPage();
 
                 page.People.Data = Db.SQL<Person>("SELECT p FROM Content.Models.Person p");
-                page.Html = "<ul><template is='dom-repeat' items='{{model.People}}'><li><a href='{{item.Url}}'><span>{{item.FirstName}}</span> <span>{{item.LastName}}</span></a></li></template></ul>" +
-                            @"<iframe width=""200"" height=""150"" src=""https://www.youtube.com/embed/Xp7HVA5CPjQ"" frameborder=""0"" allowfullscreen></iframe>";
+                page.Html = "/Content/viewmodels/TeamPage.html";
 
                 return page;
             });
 
             Handle.GET("/content/team-ad/{?}", (string name) => {
-                Person person = GetPerson(name);
+                var people = Db.SQL<Person>("SELECT p FROM Content.Models.Person p");
                 TeamAdPage page = new TeamAdPage();
 
-                page.Html = "<div>{{model.Text}}</div>";
-                page.Text = person.AdText;
-                page.Key = person.Key;
+                page.Html = "/Content/viewmodels/TeamAdPage.html";
+
+                foreach (Person p in people) {
+                    var pj = page.People.Add();
+
+                    pj.Text = p.AdText;
+                    pj.Key = p.Key;
+                    pj.Url = string.Format("/content/team-ad/{0}", p.Key);
+                    pj.Selected = p.Key == name;
+                }
 
                 return page;
             });
@@ -34,7 +48,7 @@ namespace Content {
                 Person person = GetPerson(name);
                 PersonPage page = new PersonPage();
 
-                page.Html = "<div>{{model.FirstName}}</div><div>{{model.LastName}}</div>";
+                page.Html = "/Content/viewmodels/PersonPage.html";
                 page.Data = person;
 
                 return page;
@@ -44,7 +58,7 @@ namespace Content {
                 Person person = GetPerson(name);
                 DescriptionPage page = new DescriptionPage();
 
-                page.Html = "<div>{{model.Text}}</div>";
+                page.Html = "/Content/viewmodels/DescriptionPage.html";
                 page.Key = person.Key;
                 page.Text = person.Description;
 
@@ -60,15 +74,17 @@ namespace Content {
             Person person = Db.SQL<Person>("SELECT p FROM Content.Models.Person p").First;
 
             if (person != null) {
-                return;
+                //return;
             }
 
             Db.Transact(() => {
+                Db.SlowSQL("DELETE FROM Content.Models.Person");
+
                 person = new Person() {
                     Key = "konstantin",
                     FirstName = "Konstantin",
                     LastName = "Mi",
-                    Url = "/website/team/konstantin",
+                    Url = "/content/team/konstantin",
                     AdText = "Left side AD for Konstantin",
                     Description = "Is a new developer of Starcounter team."
                 };
@@ -77,7 +93,7 @@ namespace Content {
                     Key = "tomek",
                     FirstName = "Tomek",
                     LastName = "Wytrębowicz",
-                    Url = "/website/team/tomek",
+                    Url = "/content/team/tomek",
                     AdText = "Left side AD for Tomek",
                     Description = "Is a JavaScript developer of Starcounter team."
                 };
@@ -86,7 +102,7 @@ namespace Content {
                     Key = "marcin",
                     FirstName = "Marcin",
                     LastName = "Warpechowski",
-                    Url = "/website/team/marcin",
+                    Url = "/content/team/marcin",
                     AdText = "Left side AD for Marcin",
                     Description = "Is a team leader of Starcounter team."
                 };

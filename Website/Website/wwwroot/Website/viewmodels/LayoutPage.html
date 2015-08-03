@@ -19,19 +19,9 @@
                 <div>Header video</div>
                 <iframe width="200" height="150" src="https://www.youtube.com/embed/Xp7HVA5CPjQ" frameborder="0" allowfullscreen></iframe>
             </div>
-            <nav>
-                <ul>
-                    <li>
-                        <a href="/website">Home</a>
-                    </li>
-                    <li>
-                        <a href="/website/team">Team</a>
-                    </li>
-                </ul>
-            </nav>
         </header>
         <section>
-            <puppet-import model="{{model.TemplateContent}}" path="model.TemplateContent" html="{{model.TemplateHtml}}"></puppet-import>
+            <puppet-import model="{{model.TemplateModel}}" path="model.TemplateModel" html="{{model.TemplateHtml}}" content="{{model.TemplateContent}}"></puppet-import>
         </section>
         <footer>
             Copyright &copy; 2015 Starcounter

@@ -72,6 +72,7 @@
     <Compile Include="Models\WebPage.cs" />
     <Compile Include="Models\WebSection.cs" />
     <Compile Include="Models\WebTemplate.cs" />
+    <Compile Include="Models\WebUrl.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\ContainerPage.json.cs">
@@ -100,6 +101,8 @@
     <Content Include="wwwroot\Website\elements\puppet-dom-bind.html" />
     <Content Include="wwwroot\Website\elements\puppet-import.html" />
     <Content Include="wwwroot\Website\elements\website-section.html" />
+    <Content Include="wwwroot\Website\templates\DefaultTemplate.html" />
+    <Content Include="wwwroot\Website\templates\SideTemplate.html" />
     <Content Include="wwwroot\Website\viewmodels\LayoutPage.html" />
   </ItemGroup>
   <ItemGroup>

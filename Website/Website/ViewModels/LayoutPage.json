@@ -1,6 +1,7 @@
 {
     "Html": "/Website/viewmodels/LayoutPage.html",
     "TemplateHtml": "",
+    "TemplateContent": "",
     "TemplateName": "",
-    "TemplateContent": { }
+    "TemplateModel": { }
 }

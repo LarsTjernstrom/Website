@@ -2,24 +2,6 @@
     font-family: Consolas;
 }
 
-header nav ul {
-    padding: 0px;
-    margin: 0px;
-    overflow: auto;
-    list-style-type: none;
-    border-bottom: 1px solid #C0C0C0;
-    margin-bottom: 10px;
-}
-
-header nav ul li {
-    float: left;
-}
-
-header nav ul li a {
-    display: block;
-    padding: 5px 15px;
-}
-
 header .video {
     float: right;
     border: 1px solid #C0C0C0;
@@ -33,6 +15,24 @@ section {
 
 footer {
     margin-top: 10px;
+}
+
+div.nav ul {
+    padding: 0px;
+    margin: 0px;
+    overflow: auto;
+    list-style-type: none;
+    border-bottom: 1px solid #C0C0C0;
+    margin-bottom: 10px;
+}
+
+div.nav ul li {
+    float: left;
+}
+
+div.nav ul li a {
+    display: block;
+    padding: 5px 15px;
 }
 
 div.side {

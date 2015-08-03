@@ -1,5 +1,12 @@
 {
     "Html": "",
-    "Key": "",
-    "Text": ""
+    "People": [
+        {
+            "Key": "",
+            "Text": "",
+            "Url": "",
+            "Selected": false
+        }
+    ]
+
 }

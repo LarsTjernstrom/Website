@@ -70,6 +70,9 @@
     <Compile Include="ViewModels\DescriptionPage.json.cs">
       <DependentUpon>DescriptionPage.json</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\NavigationPage.json.cs">
+      <DependentUpon>NavigationPage.json</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\PersonPage.json.cs">
       <DependentUpon>PersonPage.json</DependentUpon>
     </Compile>
@@ -97,6 +100,18 @@
   </ItemGroup>
   <ItemGroup>
     <TypedJSON Include="ViewModels\DescriptionPage.json">
+      <Generator>MsBuild:Compile</Generator>
+    </TypedJSON>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="wwwroot\Content\viewmodels\DescriptionPage.html" />
+    <Content Include="wwwroot\Content\viewmodels\NavigationPage.html" />
+    <Content Include="wwwroot\Content\viewmodels\TeamAdPage.html" />
+    <Content Include="wwwroot\Content\viewmodels\PersonPage.html" />
+    <Content Include="wwwroot\Content\viewmodels\TeamPage.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypedJSON Include="ViewModels\NavigationPage.json">
       <Generator>MsBuild:Compile</Generator>
     </TypedJSON>
   </ItemGroup>

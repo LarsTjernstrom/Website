@@ -3,6 +3,7 @@
 namespace Website.Models {
     [Database]
     public class WebSection {
+        public bool Default;
         public string Name;
         public WebTemplate Template { get; set; }
 
