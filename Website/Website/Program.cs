@@ -91,7 +91,7 @@ namespace Website {
                 return page;
             });
 
-            PolyjuiceNamespace.Polyjuice.Map("/website", "/");
+            //PolyjuiceNamespace.Polyjuice.Map("/website", "/");
         }
 
         static void InitializeTemplate(Request Request, WebTemplate Template, ResultPage Content, string[] Parts, bool PageFound) {
@@ -199,6 +199,11 @@ namespace Website {
                     Name = "EmptySideTemplate",
                     Html = null,
                     Content = "/Website/templates/SideTemplate.html"
+                };
+
+                WebTemplate testTemplate = new WebTemplate() {
+                    Name = "TestTemplate",
+                    Html = @"<div class=""nav""><template is=""dom-repeat"" items=""{{model.Sections.0.Rows}}""><website-section model=""{{item}}"" pathname=""model.sections.0.rows"" pathindex=""{{index}}""></website-section></template></div><div class=""side""><template is=""dom-repeat"" items=""{{model.Sections.1.Rows}}""><website-section model=""{{item}}"" pathname=""model.sections.1.rows"" pathindex=""{{index}}""></website-section></template></div><div class=""center""><template is=""dom-repeat"" items=""{{model.Sections.2.Rows}}""><website-section model=""{{item}}"" pathname=""model.sections.2.rows"" pathindex=""{{index}}""></website-section></template></div>"
                 };
 
                 WebSection section = new WebSection() {
