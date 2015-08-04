@@ -9,6 +9,10 @@ namespace Content {
         static void Main() {
             GenerateData();
 
+            Handle.GET("/content", () => {
+                return new Page();
+            });
+
             Handle.GET("/content/navigation", () => {
                 NavigationPage page = new NavigationPage();
 

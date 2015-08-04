@@ -30,7 +30,7 @@ namespace Website {
 
                     webUrl = Db.SQL<WebUrl>("SELECT wu FROM Website.Models.WebUrl wu WHERE wu.Url = ?", wildCard).First;
                 }
-                
+
                 WebTemplate template;
 
                 if (webUrl != null) {
@@ -50,66 +50,14 @@ namespace Website {
                 if (content == null || master.TemplateName != template.Name) {
                     content = new ResultPage();
 
-                    foreach (WebSection section in template.Sections) {
-                        var sectionJson = content.Sections.Add();
-
-                        sectionJson.Name = section.Name;
-
-                        foreach (WebMap map in section.Maps.OrderBy(x => x.SortNumber)) {
-                            string url = FormatUrl(map.ForeignUrl, parts.Last());
-
-                            ContainerPage json = Self.GET<ContainerPage>(url, () => {
-                                return new ContainerPage() {
-                                    Key = url
-                                };
-                            });
-
-                            sectionJson.Rows.Add(json);
-                        }
-
-                        if (section.Default && !pageFound) {
-                            ContainerPage json = Self.GET<ContainerPage>(request.Uri, () => {
-                                return new ContainerPage() {
-                                    Key = request.Uri
-                                };
-                            });
-
-                            sectionJson.Rows.Add(json);
-                        }
-                    }
+                    InitializeTemplate(request, template, content, parts, pageFound);
 
                     master.TemplateName = template.Name;
                     master.TemplateHtml = template.Html;
                     master.TemplateContent = template.Content;
                     master.TemplateModel = content;
                 } else {
-                    foreach (WebSection section in template.Sections) {
-                        var sectionJson = content.Sections.FirstOrDefault(x => x.Name == section.Name);
-                        var maps = section.Maps.OrderBy(x => x.SortNumber).ToList();
-                        int index = 0;
-
-                        foreach (WebMap map in maps) {
-                            string url = FormatUrl(map.ForeignUrl, parts.Last());
-
-                            if ((sectionJson.Rows[index] as ContainerPage).Key != url) {
-                                sectionJson.Rows[index] = Self.GET<ContainerPage>(url, () => {
-                                    return new ContainerPage() {
-                                        Key = url
-                                    };
-                                });
-                            }
-
-                            index++;
-                        }
-
-                        if (section.Default && !pageFound && (sectionJson.Rows[index] as ContainerPage).Key != request.Uri) {
-                            sectionJson.Rows[index] = Self.GET<ContainerPage>(request.Uri, () => {
-                                return new ContainerPage() {
-                                    Key = request.Uri
-                                };
-                            });
-                        }
-                    }
+                    UpdateTemplate(request, template, content, parts, pageFound);
                 }
 
                 return master;
@@ -118,6 +66,9 @@ namespace Website {
             Handle.GET("/website", () => {
                 LayoutPage master = GetLayoutPage();
 
+                master.TemplateHtml = null;
+                master.TemplateModel = null;
+                master.TemplateName = null;
                 master.TemplateContent = null;
 
                 return master;
@@ -140,76 +91,71 @@ namespace Website {
                 return page;
             });
 
-            /*foreach (WebPage page in Db.SQL<WebPage>("SELECT wp FROM Website.Models.WebPage wp")) {
-                string url = "/website" + page.Url;
+            PolyjuiceNamespace.Polyjuice.Map("/website", "/");
+        }
 
-                if (page.Url.Contains("{?}")) {
-                    Handle.GET(url, (string name) => {
-                        return HandleRequest(page, name);
+        static void InitializeTemplate(Request Request, WebTemplate Template, ResultPage Content, string[] Parts, bool PageFound) {
+            foreach (WebSection section in Template.Sections) {
+                var sectionJson = Content.Sections.Add();
+
+                sectionJson.Name = section.Name;
+
+                foreach (WebMap map in section.Maps.OrderBy(x => x.SortNumber)) {
+                    string url = FormatUrl(map.ForeignUrl, Parts.Last());
+
+                    ContainerPage json = Self.GET<ContainerPage>(url, () => {
+                        return new ContainerPage() {
+                            Key = url
+                        };
                     });
-                } else {
-                    Handle.GET(url, () => {
-                        return HandleRequest(page, null);
-                    });
+
+                    sectionJson.Rows.Add(json);
                 }
-            }*/
+
+                if (section.Default && !PageFound) {
+                    ContainerPage json = Self.GET<ContainerPage>(Request.Uri, () => {
+                        return new ContainerPage() {
+                            Key = Request.Uri
+                        };
+                    });
+
+                    sectionJson.Rows.Add(json);
+                }
+            }
         }
 
-        static LayoutPage GetLayoutPage() {
-            return Self.GET<LayoutPage>("/website/partial/layout");
-        }
+        static void UpdateTemplate(Request Request, WebTemplate Template, ResultPage Content, string[] UrlParts, bool PageFound) {
+            foreach (WebSection section in Template.Sections) {
+                var sectionJson = Content.Sections.FirstOrDefault(x => x.Name == section.Name);
+                var maps = section.Maps.OrderBy(x => x.SortNumber).ToList();
+                int index = 0;
 
-        static LayoutPage HandleRequest(WebPage Page, string Name) {
-            LayoutPage master = GetLayoutPage();
-            ResultPage content = master.TemplateModel as ResultPage;
+                foreach (WebMap map in maps) {
+                    string url = FormatUrl(map.ForeignUrl, UrlParts.Last());
 
-            if (content == null || master.TemplateName != Page.Template.Name) {
-                content = new ResultPage();
-
-                foreach (WebSection section in Page.Template.Sections) {
-                    var sectionJson = content.Sections.Add();
-
-                    sectionJson.Name = section.Name;
-
-                    foreach (WebMap map in section.Maps.OrderBy(x => x.SortNumber)) {
-                        string url = FormatUrl(map.ForeignUrl, Name);
-
-                        ContainerPage json = Self.GET<ContainerPage>(url, () => {
+                    if ((sectionJson.Rows[index] as ContainerPage).Key != url) {
+                        sectionJson.Rows[index] = Self.GET<ContainerPage>(url, () => {
                             return new ContainerPage() {
                                 Key = url
                             };
                         });
-
-                        sectionJson.Rows.Add(json);
                     }
+
+                    index++;
                 }
 
-                master.TemplateName = Page.Template.Name;
-                master.TemplateHtml = Page.Template.Html;
-                master.TemplateModel = content;
-            } else {
-                foreach (WebSection section in Page.Template.Sections) {
-                    var sectionJson = content.Sections.FirstOrDefault(x => x.Name == section.Name);
-                    var maps = section.Maps.OrderBy(x => x.SortNumber).ToList();
-                    int index = 0;
-
-                    foreach (WebMap map in maps) {
-                        string url = FormatUrl(map.ForeignUrl, Name);
-
-                        if ((sectionJson.Rows[index] as ContainerPage).Key != url) {
-                            sectionJson.Rows[index] = Self.GET<ContainerPage>(url, () => {
-                                return new ContainerPage() {
-                                    Key = url
-                                };
-                            });
-                        }
-
-                        index++;
-                    }
+                if (section.Default && !PageFound && (sectionJson.Rows[index] as ContainerPage).Key != Request.Uri) {
+                    sectionJson.Rows[index] = Self.GET<ContainerPage>(Request.Uri, () => {
+                        return new ContainerPage() {
+                            Key = Request.Uri
+                        };
+                    });
                 }
             }
+        }
 
-            return master;
+        static LayoutPage GetLayoutPage() {
+            return Self.GET<LayoutPage>("/website/partial/layout");
         }
 
         static string FormatUrl(string Url, string Name) {
@@ -279,7 +225,7 @@ namespace Website {
                     Default = false
                 };
 
-                section = new WebSection() { 
+                section = new WebSection() {
                     Template = sideTemplate,
                     Name = "Center",
                     Default = true
