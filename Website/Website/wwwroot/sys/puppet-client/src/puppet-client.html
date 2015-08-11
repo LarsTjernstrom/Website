@@ -136,8 +136,8 @@
     PuppetClientPrototype.bindTo = function(element){
         // use node id or node itself;
         element = typeof element == "string" ? document.getElementById( element ) : element;
-        //element.model = this.obj;
-        element.puppet = this;
+        element.model = this.obj;
+        //element.puppet = this;
         //element.bindingDelegate = new PolymerExpressions(); // Make the "item" bindings work
     };
 

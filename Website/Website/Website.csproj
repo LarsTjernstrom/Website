@@ -106,6 +106,7 @@
     <Content Include="wwwroot\Website\viewmodels\LayoutPage.html" />
   </ItemGroup>
   <ItemGroup>
+    <None Include=".bowerrc" />
     <None Include="App.config" />
     <TypedJSON Include="ViewModels\ResultPage.json">
       <Generator>MsBuild:Compile</Generator>

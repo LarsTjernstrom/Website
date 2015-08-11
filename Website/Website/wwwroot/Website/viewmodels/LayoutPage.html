@@ -8,12 +8,13 @@
     <script src="/sys/webcomponentsjs/webcomponents.js"></script>
     <link rel="import" href="/sys/polymer/polymer.html" />
     <link rel="import" href="/sys/puppet-client/src/puppet-client.html" />
-    <link rel="import" href="/Website/elements/puppet-dom-bind.html" />
+    <link rel="import" href="/sys/dom-bind-notifier/dom-bind-notifier.html" />
     <link rel="import" href="/Website/elements/puppet-import.html" />
     <link rel="import" href="/Website/elements/website-section.html" />
 </head>
 <body>
-    <template is="puppet-dom-bind" id="puppet-root">
+    <template is="dom-bind" id="puppet-root">
+        <dom-bind-notifier observed-object="{{model}}" ref="puppet-root" path="model" deep></dom-bind-notifier>
         <header>
             <div class="video">
                 <div>Header video</div>
@@ -47,10 +48,6 @@
         root.getSectionPath = function (name) {
             return "model.Content." + name;
         };
-
-        window.addEventListener("WebComponentsReady", function () {
-            
-        });
     </script>
 </body>
 </html>
