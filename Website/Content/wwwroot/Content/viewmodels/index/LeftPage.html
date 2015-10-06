@@ -1,0 +1,21 @@
+﻿<template>
+    <template is="dom-bind">
+        <template is="dom-if" if="{{!model.User.Username}}">
+            <div class="text-block">
+                <h2>[Soon] Release your app</h2>
+                <p>Make your app installable. Let you, your colleagues and customers enjoy one-click test drives and deployments.</p>
+            </div>
+            <div class="text-block">
+                <h2>[Soon] One-click installs</h2>
+                <p>It takes few clicks to test drive an app in a cloud environment or install it locally on your machine.</p>
+            </div>
+        </template>
+        <template is="dom-if" if="{{model.User.Username}}">
+            <div class="text-block">
+                <h2>My profile</h2>
+                <p>Change your username, e-mail or password.</p>
+            </div>
+        </template>
+        <dom-bind-notifier path="model" observed-object="{{model}}" deep></dom-bind-notifier>
+    </template>
+</template>

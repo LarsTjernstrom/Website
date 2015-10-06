@@ -1,116 +1,72 @@
 ﻿using System;
 using System.Linq;
 using Starcounter;
-using Content.ViewModels;
-using Content.Models;
+using Simplified.Ring3;
+using Simplified.Ring5;
 
 namespace Content {
     class Program {
-        static void Main() {
-            GenerateData();
-
-            Handle.GET("/content", () => {
-                return new Page();
-            });
-
-            Handle.GET("/content/navigation", () => {
-                NavigationPage page = new NavigationPage();
-
-                page.Html = "/Content/viewmodels/NavigationPage.html";
-
-                return page;
-            });
-
-            Handle.GET("/content/team", () => {
-                TeamPage page = new TeamPage();
-
-                page.People.Data = Db.SQL<Person>("SELECT p FROM Content.Models.Person p");
-                page.Html = "/Content/viewmodels/TeamPage.html";
-
-                return page;
-            });
-
-            Handle.GET("/content/team-ad/{?}", (string name) => {
-                var people = Db.SQL<Person>("SELECT p FROM Content.Models.Person p");
-                TeamAdPage page = new TeamAdPage();
-
-                page.Html = "/Content/viewmodels/TeamAdPage.html";
-
-                foreach (Person p in people) {
-                    var pj = page.People.Add();
-
-                    pj.Text = p.AdText;
-                    pj.Key = p.Key;
-                    pj.Url = string.Format("/content/team-ad/{0}", p.Key);
-                    pj.Selected = p.Key == name;
-                }
-
-                return page;
-            });
-
-            Handle.GET("/content/team/{?}", (string name) => {
-                Person person = GetPerson(name);
-                PersonPage page = new PersonPage();
-
-                page.Html = "/Content/viewmodels/PersonPage.html";
-                page.Data = person;
-
-                return page;
-            });
-
-            Handle.GET("/content/description/{?}", (string name) => {
-                Person person = GetPerson(name);
-                DescriptionPage page = new DescriptionPage();
-
-                page.Html = "/Content/viewmodels/DescriptionPage.html";
-                page.Key = person.Key;
-                page.Text = person.Description;
-
-                return page;
-            });
-        }
-
-        static Person GetPerson(string Key) {
-            return Db.SQL<Person>("SELECT p FROM Content.Models.Person p WHERE p.Key = ?", Key).First;
-        }
-
-        static void GenerateData() {
-            Person person = Db.SQL<Person>("SELECT p FROM Content.Models.Person p").First;
-
-            if (person != null) {
-                //return;
+        static MasterPage GetMaster() {
+            if (Session.Current.Data is MasterPage) {
+                return Session.Current.Data as MasterPage;
             }
 
-            Db.Transact(() => {
-                Db.SlowSQL("DELETE FROM Content.Models.Person");
+            MasterPage page = new MasterPage();
+            Session.Current.Data = page;
 
-                person = new Person() {
-                    Key = "konstantin",
-                    FirstName = "Konstantin",
-                    LastName = "Mi",
-                    Url = "/content/team/konstantin",
-                    AdText = "Left side AD for Konstantin",
-                    Description = "Is a new developer of Starcounter team."
+            return page;
+        }
+
+        static void Main() {
+            Handle.GET("/content", () => new Page());
+            Handle.GET("/content/apps", () => new Page());
+
+            RegisterContentHandler("/content/navigation", "/Content/viewmodels/NavigationPage.html");
+
+            RegisterContentHandler("/content/index/header", "/Content/viewmodels/index/HeaderPage.html");
+            RegisterContentHandler("/content/index/left", "/Content/viewmodels/index/LeftPage.html");
+            RegisterContentHandler("/content/index/right", "/Content/viewmodels/index/RightPage.html");
+            RegisterContentHandler("/content/index/footer", "/Content/viewmodels/index/FooterPage.html");
+
+            RegisterContentHandler("/content/apps/header", "/Content/viewmodels/apps/HeaderPage.html");
+
+            RegisterHooks();
+        }
+
+        static void RegisterContentHandler(string Url, string Html) {
+            Handle.GET(Url, () => {
+                MasterPage master = GetMaster();
+                ContentPage page = new ContentPage() {
+                    Html = Html,
+                    Data = null
                 };
 
-                person = new Person() {
-                    Key = "tomek",
-                    FirstName = "Tomek",
-                    LastName = "Wytrębowicz",
-                    Url = "/content/team/tomek",
-                    AdText = "Left side AD for Tomek",
-                    Description = "Is a JavaScript developer of Starcounter team."
-                };
+                master.Pages.Add(page);
 
-                person = new Person() {
-                    Key = "marcin",
-                    FirstName = "Marcin",
-                    LastName = "Warpechowski",
-                    Url = "/content/team/marcin",
-                    AdText = "Left side AD for Marcin",
-                    Description = "Is a team leader of Starcounter team."
-                };
+                return page;
             });
+        }
+
+        static void RefreshSignInState() {
+            MasterPage master = GetMaster();
+
+            foreach (ContentPage page in master.Pages) {
+                page.Data = null;
+            }
+        }
+
+        static void RegisterHooks() {
+            Hook<SystemUserSession>.CommitInsert += (s, a) => {
+                RefreshSignInState();
+            };
+
+            Hook<SystemUserSession>.CommitDelete += (s, a) => {
+                RefreshSignInState();
+            };
+
+            Hook<SystemUserSession>.CommitUpdate += (s, a) => {
+                RefreshSignInState();
+            };
         }
     }
 }

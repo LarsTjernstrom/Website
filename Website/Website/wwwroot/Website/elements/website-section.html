@@ -2,31 +2,12 @@
     <style></style>
     <template>
         <template is="dom-repeat" items="{{applications}}">
-            <puppet-import model="{{getValue(item)}}" path="{{getPath(item)}}" content="{{getUrl(item)}}"></puppet-import>
+            <template is="imported-template" content$="{{item.content}}" model="{{item.value}}"></template>
         </template>
     </template>
     <script>
         Polymer({
             is: "website-section",
-            ready: function () {
-            },
-            getUrl: function (name) {
-                return this.model[name].Html;
-            },
-            getValue: function (name) {
-                if (this.model[name].Value) {
-                    return this.model[name].Value;
-                } else {
-                    return this.model[name];
-                }
-            },
-            getPath: function (name) {
-                if (this.model[name].Value) {
-                    return this.path + "." + name + ".Value";
-                } else {
-                    return this.path + "." + name;
-                }
-            },
             properties: {
                 applications: {
                     type: Array,
@@ -37,27 +18,29 @@
                     type: Object,
                     value: null,
                     observer: "modelChanged"
-                },
-                path: {
-                    type: String,
-                    value: ""
-                },
-                pathName: {
-                    type: String,
-                    value: ""
-                },
-                pathIndex: {
-                    type: String,
-                    value: ""
                 }
+            },
+            ready: function () {
+            },
+            getHtml: function (name) {
+                return this.model[name].Html;
+            },
+            getValue: function (name) {
+                return this.model[name].Value || this.model[name];
             },
             modelChanged: function (newValue, oldValue) {
                 var apps = [];
 
                 for (var i in newValue) {
-                    if (newValue.hasOwnProperty(i) && newValue[i]) {
-                        apps.push(i);
+                    if (!newValue.hasOwnProperty(i) || !newValue[i] || typeof(newValue[i]) == "string") {
+                        continue;
                     }
+
+                    apps.push({
+                        name: i,
+                        content: newValue[i].Html,
+                        value: newValue[i].Value || newValue[i]
+                    });
                 }
 
                 this.set("applications", []);
@@ -65,12 +48,6 @@
                 setTimeout(function () {
                     this.set("applications", apps);
                 }.bind(this));
-            },
-            pathNameChanged: function (newValue, oldValue) {
-                this.path = newValue + "." + this.pathIndex;
-            },
-            pathIndexChanged: function (newValue, oldValue) {
-                this.path = this.pathName + "." + newValue;
             }
         });
     </script>

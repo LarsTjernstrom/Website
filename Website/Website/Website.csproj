@@ -98,11 +98,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="wwwroot\Website\css\style.css" />
-    <Content Include="wwwroot\Website\elements\puppet-dom-bind.html" />
-    <Content Include="wwwroot\Website\elements\puppet-import.html" />
     <Content Include="wwwroot\Website\elements\website-section.html" />
     <Content Include="wwwroot\Website\templates\DefaultTemplate.html" />
-    <Content Include="wwwroot\Website\templates\SideTemplate.html" />
     <Content Include="wwwroot\Website\viewmodels\LayoutPage.html" />
   </ItemGroup>
   <ItemGroup>

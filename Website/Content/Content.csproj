@@ -42,6 +42,9 @@
     <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Simplified.Data.Model, Version=1.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
@@ -56,62 +59,38 @@
     <Reference Include="Starcounter.Logging, Version=2.0.0.0, Culture=neutral, PublicKeyToken=d2df1e81d0ca3abf">
       <Private>False</Private>
     </Reference>
-    <Reference Include="Starcounter.Node, Version=2.0.0.0, Culture=neutral, PublicKeyToken=d2df1e81d0ca3abf">
-      <Private>False</Private>
-    </Reference>
     <Reference Include="Starcounter.XSON, Version=2.0.0.0, Culture=neutral, PublicKeyToken=d2df1e81d0ca3abf">
       <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\Person.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModels\DescriptionPage.json.cs">
-      <DependentUpon>DescriptionPage.json</DependentUpon>
+    <Compile Include="ViewModels\ContentPage.json.cs">
+      <DependentUpon>ContentPage.json</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\NavigationPage.json.cs">
-      <DependentUpon>NavigationPage.json</DependentUpon>
-    </Compile>
-    <Compile Include="ViewModels\PersonPage.json.cs">
-      <DependentUpon>PersonPage.json</DependentUpon>
-    </Compile>
-    <Compile Include="ViewModels\TeamAdPage.json.cs">
-      <DependentUpon>TeamAdPage.json</DependentUpon>
-    </Compile>
-    <Compile Include="ViewModels\TeamPage.json.cs">
-      <DependentUpon>TeamPage.json</DependentUpon>
+    <Compile Include="ViewModels\MasterPage.json.cs">
+      <DependentUpon>MasterPage.json</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <TypedJSON Include="ViewModels\TeamPage.json">
-      <Generator>MsBuild:Compile</Generator>
-    </TypedJSON>
-  </ItemGroup>
-  <ItemGroup>
-    <TypedJSON Include="ViewModels\TeamAdPage.json">
-      <Generator>MsBuild:Compile</Generator>
-    </TypedJSON>
-  </ItemGroup>
-  <ItemGroup>
-    <TypedJSON Include="ViewModels\PersonPage.json">
-      <Generator>MsBuild:Compile</Generator>
-    </TypedJSON>
-  </ItemGroup>
-  <ItemGroup>
-    <TypedJSON Include="ViewModels\DescriptionPage.json">
-      <Generator>MsBuild:Compile</Generator>
-    </TypedJSON>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="wwwroot\Content\viewmodels\DescriptionPage.html" />
+    <Content Include="wwwroot\Content\viewmodels\apps\HeaderPage.html" />
+    <Content Include="wwwroot\Content\viewmodels\index\FooterPage.html" />
+    <Content Include="wwwroot\Content\viewmodels\index\HeaderPage.html" />
+    <Content Include="wwwroot\Content\viewmodels\index\LeftPage.html" />
     <Content Include="wwwroot\Content\viewmodels\NavigationPage.html" />
-    <Content Include="wwwroot\Content\viewmodels\TeamAdPage.html" />
-    <Content Include="wwwroot\Content\viewmodels\PersonPage.html" />
-    <Content Include="wwwroot\Content\viewmodels\TeamPage.html" />
+    <Content Include="wwwroot\Content\viewmodels\index\RightPage.html" />
   </ItemGroup>
   <ItemGroup>
-    <TypedJSON Include="ViewModels\NavigationPage.json">
+    <Folder Include="Models\" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypedJSON Include="ViewModels\ContentPage.json">
+      <Generator>MsBuild:Compile</Generator>
+    </TypedJSON>
+  </ItemGroup>
+  <ItemGroup>
+    <TypedJSON Include="ViewModels\MasterPage.json">
       <Generator>MsBuild:Compile</Generator>
     </TypedJSON>
   </ItemGroup>

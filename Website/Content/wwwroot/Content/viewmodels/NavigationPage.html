@@ -1,8 +1,21 @@
-﻿<ul>
-    <li>
-        <a href="/content">Home</a>
-    </li>
-    <li>
-        <a href="/content/team">Team</a>
-    </li>
-</ul>
+﻿<template is="dom-bind">
+    <a href="http://starcounter.io/" class="logo">Starcounter.io</a>
+    <ul class="top-nav">
+        <li>
+            <a href="/content">Home</a>
+        </li>
+        <li>
+            <a href="/content/dowload">Download</a>
+        </li>
+        <li>
+            <a href="/content/docs">Docs</a>
+        </li>
+        <li>
+            <a href="/content/apps">Apps</a>
+        </li>
+        <li>
+            <a href="/content/blog">Blog</a>
+        </li>
+    </ul>
+    <dom-bind-notifier path="model" observed-object="{{model}}" deep></dom-bind-notifier>
+</template>

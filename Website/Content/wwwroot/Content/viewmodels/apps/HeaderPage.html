@@ -1,0 +1,24 @@
+﻿<template>
+    <template is="dom-bind">
+        <h1>Wanted apps</h1>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Source</th>
+                    <th>Type</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>Credit card payments</td>
+                    <td>Tunity</td>
+                    <td>Paid</td>
+                </tr>
+            </tbody>
+        </table>
+        <dom-bind-notifier path="model" observed-object="{{model}}" deep></dom-bind-notifier>
+    </template>
+</template>

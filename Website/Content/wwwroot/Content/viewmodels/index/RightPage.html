@@ -1,0 +1,21 @@
+﻿<template>
+    <template is="dom-bind">
+        <template is="dom-if" if="{{!model.User.Username}}">
+            <div class="text-block">
+                <h2>[Soon] Browse apps</h2>
+                <p>Why reinvent the wheel? Browse the best-of-breed apps developed by vendors from around the world. They integrate with your app out of the box!</p>
+            </div>
+            <div class="text-block">
+                <h2>Wanted apps</h2>
+                <p>Got an idea for an app? Put it on the wanted apps list and make your bids. Let the best talents work on it.</p>
+            </div>
+        </template>
+        <template is="dom-if" if="{{model.User.Username}}">
+            <div class="text-block">
+                <h2>Wanted apps</h2>
+                <p>Got an idea for an app? Put it on the wanted apps list and make your bids. Let the best talents work on it.</p>
+            </div>
+        </template>
+        <dom-bind-notifier path="model" observed-object="{{model}}" deep></dom-bind-notifier>
+    </template>
+</template>

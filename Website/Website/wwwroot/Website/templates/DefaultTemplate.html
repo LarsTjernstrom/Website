@@ -1,10 +1,36 @@
-﻿<div class="nav">
-    <template is="dom-repeat" items="{{model.Sections.0.Rows}}">
-        <website-section model="{{item}}" pathname="model.sections.0.rows" pathindex="{{index}}"></website-section>
+﻿<template>
+    <template is="dom-bind" id="default-template">
+        <div id="body">
+            <section class="navigation">
+                <template is="dom-repeat" items="{{model.Sections.0.Rows}}">
+                    <website-section model="{{item}}"></website-section>
+                </template>
+            </section>
+            <section class="header">
+                <template is="dom-repeat" items="{{model.Sections.1.Rows}}">
+                    <!--<website-section model="{{item}}"></website-section>-->
+                    <starcounter-include partial$="{{item}}"></starcounter-include>
+                </template>
+            </section>
+            <section class="left">
+                <template is="dom-repeat" items="{{model.Sections.2.Rows}}">
+                    <!--<website-section model="{{item}}"></website-section>-->
+                    <starcounter-include partial="{{item}}"></starcounter-include>
+                </template>
+            </section>
+            <section class="right">
+                <template is="dom-repeat" items="{{model.Sections.3.Rows}}">
+                    <!--<website-section model="{{item}}"></website-section>-->
+                    <starcounter-include partial="{{item}}"></starcounter-include>
+                </template>
+            </section>
+            <section class="footer">
+                <template is="dom-repeat" items="{{model.Sections.4.Rows}}">
+                    <!--<website-section model="{{item}}"></website-section>-->
+                    <starcounter-include partial="{{item}}"></starcounter-include>
+                </template>
+            </section>
+        </div>
+        <dom-bind-notifier path="model" observed-object="{{model}}" deep></dom-bind-notifier>
     </template>
-</div>
-<div class="single">
-    <template is="dom-repeat" items="{{model.Sections.1.Rows}}">
-        <website-section model="{{item}}" pathname="model.sections.1.rows" pathindex="{{index}}"></website-section>
-    </template>
-</div>
+</template>

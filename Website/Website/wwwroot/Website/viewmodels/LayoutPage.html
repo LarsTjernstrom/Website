@@ -5,49 +5,29 @@
     <meta charset="utf-8" />
     <title>Website</title>
     <link href="/Website/css/style.css" rel="stylesheet" />
+
     <script src="/sys/webcomponentsjs/webcomponents.js"></script>
+    <script>
+        window.Polymer = window.Polymer || {};
+        window.Polymer.dom = "shadow";
+    </script>
     <link rel="import" href="/sys/polymer/polymer.html" />
-    <link rel="import" href="/sys/puppet-client/src/puppet-client.html" />
+
+    <!-- Import Starcounter specific components -->
+    <link rel="import" href="/sys/starcounter.html" />
+    <!--<link rel="import" href="/sys/starcounter-debug-aid/src/starcounter-debug-aid.html" />-->
+    <link rel="import" href="/sys/starcounter-include/starcounter-include.html" />
+    <link rel="import" href="/sys/imported-template/imported-template.html" />
     <link rel="import" href="/sys/dom-bind-notifier/dom-bind-notifier.html" />
-    <link rel="import" href="/Website/elements/puppet-import.html" />
+    <!--<link rel="import" href="/sys/juicy-redirect/src/juicy-redirect.html" />-->
+
     <link rel="import" href="/Website/elements/website-section.html" />
 </head>
 <body>
     <template is="dom-bind" id="puppet-root">
-        <dom-bind-notifier observed-object="{{model}}" ref="puppet-root" path="model" deep></dom-bind-notifier>
-        <header>
-            <div class="video">
-                <div>Header video</div>
-                <iframe width="200" height="150" src="https://www.youtube.com/embed/Xp7HVA5CPjQ" frameborder="0" allowfullscreen></iframe>
-            </div>
-        </header>
-        <section>
-            <puppet-import model="{{model.TemplateModel}}" path="model.TemplateModel" html="{{model.TemplateHtml}}" content="{{model.TemplateContent}}"></puppet-import>
-        </section>
-        <footer>
-            Copyright &copy; 2015 Starcounter
-        </footer>
+        <template is="imported-template" content$="{{model.TemplateContent}}" model="{{model.TemplateModel}}"></template>
+        <dom-bind-notifier path="model" observed-object="{{model}}" deep></dom-bind-notifier>
     </template>
     <puppet-client usewebsocket="false" ref="puppet-root"></puppet-client>
-    <script>
-        var root = document.getElementById("puppet-root");
-        var puppet = document.querySelector("puppet-client");
-
-        root.getSections = function (sections) {
-            return sections && sections.split(/,/gi);
-        };
-
-        root.getSectionModel = function (name) {
-            return root.model.Content[name].Value;
-        };
-
-        root.getSectionHtml = function (name) {
-            return root.model.Content[name].Html;
-        };
-
-        root.getSectionPath = function (name) {
-            return "model.Content." + name;
-        };
-    </script>
 </body>
 </html>

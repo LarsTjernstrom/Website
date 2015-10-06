@@ -1,47 +1,184 @@
 ﻿body {
-    font-family: Consolas;
-}
-
-header .video {
-    float: right;
-    border: 1px solid #C0C0C0;
-    background-color: white;
-    padding: 5px;
-}
-
-section {
-    overflow: auto;
-}
-
-footer {
-    margin-top: 10px;
-}
-
-div.nav ul {
     padding: 0px;
     margin: 0px;
+    background-color: #fafafa;
+    font-family: Arial;
+    font-size: 16px;
+}
+
+#body {
+    background-color: white;
+    width: 650px;
+    padding: 10px 50px;
+    margin: auto;
+}
+
+html section {
     overflow: auto;
+    margin-bottom: 15px;
+}
+
+html section.left,
+html section.right {
+    float: left;
+    box-sizing: border-box;
+    width: 50%;
+}
+
+html section.left {
+    padding-right: 10px;
+}
+
+html section.right {
+    padding-left: 10px;
+}
+
+html section.footer {
+    clear: both;
+}
+
+html /deep/ website-section {
+    display: block;
+    overflow: auto;
+}
+
+html /deep/ h1 {
+    font-size: 32px;
+    font-weight: normal;
+}
+
+html /deep/ h2 {
+    font-weight: normal;
+}
+
+.navigation {
+    overflow: auto;
+    height: 50px;
+}
+
+.navigation /deep/ so-signin {
+    display: none;
+}
+
+.navigation /deep/ .logo {
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 16px;
+    float: left;
+    color: black;
+    margin-right: 15px;
+}
+
+.navigation /deep/ ul {
     list-style-type: none;
-    border-bottom: 1px solid #C0C0C0;
+    overflow: auto;
+    padding: 0px;
+    margin: 0px;
+}
+
+.navigation /deep/ ul li {
+    float: left;
+    padding: 0px;
+    margin: 0px;
+}
+
+.navigation /deep/ ul li a {
+    color: black;
+    text-decoration: none;
+    text-transform: uppercase;
+    display: block;
+    font-size: 16px;
+    padding: 0px 12px;
+}
+
+.navigation /deep/ ul li a:hover {
+    text-decoration: underline;
+}
+
+html /deep/ .text-block {
+    height: 140px;
+}
+
+html /deep/ so-signin {
+    background-color: blue;
+}
+
+html /deep/ input[type=text],
+html /deep/ input[type=password] {
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+    border-right-width: 1px;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+    border-bottom-left-radius: 0px;
+    border-color: #c8c8c8;
+    border-style: solid;
+    -webkit-box-shadow: rgba(0, 0, 0, 0.1) 1px 1px 1px inset;
+    padding-top: 0px;
+    padding-right: 10px;
+    padding-bottom: 0px;
+    padding-left: 10px;
+    width: 214px;
+    height: 25px;
+}
+
+html /deep/ div.form-horizontal,
+html /deep/ div.form-horizontal + div {
+    float: left;
     margin-bottom: 10px;
 }
 
-div.nav ul li {
-    float: left;
+html /deep/ div.form-horizontal {
+    width: 25%;
+    line-height: 25px;
 }
 
-div.nav ul li a {
-    display: block;
-    padding: 5px 15px;
+html /deep/ div.form-horizontal + div {
+    width: 75%;
 }
 
-div.side {
-    width: 250px;
-    float: left;
-    border-right: 1px solid #C0C0C0;
+html /deep/ div.form-horizontal + div + div:not(.form-horizontal) {
+    padding-left: 25%;
 }
 
-div.center {
-    padding-left: 50px;
-    margin-left: 250px;
+html /deep/ button,
+html /deep/ input[type=button] {
+    border-top-width: 0px;
+    border-bottom-width: 0px;
+    border-left-width: 0px;
+    border-right-width: 0px;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+    border-color: #dddddd;
+    border-style: solid;
+    background-color: #3498db;
+    color: #FFF;
+    font-size: 14px;
+    font-weight: bold;
+    font-style: normal;
+    font-family: Arial;
+    text-align: center;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+    -o-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+    -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+    -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+    background-size: auto;
+    background-repeat: repeat;
+    background-position: center center;
+    padding-top: 6px;
+    padding-right: 10px;
+    padding-bottom: 6px;
+    padding-left: 10px;
+    width: 215px;
+    height: 30px;
+    margin-bottom: 5px;
+    cursor: pointer;
+}
+
+html /deep/ .alert.alert-danger {
+    color: red;
 }
