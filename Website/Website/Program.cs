@@ -20,14 +20,6 @@ namespace Website {
         static void Main() {
             GenerateData();
 
-            Handle.AddResponseFilter((request, response) => {
-                if (response.FileExists) {
-                    response.HeadersDictionary["Access-Control-Allow-Origin"] = "*";
-                }
-
-                return response;
-            });
-
             Handle.AddFilterToMiddleware((request) => {
                 string[] parts = request.Uri.Split(new char[] { '/' });
                 WebUrl webUrl = Db.SQL<WebUrl>("SELECT wu FROM Website.Models.WebUrl wu WHERE wu.Url = ?", request.Uri).First;
@@ -65,11 +57,6 @@ namespace Website {
                 } else {
                     UpdateTemplate(request, template, content, parts, webUrl);
                 }
-
-                Handle.AddOutgoingHeader("Access-Control-Expose-Headers", "Location, X-Location");
-                Handle.AddOutgoingHeader("Access-Control-Allow-Headers", "Accept, Content-Type, X-Location, Location");
-                Handle.AddOutgoingHeader("Access-Control-Allow-Methods", "GET, POST, HEAD, OPTIONS, PUT, DELETE, PATCH");
-                Handle.AddOutgoingHeader("Access-Control-Allow-Origin", "*");
 
                 return master;
             });
