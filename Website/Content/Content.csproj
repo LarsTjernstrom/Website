@@ -87,6 +87,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="wwwroot\Content\cms\index\RegistrationPage.html" />
+    <Content Include="wwwroot\Content\cms\userprofile\FooterPage.html" />
+    <Content Include="wwwroot\Content\cms\userprofile\HeaderPage.html" />
     <Content Include="wwwroot\Content\css\standalone.css" />
     <Content Include="wwwroot\Content\cms\apps\HeaderPage.html" />
     <Content Include="wwwroot\Content\viewmodels\CmsItemPage.html" />

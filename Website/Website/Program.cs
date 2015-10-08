@@ -248,6 +248,11 @@ namespace Website {
                     Url = "/content/apps"
                 };
 
+                WebUrl profileUrl = new WebUrl() {
+                    Page = index,
+                    Url = "/content/userprofile"
+                };
+
                 new WebMap() { Section = navigation, ForeignUrl = "/signin/user", SortNumber = 1 };
                 new WebMap() { Section = navigation, ForeignUrl = "/content/navigation", SortNumber = 2, };
 
@@ -263,6 +268,10 @@ namespace Website {
                 new WebMap() { Url = homeUrl, Section = footer, ForeignUrl = "/content/index/footer", SortNumber = 1 };
 
                 new WebMap() { Url = appsUrl, Section = header, ForeignUrl = "/content/apps/header", SortNumber = 1 };
+
+                new WebMap() { Url = profileUrl, Section = header, ForeignUrl = "/content/userprofile/header", SortNumber = 1 };
+                new WebMap() { Url = profileUrl, Section = header, ForeignUrl = "/userprofile", SortNumber = 2 };
+                new WebMap() { Url = profileUrl, Section = footer, ForeignUrl = "/content/userprofile/footer", SortNumber = 3 };
             });
         }
 
