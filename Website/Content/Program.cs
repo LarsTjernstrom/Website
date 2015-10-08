@@ -6,12 +6,12 @@ using Simplified.Ring5;
 
 namespace Content {
     class Program {
-        static MasterPage GetMaster() {
-            if (Session.Current.Data is MasterPage) {
-                return Session.Current.Data as MasterPage;
+        static ContentCachePage GetCachePage() {
+            if (Session.Current.Data is ContentCachePage) {
+                return Session.Current.Data as ContentCachePage;
             }
 
-            MasterPage page = new MasterPage();
+            ContentCachePage page = new ContentCachePage();
             Session.Current.Data = page;
 
             return page;
@@ -19,9 +19,11 @@ namespace Content {
 
         static void Main() {
             MainHandlers handlers = new MainHandlers();
+            CommitHooks hooks = new CommitHooks();
 
             GenerateData();
             handlers.Register();
+            hooks.Register();
 
             foreach (var entry in Db.SQL<ContentEntry>("SELECT e FROM Content.ContentEntry e")) {
                 Handle.GET(entry.Url, () => new Page());
@@ -36,7 +38,7 @@ namespace Content {
 
         static void RegisterContentHandler(string Url, string Html) {
             Handle.GET(Url, () => {
-                MasterPage master = GetMaster();
+                ContentCachePage master = GetCachePage();
                 ContentPage page = new ContentPage() {
                     Html = Html,
                     Data = null
@@ -49,7 +51,11 @@ namespace Content {
         }
 
         static void RefreshSignInState() {
-            MasterPage master = GetMaster();
+            if (!(Session.Current.Data is ContentCachePage)) {
+                return;
+            }
+
+            ContentCachePage master = GetCachePage();
 
             foreach (ContentPage page in master.Pages) {
                 page.Data = null;

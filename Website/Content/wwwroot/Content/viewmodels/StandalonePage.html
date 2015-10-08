@@ -18,6 +18,9 @@
 </head>
 <body>
     <template id="root" is="dom-bind">
+        <div id="user">
+            <starcounter-include partial="{{model.User}}"></starcounter-include>
+        </div>
         <div id="body">
             <starcounter-include partial="{{model.CurrentPage}}"></starcounter-include>
         </div>

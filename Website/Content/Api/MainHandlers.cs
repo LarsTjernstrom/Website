@@ -21,23 +21,28 @@ namespace Content {
                 }
 
                 standalone.Session = session;
+                standalone.User = Self.GET("/sc/mapping/user", () => new Page());
 
                 return standalone;
             });
 
             Handle.GET("/content/cms", () => {
+                string url = "/content/partials/cms";
                 StandalonePage master = this.GetMaster();
 
-                master.CurrentPage = GetPartial("/content/partials/cms");
+                master.PartialUrl = url;
+                master.RefreshCurrentPage();
 
                 return master;
             });
 
             Handle.GET("/content/cms/item/{?}", (string key) => {
                 return Db.Scope<StandalonePage>(() => {
+                    string url = "/content/partials/cms/item/" + key;
                     StandalonePage master = this.GetMaster();
 
-                    master.CurrentPage = GetPartial("/content/partials/cms/item/" + key);
+                    master.PartialUrl = url;
+                    master.RefreshCurrentPage();
 
                     return master;
                 });
@@ -61,21 +66,14 @@ namespace Content {
                 return page;
             });
 
-            Handle.GET("/content/partial/deny", () => {
+            Handle.GET("/content/partials/deny", () => {
                 return new Page() {
                     Html = "/Content/viewmodels/DenyPage.html"
                 };
             });
-        }
 
-        protected Json GetPartial(string Url) {
-            SystemUser user = SystemUser.GetCurrentSystemUser();
 
-            if (user == null || !SystemUser.IsMemberOfGroup(user, "cms-admin")) {
-                return Self.GET("/content/partial/deny");
-            }
-
-            return Self.GET(Url);
+            UriMapping.Map("/content/partials/deny", "/sc/mapping/access-denied");
         }
 
         protected StandalonePage GetMaster() {

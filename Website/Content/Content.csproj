@@ -64,6 +64,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Api\CommitHooks.cs" />
     <Compile Include="Api\MainHandlers.cs" />
     <Compile Include="Models\ContentEntry.cs" />
     <Compile Include="Models\ContentItem.cs" />
@@ -78,8 +79,8 @@
     <Compile Include="ViewModels\ContentPage.json.cs">
       <DependentUpon>ContentPage.json</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\MasterPage.json.cs">
-      <DependentUpon>MasterPage.json</DependentUpon>
+    <Compile Include="ViewModels\ContentCachePage.json.cs">
+      <DependentUpon>ContentCachePage.json</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\StandalonePage.json.cs">
       <DependentUpon>StandalonePage.json</DependentUpon>
@@ -112,7 +113,7 @@
     </TypedJSON>
   </ItemGroup>
   <ItemGroup>
-    <TypedJSON Include="ViewModels\MasterPage.json">
+    <TypedJSON Include="ViewModels\ContentCachePage.json">
       <Generator>MsBuild:Compile</Generator>
     </TypedJSON>
   </ItemGroup>

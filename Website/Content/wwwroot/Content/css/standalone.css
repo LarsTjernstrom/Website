@@ -19,5 +19,15 @@ body {
     width: 90%;
     margin: auto;
     box-sizing: border-box;
-    padding: 20px 50px;
+    padding: 60px 50px 20px 50px;
+}
+
+#user {
+    background-color: #303030;
+    height: 40px;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    position: absolute;
+    text-align: right;
 }
