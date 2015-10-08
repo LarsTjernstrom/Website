@@ -4,13 +4,13 @@
             <section class="navigation">
                 <template is="dom-repeat" items="{{model.Sections.0.Rows}}">
                     <!--<website-section model="{{item}}"></website-section>-->
-                    <starcounter-include partial$="{{item}}"></starcounter-include>
+                    <starcounter-include partial="{{item}}"></starcounter-include>
                 </template>
             </section>
             <section class="header">
                 <template is="dom-repeat" items="{{model.Sections.1.Rows}}">
                     <!--<website-section model="{{item}}"></website-section>-->
-                    <starcounter-include partial$="{{item}}"></starcounter-include>
+                    <starcounter-include partial="{{item}}"></starcounter-include>
                 </template>
             </section>
             <section class="left">
