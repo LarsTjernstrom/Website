@@ -88,7 +88,7 @@ namespace Content {
                 };
 
                 new ContentEntry() {
-                    Url = "/content/profile"
+                    Url = "/content/userprofile"
                 };
 
                 new ContentItem() {
@@ -124,6 +124,16 @@ namespace Content {
                 new ContentItem() {
                     Url = "/content/apps/header",
                     HtmlPath = "/Content/cms/apps/HeaderPage.html"
+                };
+
+                new ContentItem() {
+                    Url = "/content/userprofile/header",
+                    HtmlPath = "/Content/cms/userprofile/HeaderPage.html"
+                };
+
+                new ContentItem() {
+                    Url = "/content/userprofile/footer",
+                    HtmlPath = "/Content/cms/userprofile/FooterPage.html"
                 };
             });
         }

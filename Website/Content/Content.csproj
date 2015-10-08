@@ -98,6 +98,7 @@
     <Content Include="wwwroot\Content\cms\index\LeftPage.html" />
     <Content Include="wwwroot\Content\cms\NavigationPage.html" />
     <Content Include="wwwroot\Content\cms\index\RightPage.html" />
+    <Content Include="wwwroot\Content\viewmodels\DenyPage.html" />
     <Content Include="wwwroot\Content\viewmodels\StandalonePage.html" />
   </ItemGroup>
   <ItemGroup>

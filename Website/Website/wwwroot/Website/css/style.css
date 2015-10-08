@@ -193,6 +193,13 @@ html /deep/ input[type=button] {
     cursor: pointer;
 }
 
+html /deep/ button[disabled],
+html /deep/ input[type=button][disabled] {
+    opacity: 0.7;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
 html /deep/ .alert.alert-danger {
     color: red;
 }
