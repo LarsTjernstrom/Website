@@ -1,0 +1,55 @@
+﻿<template>
+    <template is="dom-bind" id="puppet-root">
+        <fieldset>
+            <legend>Content entries</legend>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Key</th>
+                        <th>Url</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template is="dom-repeat" items="{{model.Entries}}">
+                        <tr>
+                            <td>{{index}}</td>
+                            <td>{{item.Key}}</td>
+                            <td>{{item.Url}}</td>
+                            <td></td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </fieldset>
+        <fieldset>
+            <legend>Content items</legend>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Key</th>
+                        <th>Url</th>
+                        <th>HtmlPath</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template is="dom-repeat" items="{{model.Items}}">
+                        <tr>
+                            <td>{{index}}</td>
+                            <td>{{item.Key}}</td>
+                            <td>{{item.Url}}</td>
+                            <td>{{item.HtmlPath}}</td>
+                            <td>
+                                <a href="{{item.Href}}" class="btn btn-xs btn-default">Edit</a>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </fieldset>
+        <dom-bind-notifier path="model" observed-object="{{model}}" deep></dom-bind-notifier>
+    </template>
+</template>

@@ -18,17 +18,18 @@ namespace Content {
         }
 
         static void Main() {
-            Handle.GET("/content", () => new Page());
-            Handle.GET("/content/apps", () => new Page());
+            MainHandlers handlers = new MainHandlers();
 
-            RegisterContentHandler("/content/navigation", "/Content/viewmodels/NavigationPage.html");
+            GenerateData();
+            handlers.Register();
 
-            RegisterContentHandler("/content/index/header", "/Content/viewmodels/index/HeaderPage.html");
-            RegisterContentHandler("/content/index/left", "/Content/viewmodels/index/LeftPage.html");
-            RegisterContentHandler("/content/index/right", "/Content/viewmodels/index/RightPage.html");
-            RegisterContentHandler("/content/index/footer", "/Content/viewmodels/index/FooterPage.html");
+            foreach (var entry in Db.SQL<ContentEntry>("SELECT e FROM Content.ContentEntry e")) {
+                Handle.GET(entry.Url, () => new Page());
+            }
 
-            RegisterContentHandler("/content/apps/header", "/Content/viewmodels/apps/HeaderPage.html");
+            foreach (var item in Db.SQL<ContentItem>("SELECT i FROM Content.ContentItem i")) {
+                RegisterContentHandler(item.Url, item.HtmlPath);
+            }
 
             RegisterHooks();
         }
@@ -67,6 +68,55 @@ namespace Content {
             Hook<SystemUserSession>.CommitUpdate += (s, a) => {
                 RefreshSignInState();
             };
+        }
+
+        static void GenerateData() {
+            if (Db.SQL("SELECT p FROM Content.ContentEntry p").First != null) {
+                return;
+            }
+
+            Db.Transact(() => {
+                Db.SlowSQL("DELETE FROM Content.ContentEntry");
+                Db.SlowSQL("DELETE FROM Content.ContentItem");
+
+                new ContentEntry() {
+                    Url = "/content"
+                };
+
+                new ContentEntry() {
+                    Url = "/content/apps"
+                };
+
+                new ContentItem() {
+                    Url = "/content/navigation",
+                    HtmlPath = "/Content/cms/NavigationPage.html"
+                };
+
+                new ContentItem() {
+                    Url = "/content/index/header",
+                    HtmlPath = "/Content/cms/index/HeaderPage.html"
+                };
+
+                new ContentItem() {
+                    Url = "/content/index/left",
+                    HtmlPath = "/Content/cms/index/LeftPage.html"
+                };
+
+                new ContentItem() {
+                    Url = "/content/index/right",
+                    HtmlPath = "/Content/cms/index/RightPage.html"
+                };
+
+                new ContentItem() {
+                    Url = "/content/index/footer",
+                    HtmlPath = "/Content/cms/index/FooterPage.html"
+                };
+
+                new ContentItem() {
+                    Url = "/content/apps/header",
+                    HtmlPath = "/Content/cms/apps/HeaderPage.html"
+                };
+            });
         }
     }
 }
