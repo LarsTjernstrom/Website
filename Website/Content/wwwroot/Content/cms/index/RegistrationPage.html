@@ -1,0 +1,8 @@
+﻿<template>
+    <template is="dom-bind">
+        <template is="dom-if" if="{{!model.User.Username}}">
+            <p>By clicking "Sign up for Starcounter Account", you agree to our <a href="/">terms of service</a> and <a href="/">privacy policy</a>. We will send you account related emails occasionally.</p>
+        </template>
+        <dom-bind-notifier path="model" observed-object="{{model}}" deep></dom-bind-notifier>
+    </template>
+</template>

@@ -258,6 +258,7 @@ namespace Website {
                 
                 new WebMap() { Url = homeUrl, Section = right, ForeignUrl = "/content/index/right", SortNumber = 1 };
                 new WebMap() { Url = homeUrl, Section = right, ForeignUrl = "/registration", SortNumber = 2 };
+                new WebMap() { Url = homeUrl, Section = right, ForeignUrl = "/content/index/registration", SortNumber = 3 };
 
                 new WebMap() { Url = homeUrl, Section = footer, ForeignUrl = "/content/index/footer", SortNumber = 1 };
 

@@ -87,6 +87,10 @@ namespace Content {
                     Url = "/content/apps"
                 };
 
+                new ContentEntry() {
+                    Url = "/content/profile"
+                };
+
                 new ContentItem() {
                     Url = "/content/navigation",
                     HtmlPath = "/Content/cms/NavigationPage.html"
@@ -105,6 +109,11 @@ namespace Content {
                 new ContentItem() {
                     Url = "/content/index/right",
                     HtmlPath = "/Content/cms/index/RightPage.html"
+                };
+
+                new ContentItem() {
+                    Url = "/content/index/registration",
+                    HtmlPath = "/Content/cms/index/RegistrationPage.html"
                 };
 
                 new ContentItem() {
