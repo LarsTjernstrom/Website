@@ -71,9 +71,6 @@ namespace Content {
                     Html = "/Content/viewmodels/DenyPage.html"
                 };
             });
-
-
-            UriMapping.Map("/content/partials/deny", "/sc/mapping/access-denied");
         }
 
         protected StandalonePage GetMaster() {
