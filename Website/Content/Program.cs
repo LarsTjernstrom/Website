@@ -86,11 +86,11 @@ namespace Content {
                 Db.SlowSQL("DELETE FROM Content.ContentItem");
 
                 new ContentEntry() {
-                    Url = "/content"
+                    Url = "/content/apps"
                 };
 
                 new ContentEntry() {
-                    Url = "/content/apps"
+                    Url = "/content/apps/wanted-apps"
                 };
 
                 new ContentEntry() {

@@ -240,12 +240,12 @@ namespace Website {
 
                 WebUrl homeUrl = new WebUrl() {
                     Page = index,
-                    Url = "/content"
+                    Url = "/content/apps"
                 };
 
                 WebUrl appsUrl = new WebUrl() {
                     Page = index,
-                    Url = "/content/apps"
+                    Url = "/content/apps/wanted-apps"
                 };
 
                 WebUrl profileUrl = new WebUrl() {

@@ -6,6 +6,11 @@ namespace Content {
         protected string allowedSystemUserGroup = "Admin (System Users)";
 
         public void RefreshCurrentPage() {
+            if (string.IsNullOrEmpty(this.PartialUrl)) {
+                this.CurrentPage = null;
+                return;
+            }
+
             SystemUser user = SystemUser.GetCurrentSystemUser();
 
             if (SystemUser.IsMemberOfGroup(user, allowedSystemUserGroup)) {
