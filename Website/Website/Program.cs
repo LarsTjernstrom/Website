@@ -88,6 +88,11 @@ namespace Website {
 
                 return page;
             });
+
+            Handle.GET("/website/cleardata", () => {
+                ClearData();
+                return 200;
+            });
         }
 
         static void InitializeTemplate(Request Request, WebTemplate Template, ResultPage Content, string[] Parts, WebUrl Url) {
@@ -182,19 +187,21 @@ namespace Website {
             }
         }
 
+        static void ClearData() {
+            Db.SlowSQL("DELETE FROM Website.Models.WebPage");
+            Db.SlowSQL("DELETE FROM Website.Models.WebTemplate");
+            Db.SlowSQL("DELETE FROM Website.Models.WebSection");
+            Db.SlowSQL("DELETE FROM Website.Models.WebMap");
+            Db.SlowSQL("DELETE FROM Website.Models.WebUrl");
+        }
+
         static void GenerateData() {
+            if (Db.SQL<WebPage>("SELECT wp FROM Website.Models.WebPage wp").First != null) {
+                return;
+            }
+
             Db.Transact(() => {
-                WebPage item = Db.SQL<WebPage>("SELECT wp FROM Website.Models.WebPage wp").First;
-
-                if (item != null) {
-                    //return;
-                }
-
-                Db.SlowSQL("DELETE FROM Website.Models.WebPage");
-                Db.SlowSQL("DELETE FROM Website.Models.WebTemplate");
-                Db.SlowSQL("DELETE FROM Website.Models.WebSection");
-                Db.SlowSQL("DELETE FROM Website.Models.WebMap");
-                Db.SlowSQL("DELETE FROM Website.Models.WebUrl");
+                ClearData();
 
                 WebTemplate template = new WebTemplate() {
                     Default = false,

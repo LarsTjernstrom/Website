@@ -33,6 +33,11 @@ namespace Content {
                 RegisterContentHandler(item.Url, item.HtmlPath);
             }
 
+            Handle.GET("/content/cleardata", () => {
+                ClearData();
+                return 200;
+            });
+
             RegisterHooks();
         }
 
@@ -76,14 +81,18 @@ namespace Content {
             };
         }
 
+        static void ClearData() {
+            Db.SlowSQL("DELETE FROM Content.ContentEntry");
+            Db.SlowSQL("DELETE FROM Content.ContentItem");
+        }
+
         static void GenerateData() {
             if (Db.SQL("SELECT p FROM Content.ContentEntry p").First != null) {
                 return;
             }
 
             Db.Transact(() => {
-                Db.SlowSQL("DELETE FROM Content.ContentEntry");
-                Db.SlowSQL("DELETE FROM Content.ContentItem");
+                ClearData();
 
                 new ContentEntry() {
                     Url = "/content/apps"
