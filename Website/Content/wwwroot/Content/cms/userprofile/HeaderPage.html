@@ -18,8 +18,6 @@
     <template is="dom-bind">
         <script>
             (function () {
-                return;
-
                 setTimeout(function () {
                     var h2 = document.querySelector("html /deep/ h2");
                     var p = document.createElement("p");
@@ -45,7 +43,7 @@
                         spn.classList.add("input-title");
                         txt.parentNode.appendChild(spn);
                     }
-                }, 500);
+                }, 100);
             })();
         </script>
         <dom-bind-notifier path="model" observed-object="{{model}}" deep></dom-bind-notifier>
