@@ -187,7 +187,7 @@ namespace Website {
                 WebPage item = Db.SQL<WebPage>("SELECT wp FROM Website.Models.WebPage wp").First;
 
                 if (item != null) {
-                    return;
+                    //return;
                 }
 
                 Db.SlowSQL("DELETE FROM Website.Models.WebPage");
@@ -255,15 +255,15 @@ namespace Website {
 
                 new WebMap() { Section = navigation, ForeignUrl = "/signin/user", SortNumber = 1 };
                 new WebMap() { Section = navigation, ForeignUrl = "/content/navigation", SortNumber = 2, };
-
-                new WebMap() { Url = homeUrl, Section = header, ForeignUrl = "/content/index/header", SortNumber = 1 };
+                new WebMap() { Url = homeUrl, Section = navigation, ForeignUrl = "/content/index/header", SortNumber = 3 };
+                
+                new WebMap() { Url = homeUrl, Section = header, ForeignUrl = "/signin/signinuser", SortNumber = 1 };
+                new WebMap() { Url = homeUrl, Section = header, ForeignUrl = "/registration", SortNumber = 2 };
+                new WebMap() { Url = homeUrl, Section = header, ForeignUrl = "/content/index/registration", SortNumber = 3 };
 
                 new WebMap() { Url = homeUrl, Section = left, ForeignUrl = "/content/index/left", SortNumber = 1 };
-                new WebMap() { Url = homeUrl, Section = left, ForeignUrl = "/signin/signinuser", SortNumber = 2 };
                 
                 new WebMap() { Url = homeUrl, Section = right, ForeignUrl = "/content/index/right", SortNumber = 1 };
-                new WebMap() { Url = homeUrl, Section = right, ForeignUrl = "/registration", SortNumber = 2 };
-                new WebMap() { Url = homeUrl, Section = right, ForeignUrl = "/content/index/registration", SortNumber = 3 };
 
                 new WebMap() { Url = homeUrl, Section = footer, ForeignUrl = "/content/index/footer", SortNumber = 1 };
 

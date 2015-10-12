@@ -4,34 +4,43 @@
             <section class="navigation">
                 <template is="dom-repeat" items="{{model.Sections.0.Rows}}">
                     <!--<website-section model="{{item}}"></website-section>-->
-                    <starcounter-include partial="{{item}}"></starcounter-include>
+                    <starcounter-include partial="{{item}}" class$="{{getIncludeClass(item, index)}}"></starcounter-include>
                 </template>
             </section>
             <section class="header">
                 <template is="dom-repeat" items="{{model.Sections.1.Rows}}">
-                    <!--<website-section model="{{item}}"></website-section>-->
-                    <starcounter-include partial="{{item}}"></starcounter-include>
+                    <!--<website-section model="{{item}}"></website-section>-->                    
+                    <starcounter-include partial="{{item}}" class$="{{getIncludeClass(item, index)}}"></starcounter-include>
                 </template>
             </section>
             <section class="left">
                 <template is="dom-repeat" items="{{model.Sections.2.Rows}}">
                     <!--<website-section model="{{item}}"></website-section>-->
-                    <starcounter-include partial="{{item}}"></starcounter-include>
+                    <starcounter-include partial="{{item}}" class$="{{getIncludeClass(item, index)}}"></starcounter-include>
                 </template>
             </section>
             <section class="right">
                 <template is="dom-repeat" items="{{model.Sections.3.Rows}}">
                     <!--<website-section model="{{item}}"></website-section>-->
-                    <starcounter-include partial="{{item}}"></starcounter-include>
+                    <starcounter-include partial="{{item}}" class$="{{getIncludeClass(item, index)}}"></starcounter-include>
                 </template>
             </section>
             <section class="footer">
                 <template is="dom-repeat" items="{{model.Sections.4.Rows}}">
                     <!--<website-section model="{{item}}"></website-section>-->
-                    <starcounter-include partial="{{item}}"></starcounter-include>
+                    <starcounter-include partial="{{item}}" class$="{{getIncludeClass(item, index)}}"></starcounter-include>
                 </template>
             </section>
         </div>
         <dom-bind-notifier path="model" observed-object="{{model}}" deep></dom-bind-notifier>
     </template>
+    <script type="text/javascript">
+        (function () {
+            var template = (document._currentScript || document.currentScript).previousElementSibling;
+
+            template.getIncludeClass = function (item, index) {
+                return [item.AppName, "number-" + index].join(" ");
+            };
+        })();
+    </script>
 </template>
