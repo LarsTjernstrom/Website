@@ -13,6 +13,17 @@ body {
     font-size: 16px;
 }
 
+#observe-required {
+    position: fixed;
+    width: 650px;
+    left: 50%;
+    margin-left: -350px;
+    top: 50%;
+    margin-top: -200px;
+    box-shadow: 0px 0px 10px #C0C0C0;
+    padding: 25px;
+}
+
 #body {
     background-color: white;
     width: 800px;

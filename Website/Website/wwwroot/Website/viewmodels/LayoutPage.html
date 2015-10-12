@@ -6,8 +6,8 @@
     <title>Website</title>
     <link href="/Website/css/style.css" rel="stylesheet" />
 
-    <script src="http://juicy.github.io/object.observe/dist/object-observe.js"></script>
-    <script src="http://juicy.github.io/array.observe/array-observe.js"></script>
+    <!--<script src="http://juicy.github.io/object.observe/dist/object-observe.js"></script>
+    <script src="http://juicy.github.io/array.observe/array-observe.js"></script>-->
 
     <script src="/sys/webcomponentsjs/webcomponents.js"></script>
     <script>
@@ -18,15 +18,30 @@
 
     <!-- Import Starcounter specific components -->
     <link rel="import" href="/sys/starcounter.html" />
-    <!--<link rel="import" href="/sys/starcounter-debug-aid/src/starcounter-debug-aid.html" />-->
     <link rel="import" href="/sys/starcounter-include/starcounter-include.html" />
-    <link rel="import" href="/sys/imported-template/imported-template.html" />
-    <link rel="import" href="/sys/dom-bind-notifier/dom-bind-notifier.html" />
-    <!--<link rel="import" href="/sys/juicy-redirect/src/juicy-redirect.html" />-->
+    <script>
+        (function () {
+            if (!Object.observe) {
+                return;
+            }
 
-    <link rel="import" href="/Website/elements/website-section.html" />
+            var script = (document._currentScript || document.currentScript);
+            var link = document.createElement("link");
+            link.setAttribute("rel", "import");
+            link.setAttribute("href", "/sys/dom-bind-notifier/dom-bind-notifier.html");
+            script.parentNode.appendChild(link);
+        })();
+    </script>
+    <link rel="import" href="/Website/elements/website-not-supported.html" />
 </head>
 <body>
+    <website-not-supported expression="(!!Object.observe)">
+        <div id="observe-required">
+            <h3>This page requires support for <code>Object.observe</code> in your web browser</h3>
+            <p>It is a new JavaScript feature that is currently implemented in Google Chrome and Opera.</p>
+            <p>We are working on extending support to all modern web browsers.</p>
+        </div>
+    </website-not-supported>
     <template is="dom-bind" id="puppet-root">
         <template is="imported-template" content$="{{model.TemplateContent}}" model="{{model.TemplateModel}}"></template>
         <dom-bind-notifier path="model" observed-object="{{model}}" deep></dom-bind-notifier>

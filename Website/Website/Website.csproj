@@ -95,6 +95,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="wwwroot\Website\css\style.css" />
+    <Content Include="wwwroot\Website\elements\website-not-supported.html" />
     <Content Include="wwwroot\Website\elements\website-section.html" />
     <Content Include="wwwroot\Website\templates\DefaultTemplate.html" />
     <Content Include="wwwroot\Website\viewmodels\LayoutPage.html" />
