@@ -188,11 +188,13 @@ namespace Website {
         }
 
         static void ClearData() {
-            Db.SlowSQL("DELETE FROM Website.Models.WebPage");
-            Db.SlowSQL("DELETE FROM Website.Models.WebTemplate");
-            Db.SlowSQL("DELETE FROM Website.Models.WebSection");
-            Db.SlowSQL("DELETE FROM Website.Models.WebMap");
-            Db.SlowSQL("DELETE FROM Website.Models.WebUrl");
+            Db.Transact(() => {
+                Db.SlowSQL("DELETE FROM Website.Models.WebPage");
+                Db.SlowSQL("DELETE FROM Website.Models.WebTemplate");
+                Db.SlowSQL("DELETE FROM Website.Models.WebSection");
+                Db.SlowSQL("DELETE FROM Website.Models.WebMap");
+                Db.SlowSQL("DELETE FROM Website.Models.WebUrl");
+            });
         }
 
         static void GenerateData() {

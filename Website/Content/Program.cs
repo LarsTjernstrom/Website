@@ -82,8 +82,10 @@ namespace Content {
         }
 
         static void ClearData() {
-            Db.SlowSQL("DELETE FROM Content.ContentEntry");
-            Db.SlowSQL("DELETE FROM Content.ContentItem");
+            Db.Transact(() => {
+                Db.SlowSQL("DELETE FROM Content.ContentEntry");
+                Db.SlowSQL("DELETE FROM Content.ContentItem");
+            });
         }
 
         static void GenerateData() {
