@@ -32,16 +32,9 @@
             script.parentNode.appendChild(link);
         })();
     </script>
-    <link rel="import" href="/Website/elements/website-not-supported.html" />
 </head>
 <body>
-    <website-not-supported expression="(!!Object.observe)">
-        <div id="observe-required">
-            <h3>This page requires support for <code>Object.observe</code> in your web browser</h3>
-            <p>It is a new JavaScript feature that is currently implemented in Google Chrome and Opera.</p>
-            <p>We are working on extending support to all modern web browsers.</p>
-        </div>
-    </website-not-supported>
+    <script src="/Website/elements/object-observe-check.js"></script>
     <template is="dom-bind" id="puppet-root">
         <template is="imported-template" content$="{{model.TemplateContent}}" model="{{model.TemplateModel}}"></template>
         <dom-bind-notifier path="model" observed-object="{{model}}" deep></dom-bind-notifier>
