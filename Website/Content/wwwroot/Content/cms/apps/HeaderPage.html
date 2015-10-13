@@ -1,24 +1,59 @@
 ﻿<template>
     <template is="dom-bind">
-        <h1>Wanted apps</h1>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Name</th>
-                    <th>Source</th>
-                    <th>Type</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>Credit card payments</td>
-                    <td>Tunity</td>
-                    <td>Paid</td>
-                </tr>
-            </tbody>
-        </table>
+        <style>
+            .table {
+                background-color: #ebebeb;
+                padding: 0px 50px;
+                height: 100%;
+            }
+
+            tr:nth-child(even) {
+                background-color: rgba(0, 0, 0, 0.05);
+            }
+        </style>
+
+        <section>
+            <h1>Wanted apps</h1>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                        <th>Idea owner</th>
+                        <th>Assignee</th>
+                        <th>Expected date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Paid</td>
+                        <td>Credit card payments</td>
+                        <td>Tunity</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>Paid</td>
+                        <td>Credit card payments</td>
+                        <td>Tunity</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>Paid</td>
+                        <td>Credit card payments</td>
+                        <td>Tunity</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
         <dom-bind-notifier path="model" observed-object="{{model}}" deep></dom-bind-notifier>
     </template>
 </template>
