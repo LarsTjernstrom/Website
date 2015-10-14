@@ -57,39 +57,39 @@ html section.footer {
     clear: both;
 }
 
-html /deep/ website-section {
+html website-section {
     display: block;
     overflow: auto;
 }
 
-html /deep/ h1 {
+html h1 {
     font-size: 32px;
     font-weight: normal;
 }
 
-html /deep/ h2 {
+html h2 {
     font-weight: normal;
 }
 
-html /deep/ h3 {
+html h3 {
     font-weight: bold;
     font-size: 16px;
 }
 
-.navigation /deep/ so-signin {
+.navigation so-signin {
     display: none;
 }
 
-html /deep/ .text-block {
+html .text-block {
     height: 140px;
 }
 
-html /deep/ so-signin {
+html so-signin {
     background-color: blue;
 }
 
-html /deep/ input[type=text],
-html /deep/ input[type=password] {
+html input[type=text],
+html input[type=password] {
     border-top-width: 1px;
     border-bottom-width: 1px;
     border-left-width: 1px;
@@ -109,27 +109,27 @@ html /deep/ input[type=password] {
     height: 25px;
 }
 
-html /deep/ div.form-horizontal,
-html /deep/ div.form-horizontal + div {
+html div.form-horizontal,
+html div.form-horizontal + div {
     float: left;
     margin-bottom: 10px;
 }
 
-html /deep/ div.form-horizontal {
+html div.form-horizontal {
     width: 25%;
     line-height: 25px;
 }
 
-html /deep/ div.form-horizontal + div {
+html div.form-horizontal + div {
     width: 75%;
 }
 
-html /deep/ div.form-horizontal + div + div:not(.form-horizontal) {
+html div.form-horizontal + div + div:not(.form-horizontal) {
     padding-left: 25%;
 }
 
-html /deep/ button,
-html /deep/ input[type=button] {
+html button,
+html input[type=button] {
     border-top-width: 0px;
     border-bottom-width: 0px;
     border-left-width: 0px;
@@ -164,14 +164,14 @@ html /deep/ input[type=button] {
     cursor: pointer;
 }
 
-html /deep/ button[disabled],
-html /deep/ input[type=button][disabled] {
+html button[disabled],
+html input[type=button][disabled] {
     opacity: 0.7;
     cursor: not-allowed;
     box-shadow: none;
 }
 
-html /deep/ .alert.alert-danger {
+html .alert.alert-danger {
     color: red;
 }
 

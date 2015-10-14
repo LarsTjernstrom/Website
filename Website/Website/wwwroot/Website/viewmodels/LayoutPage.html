@@ -6,35 +6,18 @@
     <title>Website</title>
     <link href="/Website/css/style.css" rel="stylesheet" />
 
-    <!--<script src="http://juicy.github.io/object.observe/dist/object-observe.js"></script>
-    <script src="http://juicy.github.io/array.observe/array-observe.js"></script>-->
+    <script src="http://juicy.github.io/object.observe/dist/object-observe.js"></script>
+    <script src="http://juicy.github.io/array.observe/array-observe.js"></script>
 
     <script src="/sys/webcomponentsjs/webcomponents.js"></script>
-    <script>
-        window.Polymer = window.Polymer || {};
-        window.Polymer.dom = "shadow";
-    </script>
     <link rel="import" href="/sys/polymer/polymer.html" />
 
     <!-- Import Starcounter specific components -->
     <link rel="import" href="/sys/starcounter.html" />
     <link rel="import" href="/sys/starcounter-include/starcounter-include.html" />
-    <script>
-        (function () {
-            if (!Object.observe) {
-                return;
-            }
-
-            var script = (document._currentScript || document.currentScript);
-            var link = document.createElement("link");
-            link.setAttribute("rel", "import");
-            link.setAttribute("href", "/sys/dom-bind-notifier/dom-bind-notifier.html");
-            script.parentNode.appendChild(link);
-        })();
-    </script>
+    <link rel="import" href="/sys/dom-bind-notifier/dom-bind-notifier.html" />
 </head>
 <body>
-    <script src="/Website/elements/object-observe-check.js"></script>
     <template is="dom-bind" id="puppet-root">
         <template is="imported-template" content$="{{model.TemplateContent}}" model="{{model.TemplateModel}}"></template>
         <dom-bind-notifier path="model" observed-object="{{model}}" deep></dom-bind-notifier>

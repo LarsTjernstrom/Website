@@ -34,9 +34,9 @@
         </div>
         <dom-bind-notifier path="model" observed-object="{{model}}" deep></dom-bind-notifier>
     </template>
-    <script type="text/javascript">
+    <script id="website-default-template-script">
         (function () {
-            var template = (document._currentScript || document.currentScript).previousElementSibling;
+            var template = (document._currentScript || document.currentScript || document.querySelector("#website-default-template-script")).previousElementSibling;
 
             template.getIncludeClass = function (item, index) {
                 return [item.AppName, "number-" + index].join(" ");

@@ -31,3 +31,7 @@ body {
     position: absolute;
     text-align: right;
 }
+
+#user div#signin {
+    position: relative;
+}
