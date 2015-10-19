@@ -18,7 +18,7 @@
                 background-color: #F0F0F0;
             }
         </style>
-        <template is="dom-if" if="">
+        <template is="dom-if" if="{{!model.User.Username}}">
             <section>
                 <h1>Access denied!</h1>
                 <p>You don't have permissions to access this page, please go <a href="/apps">back</a> and sign in or register.</p>
