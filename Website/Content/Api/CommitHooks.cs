@@ -19,6 +19,11 @@ namespace Content {
         }
 
         protected void RefreshSignInState() {
+            this.RefreshStandaloneSignInState();
+            this.RefreshContentCacheSignInState();
+        }
+
+        protected void RefreshStandaloneSignInState() {
             StandalonePage page = GetStandalonePage();
 
             if (page == null) {
@@ -26,6 +31,19 @@ namespace Content {
             }
 
             page.RefreshCurrentPage();
+        }
+
+        protected void RefreshContentCacheSignInState() {
+            ContentCachePage master = Session.Current.Data as ContentCachePage;
+
+            if (master == null) {
+                return;
+            }
+
+            foreach (ContentPage page in master.Pages) {
+                //Trigger OnData method
+                page.Data = null;
+            }
         }
 
         protected StandalonePage GetStandalonePage() {

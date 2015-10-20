@@ -6,6 +6,7 @@ namespace Content {
         public string HtmlPath;
         public string JsonData;
         public string Url;
+        public bool Protected;
 
         public string Key {
             get {

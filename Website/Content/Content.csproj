@@ -65,7 +65,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Api\CommitHooks.cs" />
+    <Compile Include="Api\ContentHandlers.cs" />
     <Compile Include="Api\MainHandlers.cs" />
+    <Compile Include="Helpers\DataHelper.cs" />
     <Compile Include="Models\ContentEntry.cs" />
     <Compile Include="Models\ContentItem.cs" />
     <Compile Include="Program.cs" />

@@ -43,6 +43,11 @@ namespace Website {
                 }
 
                 LayoutPage master = GetLayoutPage();
+
+                if (master == null) {
+                    return null;
+                }
+
                 ResultPage content = master.TemplateModel as ResultPage;
 
                 if (content == null || master.TemplateName != template.Name) {

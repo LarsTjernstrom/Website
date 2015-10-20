@@ -47,6 +47,14 @@ namespace Content {
                     return master;
                 });
             });
+
+            Handle.GET("/content/cleardata", () => {
+                DataHelper data = new DataHelper();
+
+                data.ClearData();
+
+                return 200;
+            });
         }
 
         protected void RegisterPartials() {
