@@ -55,6 +55,15 @@ namespace Content {
 
                 return 200;
             });
+
+            Handle.GET("/content/resetdata", () => {
+                DataHelper data = new DataHelper();
+
+                data.ClearData();
+                data.GenerateData();
+
+                return 200;
+            });
         }
 
         protected void RegisterPartials() {

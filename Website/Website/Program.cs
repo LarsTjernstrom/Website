@@ -98,6 +98,12 @@ namespace Website {
                 ClearData();
                 return 200;
             });
+
+            Handle.GET("/website/resetdata", () => {
+                ClearData();
+                GenerateData();
+                return 200;
+            });
         }
 
         static void InitializeTemplate(Request Request, WebTemplate Template, ResultPage Content, string[] Parts, WebUrl Url) {
