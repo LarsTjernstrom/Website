@@ -7,23 +7,24 @@ using Simplified.Ring3;
 namespace Content {
     public class ContentHandlers {
         public void Register() {
-            Handle.GET("/content/{?}", (Request req, string query) => {
-                ContentEntry entry = Db.SQL<ContentEntry>("SELECT e FROM Content.ContentEntry e WHERE e.Url = ?", req.Uri).First;
+            Handle.GET("/content/dynamic/{?}", (Request req, string query) => {
+                string url = req.Uri.ToLower().Replace(DataHelper.UrlPrefix, string.Empty);
+                ContentEntry entry = Db.SQL<ContentEntry>("SELECT e FROM Content.ContentEntry e WHERE e.Url = ?", url).First;
 
                 if (entry != null) {
                     return HandleEntry();
                 }
 
-                ContentItem item = Db.SQL<ContentItem>("SELECT i FROM Content.ContentItem i WHERE i.Url = ?", req.Uri).First;
+                ContentItem item = Db.SQL<ContentItem>("SELECT i FROM Content.ContentItem i WHERE i.Url = ?", url).First;
 
                 if (item != null) {
                     return HandleContentItem(item);
                 }
 
-                item = Db.SQL<ContentItem>("SELECT i FROM Content.ContentItem i WHERE i.HtmlPath = ?", req.Uri).First;
+                item = Db.SQL<ContentItem>("SELECT i FROM Content.ContentItem i WHERE i.HtmlPath = ?", url).First;
 
                 if (item != null) {
-                    return HandleContentItemHtml(req);
+                    return HandleContentItemHtml(req, item);
                 }
 
                 return 404;
@@ -49,7 +50,7 @@ namespace Content {
         protected ContentPage HandleContentItem(ContentItem Item) {
             ContentCachePage master = GetCachePage();
             ContentPage page = new ContentPage() {
-                Html = Item.HtmlPath,
+                Html = DataHelper.UrlPrefix + Item.HtmlPath,
                 Data = null
             };
 
@@ -58,11 +59,10 @@ namespace Content {
             return page;
         }
 
-        protected Response HandleContentItemHtml(Request req) {
+        protected Response HandleContentItemHtml(Request req, ContentItem item) {
             Cookie cookie = GetSignInCookie();
             string token = cookie != null ? cookie.Value : string.Empty;
             Response resp = null;
-            ContentItem item = Db.SQL<ContentItem>("SELECT ci FROM Content.ContentItem ci WHERE ci.HtmlPath = ?", req.Uri).First;
 
             if (item == null) {
                 resp = new Response() {
@@ -72,7 +72,7 @@ namespace Content {
             } else if (item.Protected && Simplified.Ring3.SystemUser.GetSystemUserByToken(token) == null) {
                 Handle.AddOutgoingHeader("ContentApp", DateTime.Now.ToString());
 
-                resp = Handle.ResolveStaticResource("/Content/viewmodels/DenyPage.html", req);
+                resp = new Response();
             } else {
                 resp = Handle.ResolveStaticResource(req.Uri, req);
             }

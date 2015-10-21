@@ -89,18 +89,19 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="wwwroot\Content\cms\index\RegistrationPage.html" />
-    <Content Include="wwwroot\Content\cms\userprofile\FooterPage.html" />
-    <Content Include="wwwroot\Content\cms\userprofile\HeaderPage.html" />
+    <Content Include="wwwroot\Content\dynamic\apps\FooterPage.html" />
+    <Content Include="wwwroot\Content\dynamic\index\RegistrationPage.html" />
+    <Content Include="wwwroot\Content\dynamic\userprofile\FooterPage.html" />
+    <Content Include="wwwroot\Content\dynamic\userprofile\HeaderPage.html" />
     <Content Include="wwwroot\Content\css\standalone.css" />
-    <Content Include="wwwroot\Content\cms\apps\HeaderPage.html" />
+    <Content Include="wwwroot\Content\dynamic\apps\HeaderPage.html" />
     <Content Include="wwwroot\Content\viewmodels\CmsItemPage.html" />
     <Content Include="wwwroot\Content\viewmodels\CmsPage.html" />
-    <Content Include="wwwroot\Content\cms\index\FooterPage.html" />
-    <Content Include="wwwroot\Content\cms\index\HeaderPage.html" />
-    <Content Include="wwwroot\Content\cms\index\LeftPage.html" />
-    <Content Include="wwwroot\Content\cms\NavigationPage.html" />
-    <Content Include="wwwroot\Content\cms\index\RightPage.html" />
+    <Content Include="wwwroot\Content\dynamic\index\FooterPage.html" />
+    <Content Include="wwwroot\Content\dynamic\index\HeaderPage.html" />
+    <Content Include="wwwroot\Content\dynamic\index\LeftPage.html" />
+    <Content Include="wwwroot\Content\dynamic\NavigationPage.html" />
+    <Content Include="wwwroot\Content\dynamic\index\RightPage.html" />
     <Content Include="wwwroot\Content\viewmodels\DenyPage.html" />
     <Content Include="wwwroot\Content\viewmodels\StandalonePage.html" />
   </ItemGroup>

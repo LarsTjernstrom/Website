@@ -260,38 +260,39 @@ namespace Website {
 
                 WebUrl homeUrl = new WebUrl() {
                     Page = index,
-                    Url = "/content/apps"
+                    Url = "/content/dynamic/apps"
                 };
 
                 WebUrl appsUrl = new WebUrl() {
                     Page = index,
-                    Url = "/content/apps/wanted-apps"
+                    Url = "/content/dynamic/apps/wanted-apps"
                 };
 
                 WebUrl profileUrl = new WebUrl() {
                     Page = index,
-                    Url = "/content/userprofile"
+                    Url = "/content/dynamic/userprofile"
                 };
 
                 new WebMap() { Section = navigation, ForeignUrl = "/signin/user", SortNumber = 1 };
-                new WebMap() { Section = navigation, ForeignUrl = "/content/navigation", SortNumber = 2, };
-                new WebMap() { Url = homeUrl, Section = navigation, ForeignUrl = "/content/index/header", SortNumber = 3 };
+                new WebMap() { Section = navigation, ForeignUrl = "/content/dynamic/navigation", SortNumber = 2, };
+                new WebMap() { Url = homeUrl, Section = navigation, ForeignUrl = "/content/dynamic/index/header", SortNumber = 3 };
                 
                 new WebMap() { Url = homeUrl, Section = header, ForeignUrl = "/signin/signinuser", SortNumber = 1 };
                 new WebMap() { Url = homeUrl, Section = header, ForeignUrl = "/registration", SortNumber = 2 };
-                new WebMap() { Url = homeUrl, Section = header, ForeignUrl = "/content/index/registration", SortNumber = 3 };
+                new WebMap() { Url = homeUrl, Section = header, ForeignUrl = "/content/dynamic/index/registration", SortNumber = 3 };
 
-                new WebMap() { Url = homeUrl, Section = left, ForeignUrl = "/content/index/left", SortNumber = 1 };
-                
-                new WebMap() { Url = homeUrl, Section = right, ForeignUrl = "/content/index/right", SortNumber = 1 };
+                new WebMap() { Url = homeUrl, Section = left, ForeignUrl = "/content/dynamic/index/left", SortNumber = 1 };
 
-                new WebMap() { Url = homeUrl, Section = footer, ForeignUrl = "/content/index/footer", SortNumber = 1 };
+                new WebMap() { Url = homeUrl, Section = right, ForeignUrl = "/content/dynamic/index/right", SortNumber = 1 };
 
-                new WebMap() { Url = appsUrl, Section = header, ForeignUrl = "/content/apps/header", SortNumber = 1 };
+                new WebMap() { Url = homeUrl, Section = footer, ForeignUrl = "/content/dynamic/index/footer", SortNumber = 1 };
 
-                new WebMap() { Url = profileUrl, Section = header, ForeignUrl = "/content/userprofile/header", SortNumber = 1 };
+                new WebMap() { Url = appsUrl, Section = header, ForeignUrl = "/content/dynamic/apps/header", SortNumber = 1 };
+                new WebMap() { Url = appsUrl, Section = header, ForeignUrl = "/content/dynamic/apps/footer", SortNumber = 2 };
+
+                new WebMap() { Url = profileUrl, Section = header, ForeignUrl = "/content/dynamic/userprofile/header", SortNumber = 1 };
                 new WebMap() { Url = profileUrl, Section = header, ForeignUrl = "/userprofile", SortNumber = 2 };
-                new WebMap() { Url = profileUrl, Section = footer, ForeignUrl = "/content/userprofile/footer", SortNumber = 3 };
+                new WebMap() { Url = profileUrl, Section = footer, ForeignUrl = "/content/dynamic/userprofile/footer", SortNumber = 3 };
             });
         }
     }

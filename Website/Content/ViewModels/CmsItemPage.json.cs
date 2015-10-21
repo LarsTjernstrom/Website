@@ -38,7 +38,7 @@ namespace Content {
         }
 
         protected string GetFilePath() {
-            return Starcounter.Application.Current.WorkingDirectory + this.HtmlPath;
+            return Starcounter.Application.Current.WorkingDirectory + DataHelper.UrlPrefix + this.HtmlPath;
         }
     }
 }
