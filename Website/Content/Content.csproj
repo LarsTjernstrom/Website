@@ -103,6 +103,7 @@
     <Content Include="wwwroot\Content\dynamic\NavigationPage.html" />
     <Content Include="wwwroot\Content\dynamic\index\RightPage.html" />
     <Content Include="wwwroot\Content\viewmodels\DenyPage.html" />
+    <Content Include="wwwroot\Content\viewmodels\EmptyPage.html" />
     <Content Include="wwwroot\Content\viewmodels\StandalonePage.html" />
   </ItemGroup>
   <ItemGroup>

@@ -49,8 +49,15 @@ namespace Content {
 
         protected ContentPage HandleContentItem(ContentItem Item) {
             ContentCachePage master = GetCachePage();
+            string html = DataHelper.UrlPrefix + Item.HtmlPath;
+            SystemUser user = GetCurrentSystemUserFromCookie();
+
+            if (Item.Protected && user == null) {
+                html = "/Content/viewmodels/EmptyPage.html";
+            }
+
             ContentPage page = new ContentPage() {
-                Html = DataHelper.UrlPrefix + Item.HtmlPath,
+                Html = html,
                 Data = null
             };
 
@@ -60,8 +67,7 @@ namespace Content {
         }
 
         protected Response HandleContentItemHtml(Request req, ContentItem item) {
-            Cookie cookie = GetSignInCookie();
-            string token = cookie != null ? cookie.Value : string.Empty;
+            
             Response resp = null;
 
             if (item == null) {
@@ -69,7 +75,7 @@ namespace Content {
                     Body = "Not found",
                     StatusCode = 404
                 };
-            } else if (item.Protected && Simplified.Ring3.SystemUser.GetSystemUserByToken(token) == null) {
+            } else if (item.Protected && GetCurrentSystemUserFromCookie() == null) {
                 Handle.AddOutgoingHeader("ContentApp", DateTime.Now.ToString());
 
                 resp = new Response();
@@ -85,6 +91,13 @@ namespace Content {
             Cookie cookie = cookies.FirstOrDefault(x => x.Name == "soauthtoken");
 
             return cookie;
+        }
+
+        protected SystemUser GetCurrentSystemUserFromCookie() {
+            Cookie cookie = GetSignInCookie();
+            string token = cookie != null ? cookie.Value : string.Empty;
+
+            return SystemUser.GetSystemUserByToken(token);
         }
     }
 }
