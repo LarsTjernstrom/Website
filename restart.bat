@@ -1,7 +1,5 @@
 @echo off
 staradmin kill all
 
-REM Start Website
+REM Start Content
 call "%~dp0..\Website\run.bat"
-
-call "%~dp0run.bat"
