@@ -33,7 +33,7 @@ namespace Website {
                 WebTemplate template;
 
                 if (webUrl != null) {
-                    template = webUrl.Page.Template;
+                    template = webUrl.Template;
                 } else {
                     template = Db.SQL<WebTemplate>("SELECT wt FROM Website.Models.WebTemplate wt WHERE wt.Default = ?", true).First;
                 }
@@ -200,7 +200,6 @@ namespace Website {
 
         static void ClearData() {
             Db.Transact(() => {
-                Db.SlowSQL("DELETE FROM Website.Models.WebPage");
                 Db.SlowSQL("DELETE FROM Website.Models.WebTemplate");
                 Db.SlowSQL("DELETE FROM Website.Models.WebSection");
                 Db.SlowSQL("DELETE FROM Website.Models.WebMap");
@@ -209,7 +208,7 @@ namespace Website {
         }
 
         static void GenerateData() {
-            if (Db.SQL<WebPage>("SELECT wp FROM Website.Models.WebPage wp").First != null) {
+            if (Db.SQL<WebTemplate>("SELECT wt FROM Website.Models.WebTemplate wt").First != null) {
                 return;
             }
 
@@ -253,23 +252,18 @@ namespace Website {
                     Default = false
                 };
 
-                WebPage index = new WebPage() {
-                    Template = template,
-                    Name = "Index page"
-                };
-
                 WebUrl homeUrl = new WebUrl() {
-                    Page = index,
+                    Template = template,
                     Url = "/content/dynamic/apps"
                 };
 
                 WebUrl appsUrl = new WebUrl() {
-                    Page = index,
+                    Template = template,
                     Url = "/content/dynamic/apps/wanted-apps"
                 };
 
                 WebUrl profileUrl = new WebUrl() {
-                    Page = index,
+                    Template = template,
                     Url = "/content/dynamic/userprofile"
                 };
 

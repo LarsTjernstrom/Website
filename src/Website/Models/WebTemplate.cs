@@ -22,9 +22,9 @@ namespace Website.Models {
             }
         }
 
-        public QueryResultRows<WebPage> Pages {
+        public QueryResultRows<WebUrl> Pages {
             get {
-                return Db.SQL<WebPage>("SELECT wp FROM Website.Models.WebPage wp WHERE wp.Template = ?", this);
+                return Db.SQL<WebUrl>("SELECT wu FROM Website.Models.WebUrl wu WHERE wu.Template = ?", this);
             }
         }
     }
