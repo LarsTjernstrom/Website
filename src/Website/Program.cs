@@ -4,8 +4,8 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Starcounter;
+using Simplified.Ring6;
 using Website.ViewModels;
-using Website.Models;
 
 namespace Website {
     class Program {
@@ -22,12 +22,12 @@ namespace Website {
 
             Handle.AddFilterToMiddleware((request) => {
                 string[] parts = request.Uri.Split(new char[] { '/' });
-                WebUrl webUrl = Db.SQL<WebUrl>("SELECT wu FROM Website.Models.WebUrl wu WHERE wu.Url = ?", request.Uri).First;
+                WebUrl webUrl = Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE wu.Url = ?", request.Uri).First;
 
                 if (webUrl == null) {
                     string wildCard = GetWildCardUrl(request.Uri);
 
-                    webUrl = Db.SQL<WebUrl>("SELECT wu FROM Website.Models.WebUrl wu WHERE wu.Url = ?", wildCard).First;
+                    webUrl = Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE wu.Url = ?", wildCard).First;
                 }
 
                 WebTemplate template;
@@ -35,7 +35,7 @@ namespace Website {
                 if (webUrl != null) {
                     template = webUrl.Template;
                 } else {
-                    template = Db.SQL<WebTemplate>("SELECT wt FROM Website.Models.WebTemplate wt WHERE wt.Default = ?", true).First;
+                    template = Db.SQL<WebTemplate>("SELECT wt FROM Simplified.Ring6.WebTemplate wt WHERE wt.Default = ?", true).First;
                 }
 
                 if (template == null) {
@@ -57,7 +57,6 @@ namespace Website {
 
                     master.TemplateName = template.Name;
                     master.TemplateHtml = template.Html;
-                    master.TemplateContent = template.Content;
                     master.TemplateModel = content;
                 } else {
                     UpdateTemplate(request, template, content, parts, webUrl);
@@ -72,7 +71,6 @@ namespace Website {
                 master.TemplateHtml = null;
                 master.TemplateModel = null;
                 master.TemplateName = null;
-                master.TemplateContent = null;
 
                 return master;
             });
@@ -200,15 +198,15 @@ namespace Website {
 
         static void ClearData() {
             Db.Transact(() => {
-                Db.SlowSQL("DELETE FROM Website.Models.WebTemplate");
-                Db.SlowSQL("DELETE FROM Website.Models.WebSection");
-                Db.SlowSQL("DELETE FROM Website.Models.WebMap");
-                Db.SlowSQL("DELETE FROM Website.Models.WebUrl");
+                Db.SlowSQL("DELETE FROM Simplified.Ring6.WebTemplate");
+                Db.SlowSQL("DELETE FROM Simplified.Ring6.WebSection");
+                Db.SlowSQL("DELETE FROM Simplified.Ring6.WebMap");
+                Db.SlowSQL("DELETE FROM Simplified.Ring6.WebUrl");
             });
         }
 
         static void GenerateData() {
-            if (Db.SQL<WebTemplate>("SELECT wt FROM Website.Models.WebTemplate wt").First != null) {
+            if (Db.SQL<WebTemplate>("SELECT wt FROM Simplified.Ring6.WebTemplate wt").First != null) {
                 return;
             }
 
@@ -218,8 +216,7 @@ namespace Website {
                 WebTemplate template = new WebTemplate() {
                     Default = false,
                     Name = "DefaultTemplate",
-                    Html = null,
-                    Content = "/Website/templates/DefaultTemplate.html"
+                    Html = "/Website/templates/DefaultTemplate.html"
                 };
 
                 WebSection navigation = new WebSection() {

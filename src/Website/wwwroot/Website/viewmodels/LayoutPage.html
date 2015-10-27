@@ -19,7 +19,7 @@
 </head>
 <body>
     <template is="dom-bind" id="puppet-root">
-        <template is="imported-template" content$="{{model.TemplateContent}}" model="{{model.TemplateModel}}"></template>
+        <template is="imported-template" content$="{{model.TemplateHtml}}" model="{{model.TemplateModel}}"></template>
         <dom-bind-notifier path="model" observed-object="{{model}}" deep></dom-bind-notifier>
     </template>
     <puppet-client usewebsocket="false" ref="puppet-root"></puppet-client>
