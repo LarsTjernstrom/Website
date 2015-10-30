@@ -67,6 +67,46 @@
                 </tbody>
             </table>
         </fieldset>
+        <fieldset>
+            <legend>Sections</legend>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="td-key">Key</th>
+                        <th>Template</th>
+                        <th>Name</th>
+                        <th>Default</th>
+                        <th class="td-actions"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template is="dom-repeat" items="{{model.Sections}}">
+                        <tr>
+                            <td class="td-key">
+                                <input type="text" value="{{item.Key}}" readonly="readonly" class="form-control" />
+                            </td>
+                            <td>
+                                <select class="form-control" value="{{item.TemplateKey$::change}}">
+                                    <template is="dom-repeat" items="{{model.Templates}}">
+                                        <option value="{{item.Key}}">{{item.Name$}}</option>
+                                    </template>
+                                    <option value=""></option>
+                                </select>
+                            </td>
+                            <td>
+                                <input type="text" value="{{item.Name$::change}}" class="form-control" />
+                            </td>
+                            <td>
+                                <input type="checkbox" checked="{{item.Default$::change}}" class="form-control" />
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-xs btn-default" value="{{item.Delete$::click}}" onmousedown="++this.value;">Delete</button>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </fieldset>
         <dom-bind-notifier path="model" observed-object="{{model}}" deep></dom-bind-notifier>
     </template>
 </template>
