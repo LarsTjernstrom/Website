@@ -1,0 +1,38 @@
+{
+    "Html": "/Website/viewmodels/CmsPage.html",
+    "Templates": [
+        {
+            "Key": "",
+            "Name$": "",
+            "Html$": "",
+            "Default$": false,
+            "Delete$": 0
+        }
+    ],
+    "Sections": [
+        {
+            "Key": "",
+            "Name$": "",
+            "Default$": false,
+            "TemplateKey$": "",
+            "Delete$": 0
+        }
+    ],
+    "Maps": [
+        {
+            "SectionKey$": "",
+            "UrlKey$": "",
+            "ForeignUrl$": "",
+            "SortNumber$": 0,
+            "Delete$": 0
+        }
+    ],
+    "Urls": [
+        {
+            "Key": "",
+            "Url$": "",
+            "TemplateKey$": "",
+            "Delete$": 0
+        }
+    ]
+}

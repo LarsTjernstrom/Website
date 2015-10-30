@@ -1,6 +1,6 @@
 using Starcounter;
 
-namespace Website.ViewModels {
+namespace Website {
     partial class ResultPage : Json {
     }
 }

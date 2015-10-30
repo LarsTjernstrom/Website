@@ -1,0 +1,72 @@
+﻿<template>
+    <style>
+        table.table tr td.td-input {
+            padding: 2px 8px;
+        }
+
+        table.table tr .td-index {
+            width: 50px;
+        }
+
+        table.table tr .td-key {
+            width: 80px;
+        }
+
+        table.table tr .td-protected {
+            text-align: center;
+            width: 80px;
+        }
+
+        table.table tr .td-actions {
+            width: 150px;
+        }
+
+        table.table tr td input[type=text],
+        table.table tr td input[type=text][readonly] {
+            box-shadow: none;
+            border-bottom: none;
+        }
+
+        fieldset {
+            margin-bottom: 30px;
+        }
+    </style>
+    <template is="dom-bind" id="puppet-root">
+        <fieldset>
+            <legend>Templates</legend>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="td-key">Key</th>
+                        <th>Name</th>
+                        <th>Html</th>
+                        <th>Default</th>
+                        <th class="td-actions"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template is="dom-repeat" items="{{model.Templates}}">
+                        <tr>
+                            <td class="td-key">
+                                <input type="text" value="{{item.Key}}" readonly="readonly" class="form-control" />
+                            </td>
+                            <td>
+                                <input type="text" value="{{item.Name$::change}}" class="form-control" />
+                            </td>
+                            <td>
+                                <input type="text" value="{{item.Html$::change}}" class="form-control" />
+                            </td>
+                            <td>
+                                <input type="checkbox" checked="{{item.Default$::change}}" />
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-xs btn-default" value="{{item.Delete$::click}}" onmousedown="++this.value;">Delete</button>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </fieldset>
+        <dom-bind-notifier path="model" observed-object="{{model}}" deep></dom-bind-notifier>
+    </template>
+</template>
