@@ -1,0 +1,72 @@
+﻿<template>
+    <template is="dom-bind">
+        <fieldset>
+            <legend>
+                <span class="pull-right">
+                    <button type="button" class="btn btn-xs btn-success" value="{{model.SaveChanges$::click}}"
+                            onmousedown="++this.value;" disabled="{{!model.Trn.IsDirty}}" title="Save all changes">
+                        Save
+                    </button>
+                    <button type="button" class="btn btn-xs btn-default" value="{{model.CancelChanges$::click}}"
+                            onmousedown="++this.value;" disabled="{{!model.Trn.IsDirty}}" title="Cancel all changes">
+                        Cancel
+                    </button>
+                    <button type="button" class="btn btn-xs btn-default" value="{{model.Create$::click}}"
+                            onmousedown="++this.value;" title="Create url">
+                        Create
+                    </button>
+                </span>
+                Urls
+            </legend>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="td-key">Key</th>
+                        <th>Template</th>
+                        <th>Url</th>
+                        <th class="td-actions"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template is="dom-repeat" items="{{model.Urls}}">
+                        <tr>
+                            <td class="td-key">
+                                <input type="text" value="{{item.Key}}" readonly="readonly" class="form-control" />
+                            </td>
+                            <td>
+                                <select class="form-control" key="[[item.TemplateKey$]]" value="{{item.TemplateKey$::change}}">
+                                    <option value=""></option>
+                                    <template is="dom-repeat" items="{{model.Templates}}">
+                                        <option value="{{item.Key}}">{{item.Name}}</option>
+                                    </template>
+                                </select>
+                            </td>
+                            <td>
+                                <input type="text" value="{{item.Url$::change}}" class="form-control" />
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-xs btn-default" value="{{item.Delete$::click}}" onmousedown="++this.value;">Delete</button>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </fieldset>
+        <dom-bind-notifier path="model" observed-object="{{model}}" deep></dom-bind-notifier>
+    </template>
+    <script>
+        (function () {
+            var template = (document._currentScript || document.currentScript).previousElementSibling;
+
+            setTimeout(function () {
+                var selects = template.parentNode.querySelectorAll("select");
+
+                for (var i = 0; i < selects.length; i++) {
+                    var s = selects[i];
+
+                    s.value = s.key;
+                }
+            });
+        })();
+    </script>
+</template>

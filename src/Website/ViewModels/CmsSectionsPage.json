@@ -1,0 +1,24 @@
+{
+    "Html": "/Website/viewmodels/CmsSectionsPage.html",
+    "Templates": [
+        {
+            "Key": "",
+            "Name": ""
+        }
+    ],
+    "Sections": [
+        {
+            "Key": "",
+            "Name$": "",
+            "Default$": false,
+            "TemplateKey$": "",
+            "Delete$": 0
+        }
+    ],
+    "Trn": {
+        "IsDirty": false
+    },
+    "Create$": 0,
+    "SaveChanges$": 0,
+    "CancelChanges$": 0
+}

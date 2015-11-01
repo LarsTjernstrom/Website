@@ -5,6 +5,11 @@ namespace Website {
     partial class StandalonePage : Page {
         protected string allowedSystemUserGroup = "Admin (System Users)";
 
+        public void RefreshCurrentPage(string PartialUrl) {
+            this.PartialUrl = PartialUrl;
+            this.RefreshCurrentPage();
+        }
+
         public void RefreshCurrentPage() {
             if (string.IsNullOrEmpty(this.PartialUrl)) {
                 this.CurrentPage = null;

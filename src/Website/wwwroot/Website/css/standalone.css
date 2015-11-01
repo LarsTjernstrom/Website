@@ -13,6 +13,36 @@ body {
     margin: 0px;
 }
 
+nav#top-menu {
+    position: relative;
+    padding: 5px 0px 0px 10px;
+    width: 50%;
+}
+
+nav#top-menu ul {
+    display: block;
+    list-style-type: none;
+    padding: 0px;
+    margin: 0px;
+    overflow: auto;
+}
+
+nav#top-menu ul li {
+    float: left;
+}
+
+nav#top-menu ul li a {
+    display: block;
+    padding: 5px 20px;
+    text-decoration: none;
+    color: white;
+}
+
+nav#top-menu ul li a:hover {
+    background-color: #333333;
+    color: white;
+}
+
 #body {
     background-color: white;
     min-height: 100%;
@@ -34,4 +64,37 @@ body {
 
 #user div#signin {
     position: relative;
+}
+
+table.table tr td.td-input {
+    padding: 2px 8px;
+}
+
+table.table tr .td-index {
+    width: 50px;
+}
+
+table.table tr .td-key {
+    width: 80px;
+}
+
+table.table tr .td-protected {
+    text-align: center;
+    width: 80px;
+}
+
+table.table tr .td-actions {
+    width: 150px;
+}
+
+table.table tr td input[type=text],
+table.table tr td input[type=text][readonly],
+table.table tr td select,
+table.table tr td input[type=checkbox] {
+    box-shadow: none;
+    border-bottom: none;
+}
+
+fieldset {
+    margin-bottom: 30px;
 }

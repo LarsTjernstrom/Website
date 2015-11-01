@@ -1,0 +1,18 @@
+{
+    "Html": "/Website/viewmodels/CmsTemplatesPage.html",
+    "Templates": [
+        {
+            "Key": "",
+            "Name$": "",
+            "Html$": "",
+            "Default$": false,
+            "Delete$": 0
+        }
+    ],
+    "Trn": {
+        "IsDirty": false
+    },
+    "Create$": 0,
+    "SaveChanges$": 0,
+    "CancelChanges$": 0
+}

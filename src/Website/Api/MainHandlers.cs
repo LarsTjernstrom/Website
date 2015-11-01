@@ -44,11 +44,49 @@ namespace Website {
 
             Handle.GET("/website/cms", () => {
                 return Db.Scope<StandalonePage>(() => {
-                    string url = "/website/partials/cms";
                     StandalonePage master = this.GetMaster();
 
-                    master.PartialUrl = url;
-                    master.RefreshCurrentPage();
+                    master.RefreshCurrentPage("/website/partials/cms");
+
+                    return master;
+                });
+            });
+
+            Handle.GET("/website/cms/templates", () => {
+                return Db.Scope<StandalonePage>(() => {
+                    StandalonePage master = this.GetMaster();
+
+                    master.RefreshCurrentPage("/website/partials/cms/templates");
+
+                    return master;
+                });
+            });
+
+            Handle.GET("/website/cms/sections", () => {
+                return Db.Scope<StandalonePage>(() => {
+                    StandalonePage master = this.GetMaster();
+
+                    master.RefreshCurrentPage("/website/partials/cms/sections");
+
+                    return master;
+                });
+            });
+
+            Handle.GET("/website/cms/urls", () => {
+                return Db.Scope<StandalonePage>(() => {
+                    StandalonePage master = this.GetMaster();
+
+                    master.RefreshCurrentPage("/website/partials/cms/urls");
+
+                    return master;
+                });
+            });
+
+            Handle.GET("/website/cms/maps", () => {
+                return Db.Scope<StandalonePage>(() => {
+                    StandalonePage master = this.GetMaster();
+
+                    master.RefreshCurrentPage("/website/partials/cms/maps");
 
                     return master;
                 });
@@ -58,6 +96,36 @@ namespace Website {
         protected void RegisterPartials() {
             Handle.GET("/website/partials/cms", () => {
                 CmsPage page = new CmsPage();
+
+                return page;
+            });
+
+            Handle.GET("/website/partials/cms/templates", () => {
+                CmsTemplatesPage page = new CmsTemplatesPage();
+
+                page.RefreshData();
+
+                return page;
+            });
+
+            Handle.GET("/website/partials/cms/sections", () => {
+                CmsSectionsPage page = new CmsSectionsPage();
+
+                page.RefreshData();
+
+                return page;
+            });
+
+            Handle.GET("/website/partials/cms/urls", () => {
+                CmsUrlsPage page = new CmsUrlsPage();
+
+                page.RefreshData();
+
+                return page;
+            });
+
+            Handle.GET("/website/partials/cms/maps", () => {
+                CmsMapsPage page = new CmsMapsPage();
 
                 page.RefreshData();
 

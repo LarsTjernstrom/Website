@@ -55,6 +55,10 @@ namespace Website {
 
         protected void RegisterFilter() {
             Handle.AddFilterToMiddleware((request) => {
+                if (request.Uri.StartsWith("/website/cms")) {
+                    return null;
+                }
+
                 string[] parts = request.Uri.Split(new char[] { '/' });
                 WebUrl webUrl = Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE wu.Url = ?", request.Uri).First;
 
