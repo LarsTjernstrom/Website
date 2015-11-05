@@ -116,7 +116,6 @@
   <ItemGroup>
     <Content Include="wwwroot\Website\css\standalone.css" />
     <Content Include="wwwroot\Website\css\style.css" />
-    <Content Include="wwwroot\Website\elements\website-section.html" />
     <Content Include="wwwroot\Website\templates\DefaultTemplate.html" />
     <Content Include="wwwroot\Website\viewmodels\CmsMapsPage.html" />
     <Content Include="wwwroot\Website\viewmodels\CmsPage.html" />
