@@ -13,8 +13,8 @@ md "%~dp0temp\app"
 xcopy "%~dp0bin\Debug\*.*" "%~dp0temp\app"
 
 REM Prepare Website
-md "%~dp0temp\Website"
-xcopy "%~dp0src\Website\wwwroot" "%~dp0temp\Website" /s /e
+md "%~dp0temp\wwwroot"
+xcopy "%~dp0src\Website\wwwroot" "%~dp0temp\wwwroot" /s /e
 
 REM Copy icon and config
 xcopy "%~dp0src\Website\package\*.png" "%~dp0temp"
