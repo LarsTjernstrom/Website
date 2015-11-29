@@ -32,10 +32,10 @@ module.exports = function(grunt) {
     bump: {
       options: {
         files: ['package.json', 'src/Website/package/package.config'],
-        commit: false,
+        commit: true,
         commitMessage: '%VERSION%',
         commitFiles: ['package.json', 'src/Website/package/package.config'],
-        createTag: false,
+        createTag: true,
         tagName: '%VERSION%',
         tagMessage: 'Version %VERSION%',
         push: false,
