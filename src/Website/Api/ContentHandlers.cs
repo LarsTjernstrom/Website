@@ -53,6 +53,13 @@ namespace Website {
             RegisterFilter();
         }
 
+        private Boolean IsFullHtml(String html) {
+            if (html.IndexOf("FullPage") > -1) {
+                return true; //it's a full HTML page
+            }
+            return false; //it's a partial
+        }
+
         protected void RegisterFilter() {
             Handle.AddFilterToMiddleware((request) => {
                 if (request.Uri.StartsWith("/website/cms")) {
@@ -95,6 +102,9 @@ namespace Website {
 
                     master.TemplateName = template.Name;
                     master.TemplateHtml = template.Html;
+                    if(IsFullHtml(template.Html) == true) {
+                        master.Html = template.Html;
+                    }
                     master.TemplateModel = content;
                 } else {
                     UpdateTemplate(request, template, content, parts, webUrl);
