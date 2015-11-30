@@ -19,7 +19,9 @@
 <body>
     <template id="root" is="dom-bind">
         <div id="user">
-            <starcounter-include partial="{{model.User}}"></starcounter-include>
+            <div id="user-icons">
+                <starcounter-include partial="{{model.User}}"></starcounter-include>
+            </div>
         </div>
         <nav id="top-menu">
             <ul>

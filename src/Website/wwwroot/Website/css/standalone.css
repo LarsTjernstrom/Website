@@ -54,16 +54,17 @@ nav#top-menu ul li a:hover {
 
 #user {
     background-color: #303030;
+    color: #CCCCCC;
     height: 40px;
     top: 0px;
     left: 0px;
     width: 100%;
     position: absolute;
-    text-align: right;
 }
 
-#user div#signin {
-    position: relative;
+#user-icons {
+    float: right;
+    padding: 8px;
 }
 
 table.table tr td.td-input {
