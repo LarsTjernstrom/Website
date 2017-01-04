@@ -61,7 +61,7 @@ namespace Website {
         }
 
         protected void RegisterFilter() {
-            Handle.AddFilterToMiddleware((request) => {
+            Application.Current.Use((request) => {
                 if (request.Uri.StartsWith("/website/cms")) {
                     return null;
                 }
