@@ -1,40 +1,21 @@
-﻿<template>
-    <template is="dom-bind" id="default-template">
-        <div id="body">
-            <section class="navigation">
-                <template is="dom-repeat" items="{{model.Sections.0.Rows}}">
-                    <starcounter-include partial="{{item}}" class$="{{getIncludeClass(item, index)}}"></starcounter-include>
-                </template>
-            </section>
-            <section class="header">
-                <template is="dom-repeat" items="{{model.Sections.1.Rows}}">
-                    <starcounter-include partial="{{item}}" class$="{{getIncludeClass(item, index)}}"></starcounter-include>
-                </template>
-            </section>
-            <section class="left">
-                <template is="dom-repeat" items="{{model.Sections.2.Rows}}">
-                    <starcounter-include partial="{{item}}" class$="{{getIncludeClass(item, index)}}"></starcounter-include>
-                </template>
-            </section>
-            <section class="right">
-                <template is="dom-repeat" items="{{model.Sections.3.Rows}}">
-                    <starcounter-include partial="{{item}}" class$="{{getIncludeClass(item, index)}}"></starcounter-include>
-                </template>
-            </section>
-            <section class="footer">
-                <template is="dom-repeat" items="{{model.Sections.4.Rows}}">
-                    <starcounter-include partial="{{item}}" class$="{{getIncludeClass(item, index)}}"></starcounter-include>
-                </template>
-            </section>
-        </div>
-    </template>
-    <script id="website-default-template-script">
-        (function () {
-            var template = (document._currentScript || document.currentScript || document.querySelector("#website-default-template-script")).previousElementSibling;
+﻿<link rel="import" href="/website/elements/website-section/website-section.html">
 
-            template.getIncludeClass = function (item, index) {
-                return [item.AppName, "number-" + index].join(" ");
-            };
-        })();
-    </script>
+<template>
+    <template is="dom-bind">
+        <section class="navigation">
+            <website-section section="{{model.Sections.Navigation}}"></website-section>
+        </section>
+        <section class="header">
+            <website-section section="{{model.Sections.Header}}"></website-section>
+        </section>
+        <section class="left">
+            <website-section section="{{model.Sections.Left}}"></website-section>
+        </section>
+        <section class="right">
+            <website-section section="{{model.Sections.Right}}"></website-section>
+        </section>
+        <section class="footer">
+            <website-section section="{{model.Sections.Footer}}"></website-section>
+        </section>
+    </template>
 </template>

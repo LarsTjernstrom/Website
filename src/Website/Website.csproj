@@ -104,6 +104,9 @@
     <Compile Include="ViewModels\ResultPage.json.cs">
       <DependentUpon>ResultPage.json</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\SectionPage.json.cs">
+      <DependentUpon>SectionPage.json</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\StandalonePage.json.cs">
       <DependentUpon>StandalonePage.json</DependentUpon>
     </Compile>
@@ -119,6 +122,7 @@
   <ItemGroup>
     <Content Include="wwwroot\Website\css\standalone.css" />
     <Content Include="wwwroot\Website\css\style.css" />
+    <Content Include="wwwroot\Website\elements\website-section\website-section.html" />
     <Content Include="wwwroot\Website\templates\DefaultTemplate.html" />
     <Content Include="wwwroot\Website\viewmodels\CmsMapsPage.html" />
     <Content Include="wwwroot\Website\viewmodels\CmsPage.html" />
@@ -132,6 +136,9 @@
   <ItemGroup>
     <None Include=".bowerrc" />
     <None Include="App.config" />
+    <TypedJSON Include="ViewModels\SectionPage.json">
+      <Generator>MsBuild:Compile</Generator>
+    </TypedJSON>
     <TypedJSON Include="ViewModels\DenyPage.json">
       <Generator>MsBuild:Compile</Generator>
     </TypedJSON>

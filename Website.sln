@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0B15DAD8-703B-4F76-9943-8BFAA5237912}"
 	ProjectSection(SolutionItems) = preProject
@@ -18,6 +18,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Website", "src\Website\Website.csproj", "{A47BCF61-801A-4360-BA03-A8A7133F96B5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Content", "..\Content\src\Content\Content.csproj", "{FE6B3121-731F-473D-892D-90DC1A327E17}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignIn", "..\SignIn\src\SignIn\SignIn.csproj", "{AD9637E2-BC66-48CF-AFEF-AAE2454413EF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -28,6 +32,14 @@ Global
 		{A47BCF61-801A-4360-BA03-A8A7133F96B5}.Debug|x64.Build.0 = Debug|x64
 		{A47BCF61-801A-4360-BA03-A8A7133F96B5}.Release|x64.ActiveCfg = Release|x64
 		{A47BCF61-801A-4360-BA03-A8A7133F96B5}.Release|x64.Build.0 = Release|x64
+		{FE6B3121-731F-473D-892D-90DC1A327E17}.Debug|x64.ActiveCfg = Debug|x64
+		{FE6B3121-731F-473D-892D-90DC1A327E17}.Debug|x64.Build.0 = Debug|x64
+		{FE6B3121-731F-473D-892D-90DC1A327E17}.Release|x64.ActiveCfg = Release|x64
+		{FE6B3121-731F-473D-892D-90DC1A327E17}.Release|x64.Build.0 = Release|x64
+		{AD9637E2-BC66-48CF-AFEF-AAE2454413EF}.Debug|x64.ActiveCfg = Debug|x64
+		{AD9637E2-BC66-48CF-AFEF-AAE2454413EF}.Debug|x64.Build.0 = Debug|x64
+		{AD9637E2-BC66-48CF-AFEF-AAE2454413EF}.Release|x64.ActiveCfg = Release|x64
+		{AD9637E2-BC66-48CF-AFEF-AAE2454413EF}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

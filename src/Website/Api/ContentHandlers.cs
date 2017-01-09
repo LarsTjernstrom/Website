@@ -121,9 +121,14 @@ namespace Website {
             });
         }
 
-        protected void InitializeTemplate(Request Request, WebTemplate Template, ResultPage Content, string[] Parts, WebUrl Url) {
+        protected void InitializeTemplate(Request Request, WebTemplate Template, ResultPage Content, string[] Parts, WebUrl Url)
+        {
+            dynamic namedSections = new Json();
+            Content.Sections = namedSections;
+
             foreach (WebSection section in Template.Sections) {
-                var sectionJson = Content.Sections.Add();
+                var sectionJson = new SectionPage();
+                namedSections[section.Name] = sectionJson;
 
                 sectionJson.Name = section.Name;
 
@@ -157,7 +162,7 @@ namespace Website {
 
         protected void UpdateTemplate(Request Request, WebTemplate Template, ResultPage Content, string[] UrlParts, WebUrl Url) {
             foreach (WebSection section in Template.Sections) {
-                var sectionJson = Content.Sections.FirstOrDefault(x => x.Name == section.Name);
+                var sectionJson = Content.Sections[section.Name] as SectionPage;
                 var maps = section.Maps.Where(x => x.Url == null || x.Url.GetObjectID() == Url.GetObjectID()).OrderBy(x => x.SortNumber).ToList();
                 int index = 0;
 
