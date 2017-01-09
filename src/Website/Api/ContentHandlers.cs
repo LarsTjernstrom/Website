@@ -22,7 +22,11 @@ namespace Website {
             }
         }
 
-        public void Register() {
+        public void Register()
+        {
+            Application.Current.Use(new HtmlFromJsonProvider());
+            Application.Current.Use(new PartialToStandaloneHtmlProvider());
+
             Handle.GET("/website", () => {
                 LayoutPage master = GetLayoutPage();
 
@@ -34,18 +38,25 @@ namespace Website {
             });
 
             Handle.GET("/website/partial/layout", () => {
-                LayoutPage page = null;
-
-                if (Session.Current != null) {
-                    page = Session.Current.Data as LayoutPage;
-
+                if (Session.Current != null && Session.Current.Data is LayoutPage)
+                {
                     return Session.Current.Data;
                 }
 
-                Session.Current = new Session(SessionOptions.PatchVersioning);
+                if (Session.Current == null)
+                {
+                    Session.Current = new Session(SessionOptions.PatchVersioning);
+                }
 
-                page = new LayoutPage();
-                page.Session = Session.Current;
+                var page = new LayoutPage()
+                {
+                    Session = Session.Current
+                };
+
+                if (page.Session.PublicViewModel != page)
+                {
+                    page.Session.PublicViewModel = page;
+                }
 
                 return page;
             });
@@ -61,9 +72,9 @@ namespace Website {
         }
 
         protected void RegisterFilter() {
-            Application.Current.Use((request) => {
+            Application.Current.Use((Request request, Response response) => {
                 if (request.Uri.StartsWith("/website/cms")) {
-                    return null;
+                    return response;
                 }
 
                 string[] parts = request.Uri.Split(new char[] { '/' });
@@ -84,14 +95,10 @@ namespace Website {
                 }
 
                 if (template == null) {
-                    return null;
+                    return response;
                 }
 
                 LayoutPage master = GetLayoutPage();
-
-                if (master == null) {
-                    return null;
-                }
 
                 ResultPage content = master.TemplateModel as ResultPage;
 

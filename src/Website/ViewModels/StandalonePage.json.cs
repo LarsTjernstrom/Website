@@ -2,7 +2,8 @@ using Starcounter;
 using Simplified.Ring3;
 
 namespace Website {
-    partial class StandalonePage : Page {
+    partial class StandalonePage : Json
+    {
         protected string allowedSystemUserGroup = "Admin (System Users)";
 
         public void RefreshCurrentPage(string PartialUrl) {

@@ -92,6 +92,9 @@
     <Compile Include="ViewModels\ContainerPage.json.cs">
       <DependentUpon>ContainerPage.json</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\DenyPage.json.cs">
+      <DependentUpon>DenyPage.json</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\JsonCache.json.cs">
       <DependentUpon>JsonCache.json</DependentUpon>
     </Compile>
@@ -129,6 +132,9 @@
   <ItemGroup>
     <None Include=".bowerrc" />
     <None Include="App.config" />
+    <TypedJSON Include="ViewModels\DenyPage.json">
+      <Generator>MsBuild:Compile</Generator>
+    </TypedJSON>
     <TypedJSON Include="ViewModels\CmsMapsPage.json">
       <Generator>MsBuild:Compile</Generator>
     </TypedJSON>

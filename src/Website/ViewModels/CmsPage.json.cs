@@ -2,6 +2,7 @@ using Starcounter;
 using Simplified.Ring6;
 
 namespace Website {
-    partial class CmsPage : Page {
+    partial class CmsPage : Json
+    {
     }
 }

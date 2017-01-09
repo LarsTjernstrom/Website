@@ -20,7 +20,7 @@ namespace Website {
                 }
 
                 standalone.Session = session;
-                standalone.User = Self.GET("/sc/mapping/user", () => new Page());
+                standalone.User = Self.GET("/sc/mapping/user", () => new Json());
 
                 return standalone;
             });
@@ -133,9 +133,7 @@ namespace Website {
             });
 
             Handle.GET("/website/partials/deny", () => {
-                return new Page() {
-                    Html = "/Website/viewmodels/DenyPage.html"
-                };
+                return new DenyPage();
             });
         }
 

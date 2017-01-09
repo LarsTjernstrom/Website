@@ -2,7 +2,7 @@ using Starcounter;
 using Simplified.Ring6;
 
 namespace Website {
-    partial class CmsMapsPage : Page {
+    partial class CmsMapsPage : Json {
         public void RefreshData() {
             this.Sections.Clear();
             this.Urls.Clear();
