@@ -73,6 +73,11 @@ namespace Website {
 
         protected void RegisterFilter() {
             Application.Current.Use((Request request, Response response) => {
+                if (!(response.Resource is Json))
+                {
+                    return response;
+                }
+
                 if (request.Uri.StartsWith("/website/cms")) {
                     return response;
                 }
@@ -105,7 +110,8 @@ namespace Website {
                 if (content == null || master.TemplateName != template.Name) {
                     content = new ResultPage();
 
-                    InitializeTemplate(request, template, content, parts, webUrl);
+                    InitializeTemplate(template, content);
+                    UpdateTemplateSections(request, template, content, parts, webUrl);
 
                     master.TemplateName = template.Name;
                     master.TemplateHtml = template.Html;
@@ -114,96 +120,92 @@ namespace Website {
                     }
                     master.TemplateModel = content;
                 } else {
-                    UpdateTemplate(request, template, content, parts, webUrl);
+                    UpdateTemplateSections(request, template, content, parts, webUrl);
                 }
 
                 return master;
             });
         }
 
-        protected void InitializeTemplate(Request Request, WebTemplate Template, ResultPage Content, string[] Parts, WebUrl Url)
+        protected void InitializeTemplate(WebTemplate template, ResultPage content)
         {
             dynamic namedSections = new Json();
-            Content.Sections = namedSections;
+            content.Sections = namedSections;
 
-            foreach (WebSection section in Template.Sections) {
+            foreach (WebSection section in template.Sections) {
                 var sectionJson = new SectionPage();
                 namedSections[section.Name] = sectionJson;
-
                 sectionJson.Name = section.Name;
+            }
+        }
 
-                foreach (WebMap map in section.Maps.OrderBy(x => x.SortNumber)) {
-                    if (map.Url != null && map.Url.GetObjectID() != Url.GetObjectID()) {
+        protected void UpdateTemplateSections(Request req, WebTemplate template, ResultPage content, string[] parts, WebUrl url) {
+            foreach (WebSection section in template.Sections) {
+                var sectionJson = content.Sections[section.Name] as SectionPage;
+                int index = 0;
+
+                foreach (WebMap map in section.Maps.OrderBy(x => x.SortNumber))
+                {
+                    if (map.Url == null)
+                    {
+                        //disabled map, skip
                         continue;
                     }
 
-                    string url = FormatUrl(map.ForeignUrl, Parts.Last());
+                    if (!map.Url.Equals(url))
+                    {
+                        //it is not a map for this page, skip
+                        continue;
+                    }
 
-                    ContainerPage json = Self.GET<ContainerPage>(url, () => {
-                        return new ContainerPage() {
-                            Key = url
-                        };
-                    });
-
-                    sectionJson.Rows.Add(json);
+                    string uri = FormatUrl(map.ForeignUrl, parts.Last());
+                    ReuseSectionRow(sectionJson.Rows, index, uri);
+                    index++;
                 }
 
-                if (section.Default && Url == null) {
-                    ContainerPage json = Self.GET<ContainerPage>(Request.Uri, () => {
-                        return new ContainerPage() {
-                            Key = Request.Uri
-                        };
-                    });
+                if (section.Default && url == null)
+                {
+                    ReuseSectionRow(sectionJson.Rows, index, req.Uri);
+                    index++;
+                }
 
-                    sectionJson.Rows.Add(json);
+                //remove unused elements at the end of Rows
+                while (sectionJson.Rows.Count > index)
+                {
+                    sectionJson.Rows.RemoveAt(sectionJson.Rows.Count - 1);
                 }
             }
         }
 
-        protected void UpdateTemplate(Request Request, WebTemplate Template, ResultPage Content, string[] UrlParts, WebUrl Url) {
-            foreach (WebSection section in Template.Sections) {
-                var sectionJson = Content.Sections[section.Name] as SectionPage;
-                var maps = section.Maps.Where(x => x.Url == null || x.Url.GetObjectID() == Url.GetObjectID()).OrderBy(x => x.SortNumber).ToList();
-                int index = 0;
+        private ContainerPage GetConainterPage(string uri)
+        {
+            var json = Self.GET<ContainerPage>(uri, () => {
+                return new ContainerPage()
+                {
+                    Key = uri
+                };
+            });
+            return json;
+        }
 
-                if (sectionJson.Rows.Count == maps.Count) {
-                    foreach (WebMap map in maps) {
-                        string url = FormatUrl(map.ForeignUrl, UrlParts.Last());
-
-                        if ((sectionJson.Rows[index] as ContainerPage).Key != url) {
-                            sectionJson.Rows[index] = Self.GET<ContainerPage>(url, () => {
-                                return new ContainerPage() {
-                                    Key = url
-                                };
-                            });
-                        }
-
-                        index++;
-                    }
-                } else {
-                    sectionJson.Rows.Clear();
-
-                    foreach (WebMap map in maps) {
-                        string url = FormatUrl(map.ForeignUrl, UrlParts.Last());
-
-                        sectionJson.Rows.Add(Self.GET<ContainerPage>(url, () => {
-                            return new ContainerPage() {
-                                Key = url
-                            };
-                        }));
-
-                        index++;
-                    }
-                }
-
-                if (section.Default && Url == null && (sectionJson.Rows[index] as ContainerPage).Key != Request.Uri) {
-                    sectionJson.Rows[index] = Self.GET<ContainerPage>(Request.Uri, () => {
-                        return new ContainerPage() {
-                            Key = Request.Uri
-                        };
-                    });
+        private ContainerPage ReuseSectionRow(Arr<Json> rows, int index, string uri)
+        {
+            ContainerPage json = null;
+            if (rows.Count > index)
+            {
+                json = rows[index] as ContainerPage;
+                if (json.Key != uri)
+                {
+                    json = GetConainterPage(uri);
+                    rows[index] = json;
                 }
             }
+            else
+            {
+                json = GetConainterPage(uri);
+                rows.Add(json);
+            }
+            return json;
         }
 
         protected LayoutPage GetLayoutPage() {
