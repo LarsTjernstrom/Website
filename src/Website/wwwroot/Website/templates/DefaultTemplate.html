@@ -2,20 +2,31 @@
 
 <template>
     <template is="dom-bind">
-        <section class="navigation">
-            <website-section section="{{model.Sections.Navigation}}"></website-section>
+        <style>
+             body {
+                 margin: 0;    
+             }
+
+             .top-bar {
+                 background-color: #333;
+                 color: #FFF;
+                 padding: 10px;
+             }
+
+            .top-bar > website-section {
+                display: flex;
+                justify-content: flex-end;
+            }
+
+            .top-bar > website-section > starcounter-include {
+                margin-left: 10px;
+            }
+        </style>
+        <section class="top-bar">
+            <website-section section="{{model.Sections.TopBar}}"></website-section>
         </section>
-        <section class="header">
-            <website-section section="{{model.Sections.Header}}"></website-section>
-        </section>
-        <section class="left">
-            <website-section section="{{model.Sections.Left}}"></website-section>
-        </section>
-        <section class="right">
-            <website-section section="{{model.Sections.Right}}"></website-section>
-        </section>
-        <section class="footer">
-            <website-section section="{{model.Sections.Footer}}"></website-section>
+        <section class="main">
+            <website-section section="{{model.Sections.Main}}"></website-section>
         </section>
     </template>
 </template>
