@@ -146,16 +146,14 @@ namespace Website {
 
                 foreach (WebMap map in section.Maps.OrderBy(x => x.SortNumber))
                 {
-                    if (map.Url == null)
+                    if (map.Url != null)
                     {
-                        //disabled map, skip
-                        continue;
-                    }
-
-                    if (!map.Url.Equals(url))
-                    {
-                        //it is not a map for this page, skip
-                        continue;
+                        //it is not a catch-all map
+                        if (!map.Url.Equals(url))
+                        {
+                            //it is a map for a different entry URI, skip
+                            continue;
+                        }
                     }
 
                     string uri = FormatUrl(map.ForeignUrl, parts.Last());
