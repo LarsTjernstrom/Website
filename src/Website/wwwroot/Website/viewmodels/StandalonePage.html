@@ -1,22 +1,7 @@
-﻿<!DOCTYPE html>
-<html>
-<head>
-    <title>Website: Backend</title>
-    <script src="/sys/webcomponentsjs/webcomponents.js"></script>
-    <script>
-        window.Polymer = window.Polymer || {};
-        window.Polymer.dom = "shadow";
-    </script>
-    <link rel="import" href="/sys/polymer/polymer.html" />
-    <link rel="import" href="/sys/starcounter.html" />
-    <link rel="import" href="/sys/starcounter-debug-aid/src/starcounter-debug-aid.html" />
-    <link rel="import" href="/sys/imported-template/imported-template.html" />
-    <link rel="import" href="/sys/starcounter-include/starcounter-include.html" />
-    <link rel="import" href="/sys/bootstrap.html" />
-    <link href="/Website/css/standalone.css" rel="stylesheet" />
-</head>
-<body>
-    <template id="root" is="dom-bind">
+﻿<link href="/Website/css/standalone.css" rel="stylesheet" />
+
+<template>
+    <template is="dom-bind">
         <div id="user">
             <div id="user-icons">
                 <starcounter-include partial="{{model.User}}"></starcounter-include>
@@ -45,7 +30,4 @@
             <starcounter-include partial="{{model.CurrentPage}}"></starcounter-include>
         </div>
     </template>
-    <puppet-client ref="root"></puppet-client>
-    <starcounter-debug-aid></starcounter-debug-aid>
-</body>
-</html>
+</template>

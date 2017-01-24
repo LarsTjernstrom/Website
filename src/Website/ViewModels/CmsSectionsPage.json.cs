@@ -2,7 +2,8 @@ using Starcounter;
 using Simplified.Ring6;
 
 namespace Website {
-    partial class CmsSectionsPage : Page {
+    partial class CmsSectionsPage : Json
+    {
         public void RefreshData() {
             this.Sections.Clear();
             this.Templates.Clear();

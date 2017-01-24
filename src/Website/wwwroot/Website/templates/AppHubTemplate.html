@@ -1,0 +1,23 @@
+﻿<link rel="import" href="/website/elements/website-section/website-section.html">
+
+<template>
+    <template is="dom-bind">
+        <link href="/Website/css/AppHub.css" rel="stylesheet">
+
+        <section class="navigation">
+            <website-section section="{{model.Sections.Navigation}}"></website-section>
+        </section>
+        <section class="header">
+            <website-section section="{{model.Sections.Header}}"></website-section>
+        </section>
+        <section class="left">
+            <website-section section="{{model.Sections.Left}}"></website-section>
+        </section>
+        <section class="right">
+            <website-section section="{{model.Sections.Right}}"></website-section>
+        </section>
+        <section class="footer">
+            <website-section section="{{model.Sections.Footer}}"></website-section>
+        </section>
+    </template>
+</template>

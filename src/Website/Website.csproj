@@ -92,6 +92,9 @@
     <Compile Include="ViewModels\ContainerPage.json.cs">
       <DependentUpon>ContainerPage.json</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\DenyPage.json.cs">
+      <DependentUpon>DenyPage.json</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\JsonCache.json.cs">
       <DependentUpon>JsonCache.json</DependentUpon>
     </Compile>
@@ -100,6 +103,9 @@
     </Compile>
     <Compile Include="ViewModels\ResultPage.json.cs">
       <DependentUpon>ResultPage.json</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\SectionPage.json.cs">
+      <DependentUpon>SectionPage.json</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\StandalonePage.json.cs">
       <DependentUpon>StandalonePage.json</DependentUpon>
@@ -115,7 +121,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="wwwroot\Website\css\standalone.css" />
-    <Content Include="wwwroot\Website\css\style.css" />
+    <Content Include="wwwroot\Website\css\AppHub.css" />
+    <Content Include="wwwroot\Website\elements\website-section\website-section.html" />
+    <None Include="wwwroot\Website\templates\AppHubTemplate.html" />
     <Content Include="wwwroot\Website\templates\DefaultTemplate.html" />
     <Content Include="wwwroot\Website\viewmodels\CmsMapsPage.html" />
     <Content Include="wwwroot\Website\viewmodels\CmsPage.html" />
@@ -129,6 +137,12 @@
   <ItemGroup>
     <None Include=".bowerrc" />
     <None Include="App.config" />
+    <TypedJSON Include="ViewModels\SectionPage.json">
+      <Generator>MsBuild:Compile</Generator>
+    </TypedJSON>
+    <TypedJSON Include="ViewModels\DenyPage.json">
+      <Generator>MsBuild:Compile</Generator>
+    </TypedJSON>
     <TypedJSON Include="ViewModels\CmsMapsPage.json">
       <Generator>MsBuild:Compile</Generator>
     </TypedJSON>

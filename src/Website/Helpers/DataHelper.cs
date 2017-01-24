@@ -21,10 +21,38 @@ namespace Website {
             Db.Transact(() => {
                 ClearData();
 
-                WebTemplate template = new WebTemplate() {
-                    Default = false,
+                // DefaultTemplate
+
+                WebTemplate template = new WebTemplate()
+                {
+                    Default = true,
                     Name = "DefaultTemplate",
                     Html = "/Website/templates/DefaultTemplate.html"
+                };
+
+                WebSection topbar = new WebSection()
+                {
+                    Template = template,
+                    Name = "TopBar",
+                    Default = false
+                };
+
+                WebSection main = new WebSection()
+                {
+                    Template = template,
+                    Name = "Main",
+                    Default = true
+                };
+
+                new WebMap() { Section = topbar, ForeignUrl = "/signin/user", SortNumber = 1 };
+
+                // AppHubTemplate
+
+                template = new WebTemplate()
+                {
+                    Default = false,
+                    Name = "AppHubTemplate",
+                    Html = "/Website/templates/AppHubTemplate.html"
                 };
 
                 WebSection navigation = new WebSection() {

@@ -1,40 +1,32 @@
-﻿<template>
-    <template is="dom-bind" id="default-template">
-        <div id="body">
-            <section class="navigation">
-                <template is="dom-repeat" items="{{model.Sections.0.Rows}}">
-                    <starcounter-include partial="{{item}}" class$="{{getIncludeClass(item, index)}}"></starcounter-include>
-                </template>
-            </section>
-            <section class="header">
-                <template is="dom-repeat" items="{{model.Sections.1.Rows}}">
-                    <starcounter-include partial="{{item}}" class$="{{getIncludeClass(item, index)}}"></starcounter-include>
-                </template>
-            </section>
-            <section class="left">
-                <template is="dom-repeat" items="{{model.Sections.2.Rows}}">
-                    <starcounter-include partial="{{item}}" class$="{{getIncludeClass(item, index)}}"></starcounter-include>
-                </template>
-            </section>
-            <section class="right">
-                <template is="dom-repeat" items="{{model.Sections.3.Rows}}">
-                    <starcounter-include partial="{{item}}" class$="{{getIncludeClass(item, index)}}"></starcounter-include>
-                </template>
-            </section>
-            <section class="footer">
-                <template is="dom-repeat" items="{{model.Sections.4.Rows}}">
-                    <starcounter-include partial="{{item}}" class$="{{getIncludeClass(item, index)}}"></starcounter-include>
-                </template>
-            </section>
-        </div>
-    </template>
-    <script id="website-default-template-script">
-        (function () {
-            var template = (document._currentScript || document.currentScript || document.querySelector("#website-default-template-script")).previousElementSibling;
+﻿<link rel="import" href="/website/elements/website-section/website-section.html">
 
-            template.getIncludeClass = function (item, index) {
-                return [item.AppName, "number-" + index].join(" ");
-            };
-        })();
-    </script>
+<template>
+    <template is="dom-bind">
+        <style>
+             body {
+                 margin: 0;    
+             }
+
+             .top-bar {
+                 background-color: #333;
+                 color: #FFF;
+                 padding: 10px;
+             }
+
+            .top-bar > website-section {
+                display: flex;
+                justify-content: flex-end;
+            }
+
+            .top-bar > website-section > starcounter-include {
+                margin-left: 10px;
+            }
+        </style>
+        <section class="top-bar">
+            <website-section section="{{model.Sections.TopBar}}"></website-section>
+        </section>
+        <section class="main">
+            <website-section section="{{model.Sections.Main}}"></website-section>
+        </section>
+    </template>
 </template>
