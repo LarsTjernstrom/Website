@@ -1,4 +1,4 @@
 {
   "Name": "",
-  "Rows": [{}]  
+  "Rows": [{"$": {"Reuse": "Website.ContainerPage"}}]  
 }
