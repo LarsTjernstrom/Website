@@ -71,7 +71,19 @@ namespace Website {
             return false; //it's a partial
         }
 
-        protected void RegisterFilter() {
+        protected void RegisterFilter()
+        {
+            var runResponseMiddleware = "X-Run-Response-Middleware";
+
+            Application.Current.Use((Request request) => {
+                //Mark this request to be wrapped by Website response middleware.
+                //Without this we would wrap ALL requests, including the ones that shouldn't be wrapped
+                //(e.g. "Sign out" button in SignIn app, which uses HandlerOptions.SkipRequestFilters = true)
+                //Remove this when we have a flag to disable all middleware
+                request.Headers[runResponseMiddleware] = "Yes";
+                return null;
+            });
+
             Application.Current.Use((Request request, Response response) => {
                 if (!(response.Resource is Json))
                 {
@@ -79,6 +91,11 @@ namespace Website {
                 }
 
                 if (request.Uri.StartsWith("/website/cms")) {
+                    return response;
+                }
+
+                if (request.Headers[runResponseMiddleware] == null)
+                {
                     return response;
                 }
 
