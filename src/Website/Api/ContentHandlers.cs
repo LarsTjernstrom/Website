@@ -83,7 +83,6 @@ namespace Website {
                     return response;
                 }
 
-                string[] parts = request.Uri.Split(new char[] { '/' });
                 WebUrl webUrl = Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE wu.Url = ?", request.Uri).First;
 
                 if (webUrl == null) {
@@ -112,7 +111,7 @@ namespace Website {
                     content = new ResultPage();
 
                     InitializeTemplate(template, content);
-                    UpdateTemplateSections(request, response, template, content, parts, webUrl);
+                    UpdateTemplateSections(request, response, template, content, webUrl);
 
                     master.TemplateName = template.Name;
                     master.TemplateHtml = template.Html;
@@ -121,7 +120,7 @@ namespace Website {
                     }
                     master.TemplateModel = content;
                 } else {
-                    UpdateTemplateSections(request, response, template, content, parts, webUrl);
+                    UpdateTemplateSections(request, response, template, content, webUrl);
                 }
 
                 return master;
@@ -140,8 +139,10 @@ namespace Website {
             }
         }
 
-        protected void UpdateTemplateSections(Request req, Response res, WebTemplate template, ResultPage content, string[] parts, WebUrl url)
+        protected void UpdateTemplateSections(Request req, Response res, WebTemplate template, ResultPage content, WebUrl url)
         {
+            string[] parts = req.Uri.Split(new char[] { '/' });
+
             foreach (WebSection section in template.Sections) {
                 var sectionJson = content.Sections[section.Name] as SectionPage;
                 int index = 0;
