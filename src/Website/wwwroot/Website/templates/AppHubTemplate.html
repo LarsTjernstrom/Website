@@ -4,20 +4,27 @@
     <template is="dom-bind">
         <link href="/Website/css/AppHub.css" rel="stylesheet">
 
-        <section class="navigation">
+        <section class="navigation" slot="Website/Navigation">
             <website-section section="{{model.Sections.Navigation}}"></website-section>
         </section>
-        <section class="header">
+        <section class="header" slot="Website/Header">
             <website-section section="{{model.Sections.Header}}"></website-section>
         </section>
-        <section class="left">
+        <section class="left" slot="Website/Left">
             <website-section section="{{model.Sections.Left}}"></website-section>
         </section>
-        <section class="right">
+        <section class="right" slot="Website/Right">
             <website-section section="{{model.Sections.Right}}"></website-section>
         </section>
-        <section class="footer">
+        <section class="footer" slot="Website/Footer">
             <website-section section="{{model.Sections.Footer}}"></website-section>
         </section>
+    </template>
+    <template is="starcounter-composition">
+        <content select="[slot='Website/Navigation']"></content>
+        <content select="[slot='Website/Header']"></content>
+        <content select="[slot='Website/Left']"></content>
+        <content select="[slot='Website/Right']"></content>
+        <content select="[slot='Website/Footer']"></content>
     </template>
 </template>
