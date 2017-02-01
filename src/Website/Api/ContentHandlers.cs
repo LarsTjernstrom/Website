@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Starcounter;
 using Simplified.Ring6;
+using Starcounter.Advanced.XSON;
 
 namespace Website {
     public class ContentHandlers {
@@ -82,7 +83,6 @@ namespace Website {
                     return response;
                 }
 
-                string[] parts = request.Uri.Split(new char[] { '/' });
                 WebUrl webUrl = Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE wu.Url = ?", request.Uri).First;
 
                 if (webUrl == null) {
@@ -111,7 +111,7 @@ namespace Website {
                     content = new ResultPage();
 
                     InitializeTemplate(template, content);
-                    UpdateTemplateSections(request, template, content, parts, webUrl);
+                    UpdateTemplateSections(request, response, template, content, webUrl);
 
                     master.TemplateName = template.Name;
                     master.TemplateHtml = template.Html;
@@ -120,7 +120,7 @@ namespace Website {
                     }
                     master.TemplateModel = content;
                 } else {
-                    UpdateTemplateSections(request, template, content, parts, webUrl);
+                    UpdateTemplateSections(request, response, template, content, webUrl);
                 }
 
                 return master;
@@ -139,7 +139,10 @@ namespace Website {
             }
         }
 
-        protected void UpdateTemplateSections(Request req, WebTemplate template, ResultPage content, string[] parts, WebUrl url) {
+        protected void UpdateTemplateSections(Request req, Response res, WebTemplate template, ResultPage content, WebUrl url)
+        {
+            string[] parts = req.Uri.Split(new char[] { '/' });
+
             foreach (WebSection section in template.Sections) {
                 var sectionJson = content.Sections[section.Name] as SectionPage;
                 int index = 0;
@@ -157,13 +160,20 @@ namespace Website {
                     }
 
                     string uri = FormatUrl(map.ForeignUrl, parts.Last());
-                    ReuseSectionRow(sectionJson.Rows, index, uri);
+                    if (!IsSectionRowAtUri(sectionJson.Rows, index, uri))
+                    {
+                        sectionJson.Rows[index] = GetConainterPage(uri);
+                    }
                     index++;
                 }
 
                 if (section.Default && url == null)
                 {
-                    ReuseSectionRow(sectionJson.Rows, index, req.Uri);
+                    if (!IsSectionRowAtUri(sectionJson.Rows, index, req.Uri))
+                    {
+                        sectionJson.Rows[index].Key = req.Uri;
+                        sectionJson.Rows[index].MergeJson(res.Resource as Json);
+                    }
                     index++;
                 }
 
@@ -186,24 +196,15 @@ namespace Website {
             return json;
         }
 
-        private ContainerPage ReuseSectionRow(Arr<Json> rows, int index, string uri)
+        private bool IsSectionRowAtUri(Arr<ContainerPage> rows, int index, string uri)
         {
-            ContainerPage json = null;
             if (rows.Count > index)
             {
-                json = rows[index] as ContainerPage;
-                if (json.Key != uri)
-                {
-                    json = GetConainterPage(uri);
-                    rows[index] = json;
-                }
+                return (rows[index].Key == uri);
             }
-            else
-            {
-                json = GetConainterPage(uri);
-                rows.Add(json);
-            }
-            return json;
+
+            rows.Add();
+            return false;
         }
 
         protected LayoutPage GetLayoutPage() {
