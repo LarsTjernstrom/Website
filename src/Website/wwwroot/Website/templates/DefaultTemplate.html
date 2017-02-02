@@ -2,6 +2,10 @@
 
 <template>
     <template is="dom-bind">
+        <website-section slot="Website/top-bar" section="{{model.Sections.TopBar}}"></website-section>
+        <website-section slot="Website/main" section="{{model.Sections.Main}}"></website-section>
+    </template>
+    <template is="starcounter-composition">
         <style>
             body {
                 margin: 0;
@@ -13,24 +17,20 @@
                 padding: 10px;
             }
 
-            .top-bar > website-section {
-                display: flex;
-                justify-content: flex-end;
-            }
+                .top-bar > website-section {
+                    display: flex;
+                    justify-content: flex-end;
+                }
 
-            .top-bar > website-section > starcounter-include {
-                margin-left: 10px;
-            }
+                    .top-bar > website-section > starcounter-include {
+                        margin-left: 10px;
+                    }
         </style>
-        <section class="top-bar" slot="Website/top-bar">
-            <website-section section="{{model.Sections.TopBar}}"></website-section>
+        <section class="top-bar">
+            <content select="[slot='Website/top-bar']"></content>
         </section>
-        <section class="main" slot="Website/main">
-            <website-section section="{{model.Sections.Main}}"></website-section>
+        <section class="main">
+            <content select="[slot='Website/main']"></content>
         </section>
-    </template>
-    <template is="starcounter-composition">
-        <content select="[slot='Website/top-bar']"></content>
-        <content select="[slot='Website/main']"></content>
     </template>
 </template>

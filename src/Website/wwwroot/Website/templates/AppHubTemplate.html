@@ -1,29 +1,31 @@
 ﻿<link rel="import" href="/website/elements/website-section/website-section.html">
-<link href="/Website/css/AppHub.css" rel="stylesheet">
 
 <template>
     <template is="dom-bind">
-        <section class="navigation" slot="Website/Navigation">
-            <website-section section="{{model.Sections.Navigation}}"></website-section>
-        </section>
-        <section class="header" slot="Website/Header">
-            <website-section section="{{model.Sections.Header}}"></website-section>
-        </section>
-        <section class="left" slot="Website/Left">
-            <website-section section="{{model.Sections.Left}}"></website-section>
-        </section>
-        <section class="right" slot="Website/Right">
-            <website-section section="{{model.Sections.Right}}"></website-section>
-        </section>
-        <section class="footer" slot="Website/Footer">
-            <website-section section="{{model.Sections.Footer}}"></website-section>
-        </section>
+        <website-section slot="Website/Navigation" section="{{model.Sections.Navigation}}"></website-section>
+        <website-section slot="Website/Header" section="{{model.Sections.Header}}"></website-section>
+        <website-section slot="Website/Left" section="{{model.Sections.Left}}"></website-section>
+        <website-section slot="Website/Right" section="{{model.Sections.Right}}"></website-section>
+        <website-section slot="Website/Footer" section="{{model.Sections.Footer}}"></website-section>
     </template>
     <template is="starcounter-composition">
-        <content select="[slot='Website/Navigation']"></content>
-        <content select="[slot='Website/Header']"></content>
-        <content select="[slot='Website/Left']"></content>
-        <content select="[slot='Website/Right']"></content>
-        <content select="[slot='Website/Footer']"></content>
+        <style>
+            @import url("/Website/css/AppHub.css");
+        </style>
+        <section class="navigation">
+            <content select="[slot='Website/Navigation']"></content>
+        </section>
+        <section class="header">
+            <content select="[slot='Website/Header']"></content>
+        </section>
+        <section class="left">
+            <content select="[slot='Website/Left']"></content>
+        </section>
+        <section class="right">
+            <content select="[slot='Website/Right']"></content>
+        </section>
+        <section class="footer">
+            <content select="[slot='Website/Footer']"></content>
+        </section>
     </template>
 </template>
