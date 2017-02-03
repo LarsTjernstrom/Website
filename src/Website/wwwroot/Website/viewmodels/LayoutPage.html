@@ -1,5 +1,6 @@
 ﻿<template>
     <template is="dom-bind">
-       <template is="imported-template" content$="{{model.TemplateHtml}}" model="{{model.TemplateModel}}"></template>
+        <starcounter-include partial="{{model.TemplateModel}}"></starcounter-include>
+       <!--<template is="imported-template" content$="{{model.TemplateHtml}}" model="{{model.TemplateModel}}"></template>-->
     </template>
 </template>

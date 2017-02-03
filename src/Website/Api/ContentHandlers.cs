@@ -132,12 +132,13 @@ namespace Website {
                     UpdateTemplateSections(request, response, template, content, webUrl);
 
                     master.TemplateName = template.Name;
-                    master.TemplateHtml = template.Html;
+                    content.Html = master.TemplateHtml = template.Html;
                     if(IsFullHtml(template.Html) == true) {
                         master.Html = template.Html;
                     }
                     master.TemplateModel = content;
                 } else {
+                    content.Html = template.Html;
                     UpdateTemplateSections(request, response, template, content, webUrl);
                 }
 
