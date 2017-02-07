@@ -1,5 +1,5 @@
 <template>
-    <style>
+    <style slot="Website/global-style">
         body {
             margin: 0;
         }
@@ -12,6 +12,7 @@
         <starcounter-include slot="Website/Footer" partial="{{model.Sections.Footer}}"></starcounter-include>
     </template>
     <template is="starcounter-composition">
+        <content select="[slot='Website/global-style']"></content>
         <style>
             @import url("/Website/css/AppHub.css");
         </style>

@@ -1,5 +1,5 @@
 <template>
-    <style>
+    <style slot="Website/global-style">
         body {
             margin: 0;
         }
@@ -9,6 +9,7 @@
         <starcounter-include slot="Website/main" partial="{{model.Sections.Main}}"></starcounter-include>
     </template>
     <template is="starcounter-composition">
+        <content select="[slot='Website/global-style']"></content>
         <style>
             .top-bar {
                 background-color: #333;
