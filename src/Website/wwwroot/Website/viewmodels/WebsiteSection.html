@@ -1,0 +1,9 @@
+﻿<link rel="import" href="/sys/polymer/polymer.html">
+
+<template>
+    <template is="dom-bind">
+        <template is="dom-repeat" items="{{model.Rows}}">
+            <starcounter-include partial="{{item}}"></starcounter-include>
+        </template>
+    </template>
+</template>

@@ -1,28 +1,27 @@
-﻿<link rel="import" href="/website/elements/website-section/website-section.html">
-
 <template>
+    <style>
+        body {
+            margin: 0;
+        }
+    </style>
     <template is="dom-bind">
-        <website-section slot="Website/top-bar" section="{{model.Sections.TopBar}}"></website-section>
-        <website-section slot="Website/main" section="{{model.Sections.Main}}"></website-section>
+        <starcounter-include slot="Website/top-bar" partial="{{model.Sections.TopBar}}"></starcounter-include>
+        <starcounter-include slot="Website/main" partial="{{model.Sections.Main}}"></starcounter-include>
     </template>
     <template is="starcounter-composition">
         <style>
-            body {
-                margin: 0;
-            }
-
             .top-bar {
                 background-color: #333;
                 color: #FFF;
                 padding: 10px;
             }
 
-                .top-bar > website-section {
+                .top-bar > starcounter-include {
                     display: flex;
                     justify-content: flex-end;
                 }
 
-                    .top-bar > website-section > starcounter-include {
+                    .top-bar > starcounter-include > starcounter-include {
                         margin-left: 10px;
                     }
         </style>

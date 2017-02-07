@@ -20,7 +20,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\bin\Debug\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -32,7 +32,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\bin\Release\</OutputPath>
+    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -98,11 +98,11 @@
     <Compile Include="ViewModels\JsonCache.json.cs">
       <DependentUpon>JsonCache.json</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\LayoutPage.json.cs">
-      <DependentUpon>LayoutPage.json</DependentUpon>
+    <Compile Include="ViewModels\WrapperPage.json.cs">
+      <DependentUpon>WrapperPage.json</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\ResultPage.json.cs">
-      <DependentUpon>ResultPage.json</DependentUpon>
+    <Compile Include="ViewModels\WebTemplatePage.json.cs">
+      <DependentUpon>WebTemplatePage.json</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\SectionPage.json.cs">
       <DependentUpon>SectionPage.json</DependentUpon>
@@ -115,14 +115,14 @@
     <Folder Include="wwwroot\sys\" />
   </ItemGroup>
   <ItemGroup>
-    <TypedJSON Include="ViewModels\LayoutPage.json">
+    <TypedJSON Include="ViewModels\WrapperPage.json">
       <Generator>MsBuild:Compile</Generator>
     </TypedJSON>
   </ItemGroup>
   <ItemGroup>
     <Content Include="wwwroot\Website\css\standalone.css" />
     <Content Include="wwwroot\Website\css\AppHub.css" />
-    <Content Include="wwwroot\Website\elements\website-section\website-section.html" />
+    <Content Include="wwwroot\Website\viewmodels\WebsiteSection.html" />
     <None Include="wwwroot\Website\templates\AppHubTemplate.html" />
     <Content Include="wwwroot\Website\templates\DefaultTemplate.html" />
     <Content Include="wwwroot\Website\viewmodels\CmsMapsPage.html" />
@@ -131,7 +131,7 @@
     <Content Include="wwwroot\Website\viewmodels\CmsTemplatesPage.html" />
     <Content Include="wwwroot\Website\viewmodels\CmsUrlsPage.html" />
     <Content Include="wwwroot\Website\viewmodels\DenyPage.html" />
-    <Content Include="wwwroot\Website\viewmodels\LayoutPage.html" />
+    <Content Include="wwwroot\Website\viewmodels\WrapperPage.html" />
     <Content Include="wwwroot\Website\viewmodels\StandalonePage.html" />
   </ItemGroup>
   <ItemGroup>
@@ -161,7 +161,7 @@
     <TypedJSON Include="ViewModels\CmsPage.json">
       <Generator>MsBuild:Compile</Generator>
     </TypedJSON>
-    <TypedJSON Include="ViewModels\ResultPage.json">
+    <TypedJSON Include="ViewModels\WebTemplatePage.json">
       <Generator>MsBuild:Compile</Generator>
     </TypedJSON>
     <TypedJSON Include="ViewModels\JsonCache.json">

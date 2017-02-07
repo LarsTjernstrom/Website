@@ -29,17 +29,15 @@ namespace Website {
             Application.Current.Use(new PartialToStandaloneHtmlProvider());
 
             Handle.GET("/website", () => {
-                LayoutPage master = GetLayoutPage();
+                WrapperPage master = GetLayoutPage();
 
-                master.TemplateHtml = null;
-                master.TemplateModel = null;
-                master.TemplateName = null;
+                master.WebTemplatePage.Data = null;
 
                 return master;
             });
 
             Handle.GET("/website/partial/layout", () => {
-                if (Session.Current != null && Session.Current.Data is LayoutPage)
+                if (Session.Current != null && Session.Current.Data is WrapperPage)
                 {
                     return Session.Current.Data;
                 }
@@ -49,7 +47,7 @@ namespace Website {
                     Session.Current = new Session(SessionOptions.PatchVersioning);
                 }
 
-                var page = new LayoutPage()
+                var page = new WrapperPage()
                 {
                     Session = Session.Current
                 };
@@ -63,13 +61,6 @@ namespace Website {
             });
 
             RegisterFilter();
-        }
-
-        private Boolean IsFullHtml(String html) {
-            if (html.IndexOf("FullPage") > -1) {
-                return true; //it's a full HTML page
-            }
-            return false; //it's a partial
         }
 
         protected void RegisterFilter()
@@ -120,49 +111,37 @@ namespace Website {
                 if (template == null) {
                     return response;
                 }
+                
+                WrapperPage master = GetLayoutPage();
 
-                LayoutPage master = GetLayoutPage();
-
-                ResultPage content = master.TemplateModel as ResultPage;
-
-                if (content == null || master.TemplateName != template.Name) {
-                    content = new ResultPage();
-
-                    InitializeTemplate(template, content);
-                    UpdateTemplateSections(request, response, template, content, webUrl);
-
-                    master.TemplateName = template.Name;
-                    content.Html = master.TemplateHtml = template.Html;
-                    if(IsFullHtml(template.Html) == true) {
-                        master.Html = template.Html;
-                    }
-                    master.TemplateModel = content;
-                } else {
-                    content.Html = template.Html;
-                    UpdateTemplateSections(request, response, template, content, webUrl);
+                if (!template.Equals(master.WebTemplatePage.Data))
+                {
+                    master.WebTemplatePage.Data = template;
+                    InitializeTemplate(master.WebTemplatePage);
                 }
+                UpdateTemplateSections(request, response, master.WebTemplatePage, webUrl);
 
                 return master;
             });
         }
 
-        protected void InitializeTemplate(WebTemplate template, ResultPage content)
+        protected void InitializeTemplate(WebTemplatePage content)
         {
             dynamic namedSections = new Json();
             content.Sections = namedSections;
 
-            foreach (WebSection section in template.Sections) {
+            foreach (WebSection section in content.Data.Sections) {
                 var sectionJson = new SectionPage();
                 namedSections[section.Name] = sectionJson;
                 sectionJson.Name = section.Name;
             }
         }
 
-        protected void UpdateTemplateSections(Request req, Response res, WebTemplate template, ResultPage content, WebUrl url)
+        protected void UpdateTemplateSections(Request req, Response res, WebTemplatePage content, WebUrl url)
         {
             string[] parts = req.Uri.Split(new char[] { '/' });
 
-            foreach (WebSection section in template.Sections) {
+            foreach (WebSection section in content.Data.Sections) {
                 var sectionJson = content.Sections[section.Name] as SectionPage;
                 int index = 0;
 
@@ -226,8 +205,8 @@ namespace Website {
             return false;
         }
 
-        protected LayoutPage GetLayoutPage() {
-            return Self.GET<LayoutPage>("/website/partial/layout");
+        protected WrapperPage GetLayoutPage() {
+            return Self.GET<WrapperPage>("/website/partial/layout");
         }
     }
 }
