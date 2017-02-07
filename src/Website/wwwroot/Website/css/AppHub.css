@@ -1,4 +1,4 @@
-/*View Shadow DOM styles*/
+/*View's Shadow DOM styles*/
 section.container {
     background-color: white;
     width: 800px;
@@ -25,7 +25,7 @@ section.footer {
     clear: both;
 }
 
-/*View distributed DOM styles*/
+/*View's distributed DOM styles*/
 
 ::content h1,
 h1 /*shimmed browsers*/ {
