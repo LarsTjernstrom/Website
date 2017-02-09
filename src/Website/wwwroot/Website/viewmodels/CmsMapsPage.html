@@ -21,7 +21,6 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th class="td-key">Key</th>
                         <th>Section</th>
                         <th>Url</th>
                         <th>Foreign url</th>
@@ -32,9 +31,6 @@
                 <tbody>
                     <template is="dom-repeat" items="{{model.Maps}}">
                         <tr>
-                            <td class="td-key">
-                                <input type="text" value="{{item.Key}}" readonly="readonly" class="form-control" />
-                            </td>
                             <td>
                                 <select class="form-control" key="[[item.SectionKey$]]" value="{{item.SectionKey$::change}}">
                                     <option value=""></option>
