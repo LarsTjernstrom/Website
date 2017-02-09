@@ -1,32 +1,36 @@
-﻿<link rel="import" href="/website/elements/website-section/website-section.html">
-
 <template>
+    <style slot="Website/global-style">
+        body {
+            margin: 0;
+        }
+    </style>
     <template is="dom-bind">
+        <starcounter-include slot="Website/topbar" partial="{{model.Sections.TopBar}}"></starcounter-include>
+        <starcounter-include slot="Website/main" partial="{{model.Sections.Main}}"></starcounter-include>
+    </template>
+    <template is="starcounter-composition">
+        <content select="[slot='Website/global-style']"></content>
         <style>
-             body {
-                 margin: 0;    
-             }
-
-             .top-bar {
-                 background-color: #333;
-                 color: #FFF;
-                 padding: 10px;
-             }
-
-            .top-bar > website-section {
-                display: flex;
-                justify-content: flex-end;
+            .website-defaulttemplate-topbar {
+                background-color: #333;
+                color: #FFF;
+                padding: 10px;
             }
 
-            .top-bar > website-section > starcounter-include {
-                margin-left: 10px;
-            }
+                .website-defaulttemplate-topbar > starcounter-include {
+                    display: flex;
+                    justify-content: flex-end;
+                }
+
+                    .website-defaulttemplate-topbar > starcounter-include > starcounter-include {
+                        margin-left: 10px;
+                    }
         </style>
-        <section class="top-bar">
-            <website-section section="{{model.Sections.TopBar}}"></website-section>
+        <section class="website-defaulttemplate-topbar">
+            <content select="[slot='Website/topbar']"></content>
         </section>
-        <section class="main">
-            <website-section section="{{model.Sections.Main}}"></website-section>
+        <section class="website-defaulttemplate-main">
+            <content select="[slot='Website/main']"></content>
         </section>
     </template>
 </template>

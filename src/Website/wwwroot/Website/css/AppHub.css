@@ -1,95 +1,59 @@
-﻿html {
-    padding: 0px;
-    margin: 0px;
-    height: 100%;
-}
-
-body {
-    padding: 0px;
-    margin: 0px;
-    height: 100%;
-    background-color: #fafafa;
-    font-family: Arial;
-    font-size: 16px;
-}
-
-#observe-required {
-    position: fixed;
-    width: 650px;
-    left: 50%;
-    margin-left: -350px;
-    top: 50%;
-    margin-top: -200px;
-    box-shadow: 0px 0px 10px #C0C0C0;
-    padding: 25px;
-}
-
-#body {
+/*View's Shadow DOM styles*/
+.website-apphub {
     background-color: white;
     width: 800px;
     padding: 0px 50px;
     margin: auto;
-    box-sizing: border-box;
     min-height: 100%;
 }
-
-html section {
+.website-apphub__navigation,
+.website-apphub__header,
+.website-apphub__left,
+.website-apphub__right,
+.website-apphub__footer {
     overflow: auto;
     margin-bottom: 15px;
 }
-
-html section.left,
-html section.right {
+.website-apphub__left,
+.website-apphub__right {
     float: left;
     box-sizing: border-box;
     width: 50%;
 }
-
-html section.left {
+.website-apphub__left {
     padding-right: 25px;
 }
-
-html section.right {
+.website-apphub__right {
     padding-left: 25px;
 }
-
-html section.footer {
+.website-apphub__footer {
     clear: both;
 }
 
-html website-section {
-    display: block;
-    overflow: auto;
-}
+/*View's distributed DOM styles*/
 
-html h1 {
+::content h1,
+h1 /*shimmed browsers*/ {
     font-size: 32px;
     font-weight: normal;
 }
-
-html h2 {
+::content h2,
+h2 /*shimmed browsers*/ {
     font-weight: normal;
 }
-
-html h3 {
+::content h3,
+h3 /*shimmed browsers*/ {
     font-weight: bold;
     font-size: 16px;
 }
-
-.navigation so-signin {
-    display: none;
-}
-
-html .text-block {
+::content .text-block,
+.text-block /*shimmed browsers*/ {
     height: 140px;
 }
-
-html so-signin {
-    background-color: blue;
-}
-
-html input[type=text],
-html input[type=password] {
+::content input[type=text],
+input[type=text] /*shimmed browsers*/,
+::content input[type=password],
+input[type=password] /*shimmed browsers*/ {
     border-top-width: 1px;
     border-bottom-width: 1px;
     border-left-width: 1px;
@@ -108,28 +72,22 @@ html input[type=password] {
     width: 214px;
     height: 25px;
 }
-
-html div.form-horizontal,
-html div.form-horizontal + div {
+::content div.form-horizontal,
+div.form-horizontal /*shimmed browsers*/,
+::content div.form-horizontal + div,
+div.form-horizontal + div /*shimmed browsers*/ {
     float: left;
     margin-bottom: 10px;
 }
-
-html div.form-horizontal {
+::content div.form-horizontal,
+div.form-horizontal /*shimmed browsers*/ {
     width: 25%;
     line-height: 25px;
 }
-
-html div.form-horizontal + div {
-    width: 75%;
-}
-
-html div.form-horizontal + div + div:not(.form-horizontal) {
-    padding-left: 25%;
-}
-
-html button,
-html input[type=button] {
+::content button,
+button /*shimmed browsers*/,
+::content input[type=button],
+input[type=button] /*shimmed browsers*/ {
     border-top-width: 0px;
     border-bottom-width: 0px;
     border-left-width: 0px;
@@ -163,17 +121,15 @@ html input[type=button] {
     margin-bottom: 5px;
     cursor: pointer;
 }
-
-html button[disabled],
-html input[type=button][disabled] {
+::content button[disabled],
+button[disabled] /*shimmed browsers*/,
+::content input[type=button][disabled]
+input[type=button][disabled] /*shimmed browsers*/ {
     opacity: 0.7;
     cursor: not-allowed;
     box-shadow: none;
 }
-
-html .alert.alert-danger {
+::content .alert.alert-danger,
+.alert.alert-danger /*shimmed browsers*/ {
     color: red;
-}
-
-section.header {
 }
