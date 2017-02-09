@@ -71,6 +71,7 @@
     <Compile Include="Api\CommitHooks.cs" />
     <Compile Include="Api\ContentHandlers.cs" />
     <Compile Include="Api\MainHandlers.cs" />
+    <Compile Include="Api\MapHandlers.cs" />
     <Compile Include="Helpers\DataHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
