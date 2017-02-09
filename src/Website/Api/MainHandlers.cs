@@ -20,7 +20,7 @@ namespace Website {
                 }
 
                 standalone.Session = session;
-                standalone.User = Self.GET("/sc/mapping/user", () => new Json());
+                standalone.User = Self.GET("/Website/user");
 
                 return standalone;
             });
@@ -91,6 +91,8 @@ namespace Website {
                     return master;
                 });
             });
+
+            Handle.GET("/website/user", () => new Json(), new HandlerOptions() { SelfOnly = true });
         }
 
         protected void RegisterPartials() {
