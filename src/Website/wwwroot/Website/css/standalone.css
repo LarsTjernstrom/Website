@@ -14,9 +14,9 @@ body {
 }
 
 nav#top-menu {
-    position: relative;
-    padding: 5px 0px 0px 10px;
-    width: 50%;
+    background-color: #303030;
+    color: #CCCCCC;
+    height: 40px;
 }
 
 nav#top-menu ul {
@@ -50,21 +50,6 @@ nav#top-menu ul li a:hover {
     margin: auto;
     box-sizing: border-box;
     padding: 60px 50px 20px 50px;
-}
-
-#user {
-    background-color: #303030;
-    color: #CCCCCC;
-    height: 40px;
-    top: 0px;
-    left: 0px;
-    width: 100%;
-    position: absolute;
-}
-
-#user-icons {
-    float: right;
-    padding: 8px;
 }
 
 table.table tr td.td-input {

@@ -8,19 +8,20 @@ namespace Website {
 
             Handle.GET("/website/standalone", () => {
                 Session session = Session.Current;
+                StandalonePage standalone = GetMasterFromSession(session);
 
-                if (session != null && session.Data != null && session.Data is StandalonePage) {
-                    return session.Data as StandalonePage;
+                if (standalone != null)
+                {
+                    return standalone;
                 }
 
-                StandalonePage standalone = new StandalonePage();
+                standalone = new StandalonePage();
 
                 if (session == null) {
                     session = new Session(SessionOptions.PatchVersioning);
                 }
 
                 standalone.Session = session;
-                standalone.User = Self.GET("/Website/user");
 
                 return standalone;
             });
@@ -91,8 +92,6 @@ namespace Website {
                     return master;
                 });
             });
-
-            Handle.GET("/website/user", () => new Json(), new HandlerOptions() { SelfOnly = true });
         }
 
         protected void RegisterPartials() {
@@ -141,6 +140,23 @@ namespace Website {
 
         protected StandalonePage GetMaster() {
             return Self.GET<StandalonePage>("/website/standalone");
+        }
+
+        protected StandalonePage GetMasterFromSession(Session session)
+        {
+            if (session != null)
+            {
+                if (session.Data is StandalonePage)
+                {
+                    return (StandalonePage)session.Data;
+                }
+
+                if (session.Data is WrapperPage)
+                {
+                    return ((WrapperPage)session.Data).UnwrappedPublicViewModel as StandalonePage;
+                }
+            }
+            return null;
         }
     }
 }

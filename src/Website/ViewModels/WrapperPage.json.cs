@@ -9,5 +9,6 @@ using Starcounter;
 namespace Website {
     partial class WrapperPage : Json
     {
+        public Json UnwrappedPublicViewModel;
     }
 }

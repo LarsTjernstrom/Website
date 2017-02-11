@@ -47,10 +47,14 @@ namespace Website {
                     Session.Current = new Session(SessionOptions.PatchVersioning);
                 }
 
-                var page = new WrapperPage()
+                var page = new WrapperPage();
+
+                if (Session.Current.PublicViewModel is StandalonePage)
                 {
-                    Session = Session.Current
-                };
+                    page.UnwrappedPublicViewModel = Session.Current.PublicViewModel;
+                }
+
+                page.Session = Session.Current;
 
                 if (page.Session.PublicViewModel != page)
                 {
@@ -79,10 +83,6 @@ namespace Website {
             Application.Current.Use((Request request, Response response) => {
                 if (!(response.Resource is Json))
                 {
-                    return response;
-                }
-
-                if (request.Uri.StartsWith("/website/cms")) {
                     return response;
                 }
 
