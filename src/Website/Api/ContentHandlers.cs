@@ -165,12 +165,13 @@ namespace Website {
                     index++;
                 }
 
-                if (section.Default && url == null)
+                var json = res.Resource as Json;
+                if (section.Default && json != null)
                 {
                     if (!IsSectionRowAtUri(sectionJson.Rows, index, req.Uri))
                     {
                         sectionJson.Rows[index].Key = req.Uri;
-                        sectionJson.Rows[index].MergeJson(res.Resource as Json);
+                        sectionJson.Rows[index].MergeJson(json);
                     }
                     index++;
                 }

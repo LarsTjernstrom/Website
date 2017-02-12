@@ -122,6 +122,7 @@
   <ItemGroup>
     <Content Include="wwwroot\Website\css\standalone.css" />
     <Content Include="wwwroot\Website\css\AppHub.css" />
+    <None Include="wwwroot\Website\templates\SidebarTemplate.html" />
     <Content Include="wwwroot\Website\viewmodels\WebsiteSection.html" />
     <None Include="wwwroot\Website\templates\AppHubTemplate.html" />
     <Content Include="wwwroot\Website\templates\DefaultTemplate.html" />

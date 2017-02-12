@@ -46,6 +46,29 @@ namespace Website {
 
                 new WebMap() { Section = topbar, ForeignUrl = "/signin/user", SortNumber = 1 };
 
+                // SidebarTemplate
+
+                WebTemplate sidebarTemplate = new WebTemplate()
+                {
+                    Default = false,
+                    Name = "SidebarTemplate",
+                    Html = "/Website/templates/SidebarTemplate.html"
+                };
+
+                new WebSection()
+                {
+                    Template = sidebarTemplate,
+                    Name = "Left",
+                    Default = false
+                };
+
+                new WebSection()
+                {
+                    Template = sidebarTemplate,
+                    Name = "Right",
+                    Default = true
+                };
+
                 // AppHubTemplate
 
                 template = new WebTemplate()

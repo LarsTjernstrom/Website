@@ -1,0 +1,29 @@
+﻿<template>
+    <template is="dom-bind">
+        <starcounter-include slot="Website/left" partial="{{model.Sections.Left}}"></starcounter-include>
+        <starcounter-include slot="Website/right" partial="{{model.Sections.Right}}"></starcounter-include>
+    </template>
+    <template is="starcounter-composition">
+        <style>
+            .website-sidebartemplate {
+                display: flex;
+            }
+
+            .website-sidebartemplate__left {
+                flex: 0 0 200px;
+            }
+
+            .website-sidebartemplate__right {
+                flex: 1 0 200px;
+            }
+        </style>
+        <section class="website-sidebartemplate">
+            <section class="website-sidebartemplate__left">
+                <content select="[slot='Website/left']"></content>
+            </section>
+            <section class="website-sidebartemplate__right">
+                <content select="[slot='Website/right']"></content>
+            </section>
+        </section>
+    </template>
+</template>
