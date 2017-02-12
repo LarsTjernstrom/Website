@@ -1,6 +1,7 @@
 using Starcounter;
 
-namespace Website {
+namespace WebsiteProvider
+{
     partial class ContainerPage : Json
     {
     }

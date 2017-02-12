@@ -6,7 +6,8 @@ using Starcounter;
 ///  instead of <starcounter-include>, which is why we have to wrap it.
 /// </summary>
 
-namespace Website {
+namespace WebsiteProvider
+{
     partial class WrapperPage : Json
     {
         public Json UnwrappedPublicViewModel;

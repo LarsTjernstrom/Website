@@ -6,6 +6,9 @@ namespace Website {
         public void Register() {
             RegisterPartials();
 
+            Application.Current.Use(new HtmlFromJsonProvider());
+            Application.Current.Use(new PartialToStandaloneHtmlProvider());
+
             Handle.GET("/website/standalone", () => {
                 Session session = Session.Current;
                 StandalonePage standalone = GetMasterFromSession(session);
@@ -149,11 +152,6 @@ namespace Website {
                 if (session.Data is StandalonePage)
                 {
                     return (StandalonePage)session.Data;
-                }
-
-                if (session.Data is WrapperPage)
-                {
-                    return ((WrapperPage)session.Data).UnwrappedPublicViewModel as StandalonePage;
                 }
             }
             return null;

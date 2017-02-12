@@ -5,7 +5,7 @@ using Starcounter;
 using Simplified.Ring6;
 using Starcounter.Advanced.XSON;
 
-namespace Website {
+namespace WebsiteProvider {
     public class ContentHandlers {
         public string GetWildCardUrl(string Url) {
             Regex reg = new Regex(@"[/]\w*$", RegexOptions.IgnoreCase);
@@ -49,7 +49,7 @@ namespace Website {
 
                 var page = new WrapperPage();
 
-                if (Session.Current.PublicViewModel is StandalonePage)
+                if (Session.Current.PublicViewModel is Json)
                 {
                     page.UnwrappedPublicViewModel = Session.Current.PublicViewModel;
                 }

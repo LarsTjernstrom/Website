@@ -1,6 +1,6 @@
 using Starcounter;
 
-namespace Website
+namespace WebsiteProvider
 {
     partial class SectionPage : Json
     {

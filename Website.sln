@@ -22,6 +22,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Content", "..\Content\src\C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignIn", "..\SignIn\src\SignIn\SignIn.csproj", "{AD9637E2-BC66-48CF-AFEF-AAE2454413EF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebsiteProvider", "src\WebsiteProvider\WebsiteProvider.csproj", "{050D34C2-F3ED-4712-8D9E-A47160B41DBB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -40,6 +42,10 @@ Global
 		{AD9637E2-BC66-48CF-AFEF-AAE2454413EF}.Debug|x64.Build.0 = Debug|x64
 		{AD9637E2-BC66-48CF-AFEF-AAE2454413EF}.Release|x64.ActiveCfg = Release|x64
 		{AD9637E2-BC66-48CF-AFEF-AAE2454413EF}.Release|x64.Build.0 = Release|x64
+		{050D34C2-F3ED-4712-8D9E-A47160B41DBB}.Debug|x64.ActiveCfg = Debug|x64
+		{050D34C2-F3ED-4712-8D9E-A47160B41DBB}.Debug|x64.Build.0 = Debug|x64
+		{050D34C2-F3ED-4712-8D9E-A47160B41DBB}.Release|x64.ActiveCfg = Release|x64
+		{050D34C2-F3ED-4712-8D9E-A47160B41DBB}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
