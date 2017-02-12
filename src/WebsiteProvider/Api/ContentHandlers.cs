@@ -4,9 +4,12 @@ using System.Text.RegularExpressions;
 using Starcounter;
 using Simplified.Ring6;
 using Starcounter.Advanced.XSON;
+using Starcounter.Internal;
 
 namespace WebsiteProvider {
     public class ContentHandlers {
+        static string runResponseMiddleware = "X-Run-Response-Middleware";
+
         public string GetWildCardUrl(string Url) {
             Regex reg = new Regex(@"[/]\w*$", RegexOptions.IgnoreCase);
 
@@ -36,42 +39,100 @@ namespace WebsiteProvider {
                 return master;
             });
 
-            Handle.GET("/website/partial/layout", () => {
-                if (Session.Current != null && Session.Current.Data is WrapperPage)
-                {
-                    return Session.Current.Data;
-                }
+            Handle.GET("/website/partial/layout", () =>
+            {
+                WrapperPage page = null;
 
-                if (Session.Current == null)
+                if (Session.Current != null)
+                {
+                    page = FindWrapperPageForTemplate(Session.Current.Data as WrapperPage, this.CurrentTemplate);
+                    if (page != null)
+                    {
+                        return page;
+                    }
+                }
+                else
                 {
                     Session.Current = new Session(SessionOptions.PatchVersioning);
                 }
 
-                var page = new WrapperPage();
+                page = new WrapperPage();
 
                 if (Session.Current.PublicViewModel is Json)
                 {
                     page.UnwrappedPublicViewModel = Session.Current.PublicViewModel;
                 }
 
-                page.Session = Session.Current;
-
-                if (page.Session.PublicViewModel != page)
+                var final = Session.Current.Data as WrapperPage;
+                if (final == null || final.IsFinal == false)
                 {
-                    page.Session.PublicViewModel = page;
+                    page.Session = Session.Current;
+
+                    if (page.Session.PublicViewModel != page)
+                    {
+                        page.Session.PublicViewModel = page;
+                    }
                 }
 
                 return page;
             });
 
+            Handle.GET("/website/partial/wrapper?uri={?}", (string requestUri) => {
+                string[] parts = requestUri.Split(new char[] { '/' });
+                WebUrl webUrl = Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE wu.Url = ?", requestUri).First;
+
+                if (webUrl == null)
+                {
+                    string wildCard = GetWildCardUrl(requestUri);
+
+                    webUrl = Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE wu.Url = ?", wildCard).First;
+                }
+
+                WebTemplate template;
+
+                if (webUrl != null)
+                {
+                    template = webUrl.Template;
+                }
+                else
+                {
+                    template = Db.SQL<WebTemplate>("SELECT wt FROM Simplified.Ring6.WebTemplate wt WHERE wt.Default = ?", true).First;
+                }
+
+                if (template == null)
+                {
+                    throw new Exception("Default template is missing");
+                }
+
+                this.CurrentTemplate = template;
+                WrapperPage master = GetLayoutPage();
+
+                if (template.Name == "DefaultTemplate")
+                {
+                    master.IsFinal = true;
+                }
+
+                if (!template.Equals(master.WebTemplatePage.Data))
+                {
+                    master.WebTemplatePage.Data = template;
+                    InitializeTemplate(master.WebTemplatePage);
+                }
+                UpdateTemplateSections(requestUri, this.CurrentResponse, master.WebTemplatePage, webUrl);
+
+                return master;
+            });
+
             RegisterFilter();
         }
 
+        private Response CurrentResponse;
+        private WebTemplate CurrentTemplate;
+
         protected void RegisterFilter()
         {
-            var runResponseMiddleware = "X-Run-Response-Middleware";
 
-            Application.Current.Use((Request request) => {
+            Application.Current.Use((Request request) =>
+            {
                 //Mark this request to be wrapped by Website response middleware.
                 //Without this we would wrap ALL requests, including the ones that shouldn't be wrapped
                 //(e.g. "Sign out" button in SignIn app, which uses HandlerOptions.SkipRequestFilters = true)
@@ -81,47 +142,23 @@ namespace WebsiteProvider {
             });
 
             Application.Current.Use((Request request, Response response) => {
-                if (!(response.Resource is Json))
+                if (response.Resource is Json)
                 {
-                    return response;
+                    if (request.Headers[runResponseMiddleware] != null)
+                    {
+                        var wrapper = response.Resource as WrapperPage;
+                        var requestUri = request.Uri;
+                        while (wrapper == null || wrapper.IsFinal == false)
+                        {
+                            this.CurrentResponse = response;
+
+                                response = Self.GET("/website/partial/wrapper?uri=" + requestUri);
+                            wrapper = response.Resource as WrapperPage;
+                            requestUri = wrapper.WebTemplatePage.Data.Html;
+                        }
+                    }
                 }
-
-                if (request.Headers[runResponseMiddleware] == null)
-                {
-                    return response;
-                }
-
-                string[] parts = request.Uri.Split(new char[] { '/' });
-                WebUrl webUrl = Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE wu.Url = ?", request.Uri).First;
-
-                if (webUrl == null) {
-                    string wildCard = GetWildCardUrl(request.Uri);
-
-                    webUrl = Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE wu.Url = ?", wildCard).First;
-                }
-
-                WebTemplate template;
-
-                if (webUrl != null) {
-                    template = webUrl.Template;
-                } else {
-                    template = Db.SQL<WebTemplate>("SELECT wt FROM Simplified.Ring6.WebTemplate wt WHERE wt.Default = ?", true).First;
-                }
-
-                if (template == null) {
-                    return response;
-                }
-                
-                WrapperPage master = GetLayoutPage();
-
-                if (!template.Equals(master.WebTemplatePage.Data))
-                {
-                    master.WebTemplatePage.Data = template;
-                    InitializeTemplate(master.WebTemplatePage);
-                }
-                UpdateTemplateSections(request, response, master.WebTemplatePage, webUrl);
-
-                return master;
+                return response;
             });
         }
 
@@ -130,16 +167,17 @@ namespace WebsiteProvider {
             dynamic namedSections = new Json();
             content.Sections = namedSections;
 
-            foreach (WebSection section in content.Data.Sections) {
-                var sectionJson = new SectionPage();
+            foreach (WebSection section in content.Data.Sections)
+            {
+                SectionPage sectionJson = new SectionPage();
                 namedSections[section.Name] = sectionJson;
                 sectionJson.Name = section.Name;
             }
         }
 
-        protected void UpdateTemplateSections(Request req, Response res, WebTemplatePage content, WebUrl url)
+        protected void UpdateTemplateSections(string requestUri, Response response, WebTemplatePage content, WebUrl url)
         {
-            string[] parts = req.Uri.Split(new char[] { '/' });
+            string[] parts = requestUri.Split(new char[] { '/' });
 
             foreach (WebSection section in content.Data.Sections) {
                 var sectionJson = content.Sections[section.Name] as SectionPage;
@@ -160,18 +198,42 @@ namespace WebsiteProvider {
                     string uri = FormatUrl(map.ForeignUrl, parts.Last());
                     if (!IsSectionRowAtUri(sectionJson.Rows, index, uri))
                     {
-                        sectionJson.Rows[index] = GetConainterPage(uri);
+                        var page = GetConainterPage(uri);
+                        page.RequestUri = uri;
+                        page.Reset();
+                        sectionJson.Rows[index] = page;
                     }
                     index++;
                 }
 
-                var json = res.Resource as Json;
+                var json = response.Resource as Json;
                 if (section.Default && json != null)
                 {
-                    if (!IsSectionRowAtUri(sectionJson.Rows, index, req.Uri))
+                    if (!IsSectionRowAtUri(sectionJson.Rows, index, requestUri))
                     {
-                        sectionJson.Rows[index].Key = req.Uri;
-                        sectionJson.Rows[index].MergeJson(json);
+                        if (json is WrapperPage)
+                        {
+                            //we are inserting WebsitePrivider to WebsitePrivider
+                            sectionJson.Rows[index] = json as WrapperPage;
+                        }
+                        else
+                        {
+                            //we are inserting different app to WebsitePrivider
+
+                            var page = sectionJson.Rows[index] as WrapperPage;
+                            //uncommenting the below lines results in MergeJson producing invalid patches
+                            //it is good to fix it, so we reuse existing wrapped pages
+                            //if (page == null) 
+                            //{
+                                page = GetConainterPage(requestUri);
+                                sectionJson.Rows[index] = page;
+                            //}
+
+                            page.RequestUri = requestUri;
+                            page.Reset();
+                            page.MergeJson(json);
+                            sectionJson.Rows[index] = page;
+                        }
                     }
                     index++;
                 }
@@ -184,22 +246,20 @@ namespace WebsiteProvider {
             }
         }
 
-        private ContainerPage GetConainterPage(string uri)
+        private WrapperPage GetConainterPage(string uri)
         {
-            var json = Self.GET<ContainerPage>(uri, () => {
-                return new ContainerPage()
-                {
-                    Key = uri
-                };
+            var json = Self.GET<WrapperPage>(uri, () =>
+            {
+                return new WrapperPage();
             });
             return json;
         }
 
-        private bool IsSectionRowAtUri(Arr<ContainerPage> rows, int index, string uri)
+        private bool IsSectionRowAtUri(Arr<WrapperPage> rows, int index, string uri)
         {
             if (rows.Count > index)
             {
-                return (rows[index].Key == uri);
+                return (rows[index].RequestUri == uri);
             }
 
             rows.Add();
@@ -208,6 +268,19 @@ namespace WebsiteProvider {
 
         protected WrapperPage GetLayoutPage() {
             return Self.GET<WrapperPage>("/website/partial/layout");
+        }
+
+        protected WrapperPage FindWrapperPageForTemplate(WrapperPage page, WebTemplate template)
+        {
+            if (page != null)
+            {
+                if (page.WebTemplatePage.Data != null && page.WebTemplatePage.Data.Equals(template))
+                {
+                    return page;
+                }
+                return FindWrapperPageForTemplate(page.UnwrappedPublicViewModel as WrapperPage, template);               
+            }
+            return null;
         }
     }
 }

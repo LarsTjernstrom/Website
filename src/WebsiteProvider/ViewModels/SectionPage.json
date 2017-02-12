@@ -1,5 +1,5 @@
 {
   "Html": "/WebsiteProvider/viewmodels/WebsiteSection.html", 
   "Name": "",
-  "Rows": [{"$": {"Reuse": "WebsiteProvider.ContainerPage"}}]  
+  "Rows": [{"$": {"Reuse": "WebsiteProvider.WrapperPage"}}]  
 }

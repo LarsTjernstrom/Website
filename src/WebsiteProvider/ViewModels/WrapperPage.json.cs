@@ -11,5 +11,13 @@ namespace WebsiteProvider
     partial class WrapperPage : Json
     {
         public Json UnwrappedPublicViewModel;
+        public bool IsFinal = false;
+        public string RequestUri;
+
+        public void Reset()
+        {
+            this.Html = "";
+            this.WebTemplatePage.Data = null;
+        }
     }
 }

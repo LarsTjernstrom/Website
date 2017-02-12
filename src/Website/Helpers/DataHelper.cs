@@ -55,7 +55,7 @@ namespace Website {
                     Html = "/Website/templates/SidebarTemplate.html"
                 };
 
-                new WebSection()
+                var sidebarLeft = new WebSection()
                 {
                     Template = sidebarTemplate,
                     Name = "Left",
@@ -68,6 +68,14 @@ namespace Website {
                     Name = "Right",
                     Default = true
                 };
+
+                WebUrl templatesUrl = new WebUrl()
+                {
+                    Template = sidebarTemplate,
+                    Url = "/website/cms/templates"
+                };
+
+                new WebMap() { Url = templatesUrl, Section = sidebarLeft, ForeignUrl = "/website/help?topic=template", SortNumber = 1 };
 
                 // AppHubTemplate
 

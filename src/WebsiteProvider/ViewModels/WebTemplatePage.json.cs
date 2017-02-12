@@ -5,5 +5,6 @@ namespace WebsiteProvider
 {
     partial class WebTemplatePage : Json, IBound<WebTemplate>
     {
+        public SectionPage DefaultSection;
     }
 }

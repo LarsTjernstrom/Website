@@ -29,6 +29,11 @@ namespace Website {
                 return standalone;
             });
 
+            Handle.GET("/website/help?topic={?}", (string topic) => {
+                var json = new CmsHelp();
+                return json;
+            });
+
             Handle.GET("/website/cleardata", () => {
                 DataHelper helper = new DataHelper();
 
