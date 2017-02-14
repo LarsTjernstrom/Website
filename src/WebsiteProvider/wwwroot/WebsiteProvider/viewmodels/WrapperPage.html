@@ -1,5 +1,10 @@
 ﻿<template>
     <template is="dom-bind">
-        <starcounter-include partial="{{model.WebTemplatePage}}"></starcounter-include>
+        <style>
+        .website-surface {
+            height: 100%;
+        }
+        </style>
+        <starcounter-include class="website-surface" slot="WebsiteProvider/Surface/{{model.WebTemplatePage.Name}}" partial="{{model.WebTemplatePage}}"></starcounter-include>
     </template>
 </template>
