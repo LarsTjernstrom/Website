@@ -6,11 +6,14 @@ using Simplified.Ring6;
 using Starcounter.Advanced.XSON;
 using Starcounter.Internal;
 
-namespace WebsiteProvider {
-    public class ContentHandlers {
+namespace WebsiteProvider
+{
+    public class ContentHandlers
+    {
         static string runResponseMiddleware = "X-Run-Response-Middleware";
 
-        public string GetWildCardUrl(string Url) {
+        public string GetWildCardUrl(string Url)
+        {
             Regex reg = new Regex(@"[/]\w*$", RegexOptions.IgnoreCase);
 
             Url = reg.Replace(Url, "/{?}");
@@ -18,10 +21,13 @@ namespace WebsiteProvider {
             return Url;
         }
 
-        public string FormatUrl(string Url, string Name) {
-            if (string.IsNullOrEmpty(Name)) {
+        public string FormatUrl(string Url, string Name)
+        {
+            if (string.IsNullOrEmpty(Name))
+            {
                 return Url;
-            } else {
+            }
+            else {
                 return Url.Replace("{?}", Name);
             }
         }
@@ -31,7 +37,8 @@ namespace WebsiteProvider {
             Application.Current.Use(new HtmlFromJsonProvider());
             Application.Current.Use(new PartialToStandaloneHtmlProvider());
 
-            Handle.GET("/WebsiteProvider", () => {
+            Handle.GET("/WebsiteProvider", () =>
+            {
                 WrapperPage master = GetLayoutPage();
 
                 master.WebTemplatePage.Data = null;
@@ -77,7 +84,8 @@ namespace WebsiteProvider {
                 return page;
             });
 
-            Handle.GET("/WebsiteProvider/partial/wrapper?uri={?}", (string requestUri) => {
+            Handle.GET("/WebsiteProvider/partial/wrapper?uri={?}", (string requestUri) =>
+            {
                 string[] parts = requestUri.Split(new char[] { '/' });
                 WebUrl webUrl = Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE wu.Url = ?", requestUri).First;
 
@@ -136,7 +144,8 @@ namespace WebsiteProvider {
                 return null;
             });
 
-            Application.Current.Use((Request request, Response response) => {
+            Application.Current.Use((Request request, Response response) =>
+            {
                 if (response.Resource is Json)
                 {
                     if (request.Headers[runResponseMiddleware] != null)
@@ -147,7 +156,7 @@ namespace WebsiteProvider {
                         {
                             this.CurrentResponse = response;
 
-                                response = Self.GET("/WebsiteProvider/partial/wrapper?uri=" + requestUri);
+                            response = Self.GET("/WebsiteProvider/partial/wrapper?uri=" + requestUri);
                             wrapper = response.Resource as WrapperPage;
                             requestUri = wrapper.WebTemplatePage.Data.Html;
                         }
@@ -174,7 +183,8 @@ namespace WebsiteProvider {
         {
             string[] parts = requestUri.Split(new char[] { '/' });
 
-            foreach (WebSection section in content.Data.Sections) {
+            foreach (WebSection section in content.Data.Sections)
+            {
                 var sectionJson = content.Sections[section.Name] as SectionPage;
                 int index = 0;
 
@@ -220,8 +230,8 @@ namespace WebsiteProvider {
                             //it is good to fix it, so we reuse existing wrapped pages
                             //if (page == null) 
                             //{
-                                page = GetConainterPage(requestUri);
-                                sectionJson.Rows[index] = page;
+                            page = GetConainterPage(requestUri);
+                            sectionJson.Rows[index] = page;
                             //}
 
                             page.RequestUri = requestUri;
@@ -261,7 +271,8 @@ namespace WebsiteProvider {
             return false;
         }
 
-        protected WrapperPage GetLayoutPage() {
+        protected WrapperPage GetLayoutPage()
+        {
             return Self.GET<WrapperPage>("/WebsiteProvider/partial/layout");
         }
 
@@ -273,7 +284,7 @@ namespace WebsiteProvider {
                 {
                     return page;
                 }
-                return FindWrapperPageForTemplate(page.UnwrappedPublicViewModel as WrapperPage, template);               
+                return FindWrapperPageForTemplate(page.UnwrappedPublicViewModel as WrapperPage, template);
             }
             return null;
         }
