@@ -31,7 +31,7 @@ namespace WebsiteProvider {
             Application.Current.Use(new HtmlFromJsonProvider());
             Application.Current.Use(new PartialToStandaloneHtmlProvider());
 
-            Handle.GET("/website", () => {
+            Handle.GET("/WebsiteProvider", () => {
                 WrapperPage master = GetLayoutPage();
 
                 master.WebTemplatePage.Data = null;
@@ -39,7 +39,7 @@ namespace WebsiteProvider {
                 return master;
             });
 
-            Handle.GET("/website/partial/layout", () =>
+            Handle.GET("/WebsiteProvider/partial/layout", () =>
             {
                 WrapperPage page = null;
 
@@ -77,7 +77,7 @@ namespace WebsiteProvider {
                 return page;
             });
 
-            Handle.GET("/website/partial/wrapper?uri={?}", (string requestUri) => {
+            Handle.GET("/WebsiteProvider/partial/wrapper?uri={?}", (string requestUri) => {
                 string[] parts = requestUri.Split(new char[] { '/' });
                 WebUrl webUrl = Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE wu.Url = ?", requestUri).First;
 
@@ -147,7 +147,7 @@ namespace WebsiteProvider {
                         {
                             this.CurrentResponse = response;
 
-                                response = Self.GET("/website/partial/wrapper?uri=" + requestUri);
+                                response = Self.GET("/WebsiteProvider/partial/wrapper?uri=" + requestUri);
                             wrapper = response.Resource as WrapperPage;
                             requestUri = wrapper.WebTemplatePage.Data.Html;
                         }
@@ -262,7 +262,7 @@ namespace WebsiteProvider {
         }
 
         protected WrapperPage GetLayoutPage() {
-            return Self.GET<WrapperPage>("/website/partial/layout");
+            return Self.GET<WrapperPage>("/WebsiteProvider/partial/layout");
         }
 
         protected WrapperPage FindWrapperPageForTemplate(WrapperPage page, WebTemplate template)
