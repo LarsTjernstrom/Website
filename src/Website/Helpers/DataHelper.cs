@@ -28,6 +28,7 @@ namespace Website
                 GenerateDefaultSurface();
                 GenerateSidebarSurface();
                 GenerateAppHubSurface();
+                GenerateLauncherSurface();
             });
         }
 
@@ -171,6 +172,39 @@ namespace Website
             new WebMap() { Url = profileUrl, Section = header, ForeignUrl = "/content/dynamic/userprofile/header", SortNumber = 1 };
             new WebMap() { Url = profileUrl, Section = header, ForeignUrl = "/userprofile", SortNumber = 2 };
             new WebMap() { Url = profileUrl, Section = footer, ForeignUrl = "/content/dynamic/userprofile/footer", SortNumber = 3 };
+        }
+
+        public void GenerateLauncherSurface()
+        {
+            var surface = new WebTemplate()
+            {
+                Default = false,
+                Name = "LauncherTemplate",
+                Html = "/Website/templates/LauncherTemplate.html"
+            };
+
+            var topbar = new WebSection()
+            {
+                Template = surface,
+                Name = "TopBar",
+                Default = false
+            };
+
+            var leftbar = new WebSection()
+            {
+                Template = surface,
+                Name = "LeftBar",
+                Default = false
+            };
+
+            var main = new WebSection()
+            {
+                Template = surface,
+                Name = "Main",
+                Default = true
+            };
+
+            new WebMap() { Section = topbar, ForeignUrl = "/signin/user", SortNumber = 1 };
         }
     }
 }

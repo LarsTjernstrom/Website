@@ -1,0 +1,233 @@
+
+<link rel="import" href="/sys/polymer/polymer.html" />
+<link rel="import" href="/Launcher/elements/launcher-menu/launcher-menu.html" />
+
+<template>
+    <style slot="Website/global-style">
+        html,
+        body {
+            font-family: Calibri, Helvetica, Arial, sans-serif;
+            font-size: 14px;
+            padding: 0;
+            margin: 0;
+            height: 100%;
+        }
+
+        .launcher-settings-button {
+            font-size: 0;
+        }
+
+        .launcher-settings-button__icon {
+            width: 22px;
+            height: 22px;
+        }
+
+        .launcher-home-button {
+            font-size: 0;
+        }
+
+        .launcher-home-button__icon {
+            width: 19px;
+            height: 19px;
+            color: white;
+            display: inline-block;
+            font-size: 18px;
+            margin-left: 4px;
+            margin-right: 10px;
+        }
+
+        .launcher-search {
+            display: flex;
+            align-items: center;
+            font-size: 0;
+        }
+
+        .launcher-search__icon {
+            color: white;
+            font-size: 18px;
+        }
+
+        .launcher-search__input[type="text"] {
+            /* need high specifity to overwrite Bootstrap*/
+            color: white;
+            background: #7B8AA6;
+            padding: 4px;
+            border: 1px solid #3d4860;
+            border-radius: 4px;
+            font-size: 14px;
+            margin-left: 10px;
+            -webkit-box-shadow: none;
+            box-shadow: none;
+        }
+
+        .launcher-search__input[type="text"]::-webkit-input-placeholder {
+            /* WebKit browsers */
+            color: white;
+        }
+
+        .launcher-search__input[type="text"]::-moz-placeholder {
+            /* Mozilla Firefox 19+ */
+            color: white;
+        }
+
+        launcher-menu ul {
+            margin: 0px;
+            padding: 9px;
+            list-style-type: none;
+        }
+
+        launcher-menu ul li:hover {
+            background-color: #6794AC;
+            color: white;
+        }
+
+        launcher-menu ul li {
+            border-bottom: 1px solid #3d4860;
+            padding-right: 8px;
+            padding-left: 4px;
+        }
+
+        launcher-menu a {
+            display: block;
+            padding-top: 8px;
+            padding-bottom: 8px;
+            padding-left: 2px;
+            padding-right: 2px;
+        }
+
+        launcher-menu ul a:link,
+        launcher-menu a:visited,
+        launcher-menu a:hover,
+        launcher-menu a:active {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        launcher-menu a i {
+            /*glyphicon, etc*/
+            width: 16px;
+            text-align: center;
+        }
+
+        launcher-menu a img,
+        launcher-menu a svg {
+            width: 16px;
+            height: 16px;
+            vertical-align: text-bottom;
+            margin-bottom: 1px;
+            margin-top: 1px;
+        }
+    </style>
+    <template is="dom-bind">
+        <a slot="Website/icon" href="/launcher" class="launcher-home-button"><i class="glyphicon glyphicon-home launcher-home-button__icon"></i></a>
+        <div slot="Website/search" class="launcher-search">
+            <a href="javascript:" value="{{model.searchBar.submit$}}" onclick="++this.value">
+                <i class="glyphicon glyphicon-search launcher-search__icon"></i>
+            </a>
+            <input type="text" class="launcher-search__input" placeholder="Search">
+        </div>
+        <a slot="Website/settings" href="/launcher/settings" class="launcher-settings-button"><img class="launcher-settings-button__icon" src="/Website/images/cog.svg" /></a>
+        <starcounter-include slot="Website/topbar" partial="{{model.Sections.TopBar}}"></starcounter-include>
+        <launcher-menu slot="Website/leftbar">
+            <starcounter-include partial="{{model.Sections.LeftBar}}"></starcounter-include>
+            <ul></ul>
+        </launcher-menu>
+        <starcounter-include slot="Website/main" partial="{{model.Sections.Main}}"></starcounter-include>
+    </template>
+    <template is="starcounter-composition">
+        <content select="[slot='Website/global-style']"></content>
+        <style>
+            .launcher-layout {
+                display: flex;
+                flex-direction: column;
+                height: 100%;
+            }
+
+            .launcher-layout__top {
+                display: flex;
+                align-items: center;
+                flex: 0 0 auto;
+                justify-content: space-between;
+                z-index: 100;
+                background-color: #333c4e;
+                color: #8a98b0;
+                font-size: 28px;
+                line-height: normal;
+                /*reset bootstrap line-height*/
+                padding: 0 10px;
+                height: 50px;
+            }
+
+            .launcher-layout__top-left,
+            .launcher-layout__top-right {
+                display: flex;
+                align-items: center;
+            }
+
+            .launcher-layout__top-left {}
+
+            .launcher-layout__top-right {}
+
+            .launcher-layout__top-left ::content starcounter-include>juicy-composition,
+            .launcher-layout__top-left starcounter-include>juicy-composition {
+                display: flex;
+                align-items: center;
+            }
+
+            .launcher-layout__top-right ::content starcounter-include>juicy-composition,
+            .launcher-layout__top-right starcounter-include>juicy-composition {
+                display: flex;
+                align-items: center;
+            }
+
+            .launcher-layout__top-right ::content starcounter-include>juicy-composition>*,
+            .launcher-layout__top-right starcounter-include>juicy-composition>* {
+                margin-right: 5px;
+            }
+
+            .launcher-layout__top-right ::content paper-icon-button,
+            .launcher-layout__top-right paper-icon-button {
+                width: 24px;
+                height: 24px;
+                padding: 0;
+            }
+
+            .launcher-layout__content {
+                display: flex;
+                flex: 1 1 auto;
+            }
+
+            .launcher-layout__leftbar {
+                flex: 0 0 200px;
+                background-color: #333c4e;
+                color: #8a98b0;
+                line-height: normal;
+            }
+
+            .launcher-layout__main {
+                flex: 1 0 auto;
+                padding: 20px;
+            }
+        </style>
+        <div class="launcher-layout">
+            <div class="launcher-layout__top">
+                <div class="launcher-layout__top-left">
+                    <content select="[slot='Website/icon']"></content>
+                    <content select="[slot='Website/search']"></content>
+                </div>
+                <div class="launcher-layout__top-right">
+                    <content select="[slot='Website/topbar']"></content>
+                    <content select="[slot='Website/settings']"></content>
+                </div>
+            </div>
+            <div class="launcher-layout__content">
+                <div class="launcher-layout__leftbar">
+                    <content select="[slot='Website/leftbar']"></content>
+                </div>
+                <div class="launcher-layout__main">
+                    <content select="[slot='Website/main']"></content>
+                </div>
+            </div>
+        </div>
+    </template>
+</template>
