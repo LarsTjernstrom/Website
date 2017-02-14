@@ -106,12 +106,7 @@ namespace WebsiteProvider {
 
                 this.CurrentTemplate = template;
                 WrapperPage master = GetLayoutPage();
-
-                if (template.Name == "DefaultTemplate")
-                {
-                    master.IsFinal = true;
-                }
-
+                master.IsFinal = template.Default;
                 if (!template.Equals(master.WebTemplatePage.Data))
                 {
                     master.WebTemplatePage.Data = template;
