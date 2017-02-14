@@ -1,18 +1,26 @@
 # Website
-Simple CMS Launcher to create pages with content regions and display result from different applications in the regions.
+Suite of two apps allowing to create templates with sections and display result from different applications in the sections.
 
 Note: Website only wraps responses where the response resource is `Json` (not null) with a session.
 
 ## Features
 
-The Wesite features are divided into 2 parts:
+This solution consists of two apps
 
-1. CMS admin panel
-2. Presentation wrapping of Starcounter apps
+1. **WebsiteProvider** - wraps the responses according to the configuration stored in the database.
+2. **Website CMS** - serves the admin panel. It is used to create the configuration for WebsiteProvider in the database.
 
-### CMS admin panel
+### WebsiteProvider
 
-CMS admin panel allows to configure the presentation wrapping of Starcounter apps.
+WebsiteProvider wraps the app responses according to the configuration stored in the database.
+
+When the end user visits one of the wrapped URLs (or any URL, if there is a default template), the response from that URL is wrapped in our template.
+
+The view-model includes all of the sections and the filling responses from the mapped foreign URLs.
+
+### Website CMS
+
+Website CMS allows to configure the wrapping of the app responses in templates.
 
 CMS is divided into four sections:
 
@@ -49,12 +57,6 @@ Each rule defines that for a certain entry **Url**, a certain **Section** should
 Map rules support single wildcard URLs. If both **Url** and **Foreign url** contain a wildcard (`{?}`), the value at this place in the **Url** will be passed to the **Foreign url**.
 
 If a rule has no value in the **Url** column, it becomes a "catch-all" rule. This means that it is applied for any entry URL.
-
-### Presentation wrapping of Starcounter apps
-
-When the end user visits one of the wrapped URLs (or any URL, if there is a default template), the response from that URL is wrapped in our template.
-
-The view-model includes all of the sections and the filling responses from the mapped foreign URLs.
 
 ## Sample gateway config
 
