@@ -29,7 +29,6 @@
         .launcher-home-button__icon {
             width: 19px;
             height: 19px;
-            color: white;
             display: inline-block;
             font-size: 18px;
             margin-left: 4px;
@@ -43,7 +42,6 @@
         }
 
         .launcher-search__icon {
-            color: white;
             font-size: 18px;
         }
 
@@ -149,13 +147,18 @@
                 flex: 0 0 auto;
                 justify-content: space-between;
                 z-index: 100;
-                background-color: #333c4e;
-                color: #8a98b0;
+                background: var(--secondary-background, #333c4e);
+                color: var(--secondary-color, #8a98b0);
                 font-size: 28px;
                 line-height: normal;
                 /*reset bootstrap line-height*/
                 padding: 0 10px;
                 height: 50px;
+            }
+
+            .launcher-layout__top ::content a, 
+            .launcher-layout__top a {
+                color: var(--secondary-color, #8a98b0);
             }
 
             .launcher-layout__top-left,
@@ -199,14 +202,16 @@
 
             .launcher-layout__leftbar {
                 flex: 0 0 200px;
-                background-color: #333c4e;
-                color: #8a98b0;
+                background: var(--secondary-background, #333c4e);
+                color: var(--secondary-color, #8a98b0);
                 line-height: normal;
             }
 
             .launcher-layout__main {
                 flex: 1 0 auto;
                 padding: 20px;
+                background: var(--primary-background, white);
+                color: var(--primary-color, black);
             }
         </style>
         <div class="launcher-layout">
