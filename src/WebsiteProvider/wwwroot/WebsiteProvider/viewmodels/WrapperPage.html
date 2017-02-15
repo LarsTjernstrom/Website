@@ -1,10 +1,10 @@
-﻿<template>
-    <template is="dom-bind">
-        <style>
+<template>
+    <style>
         .website-surface {
             min-height: 100%;
         }
-        </style>
+    </style>
+    <template is="dom-bind">
         <starcounter-include class="website-surface" slot="WebsiteProvider/Surface/{{model.WebTemplatePage.Name}}" partial="{{model.WebTemplatePage}}"></starcounter-include>
     </template>
 </template>
