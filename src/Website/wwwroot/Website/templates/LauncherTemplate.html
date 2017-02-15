@@ -208,9 +208,12 @@
 
             .launcher-layout__main {
                 flex: 1 0 auto;
-                padding: 20px;
                 background: var(--primary-background, white);
                 color: var(--primary-color, black);
+            }
+
+            .launcher-layout__padded {
+              padding: 20px;
             }
         </style>
         <div class="launcher-layout">
@@ -229,7 +232,9 @@
                     <content select="[slot='Website/leftbar']"></content>
                 </div>
                 <div class="launcher-layout__main">
-                    <content select="[slot='Website/main']"></content>
+                    <div class="launcher-layout__padded">
+                        <content select="[slot='Website/main']"></content>
+                    </div>
                 </div>
             </div>
         </div>
