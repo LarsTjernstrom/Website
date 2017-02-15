@@ -2,7 +2,7 @@ using Starcounter;
 
 namespace Website
 {
-    partial class SectionPage : Json
+    partial class CmsHelp : Json
     {
     }
 }

@@ -19,21 +19,13 @@ namespace Website {
         }
 
         protected void RefreshSignInState() {
-            StandalonePage page = GetStandalonePage();
+            var page = Self.GET<StandalonePage>("/website/cms/standalone");
 
             if (page == null) {
                 return;
             }
 
             page.RefreshCurrentPage();
-        }
-
-        protected StandalonePage GetStandalonePage() {
-            if (Session.Current != null && Session.Current.Data is StandalonePage) {
-                return Session.Current.Data as StandalonePage;
-            }
-
-            return null;
         }
     }
 }

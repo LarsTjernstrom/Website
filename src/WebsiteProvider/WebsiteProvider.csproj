@@ -6,11 +6,11 @@
     <ProductVersion>9.0.20706</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectTypeGuids>{C86118D7-451E-4933-BFEE-A1EFDB162FD7};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <ProjectGuid>{A47BCF61-801A-4360-BA03-A8A7133F96B5}</ProjectGuid>
+    <ProjectGuid>{050D34C2-F3ED-4712-8D9E-A47160B41DBB}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Website</RootNamespace>
-    <AssemblyName>Website</AssemblyName>
+    <RootNamespace>WebsiteProvider</RootNamespace>
+    <AssemblyName>WebsiteProvider</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <UseVSHostingProcess>false</UseVSHostingProcess>
@@ -46,7 +46,6 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
@@ -63,95 +62,42 @@
     <Reference Include="Starcounter.XSON, Version=2.0.0.0, Culture=neutral, PublicKeyToken=d2df1e81d0ca3abf">
       <Private>False</Private>
     </Reference>
-    <Reference Include="System.Data" />
-    <Reference Include="System.Data.Entity" />
-    <Reference Include="System.Web.Extensions" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Api\CommitHooks.cs" />
-    <Compile Include="Api\MainHandlers.cs" />
-    <Compile Include="Helpers\DataHelper.cs" />
+    <Compile Include="Api\ContentHandlers.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModels\CmsMapsPage.json.cs">
-      <DependentUpon>CmsMapsPage.json</DependentUpon>
+    <Compile Include="ViewModels\SectionPage.json.cs">
+      <DependentUpon>SectionPage.json</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\CmsPage.json.cs">
-      <DependentUpon>CmsPage.json</DependentUpon>
+    <Compile Include="ViewModels\WebTemplatePage.json.cs">
+      <DependentUpon>WebTemplatePage.json</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\CmsSectionsPage.json.cs">
-      <DependentUpon>CmsSectionsPage.json</DependentUpon>
-    </Compile>
-    <Compile Include="ViewModels\CmsHelp.json.cs">
-      <DependentUpon>CmsHelp.json</DependentUpon>
-    </Compile>
-    <Compile Include="ViewModels\CmsTemplatesPage.json.cs">
-      <DependentUpon>CmsTemplatesPage.json</DependentUpon>
-    </Compile>
-    <Compile Include="ViewModels\CmsUrlsPage.json.cs">
-      <DependentUpon>CmsUrlsPage.json</DependentUpon>
-    </Compile>
-    <Compile Include="ViewModels\DenyPage.json.cs">
-      <DependentUpon>DenyPage.json</DependentUpon>
-    </Compile>
-    <Compile Include="ViewModels\JsonCache.json.cs">
-      <DependentUpon>JsonCache.json</DependentUpon>
-    </Compile>
-    <Compile Include="ViewModels\StandalonePage.json.cs">
-      <DependentUpon>StandalonePage.json</DependentUpon>
+    <Compile Include="ViewModels\WrapperPage.json.cs">
+      <DependentUpon>WrapperPage.json</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="wwwroot\sys\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="wwwroot\Website\css\standalone.css" />
-    <Content Include="wwwroot\Website\css\AppHub.css" />
-    <TypedJSON Include="ViewModels\CmsHelp.json">
-      <Generator>MsBuild:Compile</Generator>
-    </TypedJSON>
-    <None Include="wwwroot\Website\templates\SidebarTemplate.html" />
-    <None Include="wwwroot\Website\templates\AppHubTemplate.html" />
-    <Content Include="wwwroot\Website\templates\DefaultTemplate.html" />
-    <None Include="wwwroot\Website\viewmodels\CmsHelp.html" />
-    <Content Include="wwwroot\Website\viewmodels\CmsMapsPage.html" />
-    <Content Include="wwwroot\Website\viewmodels\CmsPage.html" />
-    <Content Include="wwwroot\Website\viewmodels\CmsSectionsPage.html" />
-    <Content Include="wwwroot\Website\viewmodels\CmsTemplatesPage.html" />
-    <Content Include="wwwroot\Website\viewmodels\CmsUrlsPage.html" />
-    <Content Include="wwwroot\Website\viewmodels\DenyPage.html" />
-    <Content Include="wwwroot\Website\viewmodels\StandalonePage.html" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include=".bowerrc" />
-    <None Include="App.config" />
-    <TypedJSON Include="ViewModels\DenyPage.json">
-      <Generator>MsBuild:Compile</Generator>
-    </TypedJSON>
-    <TypedJSON Include="ViewModels\CmsMapsPage.json">
-      <Generator>MsBuild:Compile</Generator>
-    </TypedJSON>
-    <TypedJSON Include="ViewModels\CmsUrlsPage.json">
-      <Generator>MsBuild:Compile</Generator>
-    </TypedJSON>
-    <TypedJSON Include="ViewModels\CmsSectionsPage.json">
-      <Generator>MsBuild:Compile</Generator>
-    </TypedJSON>
-    <TypedJSON Include="ViewModels\CmsTemplatesPage.json">
-      <Generator>MsBuild:Compile</Generator>
-    </TypedJSON>
-    <TypedJSON Include="ViewModels\StandalonePage.json">
-      <Generator>MsBuild:Compile</Generator>
-    </TypedJSON>
-    <TypedJSON Include="ViewModels\CmsPage.json">
-      <Generator>MsBuild:Compile</Generator>
-    </TypedJSON>
-    <TypedJSON Include="ViewModels\JsonCache.json">
+    <TypedJSON Include="ViewModels\SectionPage.json">
       <Generator>MsBuild:Compile</Generator>
     </TypedJSON>
   </ItemGroup>
   <ItemGroup>
-    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+    <TypedJSON Include="ViewModels\WebTemplatePage.json">
+      <Generator>MsBuild:Compile</Generator>
+    </TypedJSON>
+  </ItemGroup>
+  <ItemGroup>
+    <TypedJSON Include="ViewModels\WrapperPage.json">
+      <Generator>MsBuild:Compile</Generator>
+    </TypedJSON>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <None Include="wwwroot\WebsiteProvider\viewmodels\WrapperPage.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="wwwroot\WebsiteProvider\viewmodels\WebsiteSection.html" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(StarcounterBin)\Starcounter.MsBuild.targets" />

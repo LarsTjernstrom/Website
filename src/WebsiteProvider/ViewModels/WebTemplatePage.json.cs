@@ -1,8 +1,10 @@
 using Simplified.Ring6;
 using Starcounter;
 
-namespace Website {
+namespace WebsiteProvider
+{
     partial class WebTemplatePage : Json, IBound<WebTemplate>
     {
+        public SectionPage DefaultSection;
     }
 }

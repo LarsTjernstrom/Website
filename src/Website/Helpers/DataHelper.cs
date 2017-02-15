@@ -46,6 +46,37 @@ namespace Website {
 
                 new WebMap() { Section = topbar, ForeignUrl = "/signin/user", SortNumber = 1 };
 
+                // SidebarTemplate
+
+                WebTemplate sidebarTemplate = new WebTemplate()
+                {
+                    Default = false,
+                    Name = "SidebarTemplate",
+                    Html = "/Website/templates/SidebarTemplate.html"
+                };
+
+                var sidebarLeft = new WebSection()
+                {
+                    Template = sidebarTemplate,
+                    Name = "Left",
+                    Default = false
+                };
+
+                new WebSection()
+                {
+                    Template = sidebarTemplate,
+                    Name = "Right",
+                    Default = true
+                };
+
+                WebUrl templatesUrl = new WebUrl()
+                {
+                    Template = sidebarTemplate,
+                    Url = "/website/cms/templates"
+                };
+
+                new WebMap() { Url = templatesUrl, Section = sidebarLeft, ForeignUrl = "/website/help?topic=template", SortNumber = 1 };
+
                 // AppHubTemplate
 
                 template = new WebTemplate()
