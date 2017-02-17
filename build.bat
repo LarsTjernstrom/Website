@@ -6,4 +6,3 @@ CALL "%VS140COMNTOOLS%\vsvars32.bat"
 PUSHD %~dp0
 msbuild
 POPD
-GOTO END
