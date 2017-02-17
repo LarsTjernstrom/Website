@@ -51,8 +51,15 @@ namespace Website {
                 return 200;
             });
 
-            Handle.GET("/website/cms", () => {
-                return Db.Scope<StandalonePage>(() => {
+            Handle.GET("/website", () =>
+            {
+                return Self.GET("/website/cms");
+            });
+
+            Handle.GET("/website/cms", () =>
+            {
+                return Db.Scope<StandalonePage>(() =>
+                {
                     StandalonePage master = this.GetMaster();
 
                     master.RefreshCurrentPage("/website/partials/cms");
