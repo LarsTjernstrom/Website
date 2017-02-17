@@ -39,11 +39,11 @@ namespace WebsiteProvider
 
             Handle.GET("/WebsiteProvider", () =>
             {
-                WrapperPage master = GetLayoutPage();
+                //WrapperPage master = GetLayoutPage();
 
-                master.WebTemplatePage.Data = null;
+                //master.WebTemplatePage.Data = null;
 
-                return master;
+                return new AboutPage();
             });
 
             Handle.GET("/WebsiteProvider/partial/layout", () =>
