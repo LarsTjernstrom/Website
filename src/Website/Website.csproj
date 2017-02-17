@@ -114,6 +114,7 @@
     <None Include="wwwroot\Website\templates\AppHubTemplate.html" />
     <Content Include="wwwroot\Website\templates\DefaultTemplate.html" />
     <None Include="wwwroot\Website\viewmodels\CmsHelp.html" />
+    <None Include="wwwroot\Website\templates\LauncherTemplate.html" />
     <Content Include="wwwroot\Website\viewmodels\CmsMapsPage.html" />
     <Content Include="wwwroot\Website\viewmodels\CmsPage.html" />
     <Content Include="wwwroot\Website\viewmodels\CmsSectionsPage.html" />
