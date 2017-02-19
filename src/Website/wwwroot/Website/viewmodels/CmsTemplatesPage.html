@@ -3,6 +3,7 @@
         <fieldset>
             <legend>
                 <span class="pull-right">
+                    <span class="text-danger">{{model.Error}}</span>
                     <button type="button" class="btn btn-xs btn-success" value="{{model.SaveChanges$::click}}"
                             onmousedown="++this.value;" disabled="{{!model.Trn.IsDirty}}" title="Save all changes">
                         Save
@@ -14,6 +15,10 @@
                     <button type="button" class="btn btn-xs btn-default" value="{{model.Create$::click}}"
                             onmousedown="++this.value;" title="Create template">
                         Create
+                    </button>
+                    <button type="button" class="btn btn-xs btn-default" value="{{model.Restore$::click}}"
+                            onmousedown="++this.value;" title="Restore default">
+                        Restore
                     </button>
                 </span>
                 Templates

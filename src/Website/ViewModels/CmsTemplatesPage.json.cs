@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Starcounter;
 using Simplified.Ring6;
 
@@ -11,13 +12,34 @@ namespace Website {
             this.Trn.Data = this.Transaction as Transaction;
         }
 
+        void Handle(Input.Restore Action)
+        {
+            this.Transaction.Rollback();
+
+            DataHelper helper = new DataHelper();
+            helper.ClearData();
+            helper.GenerateData();
+
+            this.RefreshData();
+            this.Error = "";
+        }
+
         void Handle(Input.CancelChanges Action) {
             this.Transaction.Rollback();
             this.RefreshData();
+            this.Error = null;
         }
 
         void Handle(Input.SaveChanges Action) {
-            this.Transaction.Commit();
+            this.Error = null;
+            if (Templates.Any(val => val.Default))
+            {
+                this.Transaction.Commit();
+            }
+            else
+            {
+                this.Error = "At least one template should be marked as Default!";
+            }
         }
 
         void Handle(Input.Create Action) {

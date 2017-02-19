@@ -12,7 +12,9 @@
     "Trn": {
         "IsDirty": false
     },
+    "Error": "",
     "Create$": 0,
+    "Restore$": 0,
     "SaveChanges$": 0,
     "CancelChanges$": 0
 }
