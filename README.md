@@ -1,5 +1,5 @@
 # Website
-Suite of two apps allowing to create templates with sections and display result from different applications in the sections.
+Suite of two apps allowing to create surfaces with blending points and attach the result from different applications in the blending points.
 
 Note: Website only wraps responses where the response resource is `Json` (not null) with a session.
 
@@ -14,49 +14,49 @@ This solution consists of two apps
 
 WebsiteProvider wraps the app responses according to the configuration stored in the database.
 
-When the end user visits one of the wrapped URLs (or any URL, if there is a default template), the response from that URL is wrapped in our template.
+When the end user visits one of the wrapped URLs (or any URL, if there is a default surface), the response from that URL is wrapped in our surface.
 
-The view-model includes all of the sections and the filling responses from the mapped foreign URLs.
+The view-model includes all of the blending points and the filling responses from the pinned URIs.
 
 ### Website CMS
 
-Website CMS allows to configure the wrapping of the app responses in templates.
+Website CMS allows to configure the wrapping of the app responses in surfaces.
 
-CMS is divided into four sections:
+CMS interface is divided into four tabs:
 
-#### Templates
+#### Surfaces
 
-Templates are the HTML documents that contain user interface sections. A single template can contain one of more sections.
+Surfaces are the HTML documents that contain blending points. A single surface can contain one of more blending points.
 
-Every template has a **Name** and a path to the **Html** URI that contains the template. This URL can be resolved to a static file or to a dynamic handler, to which a different app responds (try it with Content app!).
+Every surface has a **Name** and a path to the **View URI** that defines the presentation of the blending points. This URL can be resolved to a static file or to a dynamic handler, to which a different app responds (try it with Content app!).
 
-A template can be **Default**, meaning that it will be forced on any JSON response from any Starcounter app.
+A surface can be **Default**, meaning that it will be forced on any JSON response from any Starcounter app.
 
-If a template is not default, then it will wrap only the URIs that are assigned to it using **Maps**.
+If a surface is not default, then it will wrap only the URIs that are assigned to it using **Catching rules**.
 
-#### Sections
+#### Blending points
 
-Sections are the visual regions of a template. Each section has a **Name**.
+Blending points define where responses can be attached in a surface. Each blending point has a **Name**.
 
-A section can be **Default**, meaning that it will catch the initial response that the template is wrapping.
+A blending point can be **Default**, meaning that it will attach the initial response that the surface is wrapping.
 
-#### Urls
+#### Catching rules
 
-Urls are the rules by which a requests is wrapped in templates.
+Catching rules define which requests are wrapped in surfaces.
 
-Each rule defines that a certain entry **Url** should be wrapped in a certain template.
+Each rule defines that a certain entry **Catch URI** should be wrapped in a certain surface.
 
-Url rules support single wildcard URLs. If **Url** contains a wildcard (`{?}`), it will match a request that contains any value at that place in the URL.
+Catching rules support single wildcard URLs. If **Catch URI** contains a wildcard (`{?}`), it will match a request that contains any value at that place in the URL.
 
-#### Maps
+#### Pinning rules
 
-Maps are the rules by which the sections are filled in with content that comes from any app.
+Pinning rules define additional requests from any apps and to which blending point they should be inserted.
 
-Each rule defines that for a certain entry **Url**, a certain **Section** should be filled in by **Foreign url** (a request to any Starcounter app).
+Each rule defines that for a certain **Catch URI**, a certain **Blending point** should be filled in by **Pin URI** (a request to any Starcounter app).
 
-Map rules support single wildcard URLs. If both **Url** and **Foreign url** contain a wildcard (`{?}`), the value at this place in the **Url** will be passed to the **Foreign url**.
+Pinning rules support single wildcard URLs. If both **Catch URI** and **Pin URI** contain a wildcard (`{?}`), the value at this place in the **Catch URI** will be passed to the **Pin URI**.
 
-If a rule has no value in the **Url** column, it becomes a "catch-all" rule. This means that it is applied for any entry URL.
+If a rule has no value in the **Catch URI** column, it becomes a "catch-all" rule. This means that it is applied for any entry URL.
 
 ## Sample gateway config
 
