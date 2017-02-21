@@ -67,9 +67,6 @@
     <Compile Include="Api\ContentHandlers.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModels\AboutPage.json.cs">
-      <DependentUpon>AboutPage.json</DependentUpon>
-    </Compile>
     <Compile Include="ViewModels\SectionPage.json.cs">
       <DependentUpon>SectionPage.json</DependentUpon>
     </Compile>
@@ -96,12 +93,6 @@
     </TypedJSON>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="wwwroot\WebsiteProvider\viewmodels\AboutPage.html" />
-  </ItemGroup>
-  <ItemGroup>
-    <TypedJSON Include="ViewModels\AboutPage.json">
-      <Generator>MsBuild:Compile</Generator>
-    </TypedJSON>
     <None Include="wwwroot\WebsiteProvider\viewmodels\WrapperPage.html" />
   </ItemGroup>
   <ItemGroup>
