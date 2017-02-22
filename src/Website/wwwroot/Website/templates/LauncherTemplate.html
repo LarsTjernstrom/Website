@@ -182,8 +182,13 @@
                 align-items: center;
             }
 
-            .launcher-layout__top-right ::content starcounter-include>juicy-composition>*,
-            .launcher-layout__top-right starcounter-include>juicy-composition>* {
+            .launcher-layout__top-right ::content starcounter-include > juicy-composition>*,
+            /*
+             Shadow DOM v1 in-compatible Shadow DOM piercing selector
+             styling such things may break default compositions delivered by apps
+            */
+            .launcher-layout__top-right ::content starcounter-include>juicy-composition::shadow>*,
+            .launcher-layout__top-right starcounter-include > juicy-composition > * {
                 margin-right: 5px;
             }
 
