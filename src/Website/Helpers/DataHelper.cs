@@ -85,10 +85,10 @@ namespace Website
             var templatesUrl = new WebUrl()
             {
                 Template = surface,
-                Url = "/website/cms/templates"
+                Url = "/website/cms/surfaces"
             };
 
-            new WebMap() { Url = templatesUrl, Section = sidebarLeft, ForeignUrl = "/website/help?topic=template", SortNumber = 1 };
+            new WebMap() { Url = templatesUrl, Section = sidebarLeft, ForeignUrl = "/website/help?topic=surfaces", SortNumber = 1 };
         }
 
         public void GenerateAppHubSurface()

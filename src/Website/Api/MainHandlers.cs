@@ -112,7 +112,7 @@ namespace Website
                 });
             });
 
-            Handle.GET("/website/cms/pinningRules", () => {
+            Handle.GET("/website/cms/pinningRules", () => 
             {
                 return Db.Scope<StandalonePage>(() =>
                 {
