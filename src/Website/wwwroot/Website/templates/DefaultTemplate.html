@@ -16,10 +16,16 @@
                 color: #FFF;
                 padding: 10px;
             }
-
+                /** for Shadow DOM v0 compilant browsers */
                 .website-defaulttemplate-topbar ::content > starcounter-include,
+                .website-defaulttemplate-topbar ::content starcounter-include > juicy-composition {
+                    display: flex;
+                    align-items: center;
+                    justify-content: flex-end;
+                    margin-right: 5px;
+                }
+                /** for polyfilled browsers */
                 .website-defaulttemplate-topbar > starcounter-include,
-                .website-defaulttemplate-topbar ::content starcounter-include > juicy-composition,
                 .website-defaulttemplate-topbar starcounter-include > juicy-composition {
                     display: flex;
                     align-items: center;
@@ -27,8 +33,12 @@
                     margin-right: 5px;
                 }
 
-                    .website-defaulttemplate-topbar ::content > starcounter-include > starcounter-include,
-                    .website-defaulttemplate-topbar > starcounter-include > starcounter-include {
+                    /** for Shadow DOM v0 compilant browsers */
+                    .website-defaulttemplate-topbar ::content > starcounter-include > starcounter-include {
+                        margin-left: 10px;
+                    }
+                    /** for polyfilled browsers */
+                    .website-defaulttemplate-topbar ::content > starcounter-include > starcounter-include {
                         margin-left: 10px;
                     }
         </style>
