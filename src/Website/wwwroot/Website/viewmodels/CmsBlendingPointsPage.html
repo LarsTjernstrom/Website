@@ -12,28 +12,28 @@
                         Cancel
                     </button>
                     <button type="button" class="btn btn-xs btn-default" value="{{model.Create$::click}}"
-                            onmousedown="++this.value;" title="Create section">
+                            onmousedown="++this.value;" title="Create blending point">
                         Create
                     </button>
                 </span>
-                Sections
+                Blending points
             </legend>
             <table class="table">
                 <thead>
                     <tr>
-                        <th>Template</th>
-                        <th>Name</th>
+                        <th>Surface</th>
+                        <th>Blending point name</th>
                         <th>Default</th>
                         <th class="td-actions"></th>
                     </tr>
                 </thead>
                 <tbody>
-                    <template is="dom-repeat" items="{{model.Sections}}">
+                    <template is="dom-repeat" items="{{model.BlendingPoints}}">
                         <tr>
                             <td>
                                 <select class="form-control" key="[[item.TemplateKey$]]" value="{{item.TemplateKey$::change}}">
                                     <option value=""></option>
-                                    <template is="dom-repeat" items="{{model.Templates}}">
+                                    <template is="dom-repeat" items="{{model.Surfaces}}">
                                         <option value="{{item.Key}}">{{item.Name}}</option>
                                     </template>
                                 </select>

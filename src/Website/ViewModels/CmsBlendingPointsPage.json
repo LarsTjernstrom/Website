@@ -1,15 +1,16 @@
 {
-    "Html": "/Website/viewmodels/CmsUrlsPage.html",
-    "Templates": [
+    "Html": "/Website/viewmodels/CmsBlendingPointsPage.html",
+    "Surfaces": [
         {
             "Key": "",
             "Name": ""
         }
     ],
-    "Urls": [
+    "BlendingPoints": [
         {
             "Key": "",
-            "Url$": "",
+            "Name$": "",
+            "Default$": false,
             "TemplateKey$": "",
             "Delete$": 0
         }
