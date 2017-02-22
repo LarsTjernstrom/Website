@@ -88,37 +88,37 @@ namespace Website
                 });
             });
 
-            Handle.GET("/website/cms/blendingPoints", () => 
+            Handle.GET("/website/cms/blendingpoints", () => 
             {
                 return Db.Scope<StandalonePage>(() =>
                 {
                     StandalonePage master = this.GetMaster();
 
-                    master.RefreshCurrentPage("/website/partials/cms/blendingPoints");
+                    master.RefreshCurrentPage("/website/partials/cms/blendingpoints");
 
                     return master;
                 });
             });
 
-            Handle.GET("/website/cms/catchingRules", () => 
+            Handle.GET("/website/cms/catchingrules", () => 
             {
                 return Db.Scope<StandalonePage>(() =>
                 {
                     StandalonePage master = this.GetMaster();
 
-                    master.RefreshCurrentPage("/website/partials/cms/catchingRules");
+                    master.RefreshCurrentPage("/website/partials/cms/catchingrules");
 
                     return master;
                 });
             });
 
-            Handle.GET("/website/cms/pinningRules", () => 
+            Handle.GET("/website/cms/pinningrules", () => 
             {
                 return Db.Scope<StandalonePage>(() =>
                 {
                     StandalonePage master = this.GetMaster();
 
-                    master.RefreshCurrentPage("/website/partials/cms/pinningRules");
+                    master.RefreshCurrentPage("/website/partials/cms/pinningrules");
 
                     return master;
                 });
@@ -142,7 +142,7 @@ namespace Website
                 return page;
             });
 
-            Handle.GET("/website/partials/cms/blendingPoints", () => {
+            Handle.GET("/website/partials/cms/blendingpoints", () => {
                 CmsBlendingPointsPage page = new CmsBlendingPointsPage();
 
                 page.RefreshData();
@@ -150,7 +150,7 @@ namespace Website
                 return page;
             });
 
-            Handle.GET("/website/partials/cms/catchingRules", () => {
+            Handle.GET("/website/partials/cms/catchingrules", () => {
                 CmsCatchingRulesPage page = new CmsCatchingRulesPage();
 
                 page.RefreshData();
@@ -158,7 +158,7 @@ namespace Website
                 return page;
             });
 
-            Handle.GET("/website/partials/cms/pinningRules", () => {
+            Handle.GET("/website/partials/cms/pinningrules", () => {
                 CmsPinningRulesPage page = new CmsPinningRulesPage();
 
                 page.RefreshData();
