@@ -171,9 +171,6 @@
                 align-items: center;
             }
 
-            .launcher-layout__top-left {}
-
-            .launcher-layout__top-right {}
             /** For browsers that supports Shadow DOM v0 */
             .launcher-layout__top-left ::content starcounter-include>juicy-composition {
                 display: flex;
@@ -197,8 +194,20 @@
             }
 
             @supports( (display: grid) and (grid-column-gap: 5px) ) {
+                /** For browsers that supports Shadow DOM v0 */
                 .launcher-layout__top-right ::content starcounter-include>juicy-composition,
-                .launcher-layout__top-right starcounter-include>juicy-composition {
+                .launcher-layout__top-left,
+                .launcher-layout__top-right {
+                    display: grid;
+                    align-items: center;
+                    grid-column-gap: 5px;
+                    grid-auto-flow: column;
+                }
+
+                /** duplicated rule for polyfilled browsers */
+                .launcher-layout__top-right starcounter-include>juicy-composition,
+                .launcher-layout__top-left,
+                .launcher-layout__top-right {
                     display: grid;
                     align-items: center;
                     grid-column-gap: 5px;
