@@ -61,41 +61,41 @@ namespace Website {
                 });
             });
 
-            Handle.GET("/website/cms/templates", () => {
+            Handle.GET("/website/cms/surfaces", () => {
                 return Db.Scope<StandalonePage>(() => {
                     StandalonePage master = this.GetMaster();
 
-                    master.RefreshCurrentPage("/website/partials/cms/templates");
+                    master.RefreshCurrentPage("/website/partials/cms/surfaces");
 
                     return master;
                 });
             });
 
-            Handle.GET("/website/cms/sections", () => {
+            Handle.GET("/website/cms/blendingPoints", () => {
                 return Db.Scope<StandalonePage>(() => {
                     StandalonePage master = this.GetMaster();
 
-                    master.RefreshCurrentPage("/website/partials/cms/sections");
+                    master.RefreshCurrentPage("/website/partials/cms/blendingPoints");
 
                     return master;
                 });
             });
 
-            Handle.GET("/website/cms/urls", () => {
+            Handle.GET("/website/cms/catchingRules", () => {
                 return Db.Scope<StandalonePage>(() => {
                     StandalonePage master = this.GetMaster();
 
-                    master.RefreshCurrentPage("/website/partials/cms/urls");
+                    master.RefreshCurrentPage("/website/partials/cms/catchingRules");
 
                     return master;
                 });
             });
 
-            Handle.GET("/website/cms/maps", () => {
+            Handle.GET("/website/cms/pinningRules", () => {
                 return Db.Scope<StandalonePage>(() => {
                     StandalonePage master = this.GetMaster();
 
-                    master.RefreshCurrentPage("/website/partials/cms/maps");
+                    master.RefreshCurrentPage("/website/partials/cms/pinningRules");
 
                     return master;
                 });
@@ -109,32 +109,32 @@ namespace Website {
                 return page;
             });
 
-            Handle.GET("/website/partials/cms/templates", () => {
-                CmsTemplatesPage page = new CmsTemplatesPage();
+            Handle.GET("/website/partials/cms/surfaces", () => {
+                CmsSurfacesPage page = new CmsSurfacesPage();
 
                 page.RefreshData();
 
                 return page;
             });
 
-            Handle.GET("/website/partials/cms/sections", () => {
-                CmsSectionsPage page = new CmsSectionsPage();
+            Handle.GET("/website/partials/cms/blendingPoints", () => {
+                CmsBlendingPointsPage page = new CmsBlendingPointsPage();
 
                 page.RefreshData();
 
                 return page;
             });
 
-            Handle.GET("/website/partials/cms/urls", () => {
-                CmsUrlsPage page = new CmsUrlsPage();
+            Handle.GET("/website/partials/cms/catchingRules", () => {
+                CmsCatchingRulesPage page = new CmsCatchingRulesPage();
 
                 page.RefreshData();
 
                 return page;
             });
 
-            Handle.GET("/website/partials/cms/maps", () => {
-                CmsMapsPage page = new CmsMapsPage();
+            Handle.GET("/website/partials/cms/pinningRules", () => {
+                CmsPinningRulesPage page = new CmsPinningRulesPage();
 
                 page.RefreshData();
 

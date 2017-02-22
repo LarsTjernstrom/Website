@@ -12,33 +12,32 @@
                         Cancel
                     </button>
                     <button type="button" class="btn btn-xs btn-default" value="{{model.Create$::click}}"
-                            onmousedown="++this.value;" title="Create url">
+                            onmousedown="++this.value;" title="Create template">
                         Create
                     </button>
                 </span>
-                Catching rules
+                Surfaces
             </legend>
             <table class="table">
                 <thead>
                     <tr>
-                        <th>Surface</th>
-                        <th>Catch URI</th>
+                        <th>Surface name</th>
+                        <th>View URI</th>
+                        <th>Default</th>
                         <th class="td-actions"></th>
                     </tr>
                 </thead>
                 <tbody>
-                    <template is="dom-repeat" items="{{model.Urls}}">
+                    <template is="dom-repeat" items="{{model.Surfaces}}">
                         <tr>
                             <td>
-                                <select class="form-control" key="[[item.TemplateKey$]]" value="{{item.TemplateKey$::change}}">
-                                    <option value=""></option>
-                                    <template is="dom-repeat" items="{{model.Templates}}">
-                                        <option value="{{item.Key}}">{{item.Name}}</option>
-                                    </template>
-                                </select>
+                                <input type="text" value="{{item.Name$::change}}" class="form-control" />
                             </td>
                             <td>
-                                <input type="text" value="{{item.Url$::change}}" class="form-control" />
+                                <input type="text" value="{{item.Html$::change}}" class="form-control" />
+                            </td>
+                            <td>
+                                <input type="checkbox" checked="{{item.Default$::change}}" />
                             </td>
                             <td>
                                 <button type="button" class="btn btn-xs btn-default" value="{{item.Delete$::click}}" onmousedown="++this.value;">Delete</button>
@@ -49,19 +48,4 @@
             </table>
         </fieldset>
     </template>
-    <script>
-        (function () {
-            var template = (document._currentScript || document.currentScript).previousElementSibling;
-
-            setTimeout(function () {
-                var selects = template.parentNode.querySelectorAll("select");
-
-                for (var i = 0; i < selects.length; i++) {
-                    var s = selects[i];
-
-                    s.value = s.key;
-                }
-            });
-        })();
-    </script>
 </template>

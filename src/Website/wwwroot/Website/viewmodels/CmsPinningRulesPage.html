@@ -12,7 +12,7 @@
                         Cancel
                     </button>
                     <button type="button" class="btn btn-xs btn-default" value="{{model.Create$::click}}"
-                            onmousedown="++this.value;" title="Create map">
+                            onmousedown="++this.value;" title="Create pinning rule">
                         Create
                     </button>
                 </span>
@@ -29,12 +29,12 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <template is="dom-repeat" items="{{model.Maps}}">
+                    <template is="dom-repeat" items="{{model.PinningRules}}">
                         <tr>
                             <td>
                                 <select class="form-control" key="[[item.SectionKey$]]" value="{{item.SectionKey$::change}}">
                                     <option value=""></option>
-                                    <template is="dom-repeat" items="{{model.Sections}}">
+                                    <template is="dom-repeat" items="{{model.BlendingPoints}}">
                                         <option value="{{item.Key}}">{{item.FullName}}</option>
                                     </template>
                                 </select>
@@ -42,7 +42,7 @@
                             <td>
                                 <select class="form-control" key="[[item.UrlKey$]]" value="{{item.UrlKey$::change}}">
                                     <option value=""></option>
-                                    <template is="dom-repeat" items="{{model.Urls}}">
+                                    <template is="dom-repeat" items="{{model.CatchingRules}}">
                                         <option value="{{item.Key}}">{{item.Url}}</option>
                                     </template>
                                 </select>

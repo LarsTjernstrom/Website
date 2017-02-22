@@ -72,10 +72,10 @@ namespace Website {
                 WebUrl templatesUrl = new WebUrl()
                 {
                     Template = sidebarTemplate,
-                    Url = "/website/cms/templates"
+                    Url = "/website/cms/surfaces"
                 };
 
-                new WebMap() { Url = templatesUrl, Section = sidebarLeft, ForeignUrl = "/website/help?topic=template", SortNumber = 1 };
+                new WebMap() { Url = templatesUrl, Section = sidebarLeft, ForeignUrl = "/website/help?topic=surface", SortNumber = 1 };
 
                 // AppHubTemplate
 

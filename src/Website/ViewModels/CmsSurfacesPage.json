@@ -1,6 +1,6 @@
 {
-    "Html": "/Website/viewmodels/CmsTemplatesPage.html",
-    "Templates": [
+    "Html": "/Website/viewmodels/CmsSurfacesPage.html",
+    "Surfaces": [
         {
             "Key": "",
             "Name$": "",

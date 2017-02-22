@@ -3,11 +3,11 @@ using Starcounter;
 using Simplified.Ring6;
 
 namespace Website {
-    partial class CmsTemplatesPage : Json
+    partial class CmsSurfacesPage : Json
     {
         public void RefreshData() {
-            this.Templates.Clear();
-            this.Templates.Data = Db.SQL<WebTemplate>("SELECT t FROM Simplified.Ring6.WebTemplate t ORDER BY t.Name");
+            this.Surfaces.Clear();
+            this.Surfaces.Data = Db.SQL<WebTemplate>("SELECT t FROM Simplified.Ring6.WebTemplate t ORDER BY t.Name");
             this.Trn.Data = this.Transaction as Transaction;
         }
 
@@ -21,25 +21,25 @@ namespace Website {
         }
 
         void Handle(Input.Create Action) {
-            this.Templates.Add().Data = new WebTemplate();
+            this.Surfaces.Add().Data = new WebTemplate();
         }
 
-        [CmsTemplatesPage_json.Templates]
-        partial class CmsTemplatesItemPage : Json, IBound<WebTemplate> {
+        [CmsSurfacesPage_json.Surfaces]
+        partial class CmsSurfacesItemPage : Json, IBound<WebTemplate> {
             void Handle(Input.Delete Action) {
-                this.ParentPage.Templates.Remove(this);
+                this.ParentPage.Surfaces.Remove(this);
                 this.Data.Delete();
             }
 
-            CmsTemplatesPage ParentPage {
+            CmsSurfacesPage ParentPage {
                 get {
-                    return this.Parent.Parent as CmsTemplatesPage;
+                    return this.Parent.Parent as CmsSurfacesPage;
                 }
             }
         }
 
-        [CmsTemplatesPage_json.Trn]
-        partial class CmsTemplatesTransactionPage : Json, IBound<Transaction> {
+        [CmsSurfacesPage_json.Trn]
+        partial class CmsSurfacesTransactionPage : Json, IBound<Transaction> {
         }
     }
 }
