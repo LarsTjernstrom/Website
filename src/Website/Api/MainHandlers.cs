@@ -1,15 +1,19 @@
 ﻿using System;
 using Starcounter;
 
-namespace Website {
-    public class MainHandlers {
-        public void Register() {
+namespace Website
+{
+    public class MainHandlers
+    {
+        public void Register()
+        {
             RegisterPartials();
 
             Application.Current.Use(new HtmlFromJsonProvider());
             Application.Current.Use(new PartialToStandaloneHtmlProvider());
 
-            Handle.GET("/website/standalone", () => {
+            Handle.GET("/website/standalone", () =>
+            {
                 Session session = Session.Current;
                 StandalonePage standalone = GetMasterFromSession(session);
 
@@ -20,7 +24,8 @@ namespace Website {
 
                 standalone = new StandalonePage();
 
-                if (session == null) {
+                if (session == null)
+                {
                     session = new Session(SessionOptions.PatchVersioning);
                 }
 
@@ -29,12 +34,14 @@ namespace Website {
                 return standalone;
             });
 
-            Handle.GET("/website/help?topic={?}", (string topic) => {
+            Handle.GET("/website/help?topic={?}", (string topic) =>
+            {
                 var json = new CmsHelp();
                 return json;
             });
 
-            Handle.GET("/website/cleardata", () => {
+            Handle.GET("/website/cleardata", () =>
+            {
                 DataHelper helper = new DataHelper();
 
                 helper.ClearData();
@@ -42,7 +49,8 @@ namespace Website {
                 return 200;
             });
 
-            Handle.GET("/website/resetdata", () => {
+            Handle.GET("/website/resetdata", () =>
+            {
                 DataHelper helper = new DataHelper();
 
                 helper.ClearData();
@@ -51,8 +59,15 @@ namespace Website {
                 return 200;
             });
 
-            Handle.GET("/website/cms", () => {
-                return Db.Scope<StandalonePage>(() => {
+            Handle.GET("/website", () =>
+            {
+                return Self.GET("/website/cms");
+            });
+
+            Handle.GET("/website/cms", () =>
+            {
+                return Db.Scope<StandalonePage>(() =>
+                {
                     StandalonePage master = this.GetMaster();
 
                     master.RefreshCurrentPage("/website/partials/cms");
@@ -61,8 +76,10 @@ namespace Website {
                 });
             });
 
-            Handle.GET("/website/cms/surfaces", () => {
-                return Db.Scope<StandalonePage>(() => {
+            Handle.GET("/website/cms/surfaces", () => 
+            {
+                return Db.Scope<StandalonePage>(() =>
+                {
                     StandalonePage master = this.GetMaster();
 
                     master.RefreshCurrentPage("/website/partials/cms/surfaces");
@@ -71,8 +88,10 @@ namespace Website {
                 });
             });
 
-            Handle.GET("/website/cms/blendingPoints", () => {
-                return Db.Scope<StandalonePage>(() => {
+            Handle.GET("/website/cms/blendingPoints", () => 
+            {
+                return Db.Scope<StandalonePage>(() =>
+                {
                     StandalonePage master = this.GetMaster();
 
                     master.RefreshCurrentPage("/website/partials/cms/blendingPoints");
@@ -81,8 +100,10 @@ namespace Website {
                 });
             });
 
-            Handle.GET("/website/cms/catchingRules", () => {
-                return Db.Scope<StandalonePage>(() => {
+            Handle.GET("/website/cms/catchingRules", () => 
+            {
+                return Db.Scope<StandalonePage>(() =>
+                {
                     StandalonePage master = this.GetMaster();
 
                     master.RefreshCurrentPage("/website/partials/cms/catchingRules");
@@ -92,7 +113,9 @@ namespace Website {
             });
 
             Handle.GET("/website/cms/pinningRules", () => {
-                return Db.Scope<StandalonePage>(() => {
+            {
+                return Db.Scope<StandalonePage>(() =>
+                {
                     StandalonePage master = this.GetMaster();
 
                     master.RefreshCurrentPage("/website/partials/cms/pinningRules");
@@ -102,8 +125,10 @@ namespace Website {
             });
         }
 
-        protected void RegisterPartials() {
-            Handle.GET("/website/partials/cms", () => {
+        protected void RegisterPartials()
+        {
+            Handle.GET("/website/partials/cms", () =>
+            {
                 CmsPage page = new CmsPage();
 
                 return page;
@@ -141,12 +166,14 @@ namespace Website {
                 return page;
             });
 
-            Handle.GET("/website/partials/deny", () => {
+            Handle.GET("/website/partials/deny", () =>
+            {
                 return new DenyPage();
             });
         }
 
-        protected StandalonePage GetMaster() {
+        protected StandalonePage GetMaster()
+        {
             return Self.GET<StandalonePage>("/website/standalone");
         }
 

@@ -115,6 +115,7 @@
     <Content Include="wwwroot\Website\templates\DefaultTemplate.html" />
     <None Include="wwwroot\Website\viewmodels\CmsHelp.html" />
     <Content Include="wwwroot\Website\viewmodels\CmsPinningRulesPage.html" />
+    <None Include="wwwroot\Website\templates\LauncherTemplate.html" />
     <Content Include="wwwroot\Website\viewmodels\CmsPage.html" />
     <Content Include="wwwroot\Website\viewmodels\CmsBlendingPointsPage.html" />
     <Content Include="wwwroot\Website\viewmodels\CmsSurfacesPage.html" />

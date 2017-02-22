@@ -1,23 +1,8 @@
-@echo off
+@ECHO OFF
 
-REM Echo Getting Source from GIT
-rem call git --git-dir="%~dp0.git" pull || (GOTO ERROR)
+:: Set up the env to use Msbuild 14.0
+CALL "%VS140COMNTOOLS%\vsvars32.bat"
 
-REM call git --git-dir="%~dp0.git" --work-tree="%~dp0" pull && (echo success) || (GOTO ERROR)
-SET FOUND_SOURCE=0
-REM Echo Building Source
-FOR %%i IN (%~dp0src\Website\*.csproj) DO ( 
-SET FOUND_SOURCE=1
-REM msbuild %~dp0\src\Website\Website.csproj && (GOTO ERROR)
-msbuild %%i || (GOTO ERROR)
-)
-
-IF "%FOUND_SOURCE%"=="0" ( echo No source found, check batch argument
-GOTO ERROR  )
-
-GOTO END
-
-:ERROR
-echo Error building!
-
-:END
+PUSHD %~dp0
+msbuild
+POPD
