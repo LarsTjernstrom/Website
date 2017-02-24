@@ -1,5 +1,4 @@
-﻿using System;
-using Starcounter;
+﻿using Starcounter;
 using Simplified.Ring6;
 
 namespace Website
@@ -37,7 +36,6 @@ namespace Website
         {
             var surface = new WebTemplate()
             {
-                Default = true,
                 Name = "DefaultTemplate",
                 Html = "/Website/templates/DefaultTemplate.html"
             };
@@ -56,6 +54,13 @@ namespace Website
                 Default = true
             };
 
+            var catchAllUrl = new WebUrl()
+            {
+                Template = surface,
+                Url = null,
+                IsFinal = true
+            };
+
             new WebMap() { Section = topbar, ForeignUrl = "/signin/user", SortNumber = 1 };
         }
 
@@ -63,7 +68,6 @@ namespace Website
         {
             var surface = new WebTemplate()
             {
-                Default = false,
                 Name = "SidebarTemplate",
                 Html = "/Website/templates/SidebarTemplate.html"
             };
@@ -95,7 +99,6 @@ namespace Website
         {
             var surface = new WebTemplate()
             {
-                Default = false,
                 Name = "AppHubTemplate",
                 Html = "/Website/templates/AppHubTemplate.html"
             };
@@ -179,7 +182,6 @@ namespace Website
         {
             var surface = new WebTemplate()
             {
-                Default = false,
                 Name = "LauncherTemplate",
                 Html = "/Website/templates/LauncherTemplate.html"
             };
