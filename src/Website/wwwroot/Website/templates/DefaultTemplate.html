@@ -16,31 +16,63 @@
                 color: #FFF;
                 padding: 10px;
             }
-                /** for Shadow DOM v0 compilant browsers */
-                .website-defaulttemplate-topbar ::content > starcounter-include,
-                .website-defaulttemplate-topbar ::content starcounter-include > juicy-composition {
-                    display: flex;
+            /* Blending points and their elements distributed in topbar surface */
+            /* For browsers without CSS Grid Layout and witout @supports make topbar a flexbox*/
+            /** for Shadow DOM v0 compilant browsers */
+            .website-defaulttemplate-topbar ::content > starcounter-include > juicy-composition,
+            .website-defaulttemplate-topbar ::content > starcounter-include > juicy-composition > starcounter-include > juicy-composition {
+                display: flex;
+                align-items: center;
+                justify-content: flex-end;
+            }
+            /** for polyfilled browsers */
+            .website-defaulttemplate-topbar > starcounter-include > juicy-composition,
+            .website-defaulttemplate-topbar > starcounter-include > juicy-composition > starcounter-include > juicy-composition {
+                display: flex;
+                align-items: center;
+                justify-content: flex-end;
+            }
+            /* For ones with CSS Grid us it with 5px gutter */
+            @supports( (display: grid) and (grid-column-gap: 5px) ) {
+                /** For browsers that supports Shadow DOM v0 */
+                .website-defaulttemplate-topbar ::content > starcounter-include > juicy-composition,
+                .website-defaulttemplate-topbar ::content > starcounter-include > juicy-composition > starcounter-include > juicy-composition {
+                    display: grid;
                     align-items: center;
-                    justify-content: flex-end;
-                    margin-right: 5px;
-                }
-                /** for polyfilled browsers */
-                .website-defaulttemplate-topbar > starcounter-include,
-                .website-defaulttemplate-topbar starcounter-include > juicy-composition {
-                    display: flex;
-                    align-items: center;
-                    justify-content: flex-end;
+                    grid-column-gap: 5px;
+                    grid-auto-flow: column;
                     margin-right: 5px;
                 }
 
-                    /** for Shadow DOM v0 compilant browsers */
-                    .website-defaulttemplate-topbar ::content > starcounter-include > starcounter-include {
-                        margin-left: 10px;
-                    }
-                    /** for polyfilled browsers */
-                    .website-defaulttemplate-topbar ::content > starcounter-include > starcounter-include {
-                        margin-left: 10px;
-                    }
+                /** duplicated rule for polyfilled browsers */
+                .website-defaulttemplate-topbar > starcounter-include > juicy-composition,
+                .website-defaulttemplate-topbar > starcounter-include > juicy-composition > starcounter-include > juicy-composition {
+                    display: grid;
+                    align-items: center;
+                    grid-column-gap: 5px;
+                    grid-auto-flow: column;
+                    margin-right: 5px;
+                }
+            }
+            /* For browsers w/o Grid break SD boundary and add gutter as margin */
+            @supports( not ((display: grid) and (grid-column-gap: 5px)) ) {
+                .website-defaulttemplate-topbar ::content > starcounter-include > juicy-composition > *,
+                .website-defaulttemplate-topbar ::content > starcounter-include > juicy-composition > starcounter-include > juicy-composition > *,
+                /*
+                 Shadow DOM v1 in-compatible Shadow DOM piercing selector
+                 styling such things may break default compositions delivered by apps
+                */
+                .website-defaulttemplate-topbar ::content > starcounter-include > juicy-composition::shadow>*,
+                .website-defaulttemplate-topbar ::content > starcounter-include > juicy-composition > starcounter-include > juicy-composition::shadow>* {
+                    margin-right: 5px;
+                }
+                /** duplicated rule for polyfilled browsers */
+                .website-defaulttemplate-topbar > starcounter-include > juicy-composition > *,
+                .website-defaulttemplate-topbar > starcounter-include > juicy-composition > starcounter-include > juicy-composition > * {
+                    margin-right: 5px;
+                }
+            }
+
         </style>
         <section class="website-defaulttemplate-topbar">
             <content select="[slot='Website/topbar']"></content>
