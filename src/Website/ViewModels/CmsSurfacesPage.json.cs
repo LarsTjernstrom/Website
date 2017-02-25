@@ -49,8 +49,15 @@ namespace Website {
         [CmsSurfacesPage_json.Surfaces]
         partial class CmsSurfacesItemPage : Json, IBound<WebTemplate> {
             void Handle(Input.Delete Action) {
-                this.ParentPage.Surfaces.Remove(this);
-                this.Data.Delete();
+                if (this.Data.Default)
+                {
+                    this.ParentPage.Error = "You can't remove Default surface!";
+                }
+                else
+                {
+                    this.ParentPage.Surfaces.Remove(this);
+                    this.Data.Delete();
+                }
             }
 
             CmsSurfacesPage ParentPage {
