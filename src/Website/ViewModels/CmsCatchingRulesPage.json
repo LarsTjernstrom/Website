@@ -1,16 +1,15 @@
 {
-    "Html": "/Website/viewmodels/CmsSectionsPage.html",
-    "Templates": [
+    "Html": "/Website/viewmodels/CmsCatchingRulesPage.html",
+    "Surfaces": [
         {
             "Key": "",
             "Name": ""
         }
     ],
-    "Sections": [
+    "CatchingRules": [
         {
             "Key": "",
-            "Name$": "",
-            "Default$": false,
+            "Url$": "",
             "TemplateKey$": "",
             "Delete$": 0
         }

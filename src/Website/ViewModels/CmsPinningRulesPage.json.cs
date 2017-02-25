@@ -2,14 +2,14 @@ using Starcounter;
 using Simplified.Ring6;
 
 namespace Website {
-    partial class CmsMapsPage : Json {
+    partial class CmsPinningRulesPage : Json {
         public void RefreshData() {
-            this.Sections.Clear();
-            this.Urls.Clear();
-            this.Maps.Clear();
-            this.Urls.Data = Db.SQL<WebUrl>("SELECT u FROM Simplified.Ring6.WebUrl u ORDER BY u.Template.Name, u.Url");
-            this.Sections.Data = Db.SQL<WebSection>("SELECT s FROM Simplified.Ring6.WebSection s ORDER BY s.Template.Name, s.Name");
-            this.Maps.Data = Db.SQL<WebMap>("SELECT m FROM Simplified.Ring6.WebMap m ORDER BY m.Section.Template.Name, m.Section.Name, m.Url.Url");
+            this.BlendingPoints.Clear();
+            this.CatchingRules.Clear();
+            this.PinningRules.Clear();
+            this.CatchingRules.Data = Db.SQL<WebUrl>("SELECT u FROM Simplified.Ring6.WebUrl u ORDER BY u.Template.Name, u.Url");
+            this.BlendingPoints.Data = Db.SQL<WebSection>("SELECT s FROM Simplified.Ring6.WebSection s ORDER BY s.Template.Name, s.Name");
+            this.PinningRules.Data = Db.SQL<WebMap>("SELECT m FROM Simplified.Ring6.WebMap m ORDER BY m.Section.Template.Name, m.Section.Name, m.Url.Url");
             this.Trn.Data = this.Transaction as Transaction;
         }
 
@@ -23,11 +23,11 @@ namespace Website {
         }
 
         void Handle(Input.Create Action) {
-            this.Maps.Add().Data = new WebMap();
+            this.PinningRules.Add().Data = new WebMap();
         }
 
-        [CmsMapsPage_json.Maps]
-        partial class CmsMapsItemPage : Json, IBound<WebMap> {
+        [CmsPinningRulesPage_json.PinningRules]
+        partial class CmsPinningRulesItemPage : Json, IBound<WebMap> {
             protected override void OnData() {
                 base.OnData();
 
@@ -35,14 +35,14 @@ namespace Website {
                 this.UrlKey = (this.Data != null && this.Data.Url != null) ? this.Data.Url.Key : string.Empty;
             }
 
-            CmsMapsPage ParentPage {
+            CmsPinningRulesPage ParentPage {
                 get {
-                    return this.Parent.Parent as CmsMapsPage;
+                    return this.Parent.Parent as CmsPinningRulesPage;
                 }
             }
 
             void Handle(Input.Delete Action) {
-                this.ParentPage.Maps.Remove(this);
+                this.ParentPage.PinningRules.Remove(this);
                 this.Data.Delete();
             }
 
@@ -63,8 +63,8 @@ namespace Website {
             }
         }
 
-        [CmsMapsPage_json.Sections]
-        partial class CmsMapsSectionPage : Json, IBound<WebSection> {
+        [CmsPinningRulesPage_json.BlendingPoints]
+        partial class CmsPinningRulesBlendingPointPage : Json, IBound<WebSection> {
             protected override void OnData() {
                 base.OnData();
 
@@ -75,19 +75,19 @@ namespace Website {
                 }
             }
 
-            CmsMapsPage ParentPage {
+            CmsPinningRulesPage ParentPage {
                 get {
-                    return this.Parent.Parent as CmsMapsPage;
+                    return this.Parent.Parent as CmsPinningRulesPage;
                 }
             }
         }
 
-        [CmsMapsPage_json.Urls]
-        partial class CmsMapsUrlPage : Json, IBound<WebUrl> {
+        [CmsPinningRulesPage_json.CatchingRules]
+        partial class CmsPinningRulesCatchingRulePage : Json, IBound<WebUrl> {
         }
 
-        [CmsMapsPage_json.Trn]
-        partial class CmsMapsTransactionPage : Json, IBound<Transaction> {
+        [CmsPinningRulesPage_json.Trn]
+        partial class CmsPinningRulesTransactionPage : Json, IBound<Transaction> {
         }
     }
 }

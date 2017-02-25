@@ -92,7 +92,6 @@
       <Generator>MsBuild:Compile</Generator>
     </TypedJSON>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <None Include="wwwroot\WebsiteProvider\viewmodels\WrapperPage.html" />
   </ItemGroup>

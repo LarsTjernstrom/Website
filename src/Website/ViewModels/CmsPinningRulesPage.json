@@ -1,19 +1,19 @@
 {
-    "Html": "/Website/viewmodels/CmsMapsPage.html",
-    "Sections": [
+    "Html": "/Website/viewmodels/CmsPinningRulesPage.html",
+    "BlendingPoints": [
         {
             "Key": "",
             "Name": "",
             "FullName": ""
         }
     ],
-    "Urls": [
+    "CatchingRules": [
         {
             "Key": "",
             "Url": ""
         }
     ],
-    "Maps": [
+    "PinningRules": [
         {
             "Key": "",
             "SectionKey$": "",

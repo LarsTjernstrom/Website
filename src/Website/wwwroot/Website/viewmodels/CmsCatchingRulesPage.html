@@ -12,46 +12,33 @@
                         Cancel
                     </button>
                     <button type="button" class="btn btn-xs btn-default" value="{{model.Create$::click}}"
-                            onmousedown="++this.value;" title="Create map">
+                            onmousedown="++this.value;" title="Create catching rule">
                         Create
                     </button>
                 </span>
-                Maps
+                Catching rules
             </legend>
             <table class="table">
                 <thead>
                     <tr>
-                        <th>Section</th>
-                        <th>Url</th>
-                        <th>Foreign url</th>
-                        <th class="td-key">Order</th>
+                        <th>Surface</th>
+                        <th>Catch URI</th>
                         <th class="td-actions"></th>
                     </tr>
                 </thead>
                 <tbody>
-                    <template is="dom-repeat" items="{{model.Maps}}">
+                    <template is="dom-repeat" items="{{model.CatchingRules}}">
                         <tr>
                             <td>
-                                <select class="form-control" key="[[item.SectionKey$]]" value="{{item.SectionKey$::change}}">
+                                <select class="form-control" key="[[item.TemplateKey$]]" value="{{item.TemplateKey$::change}}">
                                     <option value=""></option>
-                                    <template is="dom-repeat" items="{{model.Sections}}">
-                                        <option value="{{item.Key}}">{{item.FullName}}</option>
+                                    <template is="dom-repeat" items="{{model.Surfaces}}">
+                                        <option value="{{item.Key}}">{{item.Name}}</option>
                                     </template>
                                 </select>
                             </td>
                             <td>
-                                <select class="form-control" key="[[item.UrlKey$]]" value="{{item.UrlKey$::change}}">
-                                    <option value=""></option>
-                                    <template is="dom-repeat" items="{{model.Urls}}">
-                                        <option value="{{item.Key}}">{{item.Url}}</option>
-                                    </template>
-                                </select>
-                            </td>
-                            <td>
-                                <input type="text" value="{{item.ForeignUrl$::change}}" class="form-control" />
-                            </td>
-                            <td class="td-key">
-                                <input type="text" value="{{item.SortNumber$::change}}" class="form-control" />
+                                <input type="text" value="{{item.Url$::change}}" class="form-control" />
                             </td>
                             <td>
                                 <button type="button" class="btn btn-xs btn-default" value="{{item.Delete$::click}}" onmousedown="++this.value;">Delete</button>

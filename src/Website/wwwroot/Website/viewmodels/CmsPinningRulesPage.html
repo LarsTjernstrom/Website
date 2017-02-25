@@ -1,0 +1,80 @@
+﻿<template>
+    <template is="dom-bind">
+        <fieldset>
+            <legend>
+                <span class="pull-right">
+                    <button type="button" class="btn btn-xs btn-success" value="{{model.SaveChanges$::click}}"
+                            onmousedown="++this.value;" disabled="{{!model.Trn.IsDirty}}" title="Save all changes">
+                        Save
+                    </button>
+                    <button type="button" class="btn btn-xs btn-default" value="{{model.CancelChanges$::click}}"
+                            onmousedown="++this.value;" disabled="{{!model.Trn.IsDirty}}" title="Cancel all changes">
+                        Cancel
+                    </button>
+                    <button type="button" class="btn btn-xs btn-default" value="{{model.Create$::click}}"
+                            onmousedown="++this.value;" title="Create pinning rule">
+                        Create
+                    </button>
+                </span>
+                Pinning rules
+            </legend>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Blending point</th>
+                        <th>Catch URI</th>
+                        <th>Pin URI</th>
+                        <th class="td-key">Order</th>
+                        <th class="td-actions"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template is="dom-repeat" items="{{model.PinningRules}}">
+                        <tr>
+                            <td>
+                                <select class="form-control" key="[[item.SectionKey$]]" value="{{item.SectionKey$::change}}">
+                                    <option value=""></option>
+                                    <template is="dom-repeat" items="{{model.BlendingPoints}}">
+                                        <option value="{{item.Key}}">{{item.FullName}}</option>
+                                    </template>
+                                </select>
+                            </td>
+                            <td>
+                                <select class="form-control" key="[[item.UrlKey$]]" value="{{item.UrlKey$::change}}">
+                                    <option value=""></option>
+                                    <template is="dom-repeat" items="{{model.CatchingRules}}">
+                                        <option value="{{item.Key}}">{{item.Url}}</option>
+                                    </template>
+                                </select>
+                            </td>
+                            <td>
+                                <input type="text" value="{{item.ForeignUrl$::change}}" class="form-control" />
+                            </td>
+                            <td class="td-key">
+                                <input type="text" value="{{item.SortNumber$::change}}" class="form-control" />
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-xs btn-default" value="{{item.Delete$::click}}" onmousedown="++this.value;">Delete</button>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </fieldset>
+    </template>
+    <script>
+        (function () {
+            var template = (document._currentScript || document.currentScript).previousElementSibling;
+
+            setTimeout(function () {
+                var selects = template.parentNode.querySelectorAll("select");
+
+                for (var i = 0; i < selects.length; i++) {
+                    var s = selects[i];
+
+                    s.value = s.key;
+                }
+            });
+        })();
+    </script>
+</template>
