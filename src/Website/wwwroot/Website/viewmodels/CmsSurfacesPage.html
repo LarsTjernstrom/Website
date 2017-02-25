@@ -3,7 +3,6 @@
         <fieldset>
             <legend>
                 <span class="pull-right">
-                    <span class="text-danger">{{model.Error}}</span>
                     <button type="button" class="btn btn-xs btn-success" value="{{model.SaveChanges$::click}}"
                             onmousedown="++this.value;" disabled="{{!model.Trn.IsDirty}}" title="Save all changes">
                         Save
@@ -16,8 +15,8 @@
                             onmousedown="++this.value;" title="Create template">
                         Create
                     </button>
-                    <button type="button" class="btn btn-xs btn-default" on-click="restore" title="Restore default">
-                        Restore
+                    <button type="button" class="btn btn-xs btn-default" on-click="restore" title="Restore default surfaces">
+                        Restore default surfaces
                     </button>
                 </span>
                 Surfaces
@@ -59,7 +58,7 @@
             template.restore = function () {
                 template.set("model.Restore$", template.model.Restore$ + 1);
                 setTimeout(function () {
-                    window.location = window.location.href;
+                    window.location.reload(true); //After existing Surfaces removed and default generated an error occures, so the page should be refreshed
                 }, 100);
             };
         })();

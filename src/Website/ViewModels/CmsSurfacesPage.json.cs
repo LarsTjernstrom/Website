@@ -21,25 +21,15 @@ namespace Website {
             helper.GenerateData();
 
             this.RefreshData();
-            this.Error = "";
         }
 
         void Handle(Input.CancelChanges Action) {
             this.Transaction.Rollback();
             this.RefreshData();
-            this.Error = null;
         }
 
         void Handle(Input.SaveChanges Action) {
-            this.Error = null;
-            if (Surfaces.Any(val => val.Default))
-            {
-                this.Transaction.Commit();
-            }
-            else
-            {
-                this.Error = "At least one surface should be marked as Default!";
-            }
+            this.Transaction.Commit();
         }
 
         void Handle(Input.Create Action) {
@@ -49,15 +39,8 @@ namespace Website {
         [CmsSurfacesPage_json.Surfaces]
         partial class CmsSurfacesItemPage : Json, IBound<WebTemplate> {
             void Handle(Input.Delete Action) {
-                if (this.Data.Default)
-                {
-                    this.ParentPage.Error = "You can't remove Default surface!";
-                }
-                else
-                {
-                    this.ParentPage.Surfaces.Remove(this);
-                    this.Data.Delete();
-                }
+                this.ParentPage.Surfaces.Remove(this);
+                this.Data.Delete();
             }
 
             CmsSurfacesPage ParentPage {
