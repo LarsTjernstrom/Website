@@ -16,8 +16,7 @@
                             onmousedown="++this.value;" title="Create template">
                         Create
                     </button>
-                    <button type="button" class="btn btn-xs btn-default" value="{{model.Restore$::click}}"
-                            onmousedown="++this.value;" title="Restore default">
+                    <button type="button" class="btn btn-xs btn-default" on-click="restore" title="Restore default">
                         Restore
                     </button>
                 </span>
@@ -53,4 +52,16 @@
             </table>
         </fieldset>
     </template>
+    <script>
+        (function () {
+            var template = (document._currentScript || document.currentScript).previousElementSibling;
+
+            template.restore = function () {
+                template.set("model.Restore$", template.model.Restore$ + 1);
+                setTimeout(function () {
+                    window.location = window.location.href;
+                }, 100);
+            };
+        })();
+    </script>
 </template>

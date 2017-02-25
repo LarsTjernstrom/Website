@@ -32,13 +32,13 @@ namespace Website {
 
         void Handle(Input.SaveChanges Action) {
             this.Error = null;
-            if (Templates.Any(val => val.Default))
+            if (Surfaces.Any(val => val.Default))
             {
                 this.Transaction.Commit();
             }
             else
             {
-                this.Error = "At least one template should be marked as Default!";
+                this.Error = "At least one surface should be marked as Default!";
             }
         }
 
