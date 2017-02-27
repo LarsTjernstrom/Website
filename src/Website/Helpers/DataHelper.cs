@@ -141,19 +141,22 @@ namespace Website
             var homeUrl = new WebUrl()
             {
                 Template = surface,
-                Url = "/content/dynamic/apps"
+                Url = "/content/dynamic/apps",
+                IsFinal = true
             };
 
             var appsUrl = new WebUrl()
             {
                 Template = surface,
-                Url = "/content/dynamic/apps/wanted-apps"
+                Url = "/content/dynamic/apps/wanted-apps",
+                IsFinal = true
             };
 
             var profileUrl = new WebUrl()
             {
                 Template = surface,
-                Url = "/content/dynamic/userprofile"
+                Url = "/content/dynamic/userprofile",
+                IsFinal = true
             };
 
             new WebMap() { Section = navigation, ForeignUrl = "/signin/user", SortNumber = 1 };
