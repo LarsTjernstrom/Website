@@ -30,9 +30,7 @@ Surfaces are the HTML documents that contain blending points. A single surface c
 
 Every surface has a **Name** and a path to the **View URI** that defines the presentation of the blending points. This URL can be resolved to a static file or to a dynamic handler, to which a different app responds (try it with Content app!).
 
-A surface can be **Default**, meaning that it will be forced on any JSON response from any Starcounter app.
-
-If a surface is not default, then it will wrap only the URIs that are assigned to it using **Catching rules**.
+A surface wraps only the URIs that are assigned to it using **Catching rules**.
 
 #### Blending points
 
@@ -47,6 +45,8 @@ Catching rules define which requests are wrapped in surfaces.
 Each rule defines that a certain entry **Catch URI** should be wrapped in a certain surface.
 
 Catching rules support single wildcard URLs. If **Catch URI** contains a wildcard (`{?}`), it will match a request that contains any value at that place in the URL.
+
+A catching rule can be **Final**, meaning that not any other catching rule will be applied additionally. If a **final** catching rule have an empty **Catch URI** value, it will be forced on any JSON response from any Starcounter app.
 
 #### Pinning rules
 
