@@ -15,6 +15,9 @@
                             onmousedown="++this.value;" title="Create template">
                         Create
                     </button>
+                    <button type="button" class="btn btn-xs btn-default" on-click="restore" title="Restore default surfaces">
+                        Restore default surfaces
+                    </button>
                 </span>
                 Surfaces
             </legend>
@@ -44,4 +47,16 @@
             </table>
         </fieldset>
     </template>
+    <script>
+        (function () {
+            var template = (document._currentScript || document.currentScript).previousElementSibling;
+
+            template.restore = function () {
+                template.set("model.Restore$", template.model.Restore$ + 1);
+                setTimeout(function () {
+                    window.location.reload(true); //After existing Surfaces removed and default generated an error occures, so the page should be refreshed
+                }, 100);
+            };
+        })();
+    </script>
 </template>

@@ -11,6 +11,17 @@ namespace Website {
             this.Trn.Data = this.Transaction as Transaction;
         }
 
+        void Handle(Input.Restore Action)
+        {
+            this.Transaction.Rollback();
+
+            DataHelper helper = new DataHelper();
+            helper.ClearData();
+            helper.GenerateData();
+
+            this.RefreshData();
+        }
+
         void Handle(Input.CancelChanges Action) {
             this.Transaction.Rollback();
             this.RefreshData();
