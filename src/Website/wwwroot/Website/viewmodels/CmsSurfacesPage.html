@@ -26,7 +26,6 @@
                     <tr>
                         <th>Surface name</th>
                         <th>View URI</th>
-                        <th>Default</th>
                         <th class="td-actions"></th>
                     </tr>
                 </thead>
@@ -38,9 +37,6 @@
                             </td>
                             <td>
                                 <input type="text" value="{{item.Html$::change}}" class="form-control" />
-                            </td>
-                            <td>
-                                <input type="checkbox" checked="{{item.Default$::change}}" />
                             </td>
                             <td>
                                 <button type="button" class="btn btn-xs btn-default" value="{{item.Delete$::click}}" onmousedown="++this.value;">Delete</button>

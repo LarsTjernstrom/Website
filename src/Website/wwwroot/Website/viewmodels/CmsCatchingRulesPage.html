@@ -23,6 +23,7 @@
                     <tr>
                         <th>Surface</th>
                         <th>Catch URI</th>
+                        <th>Final</th>
                         <th class="td-actions"></th>
                     </tr>
                 </thead>
@@ -39,6 +40,9 @@
                             </td>
                             <td>
                                 <input type="text" value="{{item.Url$::change}}" class="form-control" />
+                            </td>
+                            <td>
+                                <input type="checkbox" checked="{{item.IsFinal$::change}}" />
                             </td>
                             <td>
                                 <button type="button" class="btn btn-xs btn-default" value="{{item.Delete$::click}}" onmousedown="++this.value;">Delete</button>

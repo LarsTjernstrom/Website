@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Starcounter;
 using Simplified.Ring6;
+using Starcounter;
 using Starcounter.Advanced.XSON;
-using Starcounter.Internal;
 
 namespace WebsiteProvider
 {
@@ -82,26 +81,18 @@ namespace WebsiteProvider
 
             Handle.GET("/WebsiteProvider/partial/wrapper?uri={?}", (string requestUri) =>
             {
-                string[] parts = requestUri.Split(new char[] { '/' });
                 WebUrl webUrl = Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE wu.Url = ?", requestUri).First;
 
                 if (webUrl == null)
                 {
                     string wildCard = GetWildCardUrl(requestUri);
 
-                    webUrl = Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE wu.Url = ?", wildCard).First;
+                    webUrl = Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE wu.Url = ?", wildCard).First
+                             ?? Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE (wu.Url IS NULL OR wu.Url = ?) AND wu.IsFinal = ?", string.Empty, true).First
+                             ?? Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE wu.Url IS NULL OR wu.Url = ?", string.Empty).First;
                 }
 
-                WebTemplate template;
-
-                if (webUrl != null)
-                {
-                    template = webUrl.Template;
-                }
-                else
-                {
-                    template = Db.SQL<WebTemplate>("SELECT wt FROM Simplified.Ring6.WebTemplate wt WHERE wt.Default = ?", true).First;
-                }
+                WebTemplate template = webUrl?.Template;
 
                 if (template == null)
                 {
@@ -110,7 +101,7 @@ namespace WebsiteProvider
 
                 this.CurrentTemplate = template;
                 WrapperPage master = GetLayoutPage();
-                master.IsFinal = template.Default;
+                master.IsFinal = webUrl.IsFinal;
                 if (!template.Equals(master.WebTemplatePage.Data))
                 {
                     master.WebTemplatePage.Data = template;
