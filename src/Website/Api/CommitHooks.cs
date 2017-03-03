@@ -19,7 +19,7 @@ namespace Website {
         }
 
         protected void RefreshSignInState() {
-            var page = Self.GET<StandalonePage>("/website/cms/standalone");
+            var page = Self.GET<StandalonePage>("/website/standalone");
 
             if (page == null) {
                 return;
