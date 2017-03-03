@@ -43,7 +43,7 @@ namespace WebsiteProvider
 
             Handle.GET("/WebsiteProvider/partial/layout", () =>
             {
-                WrapperPage page = null;
+                WrapperPage page;
 
                 if (Session.Current != null)
                 {
@@ -58,22 +58,14 @@ namespace WebsiteProvider
                     Session.Current = new Session(SessionOptions.PatchVersioning);
                 }
 
-                page = new WrapperPage();
-
-                if (Session.Current.PublicViewModel is Json)
+                page = new WrapperPage
                 {
-                    page.UnwrappedPublicViewModel = Session.Current.PublicViewModel;
-                }
+                    Session = Session.Current
+                };
 
-                var final = Session.Current.Data as WrapperPage;
-                if (final == null || final.IsFinal == false)
+                if (page.Session.PublicViewModel != page)
                 {
-                    page.Session = Session.Current;
-
-                    if (page.Session.PublicViewModel != page)
-                    {
-                        page.Session.PublicViewModel = page;
-                    }
+                    page.Session.PublicViewModel = page;
                 }
 
                 return page;
@@ -265,13 +257,9 @@ namespace WebsiteProvider
 
         protected WrapperPage FindWrapperPageForTemplate(WrapperPage page, WebTemplate template)
         {
-            if (page != null)
+            if (page?.WebTemplatePage.Data != null && page.WebTemplatePage.Data.Equals(template))
             {
-                if (page.WebTemplatePage.Data != null && page.WebTemplatePage.Data.Equals(template))
-                {
-                    return page;
-                }
-                return FindWrapperPageForTemplate(page.UnwrappedPublicViewModel as WrapperPage, template);
+                return page;
             }
             return null;
         }
