@@ -18,8 +18,9 @@ namespace Website {
             };
         }
 
-        protected void RefreshSignInState() {
-            var page = Self.GET<StandalonePage>("/website/standalone");
+        protected void RefreshSignInState()
+        {
+            var page = Session.Current.Data as StandalonePage;
 
             if (page == null) {
                 return;
