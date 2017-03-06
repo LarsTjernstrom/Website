@@ -26,7 +26,7 @@ CMS interface is divided into four tabs:
 
 #### Surfaces
 
-Surfaces are the HTML documents that contain blending points. A single surface can contain one of more blending points.
+Surfaces are the HTML documents that contain blending points. A single surface can contain one or more blending points.
 
 Every surface has a **Name** and a path to the **View URI** that defines the presentation of the blending points. This URL can be resolved to a static file or to a dynamic handler, to which a different app responds (try it with Content app!).
 
