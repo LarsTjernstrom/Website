@@ -204,7 +204,7 @@ namespace WebsiteProvider
                         {
                             //we are inserting different app to WebsitePrivider
                             var page = sectionJson.Rows[index] as WrapperPage;
-                            if (page == null)
+                            if (page == null || page.WebTemplatePage.Data != null)
                             {
                                 page = GetConainterPage(requestUri);
                                 sectionJson.Rows[index] = page;
