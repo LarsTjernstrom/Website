@@ -128,20 +128,8 @@ namespace WebsiteProvider
                 var json = response.Resource as Json;
                 if (json != null && request.Headers[runResponseMiddleware] != null)
                 {
-                    var filePath = json["Html"] as string;
-                    if (filePath == null)
-                    {
-                        throw ErrorCode.ToException(Error.SCERRINVALIDOPERATION, $"Json instance {json} missing 'Html' property.");
-                    }
-                }
-                return null;
-            });
-
-            Application.Current.Use((Request request, Response response) =>
-            {
-                if (response.Resource is Json)
-                {
-                    if (request.Headers[runResponseMiddleware] != null)
+                    var htmlField = json["Html"] as string;
+                    if (htmlField != null)
                     {
                         var wrapper = response.Resource as WrapperPage;
                         var requestUri = request.Uri;
