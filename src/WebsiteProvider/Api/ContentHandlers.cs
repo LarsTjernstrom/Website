@@ -125,9 +125,11 @@ namespace WebsiteProvider
 
             Application.Current.Use((Request request, Response response) =>
             {
-                if (response.Resource is Json)
+                var json = response.Resource as Json;
+                if (json != null && request.Headers[runResponseMiddleware] != null)
                 {
-                    if (request.Headers[runResponseMiddleware] != null)
+                    var htmlField = json["Html"] as string;
+                    if (htmlField != null)
                     {
                         var wrapper = response.Resource as WrapperPage;
                         var requestUri = request.Uri;
