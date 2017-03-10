@@ -217,20 +217,16 @@ namespace WebsiteProvider
                         else
                         {
                             //we are inserting different app to WebsitePrivider
-                            WrapperPage page;
-
-                            //uncommenting the below lines results in MergeJson producing invalid patches
-                            //it is good to fix it, so we reuse existing wrapped pages
-                            //page = sectionJson.Rows[index] as WrapperPage;
-                            //if (page == null) 
-                            //{
-                            page = GetConainterPage(requestUri);
-                            //}
+                            var page = sectionJson.Rows[index] as WrapperPage;
+                            if (page == null || page.WebTemplatePage.Data != null)
+                            {
+                                page = GetConainterPage(requestUri);
+                                sectionJson.Rows[index] = page;
+                            }
 
                             page.RequestUri = requestUri;
                             page.Reset();
                             page.MergeJson(json);
-                            sectionJson.Rows[index] = page;
                         }
                     }
                     index++;
