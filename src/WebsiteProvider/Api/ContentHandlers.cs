@@ -93,7 +93,7 @@ namespace WebsiteProvider
 
                 this.CurrentTemplate = template;
                 WrapperPage master = GetLayoutPage();
-                master.IsFinal = webUrl.IsFinal;
+                master.IsFinal = webUrl.IsFinal || string.IsNullOrEmpty(webUrl.Url);
                 if (!template.Equals(master.WebTemplatePage.Data))
                 {
                     master.WebTemplatePage.Data = template;
