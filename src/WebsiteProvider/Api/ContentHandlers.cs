@@ -73,16 +73,7 @@ namespace WebsiteProvider
 
             Handle.GET("/WebsiteProvider/partial/wrapper?uri={?}", (string requestUri) =>
             {
-                WebUrl webUrl = Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE wu.Url = ?", requestUri).First;
-
-                if (webUrl == null)
-                {
-                    string wildCard = GetWildCardUrl(requestUri);
-
-                    webUrl = Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE wu.Url = ?", wildCard).First
-                             ?? Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE (wu.Url IS NULL OR wu.Url = ?) AND wu.IsFinal = ?", string.Empty, true).First
-                             ?? Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE wu.Url IS NULL OR wu.Url = ?", string.Empty).First;
-                }
+                WebUrl webUrl = this.GetWebUrl(requestUri);
 
                 WebTemplate template = webUrl?.Template;
 
@@ -133,13 +124,13 @@ namespace WebsiteProvider
                     {
                         var wrapper = response.Resource as WrapperPage;
                         var requestUri = request.Uri;
-                        while (wrapper == null || wrapper.IsFinal == false)
+                        while ((wrapper == null || wrapper.IsFinal == false) && this.HasCatchingRule(requestUri))
                         {
                             this.CurrentResponse = response;
 
                             response = Self.GET("/WebsiteProvider/partial/wrapper?uri=" + requestUri);
                             wrapper = response.Resource as WrapperPage;
-                            requestUri = wrapper.WebTemplatePage.Data.Html;
+                            requestUri = wrapper?.WebTemplatePage.Data.Html;
                         }
                     }
                 }
@@ -260,6 +251,26 @@ namespace WebsiteProvider
                 return page;
             }
             return null;
+        }
+
+        public bool HasCatchingRule(string requestUri)
+        {
+            return this.GetWebUrl(requestUri) != null;
+        }
+
+        protected WebUrl GetWebUrl(string requestUri)
+        {
+            WebUrl webUrl = Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE wu.Url = ?", requestUri).First;
+
+            if (webUrl == null)
+            {
+                string wildCard = GetWildCardUrl(requestUri);
+
+                webUrl = Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE wu.Url = ?", wildCard).First
+                         ?? Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE (wu.Url IS NULL OR wu.Url = ?) AND wu.IsFinal = ?", string.Empty, true).First
+                         ?? Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE wu.Url IS NULL OR wu.Url = ?", string.Empty).First;
+            }
+            return webUrl;
         }
     }
 }
