@@ -7,8 +7,10 @@ namespace WebsiteProvider
     {
         static void Main()
         {
-            ContentHandlers content = new ContentHandlers();
+            var mapping = new MappingHandlers();
+            var content = new ContentHandlers();
 
+            mapping.Initialize();
             content.Register();
         }
     }

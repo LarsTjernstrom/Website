@@ -162,35 +162,17 @@ namespace WebsiteProvider
 
         protected void UpdateTemplateSections(string requestUri, Response response, WebTemplatePage content, WebUrl url)
         {
-            string[] parts = requestUri.Split(new char[] { '/' });
-
             foreach (WebSection section in content.Data.Sections)
             {
                 var sectionJson = content.Sections[section.Name] as SectionPage;
                 int index = 0;
 
-                foreach (WebMap map in section.Maps.OrderBy(x => x.SortNumber))
-                {
-                    if (map.Url != null)
-                    {
-                        //it is not a catch-all map
-                        if (!map.Url.Equals(url))
-                        {
-                            //it is a map for a different entry URI, skip
-                            continue;
-                        }
-                    }
-
-                    string uri = FormatUrl(map.ForeignUrl, parts.Last());
-                    if (!IsSectionRowAtUri(sectionJson.Rows, index, uri))
-                    {
-                        var page = GetConainterPage(uri);
-                        page.RequestUri = uri;
-                        page.Reset();
-                        sectionJson.Rows[index] = page;
-                    }
-                    index++;
-                }
+                var uri = section.GetBlendingUrl(url);
+                var sectionContent = GetConainterPage(uri);
+                sectionContent.RequestUri = uri;
+                sectionContent.Reset();
+                sectionJson.Rows.Add();
+                sectionJson.Rows[index++] = sectionContent;
 
                 var json = response.Resource as Json;
                 if (section.Default && json != null)

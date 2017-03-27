@@ -65,6 +65,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Api\ContentHandlers.cs" />
+    <Compile Include="Api\MappingHandlers.cs" />
+    <Compile Include="Helpers\BlendingExtensions.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\SectionPage.json.cs">
