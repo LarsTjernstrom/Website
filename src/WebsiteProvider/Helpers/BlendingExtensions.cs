@@ -29,7 +29,7 @@ namespace WebsiteProvider
 
         public static string GetBlendingUrl(this WebSection webSection, WebUrl webUrl)
         {
-            return webUrl == null
+            return webUrl == null || string.IsNullOrWhiteSpace(webUrl.Url)
                 ? $"/website/blender/surface/{webSection.Template.Key}/point/{webSection.Key}"
                 : $"/website/blender/surface/{webSection.Template.Key}/point/{webSection.Key}/uri/{webUrl.Url}";
         }
