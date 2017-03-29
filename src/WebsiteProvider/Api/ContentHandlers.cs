@@ -122,8 +122,10 @@ namespace WebsiteProvider
                     var htmlField = json["Html"] as string;
                     if (htmlField != null)
                     {
+                        this.CurrentResponse = null;
                         var wrapper = response.Resource as WrapperPage;
                         var requestUri = request.Uri;
+
                         while ((wrapper == null || wrapper.IsFinal == false) && this.HasCatchingRule(requestUri))
                         {
                             this.CurrentResponse = response;
@@ -131,6 +133,10 @@ namespace WebsiteProvider
                             response = Self.GET("/WebsiteProvider/partial/wrapper?uri=" + requestUri);
                             wrapper = response.Resource as WrapperPage;
                             requestUri = wrapper?.WebTemplatePage.Data.Html;
+                        }
+                        if (this.CurrentResponse == null)
+                        {
+                            Session.Current.Data = response.Resource as Json;
                         }
                     }
                 }
