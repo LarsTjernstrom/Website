@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace WebsiteProvider.Tests.Utilities
 {
@@ -7,10 +8,18 @@ namespace WebsiteProvider.Tests.Utilities
         public enum Browser
         {
             Chrome,
-            //Edge,
+            Edge,
             Firefox
         }
 
         public static readonly TimeSpan Timeout = TimeSpan.FromSeconds(60);
+        public static readonly Uri RemoteWebDriverUri = new Uri("http://localhost:4444/wd/hub");
+
+        public static readonly Dictionary<Browser, string> BrowserDictionary = new Dictionary<Browser, string>
+        {
+            {Browser.Chrome, "Chrome"},
+            {Browser.Edge, "Edge"},
+            {Browser.Firefox, "Firefox"}
+        };
     }
 }

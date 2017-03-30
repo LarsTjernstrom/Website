@@ -35,6 +35,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Drawing" />
     <Reference Include="WebDriver, Version=3.3.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Selenium.WebDriver.3.3.0\lib\net40\WebDriver.dll</HintPath>
       <Private>True</Private>
@@ -46,7 +47,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Test\BaseTest.cs" />
     <Compile Include="Utilities\Config.cs" />
+    <Compile Include="Utilities\Screenshot.cs" />
+    <Compile Include="Utilities\WebDriverManager.cs" />
+    <Compile Include="Utilities\WebDriverEventListener.cs" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
