@@ -19,16 +19,37 @@ namespace WebsiteProvider.Tests.Test
         }
 
         [Test]
-        public void ThePageLoadsTest()
+        public void EmptyPageLoadsTest()
         {
-            _acceptanceHelperOneMasterPage = new AcceptanceHelperOneMasterPage(Driver).GoToMasterPage();
+            _acceptanceHelperOneMasterPage = new AcceptanceHelperOneMasterPage(Driver).GoToEmptyPage();
 
             for (int second = 0; ; second++)
             {
                 if (second >= 60) Assert.Fail("timeout");
                 try
                 {
-                    if ("WebsiteProvider_AcceptanceHelperOne" == Driver.Title) break;
+                    if (Driver.Title == "WebsiteProvider_AcceptanceHelperOne") break;
+                }
+                catch (Exception)
+                { }
+                Thread.Sleep(1000);
+            }
+        }
+
+        [Test]
+        public void EmptyJsonLoadsTest()
+        {
+            _acceptanceHelperOneMasterPage = new AcceptanceHelperOneMasterPage(Driver).GoToEmptyJson();
+
+            for (int second = 0; ; second++)
+            {
+                if (second >= 60) Assert.Fail("timeout");
+                try
+                {
+                    if (Driver.PageSource.Contains("System.InvalidOperationException: ScErrInvalidOperation (SCERR1025)"))
+                    {
+                        break;
+                    }
                 }
                 catch (Exception)
                 { }
