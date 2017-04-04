@@ -9,7 +9,11 @@ namespace WebsiteProvider_AcceptanceHelperTwo
             Application.Current.Use(new HtmlFromJsonProvider());
             Application.Current.Use(new PartialToStandaloneHtmlProvider());
 
-            Handle.GET("/WebsiteProvider_AcceptanceHelperTwo", () => Db.Scope(() => new AcceptanceHelperTwoPage().Init()));
+            var dataHelper = new DataHelper();
+            var mainHandlers = new MainHandlers();
+
+            dataHelper.GenerateData();
+            mainHandlers.Register();
         }
     }
 }

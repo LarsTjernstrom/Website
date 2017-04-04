@@ -6,7 +6,7 @@ namespace WebsiteProvider.Tests.Ui
 {
     public class AcceptanceHelperTwoMasterPage : BasePage
     {
-        [FindsBy(How = How.XPath, Using = "//h1")]
+        [FindsBy(How = How.XPath, Using = "//h2")]
         public IWebElement H1Element { get; set; }
 
         public AcceptanceHelperTwoMasterPage(IWebDriver driver) : base(driver)
