@@ -1,6 +1,4 @@
-﻿using System;
-using System.Threading;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using WebsiteProvider.Tests.Ui;
 using WebsiteProvider.Tests.Utilities;
 
@@ -13,6 +11,7 @@ namespace WebsiteProvider.Tests.Test
     public class PageLoadTest : BaseTest
     {
         private AcceptanceHelperOneMasterPage _acceptanceHelperOneMasterPage;
+        private AcceptanceHelperTwoMasterPage _acceptanceHelperTwoMasterPage;
 
         public PageLoadTest(Config.Browser browser) : base(browser)
         {
@@ -22,39 +21,22 @@ namespace WebsiteProvider.Tests.Test
         public void EmptyPageLoadsTest()
         {
             _acceptanceHelperOneMasterPage = new AcceptanceHelperOneMasterPage(Driver).GoToEmptyPage();
-
-            for (int second = 0; ; second++)
-            {
-                if (second >= 60) Assert.Fail("timeout");
-                try
-                {
-                    if (Driver.Title == "WebsiteProvider_AcceptanceHelperOne") break;
-                }
-                catch (Exception)
-                { }
-                Thread.Sleep(1000);
-            }
+            WaitForText(_acceptanceHelperOneMasterPage.H1Element, "Acceptance Helper 1", 10);
         }
 
         [Test]
         public void EmptyJsonLoadsTest()
         {
             _acceptanceHelperOneMasterPage = new AcceptanceHelperOneMasterPage(Driver).GoToEmptyJson();
+            WaitUntil(x => x.PageSource.Contains("System.InvalidOperationException: ScErrInvalidOperation (SCERR1025)"));
+        }
 
-            for (int second = 0; ; second++)
-            {
-                if (second >= 60) Assert.Fail("timeout");
-                try
-                {
-                    if (Driver.PageSource.Contains("System.InvalidOperationException: ScErrInvalidOperation (SCERR1025)"))
-                    {
-                        break;
-                    }
-                }
-                catch (Exception)
-                { }
-                Thread.Sleep(1000);
-            }
+        [Test]
+        public void RedirectToOtherAppPageTest()
+        {
+            _acceptanceHelperOneMasterPage = new AcceptanceHelperOneMasterPage(Driver).GoToEmptyPage();
+            _acceptanceHelperTwoMasterPage = _acceptanceHelperOneMasterPage.GoToAcceptanceHelperTwoPage();
+            WaitForText(_acceptanceHelperTwoMasterPage.H1Element, "Acceptance Helper 2", 10);
         }
     }
 }
