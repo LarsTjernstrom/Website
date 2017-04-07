@@ -124,7 +124,7 @@ Before running the steps, you need to:
 1. Start Selenium Remote Driver: `java -jar selenium-server-standalone-3.*.jar`
 2. Open `Website.sln` in Visual Studio and enable Test Explorer (Test > Window > Test Explorer)
 3. You need to install NUnit 3 Test Adapter in VS addon window in order to see tests in Test Explorer window
-3. Start the KitchenSink app
+3. Start the Website, WebsiteProvider_AcceptanceHelperOne, WebsiteProvider_AcceptanceHelperTwo and WebsiteProvider apps
 4. Press "Run all" in Test Explorer
    - If you get an error about some packages not installed, right click on the project in Solution Explorer. Choose "Manage NuGet Packages" and click on "Restore".
 
