@@ -2,7 +2,7 @@
 <link rel="import" href="/sys/polymer/polymer.html" />
 
 <template>
-    <style slot="Website/global-style" shim-shadowdom>
+    <style slot="website/global-style" shim-shadowdom>
         html,
         body {
             font-family: Calibri, Helvetica, Arial, sans-serif;
@@ -116,23 +116,23 @@
         }
     </style>
     <template is="dom-bind">
-        <a slot="Website/icon" href="/launcher" class="launcher-home-button"><i class="glyphicon glyphicon-home launcher-home-button__icon"></i></a>
-        <div slot="Website/search" class="launcher-search">
+        <a slot="website/icon" href="/launcher" class="launcher-home-button"><i class="glyphicon glyphicon-home launcher-home-button__icon"></i></a>
+        <div slot="website/search" class="launcher-search">
             <a href="javascript:" value="{{model.searchBar.submit$}}" onclick="++this.value">
                 <i class="glyphicon glyphicon-search launcher-search__icon"></i>
             </a>
             <input type="text" class="launcher-search__input" placeholder="Search">
         </div>
-        <a slot="Website/settings" href="/launcher/settings" class="launcher-settings-button"><img class="launcher-settings-button__icon" src="/Website/images/cog.svg" /></a>
-        <starcounter-include slot="Website/topbar" partial="{{model.Sections.TopBar}}"></starcounter-include>
-        <website-launchertemplate-menu slot="Website/leftbar">
-            <starcounter-include partial="{{model.Sections.LeftBar}}"></starcounter-include>
+        <a slot="website/settings" href="/launcher/settings" class="launcher-settings-button"><img class="launcher-settings-button__icon" src="/Website/images/cog.svg" /></a>
+        <starcounter-include slot="website/topbar" view-model="{{model.Sections.TopBar}}"></starcounter-include>
+        <website-launchertemplate-menu slot="website/leftbar">
+            <starcounter-include view-model="{{model.Sections.LeftBar}}"></starcounter-include>
             <ul class="launcher-menu"></ul>
         </website-launchertemplate-menu>
-        <starcounter-include slot="Website/main" partial="{{model.Sections.Main}}"></starcounter-include>
+        <starcounter-include slot="website/main" view-model="{{model.Sections.Main}}"></starcounter-include>
     </template>
     <template is="starcounter-composition">
-        <content select="[slot='Website/global-style']"></content>
+        <slot name="website/global-style"></slot>
         <style shim-shadowdom>
             .launcher-layout {
                 display: flex;
@@ -268,21 +268,21 @@
         <div class="launcher-layout">
             <div class="launcher-layout__top">
                 <div class="launcher-layout__top-left">
-                    <content select="[slot='Website/icon']"></content>
-                    <content select="[slot='Website/search']"></content>
+                    <slot name="website/icon"></slot>
+                    <slot name="website/search"></slot>
                 </div>
                 <div class="launcher-layout__top-right">
-                    <content select="[slot='Website/topbar']"></content>
-                    <content select="[slot='Website/settings']"></content>
+                    <slot name="website/topbar"></slot>
+                    <slot name="website/settings"></slot>
                 </div>
             </div>
             <div class="launcher-layout__content">
                 <div class="launcher-layout__leftbar">
-                    <content select="[slot='Website/leftbar']"></content>
+                    <slot name="website/leftbar"></slot>
                 </div>
                 <div class="launcher-layout__main">
                     <div class="launcher-layout__padded">
-                        <content select="[slot='Website/main']"></content>
+                        <slot name="website/main"></slot>
                     </div>
                 </div>
             </div>
@@ -293,7 +293,7 @@
 <dom-module id="website-launchertemplate-menu">
     <template>
         <style></style>
-        <content id="content"></content>
+        <content id="content"></slot>
     </template>
     <script>
         (function () {
