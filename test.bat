@@ -25,7 +25,7 @@ IF ERRORLEVEL 1 EXIT /B 1
 
 :: Start the test
 IF NOT EXIST "%~dp0packages\NUnit.ConsoleRunner.3.6.1\" (ECHO Error: Cannot find NUnit Console Runner. Build the project to restore the packages && PAUSE && EXIT /B 1)
-%~dp0packages\NUnit.ConsoleRunner.3.6.1\tools\nunit3-console.exe %~dp0test\WebsiteProvider.Tests\bin\Debug\WebsiteProvider.Tests.dll --noheader --params Browsers=Chrome,Firefox
+%~dp0packages\NUnit.ConsoleRunner.3.6.1\tools\nunit3-console.exe %~dp0test\WebsiteProvider.Tests\bin\Debug\WebsiteProvider.Tests.dll --noheader
 
 :: If we are in interactive mode (batch file not started from the command line), pause at the exit
 if %INTERACTIVE%==0 PAUSE
