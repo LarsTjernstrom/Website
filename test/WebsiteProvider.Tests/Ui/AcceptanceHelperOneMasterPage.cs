@@ -9,6 +9,9 @@ namespace WebsiteProvider.Tests.Ui
         [FindsBy(How = How.XPath, Using = "//a[@href = '/WebsiteProvider_AcceptanceHelperTwo']")]
         public IWebElement AcceptanceHelperTwoLink { get; set; }
 
+        [FindsBy(How = How.XPath, Using = "//a[@href = '/WebsiteProvider_AcceptanceHelperOne/SimplePage']")]
+        public IWebElement AcceptanceHelperOneSimplePageLink { get; set; }
+
         [FindsBy(How = How.XPath, Using = "//h1")]
         public IWebElement H1Element { get; set; }
 
@@ -28,10 +31,10 @@ namespace WebsiteProvider.Tests.Ui
             return this;
         }
 
-        public AcceptanceHelperOneMasterPage GoToEmptyPage()
+        public AcceptanceHelperOneSimplePage GoToSimplePage()
         {
-            Driver.Navigate().GoToUrl(Config.AcceptanceHelperOneUrl + "/EmptyPage");
-            return this;
+            Driver.Navigate().GoToUrl(Config.AcceptanceHelperOneUrl + "/SimplePage");
+            return new AcceptanceHelperOneSimplePage(Driver);
         }
 
         public AcceptanceHelperTwoMasterPage GoToAcceptanceHelperTwoPage()

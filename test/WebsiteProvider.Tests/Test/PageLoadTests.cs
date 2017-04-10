@@ -25,8 +25,8 @@ namespace WebsiteProvider.Tests.Test
         [Test]
         public void LoadPage_IncludedHtmlField_WrappedAndLoaded()
         {
-            var page = new AcceptanceHelperOneMasterPage(Driver).GoToEmptyPage();
-            WaitForText(page.H1Element, "Acceptance Helper 1");
+            var page = new AcceptanceHelperOneMasterPage(Driver).GoToSimplePage();
+            WaitForText(page.H1Element, "Simple Page");
         }
 
         [Test]
@@ -34,6 +34,13 @@ namespace WebsiteProvider.Tests.Test
         {
             var page = new AcceptanceHelperOneMasterPage(Driver).GoToEmptyJson();
             WaitUntil(x => x.PageSource.Contains("System.InvalidOperationException: ScErrInvalidOperation (SCERR1025)"));
+        }
+
+        [Test]
+        public void GoToOwnPage_WithCorrespondingCatchingRule_Loaded()
+        {
+            var acceptanceHelperOneMasterPage = new AcceptanceHelperOneMasterPage(Driver).GoToSimplePage();
+            WaitForText(acceptanceHelperOneMasterPage.H1Element, "Simple Page");
         }
 
         [Test]

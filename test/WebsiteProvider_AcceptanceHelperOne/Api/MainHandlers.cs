@@ -19,8 +19,8 @@ namespace WebsiteProvider_AcceptanceHelperOne
             Handle.GET("/WebsiteProvider_AcceptanceHelperOne", () => Db.Scope(() => new AcceptanceHelperOnePage()));
 
             Handle.GET("/WebsiteProvider_AcceptanceHelperOne/EmptyJson", () => new Json());
-            Handle.GET("/WebsiteProvider_AcceptanceHelperOne/EmptyPage",
-                () => new Page { Html = "/WebsiteProvider_AcceptanceHelperOne/Master.html" });
+            Handle.GET("/WebsiteProvider_AcceptanceHelperOne/SimplePage",
+                () => new Page { Html = "/WebsiteProvider_AcceptanceHelperOne/SimplePage.html" });
 
             Handle.GET("/WebsiteProvider_AcceptanceHelperOne/SetDefaultCatchingRules", () =>
             {

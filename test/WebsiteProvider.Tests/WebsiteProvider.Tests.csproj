@@ -50,6 +50,7 @@
     <Compile Include="Test\BaseTest.cs" />
     <Compile Include="Test\CatchAllRulesTests.cs" />
     <Compile Include="Test\PageLoadTests.cs" />
+    <Compile Include="Ui\AcceptanceHelperOneSimplePage.cs" />
     <Compile Include="Ui\AcceptanceHelperTwoMasterPage.cs" />
     <Compile Include="Ui\AcceptanceHelperOneMasterPage.cs" />
     <Compile Include="Ui\BasePage.cs" />
