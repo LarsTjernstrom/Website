@@ -6,7 +6,7 @@ namespace WebsiteProvider_AcceptanceHelperTwo
 {
     public class DataHelper
     {
-        public void GenerateData()
+        public void SetDefaultCatchingRules()
         {
             var launcherTemplate = Db.SQL<WebTemplate>("SELECT wt FROM Simplified.Ring6.WebTemplate wt WHERE wt.Name = ?", "LauncherTemplate").First;
             if (launcherTemplate == null)

@@ -6,7 +6,7 @@ namespace WebsiteProvider_AcceptanceHelperOne
 {
     public class DataHelper
     {
-        public void GenerateData()
+        public void SetDefaultCatchingRules()
         {
             var defaultTemplate = Db.SQL<WebTemplate>("SELECT wt FROM Simplified.Ring6.WebTemplate wt WHERE wt.Name = ?", "DefaultTemplate").First;
             var sidebarTemplate = Db.SQL<WebTemplate>("SELECT wt FROM Simplified.Ring6.WebTemplate wt WHERE wt.Name = ?", "SidebarTemplate").First;
@@ -33,6 +33,26 @@ namespace WebsiteProvider_AcceptanceHelperOne
                              Url = "/WebsiteProvider_AcceptanceHelperOne/EmptyPage",
                              IsFinal = true
                          };
+            });
+        }
+
+        public void SetNoFinalCatchAllRules()
+        {
+            Db.Transact(() =>
+            {
+                var catchAllRules = Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE (wu.Url IS NULL OR wu.Url = ?) AND wu.IsFinal = ?", string.Empty, true);
+                foreach (WebUrl rule in catchAllRules)
+                {
+                    rule.IsFinal = false;
+                }
+            });
+        }
+
+        public void DeleteCatchAllRules()
+        {
+            Db.Transact(() =>
+            {
+                Db.SlowSQL("DELETE FROM Simplified.Ring6.WebUrl wu WHERE (wu.Url IS NULL OR wu.Url = ?)", string.Empty);
             });
         }
     }

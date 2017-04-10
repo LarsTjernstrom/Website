@@ -4,39 +4,44 @@ using WebsiteProvider.Tests.Utilities;
 
 namespace WebsiteProvider.Tests.Test
 {
-    [Parallelizable(ParallelScope.Fixtures)]
+    [Parallelizable(ParallelScope.None)]
     [TestFixture(Config.Browser.Chrome)]
     [TestFixture(Config.Browser.Edge)]
     [TestFixture(Config.Browser.Firefox)]
-    public class PageLoadTest : BaseTest
+    public class PageLoadTests : BaseTest
     {
-        private AcceptanceHelperOneMasterPage _acceptanceHelperOneMasterPage;
-        private AcceptanceHelperTwoMasterPage _acceptanceHelperTwoMasterPage;
-
-        public PageLoadTest(Config.Browser browser) : base(browser)
+        public PageLoadTests(Config.Browser browser) : base(browser)
         {
         }
 
-        [Test]
-        public void EmptyPageLoadsTest()
+        [OneTimeSetUp]
+        public void FixtureSetUp()
         {
-            _acceptanceHelperOneMasterPage = new AcceptanceHelperOneMasterPage(Driver).GoToEmptyPage();
-            WaitForText(_acceptanceHelperOneMasterPage.H1Element, "Acceptance Helper 1", 10);
+            Driver.Navigate().GoToUrl(Config.WebsiteUrl + "/resetdata");
+            Driver.Navigate().GoToUrl(Config.AcceptanceHelperOneUrl + "/SetDefaultCatchingRules");
+            Driver.Navigate().GoToUrl(Config.AcceptanceHelperTwoUrl + "/SetDefaultCatchingRules");
         }
 
         [Test]
-        public void EmptyJsonLoadsTest()
+        public void LoadPage_IncludedHtmlField_WrappedAndLoaded()
         {
-            _acceptanceHelperOneMasterPage = new AcceptanceHelperOneMasterPage(Driver).GoToEmptyJson();
+            var page = new AcceptanceHelperOneMasterPage(Driver).GoToEmptyPage();
+            WaitForText(page.H1Element, "Acceptance Helper 1");
+        }
+
+        [Test]
+        public void LoadPage_ExcludedHtmlField_ExceptionThrownAndRendered()
+        {
+            var page = new AcceptanceHelperOneMasterPage(Driver).GoToEmptyJson();
             WaitUntil(x => x.PageSource.Contains("System.InvalidOperationException: ScErrInvalidOperation (SCERR1025)"));
         }
 
         [Test]
-        public void RedirectToOtherAppPageTest()
+        public void GoToOtherAppPage_WithCorrespondingCatchingRule_Loaded()
         {
-            _acceptanceHelperOneMasterPage = new AcceptanceHelperOneMasterPage(Driver).GoToMasterPage();
-            _acceptanceHelperTwoMasterPage = _acceptanceHelperOneMasterPage.GoToAcceptanceHelperTwoPage();
-            WaitForText(_acceptanceHelperTwoMasterPage.H1Element, "Acceptance Helper 2", 10);
+            var acceptanceHelperOneMasterPage = new AcceptanceHelperOneMasterPage(Driver).GoToMasterPage();
+            var acceptanceHelperTwoMasterPage = acceptanceHelperOneMasterPage.GoToAcceptanceHelperTwoPage();
+            WaitForText(acceptanceHelperTwoMasterPage.H1Element, "Acceptance Helper 2");
         }
     }
 }

@@ -54,7 +54,7 @@ namespace WebsiteProvider.Tests.Test
             return wait.Until(condition);
         }
 
-        public bool WaitForText(IWebElement elementName, string text, int seconds)
+        public bool WaitForText(IWebElement elementName, string text, int seconds = 10)
         {
             WebDriverWait wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(seconds));
             return wait.Until(ExpectedConditions.TextToBePresentInElement(elementName, text));

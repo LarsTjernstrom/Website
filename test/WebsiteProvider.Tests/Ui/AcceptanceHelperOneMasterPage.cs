@@ -6,8 +6,8 @@ namespace WebsiteProvider.Tests.Ui
 {
     public class AcceptanceHelperOneMasterPage : BasePage
     {
-        [FindsBy(How = How.XPath, Using = "//a")]
-        public IWebElement AcceptanceHelperOnePageLink { get; set; }
+        [FindsBy(How = How.XPath, Using = "//a[@href = '/WebsiteProvider_AcceptanceHelperTwo']")]
+        public IWebElement AcceptanceHelperTwoLink { get; set; }
 
         [FindsBy(How = How.XPath, Using = "//h1")]
         public IWebElement H1Element { get; set; }
@@ -36,7 +36,7 @@ namespace WebsiteProvider.Tests.Ui
 
         public AcceptanceHelperTwoMasterPage GoToAcceptanceHelperTwoPage()
         {
-            ClickOn(AcceptanceHelperOnePageLink);
+            ClickOn(AcceptanceHelperTwoLink);
             return new AcceptanceHelperTwoMasterPage(Driver);
         }
     }

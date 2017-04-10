@@ -10,9 +10,8 @@ namespace WebsiteProvider_AcceptanceHelperOne
             Application.Current.Use(new PartialToStandaloneHtmlProvider());
 
             var dataHelper = new DataHelper();
-            var mainHandlers = new MainHandlers();
+            var mainHandlers = new MainHandlers(dataHelper);
 
-            dataHelper.GenerateData();
             mainHandlers.Register();
         }
     }
