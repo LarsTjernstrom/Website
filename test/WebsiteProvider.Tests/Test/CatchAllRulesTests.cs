@@ -15,13 +15,8 @@ namespace WebsiteProvider.Tests.Test
         }
 
         [SetUp]
-        public void SetUp()
-        {
-            Driver.Navigate().GoToUrl(Config.WebsiteUrl + "/resetdata");
-        }
-
         [OneTimeTearDown]
-        public void OneTimeTearDown()
+        public void SetUp()
         {
             Driver.Navigate().GoToUrl(Config.WebsiteUrl + "/resetdata");
         }
@@ -34,17 +29,38 @@ namespace WebsiteProvider.Tests.Test
         }
 
         [Test]
+        public void GoToOwnPage_NoFinalCatchAllRules_WrappedAndLoaded()
+        {
+            Driver.Navigate().GoToUrl(Config.AcceptanceHelperOneUrl + "/SetupNoFinalCatchAllRulesTest");
+            GoToAndCheckAcceptanceHelperOneSimplePage();
+        }
+
+        [Test]
         public void GoToOtherAppPage_NoCatchAllRules_LoadedAsIs()
         {
             Driver.Navigate().GoToUrl(Config.AcceptanceHelperOneUrl + "/SetupNoCatchAllRuleTest");
             GoToAndCheckAcceptanceHelperTwoPage();
         }
 
+        [Test]
+        public void GoToOwnPage_NoCatchAllRules_LoadedAsIs()
+        {
+            Driver.Navigate().GoToUrl(Config.AcceptanceHelperOneUrl + "/SetupNoCatchAllRuleTest");
+            GoToAndCheckAcceptanceHelperOneSimplePage();
+        }
+
         protected void GoToAndCheckAcceptanceHelperTwoPage()
         {
-            var acceptanceHelperOneMasterPage = new AcceptanceHelperOneMasterPage(Driver).GoToMasterPage();
+            var acceptanceHelperOneMasterPage = new AcceptanceHelperOneMasterPage(Driver).LoadMasterPage();
             var acceptanceHelperTwoMasterPage = acceptanceHelperOneMasterPage.GoToAcceptanceHelperTwoPage();
-            WaitForText(acceptanceHelperTwoMasterPage.H1Element, "Acceptance Helper 2");
+            WaitForText(acceptanceHelperTwoMasterPage.HeaderElement, "Acceptance Helper 2");
+        }
+
+        protected void GoToAndCheckAcceptanceHelperOneSimplePage()
+        {
+            var masterPage = new AcceptanceHelperOneMasterPage(Driver).LoadMasterPage();
+            var simplePage = masterPage.GoToSimplePage();
+            WaitForText(simplePage.HeaderElement, "Simple Page");
         }
     }
 }

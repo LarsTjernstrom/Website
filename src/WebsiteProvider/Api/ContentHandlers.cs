@@ -136,6 +136,10 @@ namespace WebsiteProvider
                         }
                         if (this.CurrentResponse == null)
                         {
+                            if (Session.Current == null)
+                            {
+                                Session.Current = new Session(SessionOptions.PatchVersioning);
+                            }
                             Session.Current.Data = response.Resource as Json;
                         }
                     }

@@ -25,30 +25,31 @@ namespace WebsiteProvider.Tests.Test
         [Test]
         public void LoadPage_IncludedHtmlField_WrappedAndLoaded()
         {
-            var page = new AcceptanceHelperOneMasterPage(Driver).GoToSimplePage();
-            WaitForText(page.H1Element, "Simple Page");
+            var page = new AcceptanceHelperOneMasterPage(Driver).LoadSimplePage();
+            WaitForText(page.HeaderElement, "Simple Page");
         }
 
         [Test]
         public void LoadPage_ExcludedHtmlField_ExceptionThrownAndRendered()
         {
-            var page = new AcceptanceHelperOneMasterPage(Driver).GoToEmptyJson();
+            var page = new AcceptanceHelperOneMasterPage(Driver).LoadEmptyJson();
             WaitUntil(x => x.PageSource.Contains("System.InvalidOperationException: ScErrInvalidOperation (SCERR1025)"));
         }
 
         [Test]
         public void GoToOwnPage_WithCorrespondingCatchingRule_Loaded()
         {
-            var acceptanceHelperOneMasterPage = new AcceptanceHelperOneMasterPage(Driver).GoToSimplePage();
-            WaitForText(acceptanceHelperOneMasterPage.H1Element, "Simple Page");
+            var masterPage = new AcceptanceHelperOneMasterPage(Driver).LoadMasterPage();
+            var simplePage = masterPage.GoToSimplePage();
+            WaitForText(simplePage.HeaderElement, "Simple Page");
         }
 
         [Test]
         public void GoToOtherAppPage_WithCorrespondingCatchingRule_Loaded()
         {
-            var acceptanceHelperOneMasterPage = new AcceptanceHelperOneMasterPage(Driver).GoToMasterPage();
+            var acceptanceHelperOneMasterPage = new AcceptanceHelperOneMasterPage(Driver).LoadMasterPage();
             var acceptanceHelperTwoMasterPage = acceptanceHelperOneMasterPage.GoToAcceptanceHelperTwoPage();
-            WaitForText(acceptanceHelperTwoMasterPage.H1Element, "Acceptance Helper 2");
+            WaitForText(acceptanceHelperTwoMasterPage.HeaderElement, "Acceptance Helper 2");
         }
     }
 }

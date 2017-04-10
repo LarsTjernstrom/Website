@@ -5,8 +5,8 @@ namespace WebsiteProvider.Tests.Ui
 {
     public class AcceptanceHelperOneSimplePage : BasePage
     {
-        [FindsBy(How = How.XPath, Using = "//h1")]
-        public IWebElement H1Element { get; set; }
+        [FindsBy(How = How.XPath, Using = "//h2")]
+        public IWebElement HeaderElement { get; set; }
 
         public AcceptanceHelperOneSimplePage(IWebDriver driver) : base(driver)
         {

@@ -40,6 +40,8 @@ namespace WebsiteProvider_AcceptanceHelperOne
         {
             Db.Transact(() =>
             {
+                SetCatchingRulesForCatchAll();
+
                 var catchAllRules = Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE (wu.Url IS NULL OR wu.Url = ?) AND wu.IsFinal = ?", string.Empty, true);
                 foreach (WebUrl rule in catchAllRules)
                 {
@@ -52,8 +54,26 @@ namespace WebsiteProvider_AcceptanceHelperOne
         {
             Db.Transact(() =>
             {
-                Db.SlowSQL("DELETE FROM Simplified.Ring6.WebUrl wu WHERE (wu.Url IS NULL OR wu.Url = ?)", string.Empty);
+                SetCatchingRulesForCatchAll();
+                Db.SlowSQL("DELETE FROM Simplified.Ring6.WebUrl WHERE Url IS NULL OR Url = ''");
             });
+        }
+
+        private void SetCatchingRulesForCatchAll()
+        {
+            var sidebarTemplate = Db.SQL<WebTemplate>("SELECT wt FROM Simplified.Ring6.WebTemplate wt WHERE wt.Name = ?", "SidebarTemplate").First;
+            if (sidebarTemplate == null)
+            {
+                throw new Exception("Website surfaces is not found.");
+            }
+            var webUrl = Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE wu.Url = ?",
+                             "/WebsiteProvider_AcceptanceHelperOne").First ??
+                         new WebUrl
+                         {
+                             Url = "/WebsiteProvider_AcceptanceHelperOne",
+                         };
+            webUrl.Template = sidebarTemplate;
+            webUrl.IsFinal = true;
         }
     }
 }

@@ -13,27 +13,33 @@ namespace WebsiteProvider.Tests.Ui
         public IWebElement AcceptanceHelperOneSimplePageLink { get; set; }
 
         [FindsBy(How = How.XPath, Using = "//h1")]
-        public IWebElement H1Element { get; set; }
+        public IWebElement HeaderElement { get; set; }
 
         public AcceptanceHelperOneMasterPage(IWebDriver driver) : base(driver)
         {
         }
 
-        public AcceptanceHelperOneMasterPage GoToMasterPage()
+        public AcceptanceHelperOneMasterPage LoadMasterPage()
         {
             Driver.Navigate().GoToUrl(Config.AcceptanceHelperOneUrl);
             return this;
         }
 
-        public AcceptanceHelperOneMasterPage GoToEmptyJson()
+        public AcceptanceHelperOneMasterPage LoadEmptyJson()
         {
             Driver.Navigate().GoToUrl(Config.AcceptanceHelperOneUrl + "/EmptyJson");
             return this;
         }
 
-        public AcceptanceHelperOneSimplePage GoToSimplePage()
+        public AcceptanceHelperOneSimplePage LoadSimplePage()
         {
             Driver.Navigate().GoToUrl(Config.AcceptanceHelperOneUrl + "/SimplePage");
+            return new AcceptanceHelperOneSimplePage(Driver);
+        }
+
+        public AcceptanceHelperOneSimplePage GoToSimplePage()
+        {
+            ClickOn(AcceptanceHelperOneSimplePageLink);
             return new AcceptanceHelperOneSimplePage(Driver);
         }
 

@@ -7,13 +7,13 @@ namespace WebsiteProvider.Tests.Ui
     public class AcceptanceHelperTwoMasterPage : BasePage
     {
         [FindsBy(How = How.XPath, Using = "//h2")]
-        public IWebElement H1Element { get; set; }
+        public IWebElement HeaderElement { get; set; }
 
         public AcceptanceHelperTwoMasterPage(IWebDriver driver) : base(driver)
         {
         }
 
-        public AcceptanceHelperTwoMasterPage GoToMasterPage()
+        public AcceptanceHelperTwoMasterPage LoadMasterPage()
         {
             Driver.Navigate().GoToUrl(Config.AcceptanceHelperTwoUrl);
             return this;
