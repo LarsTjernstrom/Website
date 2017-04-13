@@ -25,19 +25,22 @@ namespace WebsiteProvider_AcceptanceHelperOne
             Handle.GET("/WebsiteProvider_AcceptanceHelperOne/SetDefaultCatchingRules", () =>
             {
                 DataHelper.SetDefaultCatchingRules();
-                return Response.FromStatusCode(200);
+                Handle.SetOutgoingStatusCode(200);
+                return "Default catching rules are successfully set";
             });
 
             Handle.GET("/WebsiteProvider_AcceptanceHelperOne/SetupNoFinalCatchAllRulesTest", () =>
             {
                 DataHelper.SetNoFinalCatchAllRules();
-                return Response.FromStatusCode(200);
+                Handle.SetOutgoingStatusCode(200);
+                return "Data for testing catching rules (without existing final catch-all rules) is set";
             });
 
             Handle.GET("/WebsiteProvider_AcceptanceHelperOne/SetupNoCatchAllRuleTest", () =>
             {
                 DataHelper.DeleteCatchAllRules();
-                return Response.FromStatusCode(200);
+                Handle.SetOutgoingStatusCode(200);
+                return "Data for testing catching rules (without existing catch-all rules) is set";
             });
         }
     }

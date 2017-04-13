@@ -21,7 +21,8 @@ namespace WebsiteProvider_AcceptanceHelperTwo
             Handle.GET("/WebsiteProvider_AcceptanceHelperTwo/SetDefaultCatchingRules", () =>
             {
                 DataHelper.SetDefaultCatchingRules();
-                return Response.FromStatusCode(200);
+                Handle.SetOutgoingStatusCode(200);
+                return "Default catching rules are successfully set";
             });
         }
     }
