@@ -24,6 +24,14 @@
         .launcher-home-button {
             font-size: 0;
         }
+        /* use Shadow DOM style, reset bootstrap theme */
+        a.launcher-home-button {
+            color: var(--secondary-color, #8a98b0);
+        }
+        a.launcher-home-button:hover {
+            color: var(--primary-color, white);
+        }
+        /* end of overwriting bootstrap*/
 
         .launcher-home-button__icon {
             width: 19px;
@@ -39,6 +47,14 @@
             align-items: center;
             font-size: 0;
         }
+        /* use Shadow DOM style, reset bootstrap theme */
+        .launcher-search a{
+            color: var(--secondary-color, #8a98b0);
+        }
+        .launcher-search a:hover{
+            color: var(--primary-color, white);
+        }
+        /* end of overwriting bootstrap*/
 
         .launcher-search__icon {
             font-size: 18px;
@@ -114,6 +130,29 @@
             margin-bottom: 1px;
             margin-top: 1px;
         }
+
+
+        /** For browsers that does not support CSS Grid Layout */
+        .launcher-topbar > juicy-composition > starcounter-include > juicy-composition {
+            display: flex;
+            align-items: center;
+        }
+
+        /** For browsers that supports CSS Grid */
+        @supports( (display: grid) and (grid-column-gap: 5px) ) {
+            .launcher-topbar > juicy-composition > starcounter-include > juicy-composition {
+                display: grid;
+                grid-column-gap: 5px;
+                grid-auto-flow: column;
+                margin-right: 5px;
+            }
+        }
+        @supports( not ((display: grid) and (grid-column-gap: 5px)) ) {
+            /* We assume lack of CSS Grid => lack of native SD */
+            .launcher-topbar > juicy-composition > starcounter-include > juicy-composition > * {
+                margin-right: 5px;
+            }
+        }
     </style>
     <template is="dom-bind">
         <a slot="website/icon" href="/launcher" class="launcher-home-button"><i class="glyphicon glyphicon-home launcher-home-button__icon"></i></a>
@@ -123,15 +162,15 @@
             </a>
             <input type="text" class="launcher-search__input" placeholder="Search">
         </div>
+        <starcounter-include slot="website/topbar" view-model="{{model.Sections.TopBar}}" class="launcher-topbar"></starcounter-include>
         <a slot="website/settings" href="/launcher/settings" class="launcher-settings-button"><img class="launcher-settings-button__icon" src="/Website/images/cog.svg" /></a>
-        <starcounter-include slot="website/topbar" view-model="{{model.Sections.TopBar}}"></starcounter-include>
         <website-launchertemplate-menu slot="website/leftbar">
             <starcounter-include view-model="{{model.Sections.LeftBar}}"></starcounter-include>
             <ul class="launcher-menu"></ul>
         </website-launchertemplate-menu>
         <starcounter-include slot="website/main" view-model="{{model.Sections.Main}}"></starcounter-include>
     </template>
-    <template is="starcounter-composition">
+    <template is="declarative-shadow-dom">
         <slot name="website/global-style"></slot>
         <style shim-shadowdom>
             .launcher-layout {
@@ -155,13 +194,8 @@
                 height: 50px;
             }
 
-            /** For browsers that supports Shadow DOM v0 */
-            .launcher-layout__top ::content a {
-                color: var(--secondary-color, #8a98b0);
-            }
-
-            /** duplicated rule for polyfilled browsers */
-            .launcher-layout__top a {
+            /** For browsers that supports Shadow DOM */
+            .launcher-layout__top ::slotted(a.launcher-home-button){
                 color: var(--secondary-color, #8a98b0);
             }
 
@@ -169,78 +203,6 @@
             .launcher-layout__top-right {
                 display: flex;
                 align-items: center;
-            }
-
-            /** For browsers that supports Shadow DOM v0 */
-            .launcher-layout__top-left ::content > starcounter-include > juicy-composition,
-            .launcher-layout__top-left ::content > starcounter-include > juicy-composition > starcounter-include > juicy-composition,
-            .launcher-layout__top-right ::content > starcounter-include > juicy-composition,
-            .launcher-layout__top-right ::content > starcounter-include > juicy-composition > starcounter-include > juicy-composition {
-                display: flex;
-                align-items: center;
-            }
-            /** duplicated rule for polyfilled browsers */
-            .launcher-layout__top-left > starcounter-include > juicy-composition,
-            .launcher-layout__top-left > starcounter-include > juicy-composition > starcounter-include > juicy-composition,
-            .launcher-layout__top-right > starcounter-include > juicy-composition,
-            .launcher-layout__top-right > starcounter-include > juicy-composition > starcounter-include > juicy-composition {
-                display: flex;
-                align-items: center;
-            }
-
-            @supports( (display: grid) and (grid-column-gap: 5px) ) {
-                /** For browsers that supports Shadow DOM v0 */
-                .launcher-layout__top-right ::content > starcounter-include > juicy-composition,
-                .launcher-layout__top-right ::content > starcounter-include > juicy-composition > starcounter-include > juicy-composition,
-                .launcher-layout__top-left,
-                .launcher-layout__top-right {
-                    display: grid;
-                    align-items: center;
-                    grid-column-gap: 5px;
-                    grid-auto-flow: column;
-                    margin-right: 5px;
-                }
-
-                /** duplicated rule for polyfilled browsers */
-                .launcher-layout__top-right > starcounter-include > juicy-composition,
-                .launcher-layout__top-right > starcounter-include > juicy-composition > starcounter-include > juicy-composition,
-                .launcher-layout__top-left,
-                .launcher-layout__top-right {
-                    display: grid;
-                    align-items: center;
-                    grid-column-gap: 5px;
-                    grid-auto-flow: column;
-                    margin-right: 5px;
-                }
-            }
-            @supports( not ((display: grid) and (grid-column-gap: 5px)) ) {
-                .launcher-layout__top-right ::content > starcounter-include > juicy-composition > *,
-                .launcher-layout__top-right ::content > starcounter-include > juicy-composition starcounter-include > juicy-composition > *,
-                /*
-                 Shadow DOM v1 in-compatible Shadow DOM piercing selector
-                 styling such things may break default compositions delivered by apps
-                */
-                .launcher-layout__top-right ::content > starcounter-include > juicy-composition::shadow > *,
-                .launcher-layout__top-right ::content > starcounter-include > juicy-composition > starcounter-include > juicy-composition::shadow > * {
-                    margin-right: 5px;
-                }
-                /** duplicated rule for polyfilled browsers */
-                .launcher-layout__top-right > starcounter-include > juicy-composition > *,
-                .launcher-layout__top-right > starcounter-include > juicy-composition starcounter-include > juicy-composition > * {
-                    margin-right: 5px;
-                }
-            }
-            /** For browsers that supports Shadow DOM v0 */
-            .launcher-layout__top-right ::content paper-icon-button {
-                width: 24px;
-                height: 24px;
-                padding: 0;
-            }
-            /** duplicated rule for polyfilled browsers */
-            .launcher-layout__top-right paper-icon-button {
-                width: 24px;
-                height: 24px;
-                padding: 0;
             }
 
             .launcher-layout__content {

@@ -11,7 +11,7 @@
         <starcounter-include slot="website/Right" view-model="{{model.Sections.Right}}"></starcounter-include>
         <starcounter-include slot="website/Footer" view-model="{{model.Sections.Footer}}"></starcounter-include>
     </template>
-    <template is="starcounter-composition">
+    <template is="declarative-shadow-dom">
         <slot name="website/global-style"></slot>
         <style>
             @import url("/Website/css/AppHub.css");
