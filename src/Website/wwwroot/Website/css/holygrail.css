@@ -1,0 +1,44 @@
+/*View's Shadow DOM styles*/
+.website-holygrail {
+    display: -ms-grid;
+    -ms-grid-columns: minmax(min-content, 1fr) minmax(max-content, 1fr) minmax(min-content, 1fr);
+    -ms-grid-rows: auto minmax(min-content, 1fr) auto;
+
+    height: 100%;
+    display: grid;
+    grid-template: "head head head"
+                   "left content right" 1fr
+                   "foot foot foot";
+}
+.website-holygrail__header {
+    -ms-grid-row: 1;
+    -ms-grid-column: 1;
+    -ms-grid-column-span: 3;
+
+    grid-area: head;
+}
+.website-holygrail__left{
+    -ms-grid-row: 2;
+    -ms-grid-column: 1;
+
+    grid-area: left;
+}
+.website-holygrail__content {
+    -ms-grid-row: 2;
+    -ms-grid-column: 2;
+
+    grid-area: content;
+}
+.website-holygrail__right {
+    -ms-grid-row: 2;
+    -ms-grid-column: 3;
+
+    grid-area: right;
+}
+.website-holygrail__footer {
+    -ms-grid-row: 3;
+    -ms-grid-column: 1;
+    -ms-grid-column-span: 3;
+    
+    grid-area: foot;
+}
