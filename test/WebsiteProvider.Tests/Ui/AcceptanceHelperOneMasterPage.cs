@@ -25,12 +25,6 @@ namespace WebsiteProvider.Tests.Ui
             return this;
         }
 
-        public AcceptanceHelperOneMasterPage LoadEmptyJson()
-        {
-            Driver.Navigate().GoToUrl(Config.AcceptanceHelperOneUrl + "/EmptyJson");
-            return this;
-        }
-
         public AcceptanceHelperOneSimplePage LoadSimplePage()
         {
             Driver.Navigate().GoToUrl(Config.AcceptanceHelperOneUrl + "/SimplePage");

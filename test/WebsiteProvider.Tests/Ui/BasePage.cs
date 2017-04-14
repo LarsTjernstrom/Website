@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.PageObjects;
 using OpenQA.Selenium.Support.UI;
@@ -42,6 +43,32 @@ namespace WebsiteProvider.Tests.Ui
         public void ScrollToTheTop()
         {
             ((IJavaScriptExecutor)Driver).ExecuteScript("window.scrollTo(0, 0)");
+        }
+
+        public bool CheckForNoSurface()
+        {
+            return !Driver.FindElements(By.ClassName("website-surface")).Any();
+        }
+
+        public bool CheckForLauncherSurface()
+        {
+            return CheckForSurface("launcher-layout");
+        }
+
+        public bool CheckForDefaultSurface()
+        {
+            return CheckForSurface("website-defaulttemplate-main");
+        }
+
+        public bool CheckForSidebarSurface()
+        {
+            return CheckForSurface("website-sidebartemplate");
+        }
+
+        protected bool CheckForSurface(string searchingClassName)
+        {
+            var shadowRoot = ExpandShadowRoot(Driver.FindElement(By.XPath("//juicy-composition")));
+            return shadowRoot.FindElements(By.ClassName(searchingClassName)).Any();
         }
     }
 }

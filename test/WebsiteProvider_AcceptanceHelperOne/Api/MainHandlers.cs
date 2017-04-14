@@ -22,6 +22,13 @@ namespace WebsiteProvider_AcceptanceHelperOne
             Handle.GET("/WebsiteProvider_AcceptanceHelperOne/SimplePage",
                 () => new Page { Html = "/WebsiteProvider_AcceptanceHelperOne/SimplePage.html" });
 
+            Handle.GET("/WebsiteProvider_AcceptanceHelperOne/ResetData", () =>
+            {
+                DataHelper.ResetData();
+                Handle.SetOutgoingStatusCode(200);
+                return "Catching rules are reseted";
+            });
+
             Handle.GET("/WebsiteProvider_AcceptanceHelperOne/SetDefaultCatchingRules", () =>
             {
                 DataHelper.SetDefaultCatchingRules();
@@ -38,7 +45,7 @@ namespace WebsiteProvider_AcceptanceHelperOne
 
             Handle.GET("/WebsiteProvider_AcceptanceHelperOne/SetupNoCatchAllRuleTest", () =>
             {
-                DataHelper.DeleteCatchAllRules();
+                DataHelper.SetNoCatchAllRules();
                 Handle.SetOutgoingStatusCode(200);
                 return "Data for testing catching rules (without existing catch-all rules) is set";
             });

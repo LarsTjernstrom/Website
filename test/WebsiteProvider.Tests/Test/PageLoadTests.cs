@@ -17,9 +17,15 @@ namespace WebsiteProvider.Tests.Test
         [OneTimeSetUp]
         public void FixtureSetUp()
         {
-            Driver.Navigate().GoToUrl(Config.WebsiteUrl + "/resetdata");
+            Driver.Navigate().GoToUrl(Config.AcceptanceHelperOneUrl + "/ResetData");
             Driver.Navigate().GoToUrl(Config.AcceptanceHelperOneUrl + "/SetDefaultCatchingRules");
             Driver.Navigate().GoToUrl(Config.AcceptanceHelperTwoUrl + "/SetDefaultCatchingRules");
+        }
+
+        [OneTimeTearDown]
+        public void FixtureTearDown()
+        {
+            Driver.Navigate().GoToUrl(Config.AcceptanceHelperOneUrl + "/ResetData");
         }
 
         [Test]
@@ -27,12 +33,13 @@ namespace WebsiteProvider.Tests.Test
         {
             var page = new AcceptanceHelperOneMasterPage(Driver).LoadSimplePage();
             WaitForText(page.HeaderElement, "Simple Page");
+            WaitUntil(x => page.CheckForLauncherSurface());
         }
 
         [Test]
         public void LoadPage_ExcludedHtmlField_ExceptionThrownAndRendered()
         {
-            var page = new AcceptanceHelperOneMasterPage(Driver).LoadEmptyJson();
+            Driver.Navigate().GoToUrl(Config.AcceptanceHelperOneUrl + "/EmptyJson");
             WaitUntil(x => x.PageSource.Contains("System.InvalidOperationException: ScErrInvalidOperation (SCERR1025)"));
         }
 
@@ -42,6 +49,7 @@ namespace WebsiteProvider.Tests.Test
             var masterPage = new AcceptanceHelperOneMasterPage(Driver).LoadMasterPage();
             var simplePage = masterPage.GoToSimplePage();
             WaitForText(simplePage.HeaderElement, "Simple Page");
+            WaitUntil(x => simplePage.CheckForLauncherSurface());
         }
 
         [Test]
@@ -50,6 +58,7 @@ namespace WebsiteProvider.Tests.Test
             var acceptanceHelperOneMasterPage = new AcceptanceHelperOneMasterPage(Driver).LoadMasterPage();
             var acceptanceHelperTwoMasterPage = acceptanceHelperOneMasterPage.GoToAcceptanceHelperTwoPage();
             WaitForText(acceptanceHelperTwoMasterPage.HeaderElement, "Acceptance Helper 2");
+            WaitUntil(x => acceptanceHelperTwoMasterPage.CheckForSidebarSurface());
         }
     }
 }

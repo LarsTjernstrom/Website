@@ -16,51 +16,49 @@ namespace WebsiteProvider.Tests.Test
 
         [SetUp]
         [OneTimeTearDown]
-        public void SetUp()
+        public void ResetData()
         {
-            Driver.Navigate().GoToUrl(Config.WebsiteUrl + "/resetdata");
+            Driver.Navigate().GoToUrl(Config.AcceptanceHelperOneUrl + "/ResetData");
         }
 
         [Test]
         public void GoToOtherAppPage_NoFinalCatchAllRules_WrappedAndLoaded()
         {
             Driver.Navigate().GoToUrl(Config.AcceptanceHelperOneUrl + "/SetupNoFinalCatchAllRulesTest");
-            GoToAndCheckAcceptanceHelperTwoPage();
+            var acceptanceHelperOneMasterPage = new AcceptanceHelperOneMasterPage(Driver).LoadMasterPage();
+            var acceptanceHelperTwoMasterPage = acceptanceHelperOneMasterPage.GoToAcceptanceHelperTwoPage();
+            WaitForText(acceptanceHelperTwoMasterPage.HeaderElement, "Acceptance Helper 2");
+            WaitUntil(x => acceptanceHelperTwoMasterPage.CheckForDefaultSurface());
         }
 
         [Test]
         public void GoToOwnPage_NoFinalCatchAllRules_WrappedAndLoaded()
         {
             Driver.Navigate().GoToUrl(Config.AcceptanceHelperOneUrl + "/SetupNoFinalCatchAllRulesTest");
-            GoToAndCheckAcceptanceHelperOneSimplePage();
+            var masterPage = new AcceptanceHelperOneMasterPage(Driver).LoadMasterPage();
+            var simplePage = masterPage.GoToSimplePage();
+            WaitForText(simplePage.HeaderElement, "Simple Page");
+            WaitUntil(x => simplePage.CheckForDefaultSurface());
         }
 
         [Test]
         public void GoToOtherAppPage_NoCatchAllRules_LoadedAsIs()
         {
             Driver.Navigate().GoToUrl(Config.AcceptanceHelperOneUrl + "/SetupNoCatchAllRuleTest");
-            GoToAndCheckAcceptanceHelperTwoPage();
+            var acceptanceHelperOneMasterPage = new AcceptanceHelperOneMasterPage(Driver).LoadMasterPage();
+            var acceptanceHelperTwoMasterPage = acceptanceHelperOneMasterPage.GoToAcceptanceHelperTwoPage();
+            WaitForText(acceptanceHelperTwoMasterPage.HeaderElement, "Acceptance Helper 2");
+            WaitUntil(x => acceptanceHelperTwoMasterPage.CheckForNoSurface());
         }
 
         [Test]
         public void GoToOwnPage_NoCatchAllRules_LoadedAsIs()
         {
             Driver.Navigate().GoToUrl(Config.AcceptanceHelperOneUrl + "/SetupNoCatchAllRuleTest");
-            GoToAndCheckAcceptanceHelperOneSimplePage();
-        }
-
-        protected void GoToAndCheckAcceptanceHelperTwoPage()
-        {
-            var acceptanceHelperOneMasterPage = new AcceptanceHelperOneMasterPage(Driver).LoadMasterPage();
-            var acceptanceHelperTwoMasterPage = acceptanceHelperOneMasterPage.GoToAcceptanceHelperTwoPage();
-            WaitForText(acceptanceHelperTwoMasterPage.HeaderElement, "Acceptance Helper 2");
-        }
-
-        protected void GoToAndCheckAcceptanceHelperOneSimplePage()
-        {
             var masterPage = new AcceptanceHelperOneMasterPage(Driver).LoadMasterPage();
             var simplePage = masterPage.GoToSimplePage();
             WaitForText(simplePage.HeaderElement, "Simple Page");
+            WaitUntil(x => simplePage.CheckForNoSurface());
         }
     }
 }
