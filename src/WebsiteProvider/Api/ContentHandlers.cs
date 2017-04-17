@@ -142,8 +142,9 @@ namespace WebsiteProvider
                             requestUri = wrapper.WebTemplatePage.Data.Html;
                         }
                     }
+                    return response;
                 }
-                return response;
+                return null;
             });
         }
 
