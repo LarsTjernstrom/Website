@@ -34,7 +34,6 @@ namespace WebsiteProvider
                         Blender.MapUri(blendingUrl, token);
                     }
 
-                    RegisterEmptyHandler(webMap.ForeignUrl, registeredEmptyHandleUris);
                     Blender.MapUri(webMap.ForeignUrl, token);
                 }
             }
@@ -44,14 +43,7 @@ namespace WebsiteProvider
         {
             if (!registeredEmptyHandleUris.Contains(url))
             {
-                try
-                {
-                    Handle.GET(url, () => new Json(), new HandlerOptions { SelfOnly = true });
-                }
-                catch
-                {
-                    // ignored
-                }
+                Handle.GET(url, () => new Json(), new HandlerOptions { SelfOnly = true });
                 registeredEmptyHandleUris.Add(url);
             }
         }
