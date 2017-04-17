@@ -41,6 +41,16 @@ namespace WebsiteProvider
                 return "Welcome to WebsiteProvider.";
             });
 
+            Handle.GET("/WebsiteProvider/partial/template/{?}", (string templateId) =>
+            {
+                var page = new WebTemplatePage
+                {
+                    Data = Db.SQL<WebTemplate>("SELECT wt FROM Simplified.Ring6.WebTemplate wt WHERE wt.Key = ?", templateId).First
+                };
+                InitializeTemplate(page);
+                return page;
+            });
+
             Handle.GET("/WebsiteProvider/partial/layout", () =>
             {
                 WrapperPage page;
@@ -96,8 +106,7 @@ namespace WebsiteProvider
                 master.IsFinal = webUrl.IsFinal;
                 if (!template.Equals(master.WebTemplatePage.Data))
                 {
-                    master.WebTemplatePage.Data = template;
-                    InitializeTemplate(master.WebTemplatePage);
+                    master.WebTemplatePage = GetTemplatePage(template.GetObjectID());
                 }
                 UpdateTemplateSections(requestUri, this.CurrentResponse, master.WebTemplatePage, webUrl);
 
@@ -251,6 +260,11 @@ namespace WebsiteProvider
         protected WrapperPage GetLayoutPage()
         {
             return Self.GET<WrapperPage>("/WebsiteProvider/partial/layout");
+        }
+
+        protected WebTemplatePage GetTemplatePage(string templateId)
+        {
+            return Self.GET<WebTemplatePage>("/WebsiteProvider/partial/template/" + templateId);
         }
 
         protected WrapperPage FindWrapperPageForTemplate(WrapperPage page, WebTemplate template)
