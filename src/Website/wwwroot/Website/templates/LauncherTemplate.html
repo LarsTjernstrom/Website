@@ -25,10 +25,10 @@
             font-size: 0;
         }
         /* use Shadow DOM style, reset bootstrap theme */
-        a.launcher-home-button {
+        .launcher-home-button {
             color: var(--secondary-color, #8a98b0);
         }
-        a.launcher-home-button:hover {
+        .launcher-home-button:hover {
             color: var(--primary-color, white);
         }
         /* end of overwriting bootstrap*/
@@ -48,10 +48,10 @@
             font-size: 0;
         }
         /* use Shadow DOM style, reset bootstrap theme */
-        .launcher-search a{
+        .launcher-search__link{
             color: var(--secondary-color, #8a98b0);
         }
-        .launcher-search a:hover{
+        .launcher-search__link:hover{
             color: var(--primary-color, white);
         }
         /* end of overwriting bootstrap*/
@@ -157,7 +157,7 @@
     <template is="dom-bind">
         <a slot="website/icon" href="/launcher" class="launcher-home-button"><i class="glyphicon glyphicon-home launcher-home-button__icon"></i></a>
         <div slot="website/search" class="launcher-search">
-            <a href="javascript:" value="{{model.searchBar.submit$}}" onclick="++this.value">
+            <a href="javascript:" value="{{model.searchBar.submit$}}" class="launcher-search__link" onclick="++this.value">
                 <i class="glyphicon glyphicon-search launcher-search__icon"></i>
             </a>
             <input type="text" class="launcher-search__input" placeholder="Search">

@@ -3,16 +3,16 @@
         body {
             margin: 0;
         }
-        starcounter-include.website-defaulttemplate-topbar > juicy-composition,
-        starcounter-include.website-defaulttemplate-topbar > juicy-composition > starcounter-include > juicy-composition {
+        .website-defaulttemplate-topbar > juicy-composition,
+        .website-defaulttemplate-topbar > juicy-composition > starcounter-include > juicy-composition {
             display: flex;
             align-items: center;
             justify-content: flex-end;
         }
         /* For ones with CSS Grid us it with 5px gutter */
         @supports( (display: grid) and (grid-column-gap: 5px) ) {
-            starcounter-include.website-defaulttemplate-topbar > juicy-composition,
-            starcounter-include.website-defaulttemplate-topbar > juicy-composition > starcounter-include > juicy-composition {
+            .website-defaulttemplate-topbar > juicy-composition,
+            .website-defaulttemplate-topbar > juicy-composition > starcounter-include > juicy-composition {
                 display: grid;
                 align-items: center;
                 grid-column-gap: 5px;
@@ -22,32 +22,32 @@
         }
         /* For browsers w/o Grid break SD boundary and add gutter as margin */
         @supports( not ((display: grid) and (grid-column-gap: 5px)) ) {
-            starcounter-include.website-defaulttemplate-topbar > juicy-composition > *,
-            starcounter-include.website-defaulttemplate-topbar > juicy-composition > starcounter-include > juicy-composition > *,
+            .website-defaulttemplate-topbar > juicy-composition > *,
+            .website-defaulttemplate-topbar > juicy-composition > starcounter-include > juicy-composition > *,
             /*
              Shadow DOM v1 in-compatible Shadow DOM piercing selector
              styling such things may break default compositions delivered by apps
             */
-            starcounter-include.website-defaulttemplate-topbar > juicy-composition::shadow>*,
-            starcounter-include.website-defaulttemplate-topbar > juicy-composition > starcounter-include > juicy-composition::shadow>* {
+            .website-defaulttemplate-topbar > juicy-composition::shadow>*,
+            .website-defaulttemplate-topbar > juicy-composition > starcounter-include > juicy-composition::shadow>* {
                 margin-right: 5px;
             }
         }
     </style>
-    <template is="dom-bind" defaultTemplate>
+    <template is="dom-bind">
         <starcounter-include slot="website/topbar" view-model="{{model.Sections.TopBar}}" class="website-defaulttemplate-topbar"></starcounter-include>
         <starcounter-include slot="website/main" view-model="{{model.Sections.Main}}"></starcounter-include>
     </template>
     <template is="declarative-shadow-dom">
         <slot name="website/global-style"></slot>
         <style>
-            section.website-defaulttemplate-topbar {
+            .website-defaulttemplate-top {
                 background-color: #333;
                 color: #FFF;
                 padding: 10px;
             }
         </style>
-        <section class="website-defaulttemplate-topbar">
+        <section class="website-defaulttemplate-top">
             <slot name="website/topbar"></slot>
         </section>
         <section class="website-defaulttemplate-main">
