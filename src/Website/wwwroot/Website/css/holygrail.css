@@ -42,3 +42,41 @@
     
     grid-area: foot;
 }
+@media screen and (max-width: 600px) {
+	.website-holygrail {
+		grid-template: "head"
+		                     "left"
+		                     "content" 1fr
+		                     "right"
+		                     "foot"/
+                             100%;
+
+		-ms-grid-columns: 100%;
+		-ms-grid-rows: auto
+						auto
+						1fr
+						auto
+						auto;
+	}
+    /** For IE/Edge until it updates grid implementation */
+    .website-holygrail__header {
+        -ms-grid-row: 1;
+        -ms-grid-column: 1;
+    }
+    .website-holygrail__left{
+        -ms-grid-row: 2;
+        -ms-grid-column: 1;
+    }
+    .website-holygrail__content {
+        -ms-grid-row: 3;
+        -ms-grid-column: 1;
+    }
+    .website-holygrail__right {
+        -ms-grid-row: 4;
+        -ms-grid-column: 1;
+    }
+    .website-holygrail__footer {
+        -ms-grid-row: 5;
+        -ms-grid-column: 1;
+    }
+}
