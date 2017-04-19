@@ -1,36 +1,36 @@
 <template>
-    <style slot="Website/global-style">
+    <style slot="website/global-style">
         body {
             margin: 0;
         }
     </style>
     <template is="dom-bind">
-        <starcounter-include slot="Website/Navigation" partial="{{model.Sections.Navigation}}"></starcounter-include>
-        <starcounter-include slot="Website/Header" partial="{{model.Sections.Header}}"></starcounter-include>
-        <starcounter-include slot="Website/Left" partial="{{model.Sections.Left}}"></starcounter-include>
-        <starcounter-include slot="Website/Right" partial="{{model.Sections.Right}}"></starcounter-include>
-        <starcounter-include slot="Website/Footer" partial="{{model.Sections.Footer}}"></starcounter-include>
+        <starcounter-include slot="website/Navigation" view-model="{{model.Sections.Navigation}}"></starcounter-include>
+        <starcounter-include slot="website/Header" view-model="{{model.Sections.Header}}"></starcounter-include>
+        <starcounter-include slot="website/Left" view-model="{{model.Sections.Left}}"></starcounter-include>
+        <starcounter-include slot="website/Right" view-model="{{model.Sections.Right}}"></starcounter-include>
+        <starcounter-include slot="website/Footer" view-model="{{model.Sections.Footer}}"></starcounter-include>
     </template>
-    <template is="starcounter-composition">
-        <content select="[slot='Website/global-style']"></content>
+    <template is="declarative-shadow-dom">
+        <slot name="website/global-style"></slot>
         <style>
             @import url("/Website/css/AppHub.css");
         </style>
         <section class="website-apphub">
             <section class="website-apphub__navigation">
-                <content select="[slot='Website/Navigation']"></content>
+                <slot name="website/Navigation"></slot>
             </section>
             <section class="website-apphub__header">
-                <content select="[slot='Website/Header']"></content>
+                <slot name="website/Header"></slot>
             </section>
             <section class="website-apphub__left">
-                <content select="[slot='Website/Left']"></content>
+                <slot name="website/Left"></slot>
             </section>
             <section class="website-apphub__right">
-                <content select="[slot='Website/Right']"></content>
+                <slot name="website/Right"></slot>
             </section>
             <section class="website-apphub__footer">
-                <content select="[slot='Website/Footer']"></content>
+                <slot name="website/Footer"></slot>
             </section>
         </section>
     </template>

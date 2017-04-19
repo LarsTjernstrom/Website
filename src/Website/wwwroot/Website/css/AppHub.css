@@ -32,28 +32,28 @@
 
 /*View's distributed DOM styles*/
 
-::content h1,
-h1 /*shimmed browsers*/ {
+::slotted(h1),
+website-apphub > section > h1 /*shimmed browsers*/ {
     font-size: 32px;
     font-weight: normal;
 }
-::content h2,
-h2 /*shimmed browsers*/ {
+::slotted(h2),
+website-apphub > section > h2 /*shimmed browsers*/ {
     font-weight: normal;
 }
-::content h3,
-h3 /*shimmed browsers*/ {
+::slotted(h3),
+website-apphub > section > h3 /*shimmed browsers*/ {
     font-weight: bold;
     font-size: 16px;
 }
-::content .text-block,
-.text-block /*shimmed browsers*/ {
+::slotted(.text-block),
+website-apphub > section > .text-block /*shimmed browsers*/ {
     height: 140px;
 }
-::content input[type=text],
-input[type=text] /*shimmed browsers*/,
-::content input[type=password],
-input[type=password] /*shimmed browsers*/ {
+::slotted(input[type=text]),
+website-apphub > section > input[type=text] /*shimmed browsers*/,
+::slotted(input[type=password]),
+website-apphub > section > input[type=password] /*shimmed browsers*/ {
     border-top-width: 1px;
     border-bottom-width: 1px;
     border-left-width: 1px;
@@ -72,22 +72,22 @@ input[type=password] /*shimmed browsers*/ {
     width: 214px;
     height: 25px;
 }
-::content div.form-horizontal,
-div.form-horizontal /*shimmed browsers*/,
-::content div.form-horizontal + div,
-div.form-horizontal + div /*shimmed browsers*/ {
+::slotted(div.form-horizontal),
+website-apphub > section > div.form-horizontal /*shimmed browsers*/,
+::slotted(div.form-horizontal + div),
+website-apphub > section > div.form-horizontal + div /*shimmed browsers*/ {
     float: left;
     margin-bottom: 10px;
 }
-::content div.form-horizontal,
-div.form-horizontal /*shimmed browsers*/ {
+::slotted(div.form-horizontal),
+website-apphub > section > div.form-horizontal /*shimmed browsers*/ {
     width: 25%;
     line-height: 25px;
 }
-::content button,
-button /*shimmed browsers*/,
-::content input[type=button],
-input[type=button] /*shimmed browsers*/ {
+::slotted(button),
+website-apphub > section > button /*shimmed browsers*/,
+::slotted(input[type=button]),
+website-apphub > section > input[type=button] /*shimmed browsers*/ {
     border-top-width: 0px;
     border-bottom-width: 0px;
     border-left-width: 0px;
@@ -121,15 +121,15 @@ input[type=button] /*shimmed browsers*/ {
     margin-bottom: 5px;
     cursor: pointer;
 }
-::content button[disabled],
-button[disabled] /*shimmed browsers*/,
-::content input[type=button][disabled]
-input[type=button][disabled] /*shimmed browsers*/ {
+::slotted(button[disabled]),
+website-apphub > section > button[disabled] /*shimmed browsers*/,
+::slotted(input[type=button][disabled]),
+website-apphub > section > input[type=button][disabled] /*shimmed browsers*/ {
     opacity: 0.7;
     cursor: not-allowed;
     box-shadow: none;
 }
-::content .alert.alert-danger,
-.alert.alert-danger /*shimmed browsers*/ {
+::slotted(.alert.alert-danger),
+website-apphub > section > .alert.alert-danger /*shimmed browsers*/ {
     color: red;
 }
