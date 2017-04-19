@@ -1,4 +1,6 @@
-﻿using NUnit.Framework;
+﻿using System.Linq;
+using NUnit.Framework;
+using OpenQA.Selenium;
 using WebsiteProvider.Tests.Ui;
 using WebsiteProvider.Tests.Utilities;
 
@@ -37,6 +39,13 @@ namespace WebsiteProvider.Tests.Test
             _acceptanceHelperOneMasterPage = new AcceptanceHelperOneMasterPage(Driver).GoToMasterPage();
             _acceptanceHelperTwoMasterPage = _acceptanceHelperOneMasterPage.GoToAcceptanceHelperTwoPage();
             WaitForText(_acceptanceHelperTwoMasterPage.H1Element, "Acceptance Helper 2", 10);
+        }
+
+        [Test]
+        public void LoadPage_MiddlewareHandling_ContentInjected()
+        {
+            var page = new AcceptanceHelperOneMasterPage(Driver).GoToMasterPage();
+            WaitUntil(driver => driver.FindElements(By.XPath("//input[@test = 'acceptance-helper-two-middleware']")).Any());
         }
     }
 }
