@@ -141,8 +141,8 @@ namespace WebsiteProvider
                             wrapper = response.Resource as WrapperPage;
                             requestUri = wrapper.WebTemplatePage.Data.Html;
                         }
+                        return response;
                     }
-                    return response;
                 }
                 return null;
             });
