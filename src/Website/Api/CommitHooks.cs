@@ -1,19 +1,19 @@
-﻿using System;
-using Starcounter;
+﻿using Starcounter;
 using Simplified.Ring5;
 
-namespace Website {
-    internal class CommitHooks {
-        public void Register() {
-            Hook<SystemUserSession>.CommitInsert += (s, a) => {
+namespace Website
+{
+    internal class CommitHooks
+    {
+        public void Register()
+        {
+            Hook<SystemUserSession>.CommitInsert += (s, a) =>
+            {
                 this.RefreshSignInState();
             };
 
-            Hook<SystemUserSession>.CommitDelete += (s, a) => {
-                this.RefreshSignInState();
-            };
-
-            Hook<SystemUserSession>.CommitUpdate += (s, a) => {
+            Hook<SystemUserSession>.CommitDelete += (s, a) =>
+            {
                 this.RefreshSignInState();
             };
         }
@@ -22,11 +22,7 @@ namespace Website {
         {
             var page = Session.Current.Data as StandalonePage;
 
-            if (page == null) {
-                return;
-            }
-
-            page.RefreshCurrentPage();
+            page?.RefreshCurrentPage();
         }
     }
 }
