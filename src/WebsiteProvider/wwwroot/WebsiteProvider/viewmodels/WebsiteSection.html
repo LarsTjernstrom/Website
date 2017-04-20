@@ -3,7 +3,7 @@
 <template>
     <template is="dom-bind">
         <template is="dom-repeat" items="{{model.Rows}}">
-            <starcounter-include slot="Website/Section/{{model.Name}}/Row/{{index}}" partial="{{item}}"></starcounter-include>
+            <starcounter-include slot="website/Section/{{model.Name}}/Row/{{index}}" view-model="{{item}}"></starcounter-include>
         </template>
     </template>
 </template>
