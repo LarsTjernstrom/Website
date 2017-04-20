@@ -4,6 +4,9 @@ using WebsiteProvider.Tests.Utilities;
 
 namespace WebsiteProvider.Tests.Test
 {
+    /// <summary>
+    /// Tests for correct loading of the pages with basic configuration
+    /// </summary>
     [Parallelizable(ParallelScope.None)]
     [TestFixture(Config.Browser.Chrome)]
     [TestFixture(Config.Browser.Edge)]
@@ -14,6 +17,9 @@ namespace WebsiteProvider.Tests.Test
         {
         }
 
+        /// <summary>
+        /// Clean all Website's data and create default for the test fixture.
+        /// </summary>
         [OneTimeSetUp]
         public void FixtureSetUp()
         {
@@ -22,12 +28,18 @@ namespace WebsiteProvider.Tests.Test
             Driver.Navigate().GoToUrl(Config.AcceptanceHelperTwoUrl + "/SetDefaultCatchingRules");
         }
 
+        /// <summary>
+        /// Clear all Website's data.
+        /// </summary>
         [OneTimeTearDown]
         public void FixtureTearDown()
         {
             Driver.Navigate().GoToUrl(Config.AcceptanceHelperOneUrl + "/ResetData");
         }
 
+        /// <summary>
+        /// Load a simple stateless page and check the content and the loaded template.
+        /// </summary>
         [Test]
         public void LoadPage_IncludedHtmlField_WrappedAndLoaded()
         {
@@ -36,6 +48,9 @@ namespace WebsiteProvider.Tests.Test
             WaitUntil(x => page.CheckForLauncherSurface());
         }
 
+        /// <summary>
+        /// Test if an exception data was rendered when a responded Json doesn't have an Html field.
+        /// </summary>
         [Test]
         public void LoadPage_ExcludedHtmlField_ExceptionThrownAndRendered()
         {
@@ -43,6 +58,10 @@ namespace WebsiteProvider.Tests.Test
             WaitUntil(x => x.PageSource.Contains("System.InvalidOperationException: ScErrInvalidOperation (SCERR1025)"));
         }
 
+        /// <summary>
+        /// Load a simple stateless page from a current app by clicking on a link
+        /// and check the content and the loaded template.
+        /// </summary>
         [Test]
         public void GoToOwnPage_WithCorrespondingCatchingRule_Loaded()
         {
@@ -52,6 +71,10 @@ namespace WebsiteProvider.Tests.Test
             WaitUntil(x => simplePage.CheckForLauncherSurface());
         }
 
+        /// <summary>
+        /// Load a simple stateless page from another app by clicking on a link
+        /// and check the content and the loaded template.
+        /// </summary>
         [Test]
         public void GoToOtherAppPage_WithCorrespondingCatchingRule_Loaded()
         {

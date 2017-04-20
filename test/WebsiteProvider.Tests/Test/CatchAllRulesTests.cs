@@ -4,6 +4,9 @@ using WebsiteProvider.Tests.Utilities;
 
 namespace WebsiteProvider.Tests.Test
 {
+    /// <summary>
+    /// Tests for catching rules
+    /// </summary>
     [Parallelizable(ParallelScope.None)]
     [TestFixture(Config.Browser.Chrome)]
     [TestFixture(Config.Browser.Edge)]
@@ -14,6 +17,9 @@ namespace WebsiteProvider.Tests.Test
         {
         }
 
+        /// <summary>
+        /// Clear all Website's data
+        /// </summary>
         [SetUp]
         [OneTimeTearDown]
         public void ResetData()
@@ -21,6 +27,11 @@ namespace WebsiteProvider.Tests.Test
             Driver.Navigate().GoToUrl(Config.AcceptanceHelperOneUrl + "/ResetData");
         }
 
+        /// <summary>
+        /// Firstly set up catching rules so there are no "final" catch-all rules.
+        /// Load a simple stateless page from another app by clicking on a link
+        /// and check the content and the loaded template.
+        /// </summary>
         [Test]
         public void GoToOtherAppPage_NoFinalCatchAllRules_WrappedAndLoaded()
         {
@@ -31,6 +42,11 @@ namespace WebsiteProvider.Tests.Test
             WaitUntil(x => acceptanceHelperTwoMasterPage.CheckForDefaultSurface());
         }
 
+        /// <summary>
+        /// Firstly set up catching rules so there are no "final" catch-all rules.
+        /// Load a simple stateless page from a current app by clicking on a link
+        /// and check the content and the loaded template.
+        /// </summary>
         [Test]
         public void GoToOwnPage_NoFinalCatchAllRules_WrappedAndLoaded()
         {
@@ -41,6 +57,11 @@ namespace WebsiteProvider.Tests.Test
             WaitUntil(x => simplePage.CheckForDefaultSurface());
         }
 
+        /// <summary>
+        /// Firstly set up catching rules so there are no catch-all rules at all.
+        /// Load a simple stateless page from another app by clicking on a link
+        /// and check the content and the loaded template.
+        /// </summary>
         [Test]
         public void GoToOtherAppPage_NoCatchAllRules_LoadedAsIs()
         {
@@ -51,6 +72,11 @@ namespace WebsiteProvider.Tests.Test
             WaitUntil(x => acceptanceHelperTwoMasterPage.CheckForNoSurface());
         }
 
+        /// <summary>
+        /// Firstly set up catching rules so there are no catch-all rules at all.
+        /// Load a simple stateless page from a current app by clicking on a link
+        /// and check the content and the loaded template.
+        /// </summary>
         [Test]
         public void GoToOwnPage_NoCatchAllRules_LoadedAsIs()
         {
