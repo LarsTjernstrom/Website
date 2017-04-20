@@ -151,9 +151,10 @@ namespace WebsiteProvider
                             }
                             Session.Current.Data = response.Resource as Json;
                         }
+                        return response;
                     }
                 }
-                return response;
+                return null;
             });
         }
 

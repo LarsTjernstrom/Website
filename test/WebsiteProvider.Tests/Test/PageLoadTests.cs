@@ -13,6 +13,8 @@ namespace WebsiteProvider.Tests.Test
     [TestFixture(Config.Browser.Firefox)]
     public class PageLoadTests : BaseTest
     {
+        const string MiddlewareTestCookieName = "AcceptanceHelperTwoMiddlewareTestCookie";
+
         public PageLoadTests(Config.Browser browser) : base(browser)
         {
         }
@@ -82,6 +84,22 @@ namespace WebsiteProvider.Tests.Test
             var acceptanceHelperTwoMasterPage = acceptanceHelperOneMasterPage.GoToAcceptanceHelperTwoPage();
             WaitForText(acceptanceHelperTwoMasterPage.HeaderElement, "Acceptance Helper 2");
             WaitUntil(x => acceptanceHelperTwoMasterPage.CheckForSidebarSurface());
+        }
+
+        /// <summary>
+        /// The test method expects that a middleware was registered in an application which was started last after others.
+        /// Such middleware is defined in the WebsiteProvider_AcceptanceHelperTwo application.
+        /// The middleware sets a cookie with name <see cref="MiddlewareTestCookieName"/> which existance must be checking by the test.
+        /// In the beginning and in the end of a test the method executes deleting of the cookie.
+        /// </summary>
+        [Test]
+        public void LoadPage_MiddlewareHandling_CookieAdded()
+        {
+            Driver.Manage().Cookies.DeleteCookieNamed(MiddlewareTestCookieName);
+            new AcceptanceHelperOneMasterPage(Driver).LoadMasterPage();
+            var cookie = Driver.Manage().Cookies.GetCookieNamed(MiddlewareTestCookieName);
+            Assert.IsNotNull(cookie);
+            Driver.Manage().Cookies.DeleteCookieNamed(MiddlewareTestCookieName);
         }
     }
 }
