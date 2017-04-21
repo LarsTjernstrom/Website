@@ -52,7 +52,7 @@
     background-color: var(--holy-grail-background, #e6e6e6);
 }
 .website-holygrail__footer::before{
-    content: 'Footer';
+    content: 'Footer: This is sample surface template. It shows how to use CSS Grid Layout, media queries, CSS Custom Properties, (declarative) Shadow DOM to create responsive, customizable layout. Feel free to review and change the CSS stylesheet.';
     color: white;
 }
 .website-holygrail__footer {

@@ -86,6 +86,19 @@ The following Starcounter Gateway config enables URL aliases used in the demo. P
 	</UriAlias>
 </UriAliases>
 ```
+### CSS Custom Properites
+
+Here is the list of CSS Custom Properties used by the app for themeing
+
+Template         | Name                      | Default   | Description
+---              | ---                       | ---       | ---
+HolyGrail        | `--holy-grail-chalice`    | `#ffdb3a` | Background color of header
+HolyGrail        | `--holy-grail-background` | `#e6e6e6` | Background color of left and right area
+HolyGrail        | `--holy-grail-foot`       | `#646464` | Background color of footer area
+LauncherTemplate | `--primary-color`         | `#8a98b0` | Color of main area elements, hover color for top and left bar
+LauncherTemplate | `--primary-background`    | `#333c4e` | Background color of main area
+LauncherTemplate | `--secondary-color`       | `#8a98b0` | Color of top and left bar elements
+LauncherTemplate | `--secondary-background`  | `#333c4e` | Background color of top and left bars
 
 ## Sample environment setup steps
 
