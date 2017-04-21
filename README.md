@@ -58,7 +58,22 @@ Pinning rules support single wildcard URLs. If both **Catch URI** and **Pin URI*
 
 If a rule has no value in the **Catch URI** column, it becomes a "catch-all" rule. This means that it is applied for any entry URL.
 
-### CSS Custom Properites
+## Administrative tools
+
+### `/website/cleardata`
+
+Calling this URI deletes all the current app data (surfaces, blending points, catching rules and pinning rules).
+
+### `/website/resetdata`
+
+Calling thes URI replaces all the current app data (surfaces, blending points, catching rules and pinning rules) with the defaults, which are:
+
+- **DefaultTemplate** - a surface with two blending points (TopBar, Main). The default catch-all rule uses this surface.
+- **SidebarTemplate** - a surface with two blending points (Left, Right)
+- **HolyGrailTemplate** - a surface with five blending points (Header, Left, Content, Right, Footer). Useful if you're building a web site
+- **LauncherTemplate** - a surface that looks like the original Starcounter's Launcher app
+
+## CSS Custom Properites
 
 Here is the list of CSS Custom Properties used by the app for themeing
 
