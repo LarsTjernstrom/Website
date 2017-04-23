@@ -13,13 +13,13 @@ body {
     margin: 0px;
 }
 
-nav#top-menu {
+.website-top-menu-panel {
     background-color: #303030;
     color: #CCCCCC;
     height: 40px;
 }
 
-nav#top-menu ul {
+.website-top-menu {
     display: block;
     list-style-type: none;
     padding: 0px;
@@ -27,23 +27,23 @@ nav#top-menu ul {
     overflow: auto;
 }
 
-nav#top-menu ul li {
+.website-top-menu__item {
     float: left;
 }
 
-nav#top-menu ul li a {
+.website-top-menu-item__link {
     display: block;
     padding: 5px 20px;
     text-decoration: none;
     color: white;
 }
 
-nav#top-menu ul li a:hover {
+.website-top-menu-item__link:hover {
     background-color: #333333;
     color: white;
 }
 
-#body {
+.website-body {
     background-color: white;
     min-height: 100%;
     width: 90%;
@@ -52,35 +52,28 @@ nav#top-menu ul li a:hover {
     padding: 60px 50px 20px 50px;
 }
 
-table.table tr td.td-input {
+.website-table__cell-input {
     padding: 2px 8px;
 }
 
-table.table tr .td-index {
+.website-table__cell-index {
     width: 50px;
 }
 
-table.table tr .td-key {
+.website-table__cell-key {
     width: 80px;
 }
 
-table.table tr .td-protected {
+.website-table__cell-protected {
     text-align: center;
     width: 80px;
 }
 
-table.table tr .td-actions {
+.website-table__cell-actions {
     width: 150px;
 }
 
-table.table tr td input[type=text],
-table.table tr td input[type=text][readonly],
-table.table tr td select,
-table.table tr td input[type=checkbox] {
+.website-table-control {
     box-shadow: none;
     border-bottom: none;
-}
-
-fieldset {
-    margin-bottom: 30px;
 }

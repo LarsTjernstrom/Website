@@ -21,22 +21,22 @@
                 </span>
                 Surfaces
             </legend>
-            <table class="table">
+            <table class="website-table table">
                 <thead>
                     <tr>
                         <th>Surface name</th>
                         <th>View URI</th>
-                        <th class="td-actions"></th>
+                        <th class="website-table__cell-actions"></th>
                     </tr>
                 </thead>
                 <tbody>
                     <template is="dom-repeat" items="{{model.Surfaces}}">
                         <tr>
                             <td>
-                                <input type="text" value="{{item.Name$::change}}" class="form-control" />
+                                <input type="text" value="{{item.Name$::change}}" class="website-table-control form-control" />
                             </td>
                             <td>
-                                <input type="text" value="{{item.Html$::change}}" class="form-control" />
+                                <input type="text" value="{{item.Html$::change}}" class="website-table-control form-control" />
                             </td>
                             <td>
                                 <button type="button" class="btn btn-xs btn-default" value="{{item.Delete$::click}}" onmousedown="++this.value;">Delete</button>

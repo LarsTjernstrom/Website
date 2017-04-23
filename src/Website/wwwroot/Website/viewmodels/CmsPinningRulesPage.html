@@ -18,21 +18,21 @@
                 </span>
                 Pinning rules
             </legend>
-            <table class="table">
+            <table class="website-table table">
                 <thead>
                     <tr>
                         <th>Blending point</th>
                         <th>Catch URI</th>
                         <th>Pin URI</th>
-                        <th class="td-key">Order</th>
-                        <th class="td-actions"></th>
+                        <th class="website-table__cell-key">Order</th>
+                        <th class="website-table__cell-actions"></th>
                     </tr>
                 </thead>
                 <tbody>
                     <template is="dom-repeat" items="{{model.PinningRules}}">
                         <tr>
                             <td>
-                                <select class="form-control" key="[[item.SectionKey$]]" value="{{item.SectionKey$::change}}">
+                                <select class="website-table-control form-control" key="[[item.SectionKey$]]" value="{{item.SectionKey$::change}}">
                                     <option value=""></option>
                                     <template is="dom-repeat" items="{{model.BlendingPoints}}">
                                         <option value="{{item.Key}}">{{item.FullName}}</option>
@@ -40,7 +40,7 @@
                                 </select>
                             </td>
                             <td>
-                                <select class="form-control" key="[[item.UrlKey$]]" value="{{item.UrlKey$::change}}">
+                                <select class="website-table-control form-control" key="[[item.UrlKey$]]" value="{{item.UrlKey$::change}}">
                                     <option value=""></option>
                                     <template is="dom-repeat" items="{{model.CatchingRules}}">
                                         <option value="{{item.Key}}">{{item.Url}}</option>
@@ -48,10 +48,10 @@
                                 </select>
                             </td>
                             <td>
-                                <input type="text" value="{{item.ForeignUrl$::change}}" class="form-control" />
+                                <input type="text" value="{{item.ForeignUrl$::change}}" class="website-table-control form-control" />
                             </td>
-                            <td class="td-key">
-                                <input type="text" value="{{item.SortNumber$::change}}" class="form-control" />
+                            <td class="website-table__cell-key">
+                                <input type="text" value="{{item.SortNumber$::change}}" class="website-table-control form-control" />
                             </td>
                             <td>
                                 <button type="button" class="btn btn-xs btn-default" value="{{item.Delete$::click}}" onmousedown="++this.value;">Delete</button>
