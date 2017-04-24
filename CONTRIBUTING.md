@@ -25,3 +25,29 @@ To contribute code to this repository, follow the instructions in the [guideline
 ## How to release a package
 
 To release the app to the warehouse, follow the instructions in the [guidelines](https://starcounter.gitbooks.io/guidelines/content/releasing-to-warehouse.html).
+
+## Testing
+
+### Prepare your environment
+
+Before running the steps, you need to:
+
+- Download and install Visual Studio 2015 to run the tests
+- Download and install Java, required by Selenium Standalone Server
+- Download Selenium Standalone Server and the drivers (Microsoft WebDriver (Edge), Google ChromeDriver (Chrome) and Mozilla GeckoDriver (Firefox)) using the instructions at https://docs.starcounter.io/guides/web-apps/acceptance-testing-with-selenium/
+- Add path to the folder with drivers to system path on your computer
+
+### Run the test (from Visual Studio)
+
+1. Start Selenium Remote Driver: `java -jar selenium-server-standalone-3.*.jar`
+2. Open `Website.sln` in Visual Studio and enable Test Explorer (Test > Window > Test Explorer)
+3. You need to install NUnit 3 Test Adapter in VS addon window in order to see tests in Test Explorer window
+3. Start the Website, WebsiteProvider_AcceptanceHelperOne, WebsiteProvider_AcceptanceHelperTwo and WebsiteProvider apps
+4. Press "Run all" in Test Explorer
+   - If you get an error about some packages not installed, right click on the project in Solution Explorer. Choose "Manage NuGet Packages" and click on "Restore".
+
+### Run the test (from command line)
+
+1. Start Selenium Remote Driver: `java -jar selenium-server-standalone-3.*.jar`
+2. Build the solution (build.bat)
+3. Start the WebsiteProvider.Tests runner (test.bat)
