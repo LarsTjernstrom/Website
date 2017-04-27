@@ -4,8 +4,8 @@ Param
 	[Parameter(Mandatory=$true)][string] $nunitVersion, 
 	[Parameter(Mandatory=$true)][string] $browsersToRun, 
 	[Parameter(Mandatory=$true)][string] $testedApp, 
-	[Parameter(Mandatory=$true)][string[]] $appsToRun, 
-	[Parameter(Mandatory=$false)][string[]] $helpersToRun, 
+	[Parameter(Mandatory=$true)][string] $appsToRun, 
+	[Parameter(Mandatory=$false)][string] $helpersToRun, 
 	[Parameter(Mandatory=$false)] $testsPath
 )
 
@@ -29,15 +29,16 @@ Function createRepo()
 
 Function runApps($apps, $source)
 {
-	foreach ($app in $apps)
+	$apps -split ";" | ForEach 
 	{
+		$app = $_
 		$AppWWWPath = "$checkoutDir\$testedApp\$source\$app\wwwroot"
 		$AppExePath = "$checkoutDir\$testedApp\$source\$app\bin\Debug\$app.exe"
 		$AppArg = "--resourcedir=$AppWWWPath $AppExePath"
 		
 		$process = Start-Process -FilePath $StarExePath -ArgumentList $AppArg -PassThru -NoNewWindow		
 		wait-process -id $process.Id
-	}
+	}	
 }
 
 Function runTests()
