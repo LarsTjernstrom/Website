@@ -6,7 +6,7 @@ Param
 	[Parameter(Mandatory=$true)][string] $testedApp, 
 	[Parameter(Mandatory=$true)][string] $appsToRun, 
 	[Parameter(Mandatory=$false)][string] $helpersToRun, 
-	[Parameter(Mandatory=$false)] $testsPath
+	[Parameter(Mandatory=$false)][string] $testsPath
 )
 
 $StarcounterDir = "$checkoutDir\sc"
@@ -29,16 +29,15 @@ Function createRepo()
 
 Function runApps($apps, $source)
 {
-	$apps -split ";" | ForEach 
+	foreach ($app in $apps -split ",")
 	{
-		$app = $_
 		$AppWWWPath = "$checkoutDir\$testedApp\$source\$app\wwwroot"
 		$AppExePath = "$checkoutDir\$testedApp\$source\$app\bin\Debug\$app.exe"
 		$AppArg = "--resourcedir=$AppWWWPath $AppExePath"
 		
 		$process = Start-Process -FilePath $StarExePath -ArgumentList $AppArg -PassThru -NoNewWindow		
 		wait-process -id $process.Id
-	}	
+	}
 }
 
 Function runTests()
