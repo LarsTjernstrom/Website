@@ -15,6 +15,13 @@ IF EXIST "%programfiles(x86)%\Microsoft Visual Studio\2017\Community\Common7\Too
     ECHO Error: You don't seem to have Visual Studio 2015 or 2017 installed
 )
 
+:: Try to restore packages. This is only needed when the solution depends on NuGet packages
+PUSHD %~dp0\tools
+WHERE nuget.exe >nul 2>nul
+IF %ERRORLEVEL% EQU 0 nuget.exe restore ..
+IF NOT EXIST "..\packages\" (ECHO Error: Get nuget.exe or build the sln in VS to restore the packages && EXIT /B 1)
+POPD
+
 PUSHD %~dp0
 msbuild
 POPD

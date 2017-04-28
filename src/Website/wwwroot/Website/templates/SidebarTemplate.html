@@ -1,9 +1,9 @@
 ﻿<template>
     <template is="dom-bind">
-        <starcounter-include slot="Website/left" partial="{{model.Sections.Left}}"></starcounter-include>
-        <starcounter-include slot="Website/right" partial="{{model.Sections.Right}}"></starcounter-include>
+        <starcounter-include slot="website/left" view-model="{{model.Sections.Left}}"></starcounter-include>
+        <starcounter-include slot="website/right" view-model="{{model.Sections.Right}}"></starcounter-include>
     </template>
-    <template is="starcounter-composition">
+    <template is="declarative-shadow-dom">
         <style>
             .website-sidebartemplate {
                 display: flex;
@@ -19,10 +19,10 @@
         </style>
         <section class="website-sidebartemplate">
             <section class="website-sidebartemplate__left">
-                <content select="[slot='Website/left']"></content>
+                <slot name="website/left"></slot>
             </section>
             <section class="website-sidebartemplate__right">
-                <content select="[slot='Website/right']"></content>
+                <slot name="website/right"></slot>
             </section>
         </section>
     </template>

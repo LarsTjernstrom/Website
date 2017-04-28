@@ -3,6 +3,10 @@ Suite of two apps allowing to create surfaces with blending points and attach th
 
 Note: Website only wraps responses where the response resource is `Json` (not null) with a session.
 
+## Requirements
+
+The app requires a user to be signed in in order to work. This can be done with the [SignIn](https://github.com/starcounterapps/signin) app. If there are no users in the database, [create the first user](https://github.com/starcounterapps/signin#create-the-first-user). Otherwise, [sign in an existing user](https://github.com/starcounterapps/signin#sign-in)
+
 ## Features
 
 This solution consists of two apps
@@ -58,66 +62,38 @@ Pinning rules support single wildcard URLs. If both **Catch URI** and **Pin URI*
 
 If a rule has no value in the **Catch URI** column, it becomes a "catch-all" rule. This means that it is applied for any entry URL.
 
-## Sample gateway config
+## Administrative tools
 
-The following Starcounter Gateway config enables URL aliases used in the demo. Put this config to `scnetworkgateway.xml` and call `http://localhost:8181/gw/updateconf` to reload the config.
+### `/website/cleardata`
 
-```xml
-<UriAliases>
-	<UriAlias>
-		<HttpMethod>GET</HttpMethod>
-		<FromUri>/user-profile</FromUri>
-		<ToUri>/content/dynamic/userprofile</ToUri>
-		<Port>8080</Port>
-	</UriAlias>
+Calling this URI deletes all the current app data (surfaces, blending points, catching rules and pinning rules).
 
-  <UriAlias>
-		<HttpMethod>GET</HttpMethod>
-		<FromUri>/apps</FromUri>
-		<ToUri>/content/dynamic/apps</ToUri>
-		<Port>8080</Port>
-	</UriAlias>
+### `/website/resetdata`
 
-  <UriAlias>
-		<HttpMethod>GET</HttpMethod>
-		<FromUri>/apps/wanted-apps</FromUri>
-		<ToUri>/content/dynamic/apps/wanted-apps</ToUri>
-		<Port>8080</Port>
-	</UriAlias>
-</UriAliases>
-```
+Calling thes URI replaces all the current app data (surfaces, blending points, catching rules and pinning rules) with the defaults, which are:
 
-## Sample environment setup steps
+- **DefaultTemplate** - a surface with two blending points (TopBar, Main). The default catch-all rule uses this surface.
+- **SidebarTemplate** - a surface with two blending points (Left, Right)
+- **HolyGrailTemplate** - a surface with five blending points (Header, Left, Content, Right, Footer). Useful if you're building a web site
+- **LauncherTemplate** - a surface that looks like the original Starcounter's Launcher app
 
-1. Apply the sample gateway config (see above)
-2. Call [http://localhost:8181/gw/updateconf](http://localhost:8181/gw/updateconf) to reload the config
-3. Start SignIn
-4. Start Website
-5. Start Content
-6. Start Registration
-7. Start UserProfile
-8. Call [http://localhost:8080/signin/generateadminuser](http://localhost:8080/signin/generateadminuser) to generate the admin user
-9. Call [http://localhost:8080/website/cms](http://localhost:8080/website/cms) to see that Website admin panel works.
-  - You can sign in here.
-10. Call [http://localhost:8080/content/cms](http://localhost:8080/content/cms) to see that Content admin panel works.
-  - You should already be signed in.
-  - You can sign out here.
-11. Call [http://localhost:8080/apps](http://localhost:8080/apps) to see SignIn, Website, Content, Registration and UserProfile in concerto.
+## CSS Custom Properites
 
-This is how it looks as of Jan 2017:
+Here is the list of CSS Custom Properties used by the app for themeing
 
-![docs/signed-out.png](docs/signed-out.png)
+Template         | Name                      | Default   | Description
+---              | ---                       | ---       | ---
+HolyGrail        | `--holy-grail-chalice`    | `#ffdb3a` | Background color of header
+HolyGrail        | `--holy-grail-background` | `#e6e6e6` | Background color of left and right area
+HolyGrail        | `--holy-grail-foot`       | `#646464` | Background color of footer area
+LauncherTemplate | `--primary-color`         | `#8a98b0` | Color of main area elements, hover color for top and left bar
+LauncherTemplate | `--primary-background`    | `#333c4e` | Background color of main area
+LauncherTemplate | `--secondary-color`       | `#8a98b0` | Color of top and left bar elements
+LauncherTemplate | `--secondary-background`  | `#333c4e` | Background color of top and left bars
 
 ## Developer instructions
 
-### How to release a package
-
-This repo comes with a tool that automatically increments the information `package.config` (version number, version date, Starcounter dependency version) and creates a ZIP file containing the packaged app. To use it follow the below steps:
-
-1. Make sure you have installed [Node.js](https://nodejs.org/)
-2. Run `npm install` to install the tool (installs grunt, grunt-replace, grunt-bump, grunt-shell)
-2. Run `grunt package` to generate a packaged version, (you can use `:minor`, `:major`, etc. as [grunt-bump](https://github.com/vojtajina/grunt-bump) does)
-4. The package is created in `packages/<AppName>.zip`. Upload it to the Starcounter App Store
+For developer instructions, go to [CONTRIBUTING](CONTRIBUTING.md).
 
 ## License
 

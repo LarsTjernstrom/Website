@@ -16,11 +16,11 @@ body {
 .website-top-menu-panel {
     background-color: #303030;
     color: #CCCCCC;
-    height: 40px;
+    min-height: 40px;
 }
 
 .website-top-menu {
-    display: block;
+    display: flex;
     list-style-type: none;
     padding: 0px;
     margin: 0px;

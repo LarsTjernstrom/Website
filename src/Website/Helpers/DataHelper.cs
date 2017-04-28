@@ -26,7 +26,7 @@ namespace Website
                 ClearData();
                 GenerateDefaultSurface();
                 GenerateSidebarSurface();
-                GenerateAppHubSurface();
+                GenerateHolyGrailSurface();
                 GenerateLauncherSurface();
 
             });
@@ -95,26 +95,26 @@ namespace Website
             new WebMap() { Url = templatesUrl, Section = sidebarLeft, ForeignUrl = "/website/help?topic=surfaces", SortNumber = 1 };
         }
 
-        public void GenerateAppHubSurface()
+        public void GenerateHolyGrailSurface()
         {
             var surface = new WebTemplate()
             {
-                Name = "AppHubTemplate",
-                Html = "/Website/templates/AppHubTemplate.html"
+                Name = "HolyGrailTemplate",
+                Html = "/Website/templates/HolyGrailTemplate.html"
             };
 
-            var navigation = new WebSection()
+            var content = new WebSection()
             {
                 Template = surface,
-                Name = "Navigation",
-                Default = false
+                Name = "Content",
+                Default = true
             };
 
             var header = new WebSection()
             {
                 Template = surface,
                 Name = "Header",
-                Default = true
+                Default = false
             };
 
             var left = new WebSection()
@@ -159,13 +159,12 @@ namespace Website
                 IsFinal = true
             };
 
-            new WebMap() { Section = navigation, ForeignUrl = "/signin/user", SortNumber = 1 };
-            new WebMap() { Section = navigation, ForeignUrl = "/content/dynamic/navigation", SortNumber = 2, };
-            new WebMap() { Url = homeUrl, Section = navigation, ForeignUrl = "/content/dynamic/index/header", SortNumber = 3 };
-
-            new WebMap() { Url = homeUrl, Section = header, ForeignUrl = "/signin/signinuser", SortNumber = 1 };
-            new WebMap() { Url = homeUrl, Section = header, ForeignUrl = "/registration", SortNumber = 2 };
-            new WebMap() { Url = homeUrl, Section = header, ForeignUrl = "/content/dynamic/index/registration", SortNumber = 3 };
+            new WebMap() { Section = header, ForeignUrl = "/signin/user", SortNumber = 1 };
+            new WebMap() { Section = header, ForeignUrl = "/content/dynamic/navigation", SortNumber = 2, };
+            new WebMap() { Url = homeUrl, Section = header, ForeignUrl = "/content/dynamic/index/header", SortNumber = 3 };
+            new WebMap() { Url = homeUrl, Section = header, ForeignUrl = "/signin/signinuser", SortNumber = 4 };
+            new WebMap() { Url = homeUrl, Section = header, ForeignUrl = "/registration", SortNumber = 5 };
+            new WebMap() { Url = homeUrl, Section = header, ForeignUrl = "/content/dynamic/index/registration", SortNumber = 6 };
 
             new WebMap() { Url = homeUrl, Section = left, ForeignUrl = "/content/dynamic/index/left", SortNumber = 1 };
 
@@ -177,7 +176,7 @@ namespace Website
             new WebMap() { Url = appsUrl, Section = header, ForeignUrl = "/content/dynamic/apps/footer", SortNumber = 2 };
 
             new WebMap() { Url = profileUrl, Section = header, ForeignUrl = "/content/dynamic/userprofile/header", SortNumber = 1 };
-            new WebMap() { Url = profileUrl, Section = header, ForeignUrl = "/userprofile", SortNumber = 2 };
+            new WebMap() { Url = profileUrl, Section = content, ForeignUrl = "/userprofile", SortNumber = 2 };
             new WebMap() { Url = profileUrl, Section = footer, ForeignUrl = "/content/dynamic/userprofile/footer", SortNumber = 3 };
         }
 
