@@ -36,6 +36,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
     <Reference Include="WebDriver, Version=3.3.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Selenium.WebDriver.3.3.0\lib\net40\WebDriver.dll</HintPath>
       <Private>True</Private>
@@ -48,7 +49,10 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Test\BaseTest.cs" />
+    <Compile Include="Test\CatchingRuleWildcardTests.cs" />
     <Compile Include="Test\PageLoadTests.cs" />
+    <Compile Include="Ui\AcceptanceHelperTwoQueryPage.cs" />
+    <Compile Include="Ui\AcceptanceHelperTwoContentPage.cs" />
     <Compile Include="Ui\AcceptanceHelperTwoMasterPage.cs" />
     <Compile Include="Ui\AcceptanceHelperOneMasterPage.cs" />
     <Compile Include="Ui\BasePage.cs" />

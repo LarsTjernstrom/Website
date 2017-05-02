@@ -4,7 +4,7 @@ using WebsiteProvider.Tests.Utilities;
 
 namespace WebsiteProvider.Tests.Test
 {
-    [Parallelizable(ParallelScope.Fixtures)]
+    [Parallelizable(ParallelScope.None)]
     [TestFixture(Config.Browser.Chrome)]
     [TestFixture(Config.Browser.Edge)]
     [TestFixture(Config.Browser.Firefox)]
@@ -17,6 +17,19 @@ namespace WebsiteProvider.Tests.Test
 
         public PageLoadTest(Config.Browser browser) : base(browser)
         {
+        }
+
+        // TODO : Remove these 2 methods when merging with the PR Website#65
+        [OneTimeSetUp]
+        public void SetUpFixture()
+        {
+            Driver.Navigate().GoToUrl("http://localhost:8080/website/resetdata");
+            Driver.Navigate().GoToUrl(Config.AcceptanceHelperOneUrl + "/SetupPageLoadTests");
+        }
+        [OneTimeTearDown]
+        public void ResetData()
+        {
+            Driver.Navigate().GoToUrl(Config.AcceptanceHelperOneUrl + "/ResetData");
         }
 
         [Test]
