@@ -31,7 +31,7 @@
                     <template is="dom-repeat" items="{{model.BlendingPoints}}">
                         <tr>
                             <td>
-                                <select class="website-table-control form-control" key="[[item.TemplateKey$]]" value="{{item.TemplateKey$::change}}">
+                                <select class="website-table__control form-control" key="[[item.TemplateKey$]]" value="{{item.TemplateKey$::change}}">
                                     <option value=""></option>
                                     <template is="dom-repeat" items="{{model.Surfaces}}">
                                         <option value="{{item.Key}}">{{item.Name}}</option>
@@ -39,10 +39,10 @@
                                 </select>
                             </td>
                             <td>
-                                <input type="text" value="{{item.Name$::change}}" class="website-table-control form-control" />
+                                <input type="text" value="{{item.Name$::change}}" class="website-table__control form-control" />
                             </td>
                             <td>
-                                <input type="checkbox" checked="{{item.Default$::change}}" class="website-table-control " />
+                                <input type="checkbox" checked="{{item.Default$::change}}" class="website-table__control " />
                             </td>
                             <td>
                                 <button type="button" class="btn btn-xs btn-default" value="{{item.Delete$::click}}" onmousedown="++this.value;">Delete</button>

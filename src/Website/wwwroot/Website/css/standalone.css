@@ -73,7 +73,7 @@ body {
     width: 150px;
 }
 
-.website-table-control {
-    box-shadow: none;
+.website-table__control {
+    box-shadow: none !important; /*To override bootstrap styles*/
     border-bottom: none;
 }

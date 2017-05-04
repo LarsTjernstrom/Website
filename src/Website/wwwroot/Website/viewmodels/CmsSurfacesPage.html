@@ -33,10 +33,10 @@
                     <template is="dom-repeat" items="{{model.Surfaces}}">
                         <tr>
                             <td>
-                                <input type="text" value="{{item.Name$::change}}" class="website-table-control form-control" />
+                                <input type="text" value="{{item.Name$::change}}" class="website-table__control form-control" />
                             </td>
                             <td>
-                                <input type="text" value="{{item.Html$::change}}" class="website-table-control form-control" />
+                                <input type="text" value="{{item.Html$::change}}" class="website-table__control form-control" />
                             </td>
                             <td>
                                 <button type="button" class="btn btn-xs btn-default" value="{{item.Delete$::click}}" onmousedown="++this.value;">Delete</button>
