@@ -134,16 +134,18 @@ namespace WebsiteProvider
                         this.CurrentResponse = null;
                         var wrapper = response.Resource as WrapperPage;
                         var requestUri = request.Uri;
+                        var isWrapped = false;
 
                         while ((wrapper == null || wrapper.IsFinal == false) && this.HasCatchingRule(requestUri))
                         {
                             this.CurrentResponse = response;
+                            isWrapped = true;
 
                             response = Self.GET("/WebsiteProvider/partial/wrapper?uri=" + requestUri);
                             wrapper = response.Resource as WrapperPage;
                             requestUri = wrapper?.WebTemplatePage.Data.Html;
                         }
-                        if (this.CurrentResponse == null)
+                        if (!isWrapped)
                         {
                             if (Session.Current == null)
                             {
