@@ -1,40 +1,39 @@
 ﻿using Simplified.Ring6;
-using Starcounter;
 
 namespace WebsiteProvider
 {
-    public static class BlendingExtensions
+    public static class MappingExtensions
     {
-        public static string GetBlendingToken(this WebMap webMap)
+        public static string GetMappingToken(this WebMap webMap)
         {
-            return webMap.Section.GetBlendingToken(webMap.Url);
+            return webMap.Section.GetMappingToken(webMap.Url);
         }
 
-        public static string GetBlendingToken(this WebSection webSection, WebUrl webUrl)
+        public static string GetMappingToken(this WebSection webSection, WebUrl webUrl)
         {
             return webUrl == null
                 ? $"{webSection.Template.Name}%{webSection.Name}"
                 : $"{webSection.Template.Name}%{webSection.Name}%{webUrl.Url}";
         }
 
-        public static string GetBlendingToken(this WebSection webSection)
+        public static string GetMappingToken(this WebSection webSection)
         {
             return $"{webSection.Template.Name}%{webSection.Name}";
         }
 
-        public static string GetBlendingUrl(this WebMap webMap)
+        public static string GetMappingUrl(this WebMap webMap)
         {
-            return webMap.Section.GetBlendingUrl(webMap.Url);
+            return webMap.Section.GetMappingUrl(webMap.Url);
         }
 
-        public static string GetBlendingUrl(this WebSection webSection, WebUrl webUrl)
+        public static string GetMappingUrl(this WebSection webSection, WebUrl webUrl)
         {
             return webUrl == null || string.IsNullOrWhiteSpace(webUrl.Url)
                 ? $"/website/blender/surface/{webSection.Template.Key}/point/{webSection.Key}"
                 : $"/website/blender/surface/{webSection.Template.Key}/point/{webSection.Key}/uri/{webUrl.Url}";
         }
 
-        public static string GetBlendingUrl(this WebSection webSection)
+        public static string GetMappingUrl(this WebSection webSection)
         {
             return $"/website/blender/surface/{webSection.Template.Key}/point/{webSection.Key}";
         }

@@ -57,8 +57,10 @@ namespace WebsiteProvider
 
                 if (Session.Current != null)
                 {
-                    page = FindWrapperPageForTemplate(Session.Current.Data as WrapperPage, this.CurrentTemplate);
-                    if (page != null)
+                    page = Session.Current.Data as WrapperPage;
+                    var currentTemplate = page?.WebTemplatePage.Data;
+
+                    if (currentTemplate != null && currentTemplate.Equals(this.CurrentTemplate))
                     {
                         return page;
                     }
@@ -174,70 +176,44 @@ namespace WebsiteProvider
         {
             foreach (WebSection section in content.Data.Sections)
             {
-                var sectionJson = content.Sections[section.Name] as SectionPage;
-                int index = 0;
+                var sectionJson = (SectionPage) content.Sections[section.Name];
 
-                var uri = section.GetBlendingUrl(url);
-                var sectionContent = GetConainterPage(uri);
-                sectionContent.RequestUri = uri;
-                sectionContent.Reset();
-                sectionJson.Rows.Add();
-                sectionJson.Rows[index++] = sectionContent;
+                var uri = section.GetMappingUrl(url);
+                sectionJson.PinContent = Self.GET(uri);
 
                 var json = response.Resource as Json;
-                if (section.Default && json != null)
+                if (section.Default && json != null && sectionJson.MainContent?.RequestUri != requestUri)
                 {
-                    if (!IsSectionRowAtUri(sectionJson.Rows, index, requestUri))
+                    if (json is WrapperPage)
                     {
-                        if (json is WrapperPage)
-                        {
-                            //we are inserting WebsitePrivider to WebsitePrivider
-                            sectionJson.Rows[index] = json as WrapperPage;
-                        }
-                        else
-                        {
-                            //we are inserting different app to WebsitePrivider
-                            var page = sectionJson.Rows[index] as WrapperPage;
-                            if (page == null || page.WebTemplatePage.Data != null)
-                            {
-                                page = GetConainterPage(requestUri);
-                                sectionJson.Rows[index] = page;
-                            }
-
-                            page.RequestUri = requestUri;
-                            page.Reset();
-                            page.MergeJson(json);
-                        }
+                        //we are inserting WebsiteProvider to WebsiteProvider
+                        sectionJson.MainContent = json as WrapperPage;
                     }
-                    index++;
-                }
+                    else
+                    {
+                        //we are inserting different app to WebsiteProvider
+                        var page = sectionJson.MainContent;
+                        if (page == null || page.WebTemplatePage.Data != null)
+                        {
+                            page = GetContainerPage(requestUri);
+                            sectionJson.MainContent = page;
+                        }
 
-                //remove unused elements at the end of Rows
-                while (sectionJson.Rows.Count > index)
-                {
-                    sectionJson.Rows.RemoveAt(sectionJson.Rows.Count - 1);
+                        page.RequestUri = requestUri;
+                        page.Reset();
+                        page.MergeJson(json);
+                    }
                 }
             }
         }
 
-        private WrapperPage GetConainterPage(string uri)
+        private WrapperPage GetContainerPage(string uri)
         {
             var json = Self.GET<WrapperPage>(uri, () =>
             {
                 return new WrapperPage();
             });
             return json;
-        }
-
-        private bool IsSectionRowAtUri(Arr<WrapperPage> rows, int index, string uri)
-        {
-            if (rows.Count > index)
-            {
-                return (rows[index].RequestUri == uri);
-            }
-
-            rows.Add();
-            return false;
         }
 
         protected WrapperPage GetLayoutPage()
@@ -248,15 +224,6 @@ namespace WebsiteProvider
         protected WebTemplatePage GetTemplatePage(string templateId)
         {
             return Self.GET<WebTemplatePage>("/WebsiteProvider/partial/template/" + templateId);
-        }
-
-        protected WrapperPage FindWrapperPageForTemplate(WrapperPage page, WebTemplate template)
-        {
-            if (page?.WebTemplatePage.Data != null && page.WebTemplatePage.Data.Equals(template))
-            {
-                return page;
-            }
-            return null;
         }
     }
 }

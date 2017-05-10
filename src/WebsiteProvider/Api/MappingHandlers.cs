@@ -15,13 +15,13 @@ namespace WebsiteProvider
 
             foreach (WebSection section in webSections)
             {
-                var sectionBlendingUrl = section.GetBlendingUrl();
+                var sectionBlendingUrl = section.GetMappingUrl();
                 RegisterEmptyHandler(sectionBlendingUrl, registeredEmptyHandleUris);
 
                 foreach (WebMap webMap in section.Maps.OrderBy(x => x.SortNumber))
                 {
-                    string token = webMap.GetBlendingToken();
-                    string blendingUrl = webMap.GetBlendingUrl();
+                    string token = webMap.GetMappingToken();
+                    string blendingUrl = webMap.GetMappingUrl();
 
                     if (webMap.Url != null && !Blender.IsMapped(sectionBlendingUrl, token))
                     {
