@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Simplified.Ring6;
 using Starcounter;
@@ -8,30 +7,30 @@ namespace WebsiteProvider
 {
     public class MappingHandlers
     {
-        public void Initialize()
+        public void Register()
         {
             var webSections = Db.SQL<WebSection>("SELECT ws FROM Simplified.Ring6.WebSection ws");
             var registeredEmptyHandleUris = new List<string>();
 
             foreach (WebSection section in webSections)
             {
-                var sectionBlendingUrl = section.GetMappingUrl();
-                RegisterEmptyHandler(sectionBlendingUrl, registeredEmptyHandleUris);
+                var sectionMappingUrl = section.GetMappingUrl();
+                RegisterEmptyHandler(sectionMappingUrl, registeredEmptyHandleUris);
 
                 foreach (WebMap webMap in section.Maps.OrderBy(x => x.SortNumber))
                 {
                     string token = webMap.GetMappingToken();
-                    string blendingUrl = webMap.GetMappingUrl();
+                    string mappingUrl = webMap.GetMappingUrl();
 
-                    if (webMap.Url != null && !Blender.IsMapped(sectionBlendingUrl, token))
+                    if (webMap.Url != null && !Blender.IsMapped(sectionMappingUrl, token))
                     {
-                        Blender.MapUri(sectionBlendingUrl, token);
+                        Blender.MapUri(sectionMappingUrl, token);
                     }
 
-                    if (!Blender.IsMapped(blendingUrl, token))
+                    if (!Blender.IsMapped(mappingUrl, token))
                     {
-                        RegisterEmptyHandler(blendingUrl, registeredEmptyHandleUris);
-                        Blender.MapUri(blendingUrl, token);
+                        RegisterEmptyHandler(mappingUrl, registeredEmptyHandleUris);
+                        Blender.MapUri(mappingUrl, token);
                     }
 
                     Blender.MapUri(webMap.ForeignUrl, token);

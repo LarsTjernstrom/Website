@@ -10,7 +10,7 @@ namespace WebsiteProvider
             var mapping = new MappingHandlers();
             var content = new ContentHandlers();
 
-            mapping.Initialize();
+            mapping.Register();
             content.Register();
         }
     }
