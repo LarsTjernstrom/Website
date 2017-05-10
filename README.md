@@ -3,9 +3,9 @@ Suite of two apps allowing to create surfaces with blending points and attach th
 
 Note: Website only wraps responses where the response resource is `Json` (not null) with a session.
 
-## Installation instructions
+## Requirements
 
-This app requires SignIn 4.0.0 or newer. It will only display user interface for a signed in user. See the instructions [for the SignIn app](https://github.com/StarcounterApps/People#creating-the-first-user) on how to create the first user.
+The app requires a user to be signed in in order to work. This can be done with the [SignIn](https://github.com/starcounterapps/signin) app. If there are no users in the database, [create the first user](https://github.com/starcounterapps/signin#create-the-first-user). Otherwise, [sign in an existing user](https://github.com/starcounterapps/signin#sign-in)
 
 ## Features
 
