@@ -4,7 +4,12 @@ using WebsiteProvider.Tests.Utilities;
 
 namespace WebsiteProvider.Tests.Test
 {
-    [Parallelizable(ParallelScope.Fixtures)]
+    /// <remarks>
+    /// These tests rely on the Website data which is different for different fixtures and tests.
+    /// One test case can be incompatible with another one so some tests can't be passed.
+    /// So we cannot run them in parallel.
+    /// </remarks>
+    [Parallelizable(ParallelScope.None)]
     [TestFixture(Config.Browser.Chrome)]
     [TestFixture(Config.Browser.Edge)]
     [TestFixture(Config.Browser.Firefox)]
@@ -17,6 +22,19 @@ namespace WebsiteProvider.Tests.Test
 
         public PageLoadTest(Config.Browser browser) : base(browser)
         {
+        }
+
+        // TODO : Remove these 2 methods when merging with the PR Website#65
+        [OneTimeSetUp]
+        public void SetUpFixture()
+        {
+            Driver.Navigate().GoToUrl("http://localhost:8080/website/resetdata");
+            Driver.Navigate().GoToUrl(Config.AcceptanceHelperOneUrl + "/SetupPageLoadTests");
+        }
+        [OneTimeTearDown]
+        public void ResetData()
+        {
+            Driver.Navigate().GoToUrl(Config.AcceptanceHelperOneUrl + "/ResetData");
         }
 
         [Test]

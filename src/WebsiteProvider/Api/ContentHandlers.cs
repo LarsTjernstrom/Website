@@ -11,13 +11,17 @@ namespace WebsiteProvider
     {
         static string runResponseMiddleware = "X-Run-Response-Middleware";
 
-        public string GetWildCardUrl(string Url)
+        public string GetWildCardUrl(string url)
         {
-            Regex reg = new Regex(@"[/]\w*$", RegexOptions.IgnoreCase);
+            var reg = new Regex(@"[/]\w*$", RegexOptions.IgnoreCase);
 
-            Url = reg.Replace(Url, "/{?}");
+            if (reg.IsMatch(url))
+            {
+                return reg.Replace(url, "/{?}");
+            }
 
-            return Url;
+            reg = new Regex(@"[?](\w|\d|%)*$", RegexOptions.IgnoreCase);
+            return reg.Replace(url, "?{?}");
         }
 
         public string FormatUrl(string Url, string Name)
