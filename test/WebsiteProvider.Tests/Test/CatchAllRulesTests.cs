@@ -7,6 +7,11 @@ namespace WebsiteProvider.Tests.Test
     /// <summary>
     /// Tests for catching rules
     /// </summary>
+    /// <remarks>
+    /// These tests rely on the Website data which is different for different fixtures and tests.
+    /// One test case can be incompatible with another one so some tests can't be passed.
+    /// So we cannot run them in parallel.
+    /// </remarks>
     [Parallelizable(ParallelScope.None)]
     [TestFixture(Config.Browser.Chrome)]
     [TestFixture(Config.Browser.Edge)]

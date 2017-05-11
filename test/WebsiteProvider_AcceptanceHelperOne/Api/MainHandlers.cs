@@ -52,25 +52,14 @@ namespace WebsiteProvider_AcceptanceHelperOne
 
             Handle.GET("/WebsiteProvider_AcceptanceHelperOne/ResetData", () =>
             {
-                var dataHelper = new DataHelper();
-                dataHelper.ResetData();
+                DataHelper.ResetData();
                 Handle.SetOutgoingStatusCode(200);
                 return "Catching rules are reseted";
             });
 
-            // TODO : Remove this handler when merging with the PR Website#65
-            Handle.GET("/WebsiteProvider_AcceptanceHelperOne/SetupPageLoadTests", () =>
-            {
-                var dataHelper = new DataHelper();
-                dataHelper.GenerateData();
-                Handle.SetOutgoingStatusCode(200);
-                return "Data generated";
-            });
-
             Handle.GET("/WebsiteProvider_AcceptanceHelperOne/SetupCatchingRuleWildcardTests", () =>
             {
-                var dataHelper = new DataHelper();
-                dataHelper.SetCatchingRulesWithWildcards();
+                DataHelper.SetCatchingRulesWithWildcards();
                 Handle.SetOutgoingStatusCode(200);
                 return "Data for testing catching rule wildcards is set up";
             });
