@@ -64,6 +64,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Api\CommitHooks.cs" />
     <Compile Include="Api\ContentHandlers.cs" />
     <Compile Include="Api\MappingHandlers.cs" />
     <Compile Include="Helpers\MappingExtensions.cs" />
