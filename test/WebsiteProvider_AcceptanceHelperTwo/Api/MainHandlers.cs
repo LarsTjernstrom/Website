@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Web;
 using Starcounter;
 
 namespace WebsiteProvider_AcceptanceHelperTwo
@@ -24,6 +25,11 @@ namespace WebsiteProvider_AcceptanceHelperTwo
                 Handle.SetOutgoingStatusCode(200);
                 return "Default catching rules are successfully set";
             });
+
+            Handle.GET("/WebsiteProvider_AcceptanceHelperTwo/content/{?}",
+                (string resourceName) => new ContentPage {ResourceName = resourceName});
+            Handle.GET("/WebsiteProvider_AcceptanceHelperTwo/query?{?}",
+                (string query) => new QueryPage {QueryString = HttpUtility.UrlDecode(query)});
         }
     }
 }

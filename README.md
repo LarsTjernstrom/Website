@@ -48,7 +48,9 @@ Catching rules define which requests are wrapped in surfaces.
 
 Each rule defines that a certain entry **Catch URI** should be wrapped in a certain surface.
 
-Catching rules support single wildcard URLs. If **Catch URI** contains a wildcard (`{?}`), it will match a request that contains any value at that place in the URL.
+Catching rules support single wildcard URLs. If **Catch URI** contains a wildcard (`{?}`), it will match a request that contains any value at that place in the URL. Currently are supported the following patterns:
+* `/application/resource/{?}` (supports only letters)
+* `/application/query?{?}` (supports letters, digits and `%` symbol)
 
 A catching rule can be **Final**, meaning that not any other catching rule will be applied additionally. If a catching rule have an empty **Catch URI** value, it will be forced (only first one) on any JSON response from any Starcounter app. In case if not any catching rule was matched for a response, it will be loaded "as-is".
 

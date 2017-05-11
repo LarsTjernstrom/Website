@@ -49,6 +49,31 @@ namespace WebsiteProvider_AcceptanceHelperOne
                 Handle.SetOutgoingStatusCode(200);
                 return "Data for testing catching rules (without existing catch-all rules) is set";
             });
+
+            Handle.GET("/WebsiteProvider_AcceptanceHelperOne/ResetData", () =>
+            {
+                var dataHelper = new DataHelper();
+                dataHelper.ResetData();
+                Handle.SetOutgoingStatusCode(200);
+                return "Catching rules are reseted";
+            });
+
+            // TODO : Remove this handler when merging with the PR Website#65
+            Handle.GET("/WebsiteProvider_AcceptanceHelperOne/SetupPageLoadTests", () =>
+            {
+                var dataHelper = new DataHelper();
+                dataHelper.GenerateData();
+                Handle.SetOutgoingStatusCode(200);
+                return "Data generated";
+            });
+
+            Handle.GET("/WebsiteProvider_AcceptanceHelperOne/SetupCatchingRuleWildcardTests", () =>
+            {
+                var dataHelper = new DataHelper();
+                dataHelper.SetCatchingRulesWithWildcards();
+                Handle.SetOutgoingStatusCode(200);
+                return "Data for testing catching rule wildcards is set up";
+            });
         }
     }
 }

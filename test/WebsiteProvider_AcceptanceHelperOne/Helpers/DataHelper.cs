@@ -91,6 +91,32 @@ namespace WebsiteProvider_AcceptanceHelperOne
             webUrl.IsFinal = true;
         }
 
+        public void SetCatchingRulesWithWildcards()
+        {
+            Db.Transact(() =>
+            {
+                var launcherSurface = GenerateLauncherSurface();
+                var webUrl = Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE wu.Url = ?",
+                                 "/WebsiteProvider_AcceptanceHelperTwo/content/{?}").First ??
+                             new WebUrl
+                             {
+                                 Url = "/WebsiteProvider_AcceptanceHelperTwo/content/{?}",
+                             };
+                webUrl.Template = launcherSurface;
+                webUrl.IsFinal = true;
+
+                var defaultSurface = GenerateDefaultSurface();
+                webUrl = Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE wu.Url = ?",
+                                 "/WebsiteProvider_AcceptanceHelperTwo/query?{?}").First ??
+                             new WebUrl
+                             {
+                                 Url = "/WebsiteProvider_AcceptanceHelperTwo/query?{?}",
+                             };
+                webUrl.Template = defaultSurface;
+                webUrl.IsFinal = true;
+            });
+        }
+
         protected WebTemplate GenerateDefaultSurface()
         {
             const string surfaceName = "TestDefaultTemplate";
