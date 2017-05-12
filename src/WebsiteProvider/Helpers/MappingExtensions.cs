@@ -9,16 +9,11 @@ namespace WebsiteProvider
             return webMap.Section.GetMappingToken(webMap.Url);
         }
 
-        public static string GetMappingToken(this WebSection webSection, WebUrl webUrl)
+        public static string GetMappingToken(this WebSection webSection, WebUrl webUrl = null)
         {
             return webUrl == null
-                ? $"{webSection.Template.Name}%{webSection.Name}"
-                : $"{webSection.Template.Name}%{webSection.Name}%{webUrl.Url}";
-        }
-
-        public static string GetMappingToken(this WebSection webSection)
-        {
-            return $"{webSection.Template.Name}%{webSection.Name}";
+                ? $"website%{webSection.Template.Key}%{webSection.Key}"
+                : $"website%{webSection.Template.Key}%{webSection.Key}%{webUrl.Key}";
         }
 
         public static string GetMappingUrl(this WebMap webMap)
@@ -26,16 +21,11 @@ namespace WebsiteProvider
             return webMap.Section.GetMappingUrl(webMap.Url);
         }
 
-        public static string GetMappingUrl(this WebSection webSection, WebUrl webUrl)
+        public static string GetMappingUrl(this WebSection webSection, WebUrl webUrl = null)
         {
-            return webUrl == null || string.IsNullOrWhiteSpace(webUrl.Url)
+            return string.IsNullOrWhiteSpace(webUrl?.Url)
                 ? $"/website/blender/surface/{webSection.Template.Key}/point/{webSection.Key}"
-                : $"/website/blender/surface/{webSection.Template.Key}/point/{webSection.Key}/uri/{webUrl.Url}";
-        }
-
-        public static string GetMappingUrl(this WebSection webSection)
-        {
-            return $"/website/blender/surface/{webSection.Template.Key}/point/{webSection.Key}";
+                : $"/website/blender/surface/{webSection.Template.Key}/point/{webSection.Key}/uri/{webUrl.Key}";
         }
     }
 }

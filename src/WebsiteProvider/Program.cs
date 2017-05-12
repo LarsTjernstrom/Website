@@ -1,7 +1,4 @@
-﻿using System;
-using Starcounter;
-
-namespace WebsiteProvider
+﻿namespace WebsiteProvider
 {
     class Program
     {
@@ -9,9 +6,11 @@ namespace WebsiteProvider
         {
             var mapping = new MappingHandlers();
             var content = new ContentHandlers();
+            var hooks = new CommitHooks(mapping);
 
             mapping.Register();
             content.Register();
+            hooks.Register();
         }
     }
 }
