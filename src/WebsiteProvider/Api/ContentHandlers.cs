@@ -178,29 +178,38 @@ namespace WebsiteProvider
 
         protected void UpdateTemplateSections(string requestUri, Response response, WebTemplatePage content, WebUrl url)
         {
+            const int pinsIndex = 0;
+            const int mainIndex = 1;
+
             foreach (WebSection section in content.Data.Sections)
             {
                 var sectionJson = (SectionPage) content.Sections[section.Name];
 
-                var uri = section.GetMappingUrl(url);
-                sectionJson.PinContent = Self.GET(uri);
+                var pinsBlendingUri = section.GetMappingUrl(url);
+                if (!IsSectionRowAtUri(sectionJson.Rows, pinsIndex, pinsBlendingUri))
+                {
+                    var page = GetContainerPage(pinsBlendingUri);
+                    page.RequestUri = pinsBlendingUri;
+                    page.Reset();
+                    sectionJson.Rows[pinsIndex] = page;
+                }
 
                 var json = response.Resource as Json;
-                if (section.Default && json != null && sectionJson.MainContent?.RequestUri != requestUri)
+                if (section.Default && json != null && !IsSectionRowAtUri(sectionJson.Rows, mainIndex, requestUri))
                 {
                     if (json is WrapperPage)
                     {
                         //we are inserting WebsiteProvider to WebsiteProvider
-                        sectionJson.MainContent = json as WrapperPage;
+                        sectionJson.Rows[mainIndex] = json as WrapperPage;
                     }
                     else
                     {
                         //we are inserting different app to WebsiteProvider
-                        var page = sectionJson.MainContent;
+                        var page = sectionJson.Rows[mainIndex];
                         if (page == null || page.WebTemplatePage.Data != null)
                         {
                             page = GetContainerPage(requestUri);
-                            sectionJson.MainContent = page;
+                            sectionJson.Rows[mainIndex] = page;
                         }
 
                         page.RequestUri = requestUri;
@@ -211,13 +220,20 @@ namespace WebsiteProvider
             }
         }
 
+        private bool IsSectionRowAtUri(Arr<WrapperPage> rows, int index, string uri)
+        {
+            if (rows.Count > index)
+            {
+                return rows[index].RequestUri == uri;
+            }
+
+            rows.Add();
+            return false;
+        }
+
         private WrapperPage GetContainerPage(string uri)
         {
-            var json = Self.GET<WrapperPage>(uri, () =>
-            {
-                return new WrapperPage();
-            });
-            return json;
+            return Self.GET<WrapperPage>(uri, () => new WrapperPage());
         }
 
         protected WrapperPage GetLayoutPage()

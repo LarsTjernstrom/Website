@@ -2,7 +2,8 @@
 
 <template>
     <template is="dom-bind">
-        <starcounter-include slot="website/Section/{{model.Name}}/PinContent" view-model="{{model.PinContent}}"></starcounter-include>
-        <starcounter-include slot="website/Section/{{model.Name}}/MainContent" view-model="{{model.MainContent}}"></starcounter-include>
+        <template is="dom-repeat" items="{{model.Rows}}">
+            <starcounter-include slot="website/Section/{{model.Name}}/Row/{{index}}" view-model="{{item}}"></starcounter-include>
+        </template>
     </template>
 </template>

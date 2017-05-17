@@ -22,10 +22,10 @@ namespace WebsiteProvider
                 MappingHandlers.MapPinningRule(webMap);
             };
 
-            Hook<WebMap>.BeforeDelete += (s, webMap) =>
-            {
-                MappingHandlers.UnmapPinningRule(webMap);
-            };
+            //Hook<WebMap>.BeforeDelete += (s, webMap) =>
+            //{
+            //    MappingHandlers.UnmapPinningRule(webMap);
+            //};
 
             //Hook<WebMap>.CommitUpdate += (s, webMap) =>
             //{
