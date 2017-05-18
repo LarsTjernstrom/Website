@@ -1,5 +1,6 @@
 {
-  "Html": "/WebsiteProvider/viewmodels/WebsiteSection.html", 
+  "Html": "/WebsiteProvider/viewmodels/WebsiteSection.html",
   "Name": "",
-  "Rows": [{"$": {"Reuse": "WebsiteProvider.WrapperPage"}}]  
+  "PinContent": {},
+  "MainContent": { "$": { "Reuse": "WebsiteProvider.WrapperPage" } }
 }
