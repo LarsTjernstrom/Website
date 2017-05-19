@@ -8,10 +8,10 @@ namespace WebsiteProvider_AcceptanceHelperOne
         public void ResetData()
         {
             Db.Transact(() => {
-                Db.SlowSQL("DELETE FROM Simplified.Ring6.WebTemplate");
-                Db.SlowSQL("DELETE FROM Simplified.Ring6.WebSection");
                 Db.SlowSQL("DELETE FROM Simplified.Ring6.WebMap");
                 Db.SlowSQL("DELETE FROM Simplified.Ring6.WebUrl");
+                Db.SlowSQL("DELETE FROM Simplified.Ring6.WebSection");
+                Db.SlowSQL("DELETE FROM Simplified.Ring6.WebTemplate");
             });
         }
 

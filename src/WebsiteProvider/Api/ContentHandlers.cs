@@ -90,7 +90,6 @@ namespace WebsiteProvider
             Handle.GET("/WebsiteProvider/partial/wrapper?uri={?}", (string requestUri) =>
             {
                 WebUrl webUrl = this.GetWebUrl(requestUri);
-
                 WebTemplate template = webUrl?.Template;
 
                 if (template == null)
@@ -216,11 +215,7 @@ namespace WebsiteProvider
 
         private WrapperPage GetContainerPage(string uri)
         {
-            var json = Self.GET<WrapperPage>(uri, () =>
-            {
-                return new WrapperPage();
-            });
-            return json;
+            return Self.GET<WrapperPage>(uri, () => new WrapperPage());
         }
 
         protected WrapperPage GetLayoutPage()
