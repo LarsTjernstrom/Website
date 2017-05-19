@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Text.RegularExpressions;
 using Simplified.Ring6;
 using Starcounter;
@@ -9,7 +8,14 @@ namespace WebsiteProvider
 {
     public class ContentHandlers
     {
-        static string runResponseMiddleware = "X-Run-Response-Middleware";
+        private static string runResponseMiddleware = "X-Run-Response-Middleware";
+
+        protected Storage<Response> ResponseStorage { get; private set; }
+
+        public ContentHandlers()
+        {
+            ResponseStorage = new Storage<Response>();
+        }
 
         public string GetWildCardUrl(string url)
         {
@@ -91,8 +97,9 @@ namespace WebsiteProvider
                 return page;
             });
 
-            Handle.GET("/WebsiteProvider/partial/wrapper?uri={?}", (string requestUri) =>
+            Handle.GET("/WebsiteProvider/partial/wrapper?uri={?}&response={?}", (string requestUri, string responseKey) =>
             {
+                Response currentResponse = ResponseStorage.Get(responseKey);
                 WebUrl webUrl = this.GetWebUrl(requestUri);
                 WebTemplate template = webUrl?.Template;
 
@@ -103,19 +110,19 @@ namespace WebsiteProvider
 
                 WrapperPage master = GetLayoutPage(template);
                 master.IsFinal = webUrl.IsFinal || string.IsNullOrEmpty(webUrl.Url);
+
                 if (!template.Equals(master.WebTemplatePage.Data))
                 {
                     master.WebTemplatePage = GetTemplatePage(template.GetObjectID());
                 }
-                UpdateTemplateSections(requestUri, this.CurrentResponse, master.WebTemplatePage, webUrl);
+
+                UpdateTemplateSections(requestUri, currentResponse, master.WebTemplatePage, webUrl);
 
                 return master;
             });
 
             RegisterFilter();
         }
-
-        private Response CurrentResponse;
 
         protected void RegisterFilter()
         {
@@ -138,17 +145,18 @@ namespace WebsiteProvider
                     var htmlField = json["Html"] as string;
                     if (htmlField != null)
                     {
-                        this.CurrentResponse = null;
                         var wrapper = response.Resource as WrapperPage;
                         var requestUri = request.Uri;
                         var isWrapped = false;
 
                         while ((wrapper == null || wrapper.IsFinal == false) && this.HasCatchingRule(requestUri))
                         {
-                            this.CurrentResponse = response;
+                            var responseKey = ResponseStorage.Put(response);
                             isWrapped = true;
 
-                            response = Self.GET("/WebsiteProvider/partial/wrapper?uri=" + requestUri);
+                            response = Self.GET($"/WebsiteProvider/partial/wrapper?uri={requestUri}&response={responseKey}");
+
+                            ResponseStorage.Remove(responseKey);
                             wrapper = response.Resource as WrapperPage;
                             requestUri = wrapper?.WebTemplatePage.Data.Html;
                         }
