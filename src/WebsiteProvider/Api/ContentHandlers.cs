@@ -162,10 +162,9 @@ namespace WebsiteProvider
                         }
                         if (!isWrapped)
                         {
-                            if (Session.Current == null)
-                            {
-                                Session.Current = new Session(SessionOptions.PatchVersioning);
-                            }
+                            //Morph to a view that is stateless and not catched by any surface
+                            //This is tested by RedirectToOtherAppPageTest
+                            //Should be improved by https://github.com/Starcounter/level1/issues/4159
                             Session.Current.Data = response.Resource as Json;
                         }
                         return response;
