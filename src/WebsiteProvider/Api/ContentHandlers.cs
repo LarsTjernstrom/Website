@@ -49,24 +49,28 @@ namespace WebsiteProvider
             {
                 var page = new WebTemplatePage
                 {
-                    Data = Db.SQL<WebTemplate>("SELECT wt FROM Simplified.Ring6.WebTemplate wt WHERE wt.Key = ?", templateId).First
+                    Data = GetWebTemplate(templateId)
                 };
                 InitializeTemplate(page);
                 return page;
             });
 
-            Handle.GET("/WebsiteProvider/partial/layout", () =>
+            Handle.GET("/WebsiteProvider/partial/layout/{?}", (string templateId) =>
             {
                 WrapperPage page;
 
                 if (Session.Current != null)
                 {
                     page = Session.Current.Data as WrapperPage;
-                    var currentTemplate = page?.WebTemplatePage.Data;
+                    var sessionWebTemplate = page?.WebTemplatePage.Data;
 
-                    if (currentTemplate != null && currentTemplate.Equals(this.CurrentTemplate))
+                    if (sessionWebTemplate != null)
                     {
-                        return page;
+                        var webTemplate = GetWebTemplate(templateId);
+                        if (sessionWebTemplate.Equals(webTemplate))
+                        {
+                            return page;
+                        }
                     }
                 }
                 else
@@ -97,8 +101,7 @@ namespace WebsiteProvider
                     throw new Exception("Default template is missing");
                 }
 
-                this.CurrentTemplate = template;
-                WrapperPage master = GetLayoutPage();
+                WrapperPage master = GetLayoutPage(template);
                 master.IsFinal = webUrl.IsFinal || string.IsNullOrEmpty(webUrl.Url);
                 if (!template.Equals(master.WebTemplatePage.Data))
                 {
@@ -113,7 +116,6 @@ namespace WebsiteProvider
         }
 
         private Response CurrentResponse;
-        private WebTemplate CurrentTemplate;
 
         protected void RegisterFilter()
         {
@@ -218,14 +220,19 @@ namespace WebsiteProvider
             return Self.GET<WrapperPage>(uri, () => new WrapperPage());
         }
 
-        protected WrapperPage GetLayoutPage()
+        protected WrapperPage GetLayoutPage(WebTemplate template)
         {
-            return Self.GET<WrapperPage>("/WebsiteProvider/partial/layout");
+            return Self.GET<WrapperPage>("/WebsiteProvider/partial/layout/" + template.GetObjectID());
         }
 
         protected WebTemplatePage GetTemplatePage(string templateId)
         {
             return Self.GET<WebTemplatePage>("/WebsiteProvider/partial/template/" + templateId);
+        }
+
+        protected WebTemplate GetWebTemplate(string id)
+        {
+            return Db.SQL<WebTemplate>("SELECT wt FROM Simplified.Ring6.WebTemplate wt WHERE wt.Key = ?", id).First;
         }
 
         public bool HasCatchingRule(string requestUri)
