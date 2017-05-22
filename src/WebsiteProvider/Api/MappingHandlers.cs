@@ -60,7 +60,10 @@ namespace WebsiteProvider
             string mapUrl = webMap.GetMappingUrl();
             Blender.UnmapUri(webMap.ForeignUrl, token);
             Blender.UnmapUri(mapUrl, token);
-            Handle.UnregisterHttpHandler("GET", mapUrl);
+            if (Handle.IsHandlerRegistered(mapUrl, selfOnlyOptions))
+            {
+                Handle.UnregisterHttpHandler("GET", mapUrl);
+            }
         }
 
         private void RegisterEmptyHandler(string url)
