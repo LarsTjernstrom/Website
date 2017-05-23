@@ -14,40 +14,40 @@ namespace WebsiteProvider
 
             foreach (WebSection section in webSections)
             {
-                var sectionUrl = section.GetMappingUrl();
-                RegisterEmptyHandler(sectionUrl);
+                var sectionUri = section.GetMappingUrl();
+                RegisterEmptyHandler(sectionUri);
 
                 foreach (WebMap webMap in section.Maps.OrderBy(x => x.SortNumber))
                 {
-                    MapPinningRule(webMap, sectionUrl);
+                    MapPinningRule(webMap, sectionUri);
                 }
             }
         }
 
-        public void MapPinningRule(WebMap webMap, string registeredSectionUrl = null)
+        public void MapPinningRule(WebMap webMap, string registeredSectionUri = null)
         {
-            var sectionUrl = registeredSectionUrl ?? webMap.Section.GetMappingUrl();
+            var sectionUri = registeredSectionUri ?? webMap.Section.GetMappingUrl();
 
-            if (registeredSectionUrl == null)
+            if (registeredSectionUri == null)
             {
-                RegisterEmptyHandler(sectionUrl);
+                RegisterEmptyHandler(sectionUri);
             }
 
             string token = webMap.GetMappingToken();
-            string mapUrl = webMap.GetMappingUrl();
+            string mapUri = webMap.GetMappingUrl();
 
             // map URI for empty Catch URI on the blending token
-            if (webMap.Url != null && !Blender.IsMapped(sectionUrl, token))
+            if (webMap.Url != null && !Blender.IsMapped(sectionUri, token))
             {
-                Blender.MapUri(sectionUrl, token);
+                Blender.MapUri(sectionUri, token);
             }
 
             // map URI for WebMap's Catch URI on the same blending token;
             // this will be calling by WebsiteProvider
-            if (!Blender.IsMapped(mapUrl, token))
+            if (!Blender.IsMapped(mapUri, token))
             {
-                RegisterEmptyHandler(mapUrl);
-                Blender.MapUri(mapUrl, token);
+                RegisterEmptyHandler(mapUri);
+                Blender.MapUri(mapUri, token);
             }
 
             // map URI for WebMap's Pin URI on the same token
@@ -56,21 +56,53 @@ namespace WebsiteProvider
 
         public void UnmapPinningRule(WebMap webMap)
         {
-            string token = webMap.GetMappingToken();
-            string mapUrl = webMap.GetMappingUrl();
-            Blender.UnmapUri(webMap.ForeignUrl, token);
-            Blender.UnmapUri(mapUrl, token);
-            if (Handle.IsHandlerRegistered(mapUrl, selfOnlyOptions))
+            if (webMap.Section?.Template == null)
             {
-                Handle.UnregisterHttpHandler("GET", mapUrl);
+                // if the Blending Point (WebSection) or the Surface (WebTemplate) was deleted earlier
+                return;
+            }
+            string token = webMap.GetMappingToken();
+            string mapUri = webMap.GetMappingUrl();
+
+            Blender.UnmapUri(webMap.ForeignUrl, token);
+
+            if (webMap.Url != null)
+            {
+                var uriByTokenCount = Blender.ListAll().Where(x => x.Key == token).SelectMany(x => x.Value).Count();
+                if (uriByTokenCount == 2) // one URI for empty WebMap's handler and another one for empty WebSection's handler
+                {
+                    Blender.UnmapUri(mapUri, token);
+                    Handle.UnregisterHttpHandler("GET", mapUri);
+                }
             }
         }
 
-        private void RegisterEmptyHandler(string url)
+        public void UnmapBlendingPoint(WebSection webSection)
         {
-            if (!Handle.IsHandlerRegistered(url, selfOnlyOptions))
+            if (webSection.Template == null)
             {
-                Handle.GET(url, () => new Json(), selfOnlyOptions);
+                // if the Surface (WebTemplate) was deleted earlier
+                return;
+            }
+            string token = webSection.GetMappingToken();
+            string mapUri = webSection.GetMappingUrl();
+
+            foreach (WebMap webMap in webSection.Maps)
+            {
+                UnmapPinningRule(webMap);
+            }
+            Blender.UnmapUri(mapUri, token);
+            if (Handle.IsHandlerRegistered(mapUri, selfOnlyOptions))
+            {
+                Handle.UnregisterHttpHandler("GET", mapUri);
+            }
+        }
+
+        private void RegisterEmptyHandler(string uri)
+        {
+            if (!Handle.IsHandlerRegistered(uri, selfOnlyOptions))
+            {
+                Handle.GET(uri, () => new Json(), selfOnlyOptions);
             }
         }
     }
