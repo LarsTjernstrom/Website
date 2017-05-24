@@ -30,6 +30,19 @@ namespace WebsiteProvider
             //Hook<WebMap>.CommitUpdate += (s, webMap) =>
             //{
             //};
+
+            Hook<WebSection>.BeforeDelete += (s, webSection) =>
+            {
+                MappingHandlers.UnmapBlendingPoint(webSection);
+            };
+
+            Hook<WebTemplate>.BeforeDelete += (s, webTemplate) =>
+            {
+                foreach (WebSection webSection in webTemplate.Sections)
+                {
+                    MappingHandlers.UnmapBlendingPoint(webSection);
+                }
+            };
         }
     }
 }

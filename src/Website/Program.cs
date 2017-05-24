@@ -1,17 +1,16 @@
-﻿using System;
-using Starcounter;
+﻿namespace Website
+{
+    class Program
+    {
+        static void Main()
+        {
+            var hooks = new CommitHooks();
+            var data = new DataHelper();
+            var main = new MainHandlers();
 
-namespace Website {
-    class Program {
-
-        static void Main() {
-            DataHelper data = new DataHelper();
-            MainHandlers main = new MainHandlers();
-            CommitHooks hooks = new CommitHooks();
-
+            hooks.Register();
             data.GenerateData();
             main.Register();
-            hooks.Register();
         }
     }
 }
