@@ -4,6 +4,9 @@ using WebsiteProvider.Tests.Utilities;
 
 namespace WebsiteProvider.Tests.Test
 {
+    /// <summary>
+    /// Tests for correct loading of the pages with basic configuration
+    /// </summary>
     /// <remarks>
     /// These tests rely on the Website data which is different for different fixtures and tests.
     /// One test case can be incompatible with another one so some tests can't be passed.
@@ -13,50 +16,79 @@ namespace WebsiteProvider.Tests.Test
     [TestFixture(Config.Browser.Chrome)]
     [TestFixture(Config.Browser.Edge)]
     [TestFixture(Config.Browser.Firefox)]
-    public class PageLoadTest : BaseTest
+    public class PageLoadTests : BaseTest
     {
         const string MiddlewareTestCookieName = "AcceptanceHelperTwoMiddlewareTestCookie";
 
-        private AcceptanceHelperOneMasterPage _acceptanceHelperOneMasterPage;
-        private AcceptanceHelperTwoMasterPage _acceptanceHelperTwoMasterPage;
-
-        public PageLoadTest(Config.Browser browser) : base(browser)
+        public PageLoadTests(Config.Browser browser) : base(browser)
         {
         }
 
-        // TODO : Remove these 2 methods when merging with the PR Website#65
+        /// <summary>
+        /// Clean all Website's data and create default for the test fixture.
+        /// </summary>
         [OneTimeSetUp]
-        public void SetUpFixture()
+        public void FixtureSetUp()
         {
-            Driver.Navigate().GoToUrl("http://localhost:8080/website/resetdata");
-            Driver.Navigate().GoToUrl(Config.AcceptanceHelperOneUrl + "/SetupPageLoadTests");
+            Driver.Navigate().GoToUrl(Config.AcceptanceHelperOneUrl + "/ResetData");
+            Driver.Navigate().GoToUrl(Config.AcceptanceHelperOneUrl + "/SetDefaultCatchingRules");
+            Driver.Navigate().GoToUrl(Config.AcceptanceHelperTwoUrl + "/SetDefaultCatchingRules");
         }
+
+        /// <summary>
+        /// Clear all Website's data.
+        /// </summary>
         [OneTimeTearDown]
-        public void ResetData()
+        public void FixtureTearDown()
         {
             Driver.Navigate().GoToUrl(Config.AcceptanceHelperOneUrl + "/ResetData");
         }
 
+        /// <summary>
+        /// Load a simple stateless page and check the content and the loaded template.
+        /// </summary>
         [Test]
-        public void EmptyPageLoadsTest()
+        public void LoadPage_IncludedHtmlField_WrappedAndLoaded()
         {
-            _acceptanceHelperOneMasterPage = new AcceptanceHelperOneMasterPage(Driver).GoToEmptyPage();
-            WaitForText(_acceptanceHelperOneMasterPage.H1Element, "Acceptance Helper 1", 10);
+            var page = new AcceptanceHelperOneMasterPage(Driver).LoadSimplePage();
+            WaitForText(page.HeaderElement, "Simple Page");
+            WaitUntil(x => page.CheckForLauncherSurface());
         }
 
+        /// <summary>
+        /// Test if an exception data was rendered when a responded Json doesn't have an Html field.
+        /// </summary>
         [Test]
-        public void EmptyJsonLoadsTest()
+        public void LoadPage_ExcludedHtmlField_ExceptionThrownAndRendered()
         {
-            _acceptanceHelperOneMasterPage = new AcceptanceHelperOneMasterPage(Driver).GoToEmptyJson();
+            Driver.Navigate().GoToUrl(Config.AcceptanceHelperOneUrl + "/EmptyJson");
             WaitUntil(x => x.PageSource.Contains("System.InvalidOperationException: ScErrInvalidOperation (SCERR1025)"));
         }
 
+        /// <summary>
+        /// Load a simple stateless page from a current app by clicking on a link
+        /// and check the content and the loaded template.
+        /// </summary>
         [Test]
-        public void RedirectToOtherAppPageTest()
+        public void GoToOwnPage_WithCorrespondingCatchingRule_Loaded()
         {
-            _acceptanceHelperOneMasterPage = new AcceptanceHelperOneMasterPage(Driver).GoToMasterPage();
-            _acceptanceHelperTwoMasterPage = _acceptanceHelperOneMasterPage.GoToAcceptanceHelperTwoPage();
-            WaitForText(_acceptanceHelperTwoMasterPage.H1Element, "Acceptance Helper 2", 10);
+            var masterPage = new AcceptanceHelperOneMasterPage(Driver).LoadMasterPage();
+            var simplePage = masterPage.GoToSimplePage();
+            WaitForText(simplePage.HeaderElement, "Simple Page");
+            WaitUntil(x => simplePage.CheckForLauncherSurface());
+        }
+
+        /// <summary>
+        /// Load a simple stateless page from another app by clicking on a link
+        /// and check the content and the loaded template.
+        /// </summary>
+        [Test]
+        public void GoToOtherAppPage_WithCorrespondingCatchingRule_Loaded()
+        {
+            var acceptanceHelperOneMasterPage = new AcceptanceHelperOneMasterPage(Driver).LoadMasterPage();
+            var acceptanceHelperTwoMasterPage = acceptanceHelperOneMasterPage.GoToAcceptanceHelperTwoPage();
+            WaitForText(acceptanceHelperTwoMasterPage.HeaderElement, "Acceptance Helper 2");
+            WaitUntil(x => acceptanceHelperTwoMasterPage.CheckForSidebarSurface());
         }
 
         /// <summary>
@@ -69,7 +101,7 @@ namespace WebsiteProvider.Tests.Test
         public void LoadPage_MiddlewareHandling_CookieAdded()
         {
             Driver.Manage().Cookies.DeleteCookieNamed(MiddlewareTestCookieName);
-            new AcceptanceHelperOneMasterPage(Driver).GoToMasterPage();
+            new AcceptanceHelperOneMasterPage(Driver).LoadMasterPage();
             var cookie = Driver.Manage().Cookies.GetCookieNamed(MiddlewareTestCookieName);
             Assert.IsNotNull(cookie);
             Driver.Manage().Cookies.DeleteCookieNamed(MiddlewareTestCookieName);

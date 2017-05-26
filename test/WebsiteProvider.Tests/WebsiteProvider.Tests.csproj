@@ -49,8 +49,10 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Test\BaseTest.cs" />
+    <Compile Include="Test\CatchAllRulesTests.cs" />
     <Compile Include="Test\CatchingRuleWildcardTests.cs" />
     <Compile Include="Test\PageLoadTests.cs" />
+    <Compile Include="Ui\AcceptanceHelperOneSimplePage.cs" />
     <Compile Include="Ui\AcceptanceHelperTwoQueryPage.cs" />
     <Compile Include="Ui\AcceptanceHelperTwoContentPage.cs" />
     <Compile Include="Ui\AcceptanceHelperTwoMasterPage.cs" />

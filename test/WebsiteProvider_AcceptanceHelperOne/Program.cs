@@ -9,7 +9,8 @@ namespace WebsiteProvider_AcceptanceHelperOne
             Application.Current.Use(new HtmlFromJsonProvider());
             Application.Current.Use(new PartialToStandaloneHtmlProvider());
 
-            var mainHandlers = new MainHandlers();
+            var dataHelper = new DataHelper();
+            var mainHandlers = new MainHandlers(dataHelper);
 
             mainHandlers.Register();
         }

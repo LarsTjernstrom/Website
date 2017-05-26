@@ -52,7 +52,7 @@ Catching rules support single wildcard URLs. If **Catch URI** contains a wildcar
 * `/application/resource/{?}` (supports only letters)
 * `/application/query?{?}` (supports letters, digits and `%` symbol)
 
-A catching rule can be **Final**, meaning that not any other catching rule will be applied additionally. If a **final** catching rule have an empty **Catch URI** value, it will be forced on any JSON response from any Starcounter app.
+A catching rule can be **Final**, meaning that not any other catching rule will be applied additionally. If a catching rule have an empty **Catch URI** value, it will be forced (only first one) on any JSON response from any Starcounter app. In case if not any catching rule was matched for a response, it will be loaded "as-is".
 
 #### Pinning rules
 

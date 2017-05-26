@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Text.RegularExpressions;
 using Simplified.Ring6;
 using Starcounter;
@@ -9,7 +8,14 @@ namespace WebsiteProvider
 {
     public class ContentHandlers
     {
-        static string runResponseMiddleware = "X-Run-Response-Middleware";
+        private static string runResponseMiddleware = "X-Run-Response-Middleware";
+
+        protected Storage<Response> ResponseStorage { get; private set; }
+
+        public ContentHandlers()
+        {
+            ResponseStorage = new Storage<Response>();
+        }
 
         public string GetWildCardUrl(string url)
         {
@@ -49,24 +55,28 @@ namespace WebsiteProvider
             {
                 var page = new WebTemplatePage
                 {
-                    Data = Db.SQL<WebTemplate>("SELECT wt FROM Simplified.Ring6.WebTemplate wt WHERE wt.Key = ?", templateId).First
+                    Data = GetWebTemplate(templateId)
                 };
                 InitializeTemplate(page);
                 return page;
             });
 
-            Handle.GET("/WebsiteProvider/partial/layout", () =>
+            Handle.GET("/WebsiteProvider/partial/layout/{?}", (string templateId) =>
             {
                 WrapperPage page;
 
                 if (Session.Current != null)
                 {
                     page = Session.Current.Data as WrapperPage;
-                    var currentTemplate = page?.WebTemplatePage.Data;
+                    var sessionWebTemplate = page?.WebTemplatePage.Data;
 
-                    if (currentTemplate != null && currentTemplate.Equals(this.CurrentTemplate))
+                    if (sessionWebTemplate != null)
                     {
-                        return page;
+                        var webTemplate = GetWebTemplate(templateId);
+                        if (sessionWebTemplate.Equals(webTemplate))
+                        {
+                            return page;
+                        }
                     }
                 }
                 else
@@ -87,19 +97,10 @@ namespace WebsiteProvider
                 return page;
             });
 
-            Handle.GET("/WebsiteProvider/partial/wrapper?uri={?}", (string requestUri) =>
+            Handle.GET("/WebsiteProvider/partial/wrapper?uri={?}&response={?}", (string requestUri, string responseKey) =>
             {
-                WebUrl webUrl = Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE wu.Url = ?", requestUri).First;
-
-                if (webUrl == null)
-                {
-                    string wildCard = GetWildCardUrl(requestUri);
-
-                    webUrl = Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE wu.Url = ?", wildCard).First
-                             ?? Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE (wu.Url IS NULL OR wu.Url = ?) AND wu.IsFinal = ?", string.Empty, true).First
-                             ?? Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE wu.Url IS NULL OR wu.Url = ?", string.Empty).First;
-                }
-
+                Response currentResponse = ResponseStorage.Get(responseKey);
+                WebUrl webUrl = this.GetWebUrl(requestUri);
                 WebTemplate template = webUrl?.Template;
 
                 if (template == null)
@@ -107,23 +108,21 @@ namespace WebsiteProvider
                     throw new Exception("Default template is missing");
                 }
 
-                this.CurrentTemplate = template;
-                WrapperPage master = GetLayoutPage();
-                master.IsFinal = webUrl.IsFinal;
+                WrapperPage master = GetLayoutPage(template);
+                master.IsFinal = webUrl.IsFinal || string.IsNullOrEmpty(webUrl.Url);
+
                 if (!template.Equals(master.WebTemplatePage.Data))
                 {
                     master.WebTemplatePage = GetTemplatePage(template.GetObjectID());
                 }
-                UpdateTemplateSections(requestUri, this.CurrentResponse, master.WebTemplatePage, webUrl);
+
+                UpdateTemplateSections(requestUri, currentResponse, master.WebTemplatePage, webUrl);
 
                 return master;
             });
 
             RegisterFilter();
         }
-
-        private Response CurrentResponse;
-        private WebTemplate CurrentTemplate;
 
         protected void RegisterFilter()
         {
@@ -148,13 +147,25 @@ namespace WebsiteProvider
                     {
                         var wrapper = response.Resource as WrapperPage;
                         var requestUri = request.Uri;
-                        while (wrapper == null || wrapper.IsFinal == false)
-                        {
-                            this.CurrentResponse = response;
+                        var isWrapped = false;
 
-                            response = Self.GET("/WebsiteProvider/partial/wrapper?uri=" + requestUri);
+                        while ((wrapper == null || wrapper.IsFinal == false) && this.HasCatchingRule(requestUri))
+                        {
+                            var responseKey = ResponseStorage.Put(response);
+                            isWrapped = true;
+
+                            response = Self.GET($"/WebsiteProvider/partial/wrapper?uri={requestUri}&response={responseKey}");
+
+                            ResponseStorage.Remove(responseKey);
                             wrapper = response.Resource as WrapperPage;
-                            requestUri = wrapper.WebTemplatePage.Data.Html;
+                            requestUri = wrapper?.WebTemplatePage.Data.Html;
+                        }
+                        if (!isWrapped)
+                        {
+                            //Morph to a view that is stateless and not catched by any surface
+                            //This is tested by RedirectToOtherAppPageTest
+                            //Should be improved by https://github.com/Starcounter/level1/issues/4159
+                            Session.Current.Data = response.Resource as Json;
                         }
                         return response;
                     }
@@ -213,21 +224,42 @@ namespace WebsiteProvider
 
         private WrapperPage GetContainerPage(string uri)
         {
-            var json = Self.GET<WrapperPage>(uri, () =>
-            {
-                return new WrapperPage();
-            });
-            return json;
+            return Self.GET<WrapperPage>(uri, () => new WrapperPage());
         }
 
-        protected WrapperPage GetLayoutPage()
+        protected WrapperPage GetLayoutPage(WebTemplate template)
         {
-            return Self.GET<WrapperPage>("/WebsiteProvider/partial/layout");
+            return Self.GET<WrapperPage>("/WebsiteProvider/partial/layout/" + template.GetObjectID());
         }
 
         protected WebTemplatePage GetTemplatePage(string templateId)
         {
             return Self.GET<WebTemplatePage>("/WebsiteProvider/partial/template/" + templateId);
+        }
+
+        protected WebTemplate GetWebTemplate(string id)
+        {
+            return Db.SQL<WebTemplate>("SELECT wt FROM Simplified.Ring6.WebTemplate wt WHERE wt.Key = ?", id).First;
+        }
+
+        public bool HasCatchingRule(string requestUri)
+        {
+            return this.GetWebUrl(requestUri) != null;
+        }
+
+        protected WebUrl GetWebUrl(string requestUri)
+        {
+            WebUrl webUrl = Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE wu.Url = ?", requestUri).First;
+
+            if (webUrl == null)
+            {
+                string wildCard = GetWildCardUrl(requestUri);
+
+                webUrl = Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE wu.Url = ?", wildCard).First
+                         ?? Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE (wu.Url IS NULL OR wu.Url = ?) AND wu.IsFinal = ?", string.Empty, true).First
+                         ?? Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE wu.Url IS NULL OR wu.Url = ?", string.Empty).First;
+            }
+            return webUrl;
         }
     }
 }

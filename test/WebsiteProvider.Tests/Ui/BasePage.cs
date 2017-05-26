@@ -45,6 +45,11 @@ namespace WebsiteProvider.Tests.Ui
             ((IJavaScriptExecutor)Driver).ExecuteScript("window.scrollTo(0, 0)");
         }
 
+        public bool CheckForNoSurface()
+        {
+            return !Driver.FindElements(By.ClassName("website-surface")).Any();
+        }
+
         public bool CheckForLauncherSurface()
         {
             return CheckForSurface("launcher-layout");
@@ -53,6 +58,11 @@ namespace WebsiteProvider.Tests.Ui
         public bool CheckForDefaultSurface()
         {
             return CheckForSurface("website-defaulttemplate-main");
+        }
+
+        public bool CheckForSidebarSurface()
+        {
+            return CheckForSurface("website-sidebartemplate");
         }
 
         protected bool CheckForSurface(string searchingClassName)

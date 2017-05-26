@@ -32,9 +32,8 @@ namespace WebsiteProvider_AcceptanceHelperTwo
             });
 
             var dataHelper = new DataHelper();
-            var mainHandlers = new MainHandlers();
+            var mainHandlers = new MainHandlers(dataHelper);
 
-            dataHelper.GenerateData();
             mainHandlers.Register();
         }
     }

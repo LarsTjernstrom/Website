@@ -6,37 +6,40 @@ namespace WebsiteProvider.Tests.Ui
 {
     public class AcceptanceHelperOneMasterPage : BasePage
     {
-        [FindsBy(How = How.XPath, Using = "//a")]
-        public IWebElement AcceptanceHelperOnePageLink { get; set; }
+        [FindsBy(How = How.XPath, Using = "//a[@href = '/WebsiteProvider_AcceptanceHelperTwo']")]
+        public IWebElement AcceptanceHelperTwoLink { get; set; }
+
+        [FindsBy(How = How.XPath, Using = "//a[@href = '/WebsiteProvider_AcceptanceHelperOne/SimplePage']")]
+        public IWebElement AcceptanceHelperOneSimplePageLink { get; set; }
 
         [FindsBy(How = How.XPath, Using = "//h1")]
-        public IWebElement H1Element { get; set; }
+        public IWebElement HeaderElement { get; set; }
 
         public AcceptanceHelperOneMasterPage(IWebDriver driver) : base(driver)
         {
         }
 
-        public AcceptanceHelperOneMasterPage GoToMasterPage()
+        public AcceptanceHelperOneMasterPage LoadMasterPage()
         {
             Driver.Navigate().GoToUrl(Config.AcceptanceHelperOneUrl);
             return this;
         }
 
-        public AcceptanceHelperOneMasterPage GoToEmptyJson()
+        public AcceptanceHelperOneSimplePage LoadSimplePage()
         {
-            Driver.Navigate().GoToUrl(Config.AcceptanceHelperOneUrl + "/EmptyJson");
-            return this;
+            Driver.Navigate().GoToUrl(Config.AcceptanceHelperOneUrl + "/SimplePage");
+            return new AcceptanceHelperOneSimplePage(Driver);
         }
 
-        public AcceptanceHelperOneMasterPage GoToEmptyPage()
+        public AcceptanceHelperOneSimplePage GoToSimplePage()
         {
-            Driver.Navigate().GoToUrl(Config.AcceptanceHelperOneUrl + "/EmptyPage");
-            return this;
+            ClickOn(AcceptanceHelperOneSimplePageLink);
+            return new AcceptanceHelperOneSimplePage(Driver);
         }
 
         public AcceptanceHelperTwoMasterPage GoToAcceptanceHelperTwoPage()
         {
-            ClickOn(AcceptanceHelperOnePageLink);
+            ClickOn(AcceptanceHelperTwoLink);
             return new AcceptanceHelperTwoMasterPage(Driver);
         }
     }
