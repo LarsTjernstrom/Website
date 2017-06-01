@@ -108,7 +108,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="wwwroot\Website\css\standalone.css" />
-    <Content Include="wwwroot\Website\css\AppHub.css" />
+    <Content Include="wwwroot\Website\css\holygrail.css" />
     <TypedJSON Include="ViewModels\CmsHelp.json">
       <Generator>MsBuild:Compile</Generator>
     </TypedJSON>
@@ -118,6 +118,7 @@
     <None Include="wwwroot\Website\templates\SidebarTemplate.html" />
     <None Include="wwwroot\Website\templates\AppHubTemplate.html" />
     <Content Include="wwwroot\Website\images\website.png" />
+    <None Include="wwwroot\Website\templates\HolyGrailTemplate.html" />
     <Content Include="wwwroot\Website\templates\DefaultTemplate.html" />
     <None Include="wwwroot\Website\viewmodels\CmsHelp.html" />
     <None Include="wwwroot\Website\viewmodels\AppIcon.html" />
@@ -163,7 +164,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(StarcounterBin)\Starcounter.MsBuild.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>
