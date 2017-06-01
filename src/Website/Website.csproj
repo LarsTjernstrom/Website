@@ -70,6 +70,8 @@
   <ItemGroup>
     <Compile Include="Api\CommitHooks.cs" />
     <Compile Include="Api\MainHandlers.cs" />
+    <Compile Include="Api\MappingHandlers.cs" />
+    <Compile Include="Api\OntologyMap.cs" />
     <Compile Include="Helpers\DataHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -110,10 +112,15 @@
     <TypedJSON Include="ViewModels\CmsHelp.json">
       <Generator>MsBuild:Compile</Generator>
     </TypedJSON>
+    <TypedJSON Include="ViewModels\AppName.json">
+      <Generator>MsBuild:Compile</Generator>
+    </TypedJSON>
     <None Include="wwwroot\Website\templates\SidebarTemplate.html" />
     <None Include="wwwroot\Website\templates\AppHubTemplate.html" />
+    <Content Include="wwwroot\Website\images\website.png" />
     <Content Include="wwwroot\Website\templates\DefaultTemplate.html" />
     <None Include="wwwroot\Website\viewmodels\CmsHelp.html" />
+    <None Include="wwwroot\Website\viewmodels\AppIcon.html" />
     <Content Include="wwwroot\Website\viewmodels\CmsPinningRulesPage.html" />
     <None Include="wwwroot\Website\templates\LauncherTemplate.html" />
     <Content Include="wwwroot\Website\viewmodels\CmsPage.html" />
