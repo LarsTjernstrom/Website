@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Starcounter;
+﻿using Starcounter;
 
 namespace Website.Api
 {
@@ -11,7 +6,8 @@ namespace Website.Api
     {
         public void Register()
         {
-            UriMapping.Map("/website/app-name", UriMapping.MappingUriPrefix + "/app-name");
+            Blender.MapUri("/website/app-name", "app-name");
+
         }
     }
 }
