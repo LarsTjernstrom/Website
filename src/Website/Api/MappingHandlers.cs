@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Starcounter;
+﻿using Starcounter;
 
 namespace Website.Api
 {
@@ -11,9 +6,7 @@ namespace Website.Api
     {
         public void Register()
         {
-            Handle.GET("/website/app-name", () => {
-                return new AppName();
-            });
+            Handle.GET("/website/app-name", () => new AppName());
         }
     }
 }
