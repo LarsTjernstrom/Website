@@ -18,19 +18,20 @@
                 </span>
                 Catching rules
             </legend>
-            <table class="table">
+            <table class="website-table table">
                 <thead>
                     <tr>
                         <th>Surface</th>
                         <th>Catch URI</th>
-                        <th class="td-actions"></th>
+                        <th>Final</th>
+                        <th class="website-table__cell-actions"></th>
                     </tr>
                 </thead>
                 <tbody>
                     <template is="dom-repeat" items="{{model.CatchingRules}}">
                         <tr>
                             <td>
-                                <select class="form-control" key="[[item.TemplateKey$]]" value="{{item.TemplateKey$::change}}">
+                                <select class="website-table__control form-control" key="[[item.TemplateKey$]]" value="{{item.TemplateKey$::change}}">
                                     <option value=""></option>
                                     <template is="dom-repeat" items="{{model.Surfaces}}">
                                         <option value="{{item.Key}}">{{item.Name}}</option>
@@ -38,7 +39,10 @@
                                 </select>
                             </td>
                             <td>
-                                <input type="text" value="{{item.Url$::change}}" class="form-control" />
+                                <input type="text" value="{{item.Url$::change}}" class="website-table__control form-control" />
+                            </td>
+                            <td>
+                                <input type="checkbox" checked="{{item.IsFinal$::change}}" class="website-table__control"/>
                             </td>
                             <td>
                                 <button type="button" class="btn btn-xs btn-default" value="{{item.Delete$::click}}" onmousedown="++this.value;">Delete</button>

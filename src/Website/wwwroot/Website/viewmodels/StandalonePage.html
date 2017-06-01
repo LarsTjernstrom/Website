@@ -2,27 +2,27 @@
 
 <template>
     <template is="dom-bind">
-        <nav id="top-menu">
-            <ul>
-                <li>
-                    <a href="/website/cms">Home</a>
+        <nav class="website-top-menu-panel">
+            <ul class="website-top-menu">
+                <li class="website-top-menu__item">
+                    <a href="/website/cms" class="website-top-menu-item__link">Home</a>
                 </li>
-                <li>
-                    <a href="/website/cms/surfaces">Surfaces</a>
+                <li class="website-top-menu__item">
+                    <a href="/website/cms/surfaces" class="website-top-menu-item__link">Surfaces</a>
                 </li>
-                <li>
-                    <a href="/website/cms/blendingpoints">Blending points</a>
+                <li class="website-top-menu__item">
+                    <a href="/website/cms/blendingpoints" class="website-top-menu-item__link">Blending points</a>
                 </li>
-                <li>
-                    <a href="/website/cms/catchingrules">Catching rules</a>
+                <li class="website-top-menu__item">
+                    <a href="/website/cms/catchingrules" class="website-top-menu-item__link">Catching rules</a>
                 </li>
-                <li>
-                    <a href="/website/cms/pinningrules">Pinning rules</a>
+                <li class="website-top-menu__item">
+                    <a href="/website/cms/pinningrules" class="website-top-menu-item__link">Pinning rules</a>
                 </li>
             </ul>
         </nav>
-        <div id="body">
-            <starcounter-include partial="{{model.CurrentPage}}"></starcounter-include>
+        <div class="website-body">
+            <starcounter-include view-model="{{model.CurrentPage}}"></starcounter-include>
         </div>
     </template>
 </template>

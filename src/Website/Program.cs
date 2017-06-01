@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Starcounter;
 using Website.Api;
 
