@@ -12,28 +12,6 @@ namespace Website
             Application.Current.Use(new HtmlFromJsonProvider());
             Application.Current.Use(new PartialToStandaloneHtmlProvider());
 
-            Handle.GET("/website/master", () =>
-            {
-                Session session = Session.Current;
-                MasterPage master = GetMasterFromSession(session);
-
-                if (master != null)
-                {
-                    return master;
-                }
-
-                master = new MasterPage();
-
-                if (session == null)
-                {
-                    session = new Session(SessionOptions.PatchVersioning);
-                }
-
-                master.Session = session;
-
-                return master;
-            });
-
             Handle.GET("/website/help?topic={?}", (string topic) =>
             {
                 var json = new CmsHelp();
@@ -68,7 +46,7 @@ namespace Website
             {
                 return Db.Scope<MasterPage>(() =>
                 {
-                    MasterPage master = this.GetMaster();
+                    MasterPage master = this.GetMasterPageFromSession();
 
                     master.RefreshCurrentPage("/website/partials/cms");
 
@@ -80,7 +58,7 @@ namespace Website
             {
                 return Db.Scope<MasterPage>(() =>
                 {
-                    MasterPage master = this.GetMaster();
+                    MasterPage master = this.GetMasterPageFromSession();
 
                     master.RefreshCurrentPage("/website/partials/cms/surfaces");
 
@@ -92,7 +70,7 @@ namespace Website
             {
                 return Db.Scope<MasterPage>(() =>
                 {
-                    MasterPage master = this.GetMaster();
+                    MasterPage master = this.GetMasterPageFromSession();
 
                     master.RefreshCurrentPage("/website/partials/cms/blendingpoints");
 
@@ -104,7 +82,7 @@ namespace Website
             {
                 return Db.Scope<MasterPage>(() =>
                 {
-                    MasterPage master = this.GetMaster();
+                    MasterPage master = this.GetMasterPageFromSession();
 
                     master.RefreshCurrentPage("/website/partials/cms/catchingrules");
 
@@ -116,7 +94,7 @@ namespace Website
             {
                 return Db.Scope<MasterPage>(() =>
                 {
-                    MasterPage master = this.GetMaster();
+                    MasterPage master = this.GetMasterPageFromSession();
 
                     master.RefreshCurrentPage("/website/partials/cms/pinningrules");
 
@@ -172,21 +150,22 @@ namespace Website
             });
         }
 
-        protected MasterPage GetMaster()
+        protected MasterPage GetMasterPageFromSession()
         {
-            return Self.GET<MasterPage>("/website/master");
-        }
-
-        protected MasterPage GetMasterFromSession(Session session)
-        {
-            if (session != null)
+            if (Session.Current == null)
             {
-                if (session.Data is MasterPage)
-                {
-                    return (MasterPage)session.Data;
-                }
+                Session.Current = new Session(SessionOptions.PatchVersioning);
             }
-            return null;
+
+            MasterPage master = Session.Current.Data as MasterPage;
+
+            if (master == null)
+            {
+                master = new MasterPage();
+                Session.Current.Data = master;
+            }
+
+            return master;
         }
     }
 }
