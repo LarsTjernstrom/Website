@@ -12,26 +12,26 @@ namespace Website
             Application.Current.Use(new HtmlFromJsonProvider());
             Application.Current.Use(new PartialToStandaloneHtmlProvider());
 
-            Handle.GET("/website/standalone", () =>
+            Handle.GET("/website/master", () =>
             {
                 Session session = Session.Current;
-                StandalonePage standalone = GetMasterFromSession(session);
+                MasterPage master = GetMasterFromSession(session);
 
-                if (standalone != null)
+                if (master != null)
                 {
-                    return standalone;
+                    return master;
                 }
 
-                standalone = new StandalonePage();
+                master = new MasterPage();
 
                 if (session == null)
                 {
                     session = new Session(SessionOptions.PatchVersioning);
                 }
 
-                standalone.Session = session;
+                master.Session = session;
 
-                return standalone;
+                return master;
             });
 
             Handle.GET("/website/help?topic={?}", (string topic) =>
@@ -66,9 +66,9 @@ namespace Website
 
             Handle.GET("/website/cms", () =>
             {
-                return Db.Scope<StandalonePage>(() =>
+                return Db.Scope<MasterPage>(() =>
                 {
-                    StandalonePage master = this.GetMaster();
+                    MasterPage master = this.GetMaster();
 
                     master.RefreshCurrentPage("/website/partials/cms");
 
@@ -78,9 +78,9 @@ namespace Website
 
             Handle.GET("/website/cms/surfaces", () => 
             {
-                return Db.Scope<StandalonePage>(() =>
+                return Db.Scope<MasterPage>(() =>
                 {
-                    StandalonePage master = this.GetMaster();
+                    MasterPage master = this.GetMaster();
 
                     master.RefreshCurrentPage("/website/partials/cms/surfaces");
 
@@ -90,9 +90,9 @@ namespace Website
 
             Handle.GET("/website/cms/blendingpoints", () => 
             {
-                return Db.Scope<StandalonePage>(() =>
+                return Db.Scope<MasterPage>(() =>
                 {
-                    StandalonePage master = this.GetMaster();
+                    MasterPage master = this.GetMaster();
 
                     master.RefreshCurrentPage("/website/partials/cms/blendingpoints");
 
@@ -102,9 +102,9 @@ namespace Website
 
             Handle.GET("/website/cms/catchingrules", () => 
             {
-                return Db.Scope<StandalonePage>(() =>
+                return Db.Scope<MasterPage>(() =>
                 {
-                    StandalonePage master = this.GetMaster();
+                    MasterPage master = this.GetMaster();
 
                     master.RefreshCurrentPage("/website/partials/cms/catchingrules");
 
@@ -114,9 +114,9 @@ namespace Website
 
             Handle.GET("/website/cms/pinningrules", () => 
             {
-                return Db.Scope<StandalonePage>(() =>
+                return Db.Scope<MasterPage>(() =>
                 {
-                    StandalonePage master = this.GetMaster();
+                    MasterPage master = this.GetMaster();
 
                     master.RefreshCurrentPage("/website/partials/cms/pinningrules");
 
@@ -172,18 +172,18 @@ namespace Website
             });
         }
 
-        protected StandalonePage GetMaster()
+        protected MasterPage GetMaster()
         {
-            return Self.GET<StandalonePage>("/website/standalone");
+            return Self.GET<MasterPage>("/website/master");
         }
 
-        protected StandalonePage GetMasterFromSession(Session session)
+        protected MasterPage GetMasterFromSession(Session session)
         {
             if (session != null)
             {
-                if (session.Data is StandalonePage)
+                if (session.Data is MasterPage)
                 {
-                    return (StandalonePage)session.Data;
+                    return (MasterPage)session.Data;
                 }
             }
             return null;

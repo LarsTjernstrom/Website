@@ -20,7 +20,7 @@ namespace Website
 
         protected void RefreshSignInState()
         {
-            var page = Session.Current.Data as StandalonePage;
+            var page = Session.Current.Data as MasterPage;
 
             page?.RefreshCurrentPage();
         }

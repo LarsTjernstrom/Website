@@ -99,15 +99,15 @@
     <Compile Include="ViewModels\JsonCache.json.cs">
       <DependentUpon>JsonCache.json</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\StandalonePage.json.cs">
-      <DependentUpon>StandalonePage.json</DependentUpon>
+    <Compile Include="ViewModels\MasterPage.json.cs">
+      <DependentUpon>MasterPage.json</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="wwwroot\sys\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="wwwroot\Website\css\standalone.css" />
+    <Content Include="wwwroot\Website\css\website.css" />
     <Content Include="wwwroot\Website\css\holygrail.css" />
     <TypedJSON Include="ViewModels\CmsHelp.json">
       <Generator>MsBuild:Compile</Generator>
@@ -129,7 +129,7 @@
     <Content Include="wwwroot\Website\viewmodels\CmsSurfacesPage.html" />
     <Content Include="wwwroot\Website\viewmodels\CmsCatchingRulesPage.html" />
     <Content Include="wwwroot\Website\viewmodels\DenyPage.html" />
-    <Content Include="wwwroot\Website\viewmodels\StandalonePage.html" />
+    <Content Include="wwwroot\Website\viewmodels\MasterPage.html" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".bowerrc" />
@@ -149,7 +149,7 @@
     <TypedJSON Include="ViewModels\CmsSurfacesPage.json">
       <Generator>MsBuild:Compile</Generator>
     </TypedJSON>
-    <TypedJSON Include="ViewModels\StandalonePage.json">
+    <TypedJSON Include="ViewModels\MasterPage.json">
       <Generator>MsBuild:Compile</Generator>
     </TypedJSON>
     <TypedJSON Include="ViewModels\CmsPage.json">
