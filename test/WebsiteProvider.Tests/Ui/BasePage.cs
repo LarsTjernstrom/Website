@@ -67,7 +67,7 @@ namespace WebsiteProvider.Tests.Ui
 
         protected bool CheckForSurface(string searchingClassName)
         {
-            var shadowRoot = ExpandShadowRoot(Driver.FindElement(By.XPath("//juicy-composition")));
+            var shadowRoot = ExpandShadowRoot(Driver.FindElement(By.XPath("//starcounter-include[contains(@class,'website-surface')]/juicy-composition")));
             return shadowRoot.FindElements(By.ClassName(searchingClassName)).Any();
         }
     }
