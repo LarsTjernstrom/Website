@@ -4,6 +4,24 @@ using Simplified.Ring3;
 namespace Website {
     partial class MasterPage : Json
     {
+        public static MasterPage GetFromSession()
+        {
+            if (Session.Current == null)
+            {
+                Session.Current = new Session(SessionOptions.PatchVersioning);
+            }
+
+            MasterPage master = Session.Current.Data as MasterPage;
+
+            if (master == null)
+            {
+                master = new MasterPage();
+                Session.Current.Data = master;
+            }
+
+            return master;
+        }
+
         protected string allowedSystemUserGroup = "Admin (System Users)";
 
         public void RefreshCurrentPage(string PartialUrl) {

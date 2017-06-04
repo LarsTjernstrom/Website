@@ -46,7 +46,7 @@ namespace Website
             {
                 return Db.Scope<MasterPage>(() =>
                 {
-                    MasterPage master = this.GetMasterPageFromSession();
+                    MasterPage master = MasterPage.GetFromSession();
 
                     master.RefreshCurrentPage("/website/partials/cms");
 
@@ -58,7 +58,7 @@ namespace Website
             {
                 return Db.Scope<MasterPage>(() =>
                 {
-                    MasterPage master = this.GetMasterPageFromSession();
+                    MasterPage master = MasterPage.GetFromSession();
 
                     master.RefreshCurrentPage("/website/partials/cms/surfaces");
 
@@ -70,7 +70,7 @@ namespace Website
             {
                 return Db.Scope<MasterPage>(() =>
                 {
-                    MasterPage master = this.GetMasterPageFromSession();
+                    MasterPage master = MasterPage.GetFromSession();
 
                     master.RefreshCurrentPage("/website/partials/cms/blendingpoints");
 
@@ -82,7 +82,7 @@ namespace Website
             {
                 return Db.Scope<MasterPage>(() =>
                 {
-                    MasterPage master = this.GetMasterPageFromSession();
+                    MasterPage master = MasterPage.GetFromSession();
 
                     master.RefreshCurrentPage("/website/partials/cms/catchingrules");
 
@@ -94,7 +94,7 @@ namespace Website
             {
                 return Db.Scope<MasterPage>(() =>
                 {
-                    MasterPage master = this.GetMasterPageFromSession();
+                    MasterPage master = MasterPage.GetFromSession();
 
                     master.RefreshCurrentPage("/website/partials/cms/pinningrules");
 
@@ -148,24 +148,6 @@ namespace Website
             {
                 return new DenyPage();
             });
-        }
-
-        protected MasterPage GetMasterPageFromSession()
-        {
-            if (Session.Current == null)
-            {
-                Session.Current = new Session(SessionOptions.PatchVersioning);
-            }
-
-            MasterPage master = Session.Current.Data as MasterPage;
-
-            if (master == null)
-            {
-                master = new MasterPage();
-                Session.Current.Data = master;
-            }
-
-            return master;
         }
     }
 }
