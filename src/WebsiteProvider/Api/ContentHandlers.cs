@@ -65,12 +65,12 @@ namespace WebsiteProvider
                 SurfacePage surfacePage = GetSurfacePage(template);
                 surfacePage.IsFinal = webUrl.IsFinal || string.IsNullOrEmpty(webUrl.Url);
 
-                if (!template.Equals(surfacePage.WebTemplatePage.Data))
+                if (!template.Equals(surfacePage.Data))
                 {
-                    surfacePage.WebTemplatePage = GetTemplatePage(template);
+                    InitializeTemplate(surfacePage, template);
                 }
 
-                UpdateTemplateSections(requestUri, currentResponse, surfacePage.WebTemplatePage, webUrl);
+                UpdateTemplateSections(requestUri, currentResponse, surfacePage, webUrl);
 
                 return surfacePage;
             });
@@ -112,7 +112,7 @@ namespace WebsiteProvider
 
                             ResponseStorage.Remove(responseKey);
                             wrapper = response.Resource as SurfacePage;
-                            requestUri = wrapper?.WebTemplatePage.Data.Html;
+                            requestUri = wrapper?.Data.Html;
                         }
                         if (!isWrapped)
                         {
@@ -128,12 +128,14 @@ namespace WebsiteProvider
             });
         }
 
-        protected void InitializeTemplate(WebTemplatePage content)
+        protected void InitializeTemplate(SurfacePage content, WebTemplate template)
         {
+            content.Data = template;
+
             dynamic namedSections = new Json();
             content.Sections = namedSections;
 
-            foreach (WebSection section in content.Data.Sections)
+            foreach (WebSection section in template.Sections)
             {
                 SectionPage sectionJson = new SectionPage();
                 namedSections[section.Name] = sectionJson;
@@ -141,7 +143,7 @@ namespace WebsiteProvider
             }
         }
 
-        protected void UpdateTemplateSections(string requestUri, Response response, WebTemplatePage content, WebUrl url)
+        protected void UpdateTemplateSections(string requestUri, Response response, SurfacePage content, WebUrl url)
         {
             foreach (WebSection section in content.Data.Sections)
             {
@@ -161,16 +163,16 @@ namespace WebsiteProvider
                     else
                     {
                         //we are inserting different app to WebsiteProvider
-                        var page = sectionJson.MainContent;
-                        if (page == null || page.WebTemplatePage.Data != null)
+                        if (sectionJson.MainContent == null || sectionJson.MainContent.LastJson != json)
                         {
-                            page = WrapExternalRequest(requestUri);
-                            sectionJson.MainContent = page;
+                            sectionJson.MainContent = new SurfacePage();
                         }
 
-                        page.RequestUri = requestUri;
-                        page.Reset();
-                        page.MergeJson(json);
+                        //these two lines should be in the above if, but do not work then
+                        sectionJson.MainContent.LastJson = json;
+                        sectionJson.MainContent.MergeJson(json);
+
+                        sectionJson.MainContent.RequestUri = requestUri;
                     }
                 }
             }
@@ -188,7 +190,7 @@ namespace WebsiteProvider
             if (Session.Current != null)
             {
                 page = Session.Current.Data as SurfacePage;
-                var sessionWebTemplate = page?.WebTemplatePage.Data;
+                var sessionWebTemplate = page?.Data;
 
                 if (sessionWebTemplate != null)
                 {
@@ -213,16 +215,6 @@ namespace WebsiteProvider
                 page.Session.PublicViewModel = page;
             }
 
-            return page;
-        }
-
-        protected WebTemplatePage GetTemplatePage(WebTemplate template)
-        {
-            var page = new WebTemplatePage
-            {
-                Data = template
-            };
-            InitializeTemplate(page);
             return page;
         }
 

@@ -1,21 +1,13 @@
+using Simplified.Ring6;
 using Starcounter;
 
 namespace WebsiteProvider
 {
-    /// <summary>
-    ///  SurfacePage needs to wrap WebTemplatePage, because Starcounter applies middleware
-    ///  from the original request. The default middleware contains &lt;template is="imported-template"&gt;&lt;/template&gt;
-    ///  instead of &lt;starcounter-include&gt;, which is why we have to wrap it.
-    /// </summary>
-    partial class SurfacePage : Json
+    partial class SurfacePage : Json, IBound<WebTemplate>
     {
         public bool IsFinal = false;
         public string RequestUri;
-
-        public void Reset()
-        {
-            this.Html = "";
-            this.WebTemplatePage.Data = null;
-        }
+        public SectionPage DefaultSection;
+        public Json LastJson;
     }
 }

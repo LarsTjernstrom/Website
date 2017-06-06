@@ -1,4 +1,5 @@
 {
-    "Html": "/WebsiteProvider/viewmodels/SurfacePage.html",
-    "WebTemplatePage": { "$": { "Reuse": "WebsiteProvider.WebTemplatePage" } }
+  "Html": "/WebsiteProvider/viewmodels/SurfacePage.html",
+  "Name": "",
+  "Sections": {}
 }

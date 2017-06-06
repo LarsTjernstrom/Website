@@ -74,20 +74,12 @@
     <Compile Include="ViewModels\SectionPage.json.cs">
       <DependentUpon>SectionPage.json</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\WebTemplatePage.json.cs">
-      <DependentUpon>WebTemplatePage.json</DependentUpon>
-    </Compile>
     <Compile Include="ViewModels\SurfacePage.json.cs">
       <DependentUpon>SurfacePage.json</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
     <TypedJSON Include="ViewModels\SectionPage.json">
-      <Generator>MsBuild:Compile</Generator>
-    </TypedJSON>
-  </ItemGroup>
-  <ItemGroup>
-    <TypedJSON Include="ViewModels\WebTemplatePage.json">
       <Generator>MsBuild:Compile</Generator>
     </TypedJSON>
   </ItemGroup>
