@@ -62,17 +62,17 @@ namespace WebsiteProvider
                     throw new Exception("Default template is missing");
                 }
 
-                WrapperPage master = GetLayoutPage(template);
-                master.IsFinal = webUrl.IsFinal || string.IsNullOrEmpty(webUrl.Url);
+                SurfacePage surfacePage = GetSurfacePage(template);
+                surfacePage.IsFinal = webUrl.IsFinal || string.IsNullOrEmpty(webUrl.Url);
 
-                if (!template.Equals(master.WebTemplatePage.Data))
+                if (!template.Equals(surfacePage.WebTemplatePage.Data))
                 {
-                    master.WebTemplatePage = GetTemplatePage(template);
+                    surfacePage.WebTemplatePage = GetTemplatePage(template);
                 }
 
-                UpdateTemplateSections(requestUri, currentResponse, master.WebTemplatePage, webUrl);
+                UpdateTemplateSections(requestUri, currentResponse, surfacePage.WebTemplatePage, webUrl);
 
-                return master;
+                return surfacePage;
             });
 
             RegisterFilter();
@@ -99,7 +99,7 @@ namespace WebsiteProvider
                     var htmlField = json["Html"] as string;
                     if (htmlField != null)
                     {
-                        var wrapper = response.Resource as WrapperPage;
+                        var wrapper = response.Resource as SurfacePage;
                         var requestUri = request.Uri;
                         var isWrapped = false;
 
@@ -111,7 +111,7 @@ namespace WebsiteProvider
                             response = Self.GET($"/WebsiteProvider/partial/wrapper?uri={requestUri}&response={responseKey}");
 
                             ResponseStorage.Remove(responseKey);
-                            wrapper = response.Resource as WrapperPage;
+                            wrapper = response.Resource as SurfacePage;
                             requestUri = wrapper?.WebTemplatePage.Data.Html;
                         }
                         if (!isWrapped)
@@ -153,10 +153,10 @@ namespace WebsiteProvider
                 var json = response.Resource as Json;
                 if (section.Default && json != null && sectionJson.MainContent?.RequestUri != requestUri)
                 {
-                    if (json is WrapperPage)
+                    if (json is SurfacePage)
                     {
                         //we are inserting WebsiteProvider to WebsiteProvider
-                        sectionJson.MainContent = json as WrapperPage;
+                        sectionJson.MainContent = json as SurfacePage;
                     }
                     else
                     {
@@ -164,7 +164,7 @@ namespace WebsiteProvider
                         var page = sectionJson.MainContent;
                         if (page == null || page.WebTemplatePage.Data != null)
                         {
-                            page = GetContainerPage(requestUri);
+                            page = WrapExternalRequest(requestUri);
                             sectionJson.MainContent = page;
                         }
 
@@ -176,18 +176,18 @@ namespace WebsiteProvider
             }
         }
 
-        private WrapperPage GetContainerPage(string uri)
+        private SurfacePage WrapExternalRequest(string uri)
         {
-            return Self.GET<WrapperPage>(uri, () => new WrapperPage());
+            return Self.GET<SurfacePage>(uri, () => new SurfacePage());
         }
 
-        protected WrapperPage GetLayoutPage(WebTemplate template)
+        protected SurfacePage GetSurfacePage(WebTemplate template)
         {
-            WrapperPage page;
+            SurfacePage page;
 
             if (Session.Current != null)
             {
-                page = Session.Current.Data as WrapperPage;
+                page = Session.Current.Data as SurfacePage;
                 var sessionWebTemplate = page?.WebTemplatePage.Data;
 
                 if (sessionWebTemplate != null)
@@ -203,7 +203,7 @@ namespace WebsiteProvider
                 Session.Current = new Session(SessionOptions.PatchVersioning);
             }
 
-            page = new WrapperPage
+            page = new SurfacePage
             {
                 Session = Session.Current
             };

@@ -1,4 +1,4 @@
 {
-    "Html": "/WebsiteProvider/viewmodels/WrapperPage.html",
+    "Html": "/WebsiteProvider/viewmodels/SurfacePage.html",
     "WebTemplatePage": { "$": { "Reuse": "WebsiteProvider.WebTemplatePage" } }
 }
