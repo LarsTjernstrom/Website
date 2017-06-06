@@ -51,16 +51,6 @@ namespace WebsiteProvider
                 return "Welcome to WebsiteProvider.";
             });
 
-            Handle.GET("/WebsiteProvider/partial/template/{?}", (string templateId) =>
-            {
-                var page = new WebTemplatePage
-                {
-                    Data = GetWebTemplate(templateId)
-                };
-                InitializeTemplate(page);
-                return page;
-            });
-
             Handle.GET("/WebsiteProvider/partial/wrapper?uri={?}&response={?}", (string requestUri, string responseKey) =>
             {
                 Response currentResponse = ResponseStorage.Get(responseKey);
@@ -77,7 +67,7 @@ namespace WebsiteProvider
 
                 if (!template.Equals(master.WebTemplatePage.Data))
                 {
-                    master.WebTemplatePage = GetTemplatePage(template.GetObjectID());
+                    master.WebTemplatePage = GetTemplatePage(template);
                 }
 
                 UpdateTemplateSections(requestUri, currentResponse, master.WebTemplatePage, webUrl);
@@ -226,14 +216,14 @@ namespace WebsiteProvider
             return page;
         }
 
-        protected WebTemplatePage GetTemplatePage(string templateId)
+        protected WebTemplatePage GetTemplatePage(WebTemplate template)
         {
-            return Self.GET<WebTemplatePage>("/WebsiteProvider/partial/template/" + templateId);
-        }
-
-        protected WebTemplate GetWebTemplate(string id)
-        {
-            return Db.SQL<WebTemplate>("SELECT wt FROM Simplified.Ring6.WebTemplate wt WHERE wt.Key = ?", id).First;
+            var page = new WebTemplatePage
+            {
+                Data = template
+            };
+            InitializeTemplate(page);
+            return page;
         }
 
         public bool HasCatchingRule(string requestUri)
