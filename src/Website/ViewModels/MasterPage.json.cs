@@ -2,7 +2,7 @@ using Starcounter;
 using Simplified.Ring3;
 
 namespace Website {
-    partial class StandalonePage : Json
+    partial class MasterPage : Json
     {
         protected string allowedSystemUserGroup = "Admin (System Users)";
 
