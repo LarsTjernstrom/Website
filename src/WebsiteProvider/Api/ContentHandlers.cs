@@ -61,42 +61,6 @@ namespace WebsiteProvider
                 return page;
             });
 
-            Handle.GET("/WebsiteProvider/partial/layout/{?}", (string templateId) =>
-            {
-                WrapperPage page;
-
-                if (Session.Current != null)
-                {
-                    page = Session.Current.Data as WrapperPage;
-                    var sessionWebTemplate = page?.WebTemplatePage.Data;
-
-                    if (sessionWebTemplate != null)
-                    {
-                        var webTemplate = GetWebTemplate(templateId);
-                        if (sessionWebTemplate.Equals(webTemplate))
-                        {
-                            return page;
-                        }
-                    }
-                }
-                else
-                {
-                    Session.Current = new Session(SessionOptions.PatchVersioning);
-                }
-
-                page = new WrapperPage
-                {
-                    Session = Session.Current
-                };
-
-                if (page.Session.PublicViewModel != page)
-                {
-                    page.Session.PublicViewModel = page;
-                }
-
-                return page;
-            });
-
             Handle.GET("/WebsiteProvider/partial/wrapper?uri={?}&response={?}", (string requestUri, string responseKey) =>
             {
                 Response currentResponse = ResponseStorage.Get(responseKey);
@@ -229,7 +193,37 @@ namespace WebsiteProvider
 
         protected WrapperPage GetLayoutPage(WebTemplate template)
         {
-            return Self.GET<WrapperPage>("/WebsiteProvider/partial/layout/" + template.GetObjectID());
+            WrapperPage page;
+
+            if (Session.Current != null)
+            {
+                page = Session.Current.Data as WrapperPage;
+                var sessionWebTemplate = page?.WebTemplatePage.Data;
+
+                if (sessionWebTemplate != null)
+                {
+                    if (sessionWebTemplate.Equals(template))
+                    {
+                        return page;
+                    }
+                }
+            }
+            else
+            {
+                Session.Current = new Session(SessionOptions.PatchVersioning);
+            }
+
+            page = new WrapperPage
+            {
+                Session = Session.Current
+            };
+
+            if (page.Session.PublicViewModel != page)
+            {
+                page.Session.PublicViewModel = page;
+            }
+
+            return page;
         }
 
         protected WebTemplatePage GetTemplatePage(string templateId)
