@@ -154,7 +154,7 @@ namespace WebsiteProvider
                             var responseKey = ResponseStorage.Put(response);
                             isWrapped = true;
 
-                            response = Self.GET($"/WebsiteProvider/partial/wrapper?uri={requestUri}&response={responseKey}");
+                            response = Self.GET($"/WebsiteProvider/partial/wrapper?uri={Uri.EscapeDataString(requestUri)}&response={responseKey}");
 
                             ResponseStorage.Remove(responseKey);
                             wrapper = response.Resource as WrapperPage;
