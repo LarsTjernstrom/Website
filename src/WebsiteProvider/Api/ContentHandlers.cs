@@ -99,6 +99,7 @@ namespace WebsiteProvider
 
             Handle.GET("/WebsiteProvider/partial/wrapper?uri={?}&response={?}", (string requestUri, string responseKey) =>
             {
+                requestUri = Uri.UnescapeDataString(requestUri);
                 Response currentResponse = ResponseStorage.Get(responseKey);
                 WebUrl webUrl = this.GetWebUrl(requestUri);
                 WebTemplate template = webUrl?.Template;
@@ -154,7 +155,8 @@ namespace WebsiteProvider
                             var responseKey = ResponseStorage.Put(response);
                             isWrapped = true;
 
-                            response = Self.GET($"/WebsiteProvider/partial/wrapper?uri={Uri.EscapeDataString(requestUri)}&response={responseKey}");
+                            var escapedRequestUri = Uri.EscapeDataString(requestUri);
+                            response = Self.GET($"/WebsiteProvider/partial/wrapper?uri={escapedRequestUri}&response={responseKey}");
 
                             ResponseStorage.Remove(responseKey);
                             wrapper = response.Resource as WrapperPage;
