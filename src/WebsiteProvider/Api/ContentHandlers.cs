@@ -51,52 +51,6 @@ namespace WebsiteProvider
                 return "Welcome to WebsiteProvider.";
             });
 
-            Handle.GET("/WebsiteProvider/partial/template/{?}", (string templateId) =>
-            {
-                var page = new WebTemplatePage
-                {
-                    Data = GetWebTemplate(templateId)
-                };
-                InitializeTemplate(page);
-                return page;
-            });
-
-            Handle.GET("/WebsiteProvider/partial/layout/{?}", (string templateId) =>
-            {
-                WrapperPage page;
-
-                if (Session.Current != null)
-                {
-                    page = Session.Current.Data as WrapperPage;
-                    var sessionWebTemplate = page?.WebTemplatePage.Data;
-
-                    if (sessionWebTemplate != null)
-                    {
-                        var webTemplate = GetWebTemplate(templateId);
-                        if (sessionWebTemplate.Equals(webTemplate))
-                        {
-                            return page;
-                        }
-                    }
-                }
-                else
-                {
-                    Session.Current = new Session(SessionOptions.PatchVersioning);
-                }
-
-                page = new WrapperPage
-                {
-                    Session = Session.Current
-                };
-
-                if (page.Session.PublicViewModel != page)
-                {
-                    page.Session.PublicViewModel = page;
-                }
-
-                return page;
-            });
-
             Handle.GET("/WebsiteProvider/partial/wrapper?uri={?}&response={?}", (string requestUri, string responseKey) =>
             {
                 requestUri = Uri.UnescapeDataString(requestUri);
@@ -109,17 +63,17 @@ namespace WebsiteProvider
                     throw new Exception("Default template is missing");
                 }
 
-                WrapperPage master = GetLayoutPage(template);
-                master.IsFinal = webUrl.IsFinal || string.IsNullOrEmpty(webUrl.Url);
+                SurfacePage surfacePage = GetSurfacePage(template);
+                surfacePage.IsFinal = webUrl.IsFinal || string.IsNullOrEmpty(webUrl.Url);
 
-                if (!template.Equals(master.WebTemplatePage.Data))
+                if (!template.Equals(surfacePage.Data))
                 {
-                    master.WebTemplatePage = GetTemplatePage(template.GetObjectID());
+                    InitializeTemplate(surfacePage, template);
                 }
 
-                UpdateTemplateSections(requestUri, currentResponse, master.WebTemplatePage, webUrl);
+                UpdateTemplateSections(requestUri, currentResponse, surfacePage, webUrl);
 
-                return master;
+                return surfacePage;
             });
 
             RegisterFilter();
@@ -146,7 +100,7 @@ namespace WebsiteProvider
                     var htmlField = json["Html"] as string;
                     if (htmlField != null)
                     {
-                        var wrapper = response.Resource as WrapperPage;
+                        var wrapper = response.Resource as SurfacePage;
                         var requestUri = request.Uri;
                         var isWrapped = false;
 
@@ -159,8 +113,8 @@ namespace WebsiteProvider
                             response = Self.GET($"/WebsiteProvider/partial/wrapper?uri={escapedRequestUri}&response={responseKey}");
 
                             ResponseStorage.Remove(responseKey);
-                            wrapper = response.Resource as WrapperPage;
-                            requestUri = wrapper?.WebTemplatePage.Data.Html;
+                            wrapper = response.Resource as SurfacePage;
+                            requestUri = wrapper?.Data.Html;
                         }
                         if (!isWrapped)
                         {
@@ -176,12 +130,14 @@ namespace WebsiteProvider
             });
         }
 
-        protected void InitializeTemplate(WebTemplatePage content)
+        protected void InitializeTemplate(SurfacePage content, WebTemplate template)
         {
+            content.Data = template;
+
             dynamic namedSections = new Json();
             content.Sections = namedSections;
 
-            foreach (WebSection section in content.Data.Sections)
+            foreach (WebSection section in template.Sections)
             {
                 SectionPage sectionJson = new SectionPage();
                 namedSections[section.Name] = sectionJson;
@@ -189,7 +145,7 @@ namespace WebsiteProvider
             }
         }
 
-        protected void UpdateTemplateSections(string requestUri, Response response, WebTemplatePage content, WebUrl url)
+        protected void UpdateTemplateSections(string requestUri, Response response, SurfacePage content, WebUrl url)
         {
             foreach (WebSection section in content.Data.Sections)
             {
@@ -201,47 +157,67 @@ namespace WebsiteProvider
                 var json = response.Resource as Json;
                 if (section.Default && json != null && sectionJson.MainContent?.RequestUri != requestUri)
                 {
-                    if (json is WrapperPage)
+                    if (json is SurfacePage)
                     {
                         //we are inserting WebsiteProvider to WebsiteProvider
-                        sectionJson.MainContent = json as WrapperPage;
+                        sectionJson.MainContent = json as SurfacePage;
                     }
                     else
                     {
                         //we are inserting different app to WebsiteProvider
-                        var page = sectionJson.MainContent;
-                        if (page == null || page.WebTemplatePage.Data != null)
+                        if (sectionJson.MainContent == null || sectionJson.MainContent.LastJson != json)
                         {
-                            page = GetContainerPage(requestUri);
-                            sectionJson.MainContent = page;
+                            sectionJson.MainContent = new SurfacePage();
                         }
 
-                        page.RequestUri = requestUri;
-                        page.Reset();
-                        page.MergeJson(json);
+                        //these two lines should be in the above if, but do not work then
+                        sectionJson.MainContent.LastJson = json;
+                        sectionJson.MainContent.MergeJson(json);
+
+                        sectionJson.MainContent.RequestUri = requestUri;
                     }
                 }
             }
         }
 
-        private WrapperPage GetContainerPage(string uri)
+        private SurfacePage WrapExternalRequest(string uri)
         {
-            return Self.GET<WrapperPage>(uri, () => new WrapperPage());
+            return Self.GET<SurfacePage>(uri, () => new SurfacePage());
         }
 
-        protected WrapperPage GetLayoutPage(WebTemplate template)
+        protected SurfacePage GetSurfacePage(WebTemplate template)
         {
-            return Self.GET<WrapperPage>("/WebsiteProvider/partial/layout/" + template.GetObjectID());
-        }
+            SurfacePage page;
 
-        protected WebTemplatePage GetTemplatePage(string templateId)
-        {
-            return Self.GET<WebTemplatePage>("/WebsiteProvider/partial/template/" + templateId);
-        }
+            if (Session.Current != null)
+            {
+                page = Session.Current.Data as SurfacePage;
+                var sessionWebTemplate = page?.Data;
 
-        protected WebTemplate GetWebTemplate(string id)
-        {
-            return Db.SQL<WebTemplate>("SELECT wt FROM Simplified.Ring6.WebTemplate wt WHERE wt.Key = ?", id).First;
+                if (sessionWebTemplate != null)
+                {
+                    if (sessionWebTemplate.Equals(template))
+                    {
+                        return page;
+                    }
+                }
+            }
+            else
+            {
+                Session.Current = new Session(SessionOptions.PatchVersioning);
+            }
+
+            page = new SurfacePage
+            {
+                Session = Session.Current
+            };
+
+            if (page.Session.PublicViewModel != page)
+            {
+                page.Session.PublicViewModel = page;
+            }
+
+            return page;
         }
 
         public bool HasCatchingRule(string requestUri)

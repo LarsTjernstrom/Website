@@ -74,11 +74,8 @@
     <Compile Include="ViewModels\SectionPage.json.cs">
       <DependentUpon>SectionPage.json</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\WebTemplatePage.json.cs">
-      <DependentUpon>WebTemplatePage.json</DependentUpon>
-    </Compile>
-    <Compile Include="ViewModels\WrapperPage.json.cs">
-      <DependentUpon>WrapperPage.json</DependentUpon>
+    <Compile Include="ViewModels\SurfacePage.json.cs">
+      <DependentUpon>SurfacePage.json</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -87,17 +84,12 @@
     </TypedJSON>
   </ItemGroup>
   <ItemGroup>
-    <TypedJSON Include="ViewModels\WebTemplatePage.json">
+    <TypedJSON Include="ViewModels\SurfacePage.json">
       <Generator>MsBuild:Compile</Generator>
     </TypedJSON>
   </ItemGroup>
   <ItemGroup>
-    <TypedJSON Include="ViewModels\WrapperPage.json">
-      <Generator>MsBuild:Compile</Generator>
-    </TypedJSON>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="wwwroot\WebsiteProvider\viewmodels\WrapperPage.html" />
+    <None Include="wwwroot\WebsiteProvider\viewmodels\SurfacePage.html" />
   </ItemGroup>
   <ItemGroup>
     <None Include="wwwroot\WebsiteProvider\viewmodels\WebsiteSection.html" />
