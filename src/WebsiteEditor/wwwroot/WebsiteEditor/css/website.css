@@ -1,0 +1,79 @@
+﻿html {
+    padding: 0px;
+    margin: 0px;
+    height: 100%;
+    min-height: 100%;
+}
+
+body {
+    background-color: #fafafa;
+    min-height: 100%;
+    height: 100%;
+    padding: 0px;
+    margin: 0px;
+}
+
+.website-top-menu-panel {
+    background-color: #303030;
+    color: #CCCCCC;
+    min-height: 40px;
+}
+
+.website-top-menu {
+    display: flex;
+    list-style-type: none;
+    padding: 0px;
+    margin: 0px;
+    overflow: auto;
+}
+
+.website-top-menu__item {
+    float: left;
+}
+
+.website-top-menu-item__link {
+    display: block;
+    padding: 5px 20px;
+    text-decoration: none;
+    color: white;
+}
+
+.website-top-menu-item__link:hover {
+    background-color: #333333;
+    color: white;
+}
+
+.website-body {
+    background-color: white;
+    min-height: 100%;
+    width: 90%;
+    margin: auto;
+    box-sizing: border-box;
+    padding: 60px 50px 20px 50px;
+}
+
+.website-table__cell-input {
+    padding: 2px 8px;
+}
+
+.website-table__cell-index {
+    width: 50px;
+}
+
+.website-table__cell-key {
+    width: 80px;
+}
+
+.website-table__cell-protected {
+    text-align: center;
+    width: 80px;
+}
+
+.website-table__cell-actions {
+    width: 150px;
+}
+
+.website-table__control {
+    box-shadow: none !important; /*To override bootstrap styles*/
+    border-bottom: none;
+}
