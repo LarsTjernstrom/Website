@@ -10,7 +10,7 @@ IF NOT ERRORLEVEL 1 SET INTERACTIVE=0
 staradmin stop db default
 
 :: Start the tested apps
-star --resourcedir="%~dp0src\Website\wwwroot" "%~dp0src/Website/bin/%Configuration%/Website.exe"
+star --resourcedir="%~dp0src\WebsiteEditor\wwwroot" "%~dp0src/WebsiteEditor/bin/%Configuration%/WebsiteEditor.exe"
 IF ERRORLEVEL 1 EXIT /B 1
 
 star --resourcedir="%~dp0src\WebsiteProvider\wwwroot" "%~dp0src/WebsiteProvider/bin/%Configuration%/WebsiteProvider.exe"

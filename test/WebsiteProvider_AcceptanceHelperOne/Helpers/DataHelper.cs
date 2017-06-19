@@ -127,7 +127,7 @@ namespace WebsiteProvider_AcceptanceHelperOne
             surface = new WebTemplate
             {
                 Name = surfaceName,
-                Html = "/Website/templates/DefaultTemplate.html"
+                Html = "/WebsiteEditor/templates/DefaultTemplate.html"
             };
 
             new WebSection
@@ -156,7 +156,7 @@ namespace WebsiteProvider_AcceptanceHelperOne
             surface = new WebTemplate
             {
                 Name = surfaceName,
-                Html = "/Website/templates/LauncherTemplate.html"
+                Html = "/WebsiteEditor/templates/LauncherTemplate.html"
             };
 
             new WebSection
