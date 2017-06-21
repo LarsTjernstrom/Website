@@ -90,7 +90,7 @@ namespace WebsiteProvider
                 UnmapPinningRule(webMap);
             }
             Blender.UnmapUri(mapUri, token);
-            if (Handle.IsHandlerRegistered("GET ", mapUri))
+            if (Handle.IsHandlerRegistered("GET", mapUri))
             {
                 Handle.UnregisterHttpHandler("GET", mapUri);
             }
