@@ -49,7 +49,7 @@
     </template>
     <script>
         (function () {
-            var template = (document._currentScript || document.currentScript).previousElementSibling;
+            var template = document.currentScript.previousElementSibling;
 
             template.restore = function () {
                 template.set("model.Restore$", template.model.Restore$ + 1);
