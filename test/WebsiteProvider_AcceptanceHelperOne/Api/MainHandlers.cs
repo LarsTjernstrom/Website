@@ -50,13 +50,6 @@ namespace WebsiteProvider_AcceptanceHelperOne
                 return "Data for testing catching rules (without existing catch-all rules) is set";
             });
 
-            Handle.GET("/WebsiteProvider_AcceptanceHelperOne/ResetData", () =>
-            {
-                DataHelper.ResetData();
-                Handle.SetOutgoingStatusCode(200);
-                return "Catching rules are reseted";
-            });
-
             Handle.GET("/WebsiteProvider_AcceptanceHelperOne/SetupCatchingRuleWildcardTests", () =>
             {
                 DataHelper.SetCatchingRulesWithWildcards();

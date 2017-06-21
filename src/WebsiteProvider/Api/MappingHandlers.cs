@@ -92,7 +92,7 @@ namespace WebsiteProvider
                 UnmapPinningRule(webMap);
             }
             Blender.UnmapUri(mapUri, token);
-            if (Handle.IsHandlerRegistered(mapUri, selfOnlyOptions))
+            if (Handle.IsHandlerRegistered("GET " + mapUri, selfOnlyOptions))
             {
                 Handle.UnregisterHttpHandler("GET", mapUri);
             }
@@ -100,7 +100,7 @@ namespace WebsiteProvider
 
         private void RegisterEmptyHandler(string uri)
         {
-            if (!Handle.IsHandlerRegistered(uri, selfOnlyOptions))
+            if (!Handle.IsHandlerRegistered("GET " + uri, selfOnlyOptions))
             {
                 Handle.GET(uri, () => new Json(), selfOnlyOptions);
             }
