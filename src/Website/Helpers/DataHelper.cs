@@ -20,7 +20,7 @@ namespace Website
         {
             if (Db.SQL<WebTemplate>("SELECT wt FROM Simplified.Ring6.WebTemplate wt").First != null)
             {
-                // return;
+                return;
             }
 
             Db.Transact(() =>
