@@ -7,7 +7,8 @@ namespace Website
     {
         public void ClearData()
         {
-            Db.Transact(() => {
+            Db.Transact(() =>
+            {
                 Db.SlowSQL("DELETE FROM Simplified.Ring6.WebMap");
                 Db.SlowSQL("DELETE FROM Simplified.Ring6.WebUrl");
                 Db.SlowSQL("DELETE FROM Simplified.Ring6.WebSection");
@@ -19,16 +20,15 @@ namespace Website
         {
             if (Db.SQL<WebTemplate>("SELECT wt FROM Simplified.Ring6.WebTemplate wt").First != null)
             {
-                return;
+                // return;
             }
 
-            Db.Transact(() => {
+            Db.Transact(() =>
+            {
                 ClearData();
                 GenerateDefaultSurface();
                 GenerateSidebarSurface();
                 GenerateHolyGrailSurface();
-                GenerateLauncherSurface();
-
             });
         }
 
@@ -36,8 +36,8 @@ namespace Website
         {
             var surface = new WebTemplate()
             {
-                Name = "DefaultTemplate",
-                Html = "/Website/templates/DefaultTemplate.html"
+                Name = "DefaultSurface",
+                Html = "/Website/surfaces/DefaultSurface.html"
             };
 
             var topbar = new WebSection()
@@ -68,8 +68,8 @@ namespace Website
         {
             var surface = new WebTemplate()
             {
-                Name = "SidebarTemplate",
-                Html = "/Website/templates/SidebarTemplate.html"
+                Name = "SidebarSurface",
+                Html = "/Website/surfaces/SidebarSurface.html"
             };
 
             var sidebarLeft = new WebSection()
@@ -99,8 +99,8 @@ namespace Website
         {
             var surface = new WebTemplate()
             {
-                Name = "HolyGrailTemplate",
-                Html = "/Website/templates/HolyGrailTemplate.html"
+                Name = "HolyGrailSurface",
+                Html = "/Website/surfaces/HolyGrailSurface.html"
             };
 
             var content = new WebSection()
@@ -178,38 +178,6 @@ namespace Website
             new WebMap() { Url = profileUrl, Section = header, ForeignUrl = "/content/dynamic/userprofile/header", SortNumber = 1 };
             new WebMap() { Url = profileUrl, Section = content, ForeignUrl = "/userprofile", SortNumber = 2 };
             new WebMap() { Url = profileUrl, Section = footer, ForeignUrl = "/content/dynamic/userprofile/footer", SortNumber = 3 };
-        }
-
-        public void GenerateLauncherSurface()
-        {
-            var surface = new WebTemplate()
-            {
-                Name = "LauncherTemplate",
-                Html = "/Website/templates/LauncherTemplate.html"
-            };
-
-            var topbar = new WebSection()
-            {
-                Template = surface,
-                Name = "TopBar",
-                Default = false
-            };
-
-            var leftbar = new WebSection()
-            {
-                Template = surface,
-                Name = "LeftBar",
-                Default = false
-            };
-
-            var main = new WebSection()
-            {
-                Template = surface,
-                Name = "Main",
-                Default = true
-            };
-
-            new WebMap() { Section = topbar, ForeignUrl = "/signin/user", SortNumber = 1 };
         }
     }
 }

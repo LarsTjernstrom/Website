@@ -104,7 +104,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="wwwroot\sys\" />
+    <Folder Include="wwwroot\Website\sys\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="wwwroot\Website\css\website.css" />
@@ -115,15 +115,13 @@
     <TypedJSON Include="ViewModels\AppName.json">
       <Generator>MsBuild:Compile</Generator>
     </TypedJSON>
-    <None Include="wwwroot\Website\templates\SidebarTemplate.html" />
-    <None Include="wwwroot\Website\templates\AppHubTemplate.html" />
+    <None Include="wwwroot\Website\surfaces\SidebarSurface.html" />
     <Content Include="wwwroot\Website\images\website.png" />
-    <None Include="wwwroot\Website\templates\HolyGrailTemplate.html" />
-    <Content Include="wwwroot\Website\templates\DefaultTemplate.html" />
+    <None Include="wwwroot\Website\surfaces\HolyGrailSurface.html" />
+    <Content Include="wwwroot\Website\surfaces\DefaultSurface.html" />
     <None Include="wwwroot\Website\viewmodels\CmsHelp.html" />
     <None Include="wwwroot\Website\viewmodels\AppIcon.html" />
     <Content Include="wwwroot\Website\viewmodels\CmsPinningRulesPage.html" />
-    <None Include="wwwroot\Website\templates\LauncherTemplate.html" />
     <Content Include="wwwroot\Website\viewmodels\CmsPage.html" />
     <Content Include="wwwroot\Website\viewmodels\CmsBlendingPointsPage.html" />
     <Content Include="wwwroot\Website\viewmodels\CmsSurfacesPage.html" />
