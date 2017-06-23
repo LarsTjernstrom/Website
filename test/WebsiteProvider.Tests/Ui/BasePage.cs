@@ -57,12 +57,12 @@ namespace WebsiteProvider.Tests.Ui
 
         public bool CheckForDefaultSurface()
         {
-            return CheckForSurface("website-defaulttemplate-main");
+            return CheckForSurface("website-defaultsurface-main");
         }
 
         public bool CheckForSidebarSurface()
         {
-            return CheckForSurface("website-sidebartemplate");
+            return CheckForSurface("website-sidebarsurface");
         }
 
         protected bool CheckForSurface(string searchingClassName)
