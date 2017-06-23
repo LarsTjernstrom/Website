@@ -66,6 +66,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Api\MainHandlers.cs" />
+    <Compile Include="PartialToStandaloneHtmlProvider.cs" />
     <Compile Include="Helpers\DataHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

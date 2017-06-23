@@ -12,7 +12,7 @@ namespace WebsiteProvider_AcceptanceHelperTwo
         static void Main()
         {
             Application.Current.Use(new HtmlFromJsonProvider());
-            Application.Current.Use(new PartialToStandaloneHtmlProvider());
+            Application.Current.Use(new Starcounter2.PartialToStandaloneHtmlProvider());
 
             Application.Current.Use((request, response) =>
             {

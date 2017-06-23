@@ -7,7 +7,7 @@ namespace WebsiteProvider_AcceptanceHelperOne
         static void Main()
         {
             Application.Current.Use(new HtmlFromJsonProvider());
-            Application.Current.Use(new PartialToStandaloneHtmlProvider());
+            Application.Current.Use(new Starcounter2.PartialToStandaloneHtmlProvider());
 
             var dataHelper = new DataHelper();
             var mainHandlers = new MainHandlers(dataHelper);
