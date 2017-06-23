@@ -50,9 +50,9 @@ namespace WebsiteProvider.Tests.Ui
             return !Driver.FindElements(By.ClassName("website-surface")).Any();
         }
 
-        public bool CheckForLauncherSurface()
+        public bool CheckForHolyGrailSurface()
         {
-            return CheckForSurface("launcher-layout");
+            return CheckForSurface("website-holygrail");
         }
 
         public bool CheckForDefaultSurface()

@@ -103,9 +103,7 @@
       <DependentUpon>MasterPage.json</DependentUpon>
     </Compile>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="wwwroot\Website\sys\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="wwwroot\Website\css\website.css" />
     <Content Include="wwwroot\Website\css\holygrail.css" />
