@@ -23,7 +23,7 @@ namespace WebsiteProvider_AcceptanceHelperTwo
 
         protected WebTemplate GenerateSidebarSurface()
         {
-            const string surfaceName = "TestSidebarTemplate";
+            const string surfaceName = "TestSidebarSurface";
             var surface = Db.SQL<WebTemplate>("SELECT wt FROM Simplified.Ring6.WebTemplate wt WHERE wt.Name = ?", surfaceName).First;
 
             if (surface != null) return surface;
@@ -31,7 +31,7 @@ namespace WebsiteProvider_AcceptanceHelperTwo
             surface = new WebTemplate
             {
                 Name = surfaceName,
-                Html = "/Website/templates/SidebarTemplate.html"
+                Html = "/Website/surfaces/SidebarSurface.html"
             };
 
             new WebSection
