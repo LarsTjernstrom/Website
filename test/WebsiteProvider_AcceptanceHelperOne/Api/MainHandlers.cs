@@ -14,9 +14,27 @@ namespace WebsiteProvider_AcceptanceHelperOne
             DataHelper = dataHelper;
         }
 
+        protected AcceptanceHelperOnePage GetMasterFromSession()
+        {
+            if (Session.Current == null)
+            {
+                Session.Current = new Session(SessionOptions.PatchVersioning);
+            }
+
+            var master = Session.Current.Data as AcceptanceHelperOnePage;
+
+            if (master == null)
+            {
+                master = new AcceptanceHelperOnePage();
+                Session.Current.Data = master;
+            }
+
+            return master;
+        }
+
         public void Register()
         {
-            Handle.GET("/WebsiteProvider_AcceptanceHelperOne", () => Db.Scope(() => new AcceptanceHelperOnePage()));
+            Handle.GET("/WebsiteProvider_AcceptanceHelperOne", () => Db.Scope(() => GetMasterFromSession()));
 
             Handle.GET("/WebsiteProvider_AcceptanceHelperOne/EmptyJson", () => new Json());
             Handle.GET("/WebsiteProvider_AcceptanceHelperOne/SimplePage",

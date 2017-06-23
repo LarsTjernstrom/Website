@@ -15,9 +15,27 @@ namespace WebsiteProvider_AcceptanceHelperTwo
             DataHelper = dataHelper;
         }
 
+        protected AcceptanceHelperTwoPage GetMasterFromSession()
+        {
+            if (Session.Current == null)
+            {
+                Session.Current = new Session(SessionOptions.PatchVersioning);
+            }
+
+            var master = Session.Current.Data as AcceptanceHelperTwoPage;
+
+            if (master == null)
+            {
+                master = new AcceptanceHelperTwoPage();
+                Session.Current.Data = master;
+            }
+
+            return master;
+        }
+
         public void Register()
         {
-            Handle.GET("/WebsiteProvider_AcceptanceHelperTwo", () => new AcceptanceHelperTwoPage());
+            Handle.GET("/WebsiteProvider_AcceptanceHelperTwo", () => Db.Scope(() => GetMasterFromSession()));
 
             Handle.GET("/WebsiteProvider_AcceptanceHelperTwo/SetDefaultCatchingRules", () =>
             {
