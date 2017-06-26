@@ -122,15 +122,15 @@ namespace WebsiteProvider
         {
             var token = webMap.GetMappingToken();
             var actualMappings = Blender.ListAll().Where(x => x.Key == token).SelectMany(x => x.Value);
-            var oldMappings = new List<string> { webMap.Section.GetMappingUrl() };
+            var newMappings = new List<string> { webMap.Section.GetMappingUrl() };
 
             foreach (WebMap map in webMap.Section.Maps)
             {
-                oldMappings.Add(map.GetMappingUrl());
-                oldMappings.Add(map.ForeignUrl);
+                newMappings.Add(map.GetMappingUrl());
+                newMappings.Add(map.ForeignUrl);
             }
 
-            return actualMappings.FirstOrDefault(x => !oldMappings.Distinct().Contains(x));
+            return actualMappings.FirstOrDefault(x => !newMappings.Distinct().Contains(x));
         }
     }
 }
