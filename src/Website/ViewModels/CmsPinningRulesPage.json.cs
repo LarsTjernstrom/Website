@@ -1,9 +1,12 @@
 using Starcounter;
 using Simplified.Ring6;
 
-namespace Website {
-    partial class CmsPinningRulesPage : Json {
-        public void RefreshData() {
+namespace Website
+{
+    partial class CmsPinningRulesPage : Json
+    {
+        public void RefreshData()
+        {
             this.BlendingPoints.Clear();
             this.CatchingRules.Clear();
             this.PinningRules.Clear();
@@ -13,81 +16,106 @@ namespace Website {
             this.Trn.Data = this.Transaction as Transaction;
         }
 
-        void Handle(Input.CancelChanges Action) {
+        void Handle(Input.CancelChanges Action)
+        {
             this.Transaction.Rollback();
             this.RefreshData();
         }
 
-        void Handle(Input.SaveChanges Action) {
+        void Handle(Input.SaveChanges Action)
+        {
             this.Transaction.Commit();
         }
 
-        void Handle(Input.Create Action) {
+        void Handle(Input.Create Action)
+        {
             this.PinningRules.Add().Data = new WebMap();
         }
 
         [CmsPinningRulesPage_json.PinningRules]
-        partial class CmsPinningRulesItemPage : Json, IBound<WebMap> {
-            protected override void OnData() {
+        partial class CmsPinningRulesItemPage : Json, IBound<WebMap>
+        {
+            protected override void OnData()
+            {
                 base.OnData();
 
                 this.SectionKey = (this.Data != null && this.Data.Section != null) ? this.Data.Section.Key : string.Empty;
                 this.UrlKey = (this.Data != null && this.Data.Url != null) ? this.Data.Url.Key : string.Empty;
             }
 
-            CmsPinningRulesPage ParentPage {
-                get {
+            CmsPinningRulesPage ParentPage
+            {
+                get
+                {
                     return this.Parent.Parent as CmsPinningRulesPage;
                 }
             }
 
-            void Handle(Input.Delete Action) {
+            void Handle(Input.Delete Action)
+            {
                 this.ParentPage.PinningRules.Remove(this);
                 this.Data.Delete();
             }
 
-            void Handle(Input.SectionKey Action) {
-                if (string.IsNullOrEmpty(Action.Value)) {
+            void Handle(Input.SectionKey Action)
+            {
+                if (string.IsNullOrEmpty(Action.Value))
+                {
                     this.Data.Section = null;
-                } else {
+                }
+                else
+                {
                     this.Data.Section = DbHelper.FromID(DbHelper.Base64DecodeObjectID(Action.Value)) as WebSection;
                 }
             }
 
-            void Handle(Input.UrlKey Action) {
-                if (string.IsNullOrEmpty(Action.Value)) {
+            void Handle(Input.UrlKey Action)
+            {
+                if (string.IsNullOrEmpty(Action.Value))
+                {
                     this.Data.Url = null;
-                } else {
+                }
+                else
+                {
                     this.Data.Url = DbHelper.FromID(DbHelper.Base64DecodeObjectID(Action.Value)) as WebUrl;
                 }
             }
         }
 
         [CmsPinningRulesPage_json.BlendingPoints]
-        partial class CmsPinningRulesBlendingPointPage : Json, IBound<WebSection> {
-            protected override void OnData() {
+        partial class CmsPinningRulesBlendingPointPage : Json, IBound<WebSection>
+        {
+            protected override void OnData()
+            {
                 base.OnData();
 
-                if (this.Data == null || this.Data.Template == null) {
+                if (this.Data == null || this.Data.Template == null)
+                {
                     this.FullName = this.Name;
-                } else {
+                }
+                else
+                {
                     this.FullName = string.Format("{0} - {1}", this.Data.Template.Name, this.Name);
                 }
             }
 
-            CmsPinningRulesPage ParentPage {
-                get {
+            CmsPinningRulesPage ParentPage
+            {
+                get
+                {
                     return this.Parent.Parent as CmsPinningRulesPage;
                 }
             }
         }
 
         [CmsPinningRulesPage_json.CatchingRules]
-        partial class CmsPinningRulesCatchingRulePage : Json, IBound<WebUrl> {
+        partial class CmsPinningRulesCatchingRulePage : Json, IBound<WebUrl>
+        {
         }
 
         [CmsPinningRulesPage_json.Trn]
-        partial class CmsPinningRulesTransactionPage : Json, IBound<Transaction> {
+        partial class CmsPinningRulesTransactionPage : Json, IBound<Transaction>
+        {
         }
     }
 }
