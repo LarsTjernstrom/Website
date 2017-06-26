@@ -6,7 +6,7 @@ namespace WebsiteProvider
 {
     public class MappingHandlers
     {
-        private readonly HandlerOptions selfOnlyOptions = new HandlerOptions {SelfOnly = true};
+        private readonly HandlerOptions selfOnlyOptions = new HandlerOptions { SelfOnly = true };
 
         public void Register()
         {
@@ -54,6 +54,17 @@ namespace WebsiteProvider
             Blender.MapUri(webMap.ForeignUrl, token);
         }
 
+        public void UpdatePinningRule(WebMap webMap)
+        {
+            var token = webMap.GetMappingToken();
+            var newUri = webMap.ForeignUrl;
+            var oldMapping = Blender.ListAll().FirstOrDefault(x => x.Key == token);
+            webMap.ForeignUrl = oldMapping.Value.FirstOrDefault(x => !x.Contains(oldMapping.Key.Substring(oldMapping.Key.Length - 3))); // old URI
+            this.UnmapPinningRule(webMap);
+            webMap.ForeignUrl = newUri;
+            this.MapPinningRule(webMap);
+        }
+
         public void UnmapPinningRule(WebMap webMap)
         {
             if (webMap.Section?.Template == null)
@@ -61,6 +72,7 @@ namespace WebsiteProvider
                 // if the Blending Point (WebSection) or the Surface (WebTemplate) was deleted earlier
                 return;
             }
+
             string token = webMap.GetMappingToken();
             string mapUri = webMap.GetMappingUrl();
 
