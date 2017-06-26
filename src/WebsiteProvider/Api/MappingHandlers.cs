@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Simplified.Ring6;
 using Starcounter;
 
@@ -56,11 +57,10 @@ namespace WebsiteProvider
 
         public void UpdatePinningRule(WebMap webMap)
         {
-            var token = webMap.GetMappingToken();
             var newUri = webMap.ForeignUrl;
-            var oldMapping = Blender.ListAll().FirstOrDefault(x => x.Key == token);
-            webMap.ForeignUrl = oldMapping.Value.FirstOrDefault(x => !x.Contains(oldMapping.Key.Substring(oldMapping.Key.Length - 3))); // old URI
+            webMap.ForeignUrl = GetOldUri(webMap);
             this.UnmapPinningRule(webMap);
+
             webMap.ForeignUrl = newUri;
             this.MapPinningRule(webMap);
         }
@@ -116,6 +116,21 @@ namespace WebsiteProvider
             {
                 Handle.GET(uri, () => new Json(), selfOnlyOptions);
             }
+        }
+
+        private static string GetOldUri(WebMap webMap)
+        {
+            var token = webMap.GetMappingToken();
+            var actualMappings = Blender.ListAll().Where(x => x.Key == token).SelectMany(x => x.Value);
+            var oldMappings = new List<string> { webMap.Section.GetMappingUrl() };
+
+            foreach (WebMap map in webMap.Section.Maps)
+            {
+                oldMappings.Add(map.GetMappingUrl());
+                oldMappings.Add(map.ForeignUrl);
+            }
+
+            return actualMappings.FirstOrDefault(x => !oldMappings.Distinct().Contains(x));
         }
     }
 }
