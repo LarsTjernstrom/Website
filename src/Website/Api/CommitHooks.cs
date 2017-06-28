@@ -24,7 +24,7 @@ namespace Website
             {
                 var page = Session.Current.Data as MasterPage;
 
-                page?.RefreshCurrentPage();
+                page?.Transaction.Scope(() => page.RefreshCurrentPage());
                 Session.Current.CalculatePatchAndPushOnWebSocket();
             });
         }
