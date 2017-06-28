@@ -115,15 +115,13 @@
     <TypedJSON Include="ViewModels\AppName.json">
       <Generator>MsBuild:Compile</Generator>
     </TypedJSON>
-    <None Include="wwwroot\WebsiteEditor\templates\SidebarTemplate.html" />
-    <None Include="wwwroot\WebsiteEditor\templates\AppHubTemplate.html" />
+    <None Include="wwwroot\WebsiteEditor\surfaces\SidebarSurface.html" />
     <Content Include="wwwroot\WebsiteEditor\images\websiteeditor.png" />
-    <None Include="wwwroot\WebsiteEditor\templates\HolyGrailTemplate.html" />
-    <Content Include="wwwroot\WebsiteEditor\templates\DefaultTemplate.html" />
+    <None Include="wwwroot\WebsiteEditor\surfaces\HolyGrailSurface.html" />
+    <Content Include="wwwroot\WebsiteEditor\surfaces\DefaultSurface.html" />
     <None Include="wwwroot\WebsiteEditor\viewmodels\CmsHelp.html" />
     <None Include="wwwroot\WebsiteEditor\viewmodels\AppIcon.html" />
     <Content Include="wwwroot\WebsiteEditor\viewmodels\CmsPinningRulesPage.html" />
-    <None Include="wwwroot\WebsiteEditor\templates\LauncherTemplate.html" />
     <Content Include="wwwroot\WebsiteEditor\viewmodels\CmsPage.html" />
     <Content Include="wwwroot\WebsiteEditor\viewmodels\CmsBlendingPointsPage.html" />
     <Content Include="wwwroot\WebsiteEditor\viewmodels\CmsSurfacesPage.html" />

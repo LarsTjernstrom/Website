@@ -1,13 +1,14 @@
 ﻿using Starcounter;
 using Simplified.Ring6;
 
-namespace WebsiteEditor
+namespace Website
 {
     public class DataHelper
     {
         public void ClearData()
         {
-            Db.Transact(() => {
+            Db.Transact(() =>
+            {
                 Db.SlowSQL("DELETE FROM Simplified.Ring6.WebMap");
                 Db.SlowSQL("DELETE FROM Simplified.Ring6.WebUrl");
                 Db.SlowSQL("DELETE FROM Simplified.Ring6.WebSection");
@@ -22,13 +23,12 @@ namespace WebsiteEditor
                 return;
             }
 
-            Db.Transact(() => {
+            Db.Transact(() =>
+            {
                 ClearData();
                 GenerateDefaultSurface();
                 GenerateSidebarSurface();
                 GenerateHolyGrailSurface();
-                GenerateLauncherSurface();
-
             });
         }
 
@@ -36,8 +36,8 @@ namespace WebsiteEditor
         {
             var surface = new WebTemplate()
             {
-                Name = "DefaultTemplate",
-                Html = "/WebsiteEditor/templates/DefaultTemplate.html"
+                Name = "DefaultSurface",
+                Html = "/Websiteeditor/surfaces/DefaultSurface.html"
             };
 
             var topbar = new WebSection()
@@ -68,8 +68,8 @@ namespace WebsiteEditor
         {
             var surface = new WebTemplate()
             {
-                Name = "SidebarTemplate",
-                Html = "/WebsiteEditor/templates/SidebarTemplate.html"
+                Name = "SidebarSurface",
+                Html = "/Website/surfaces/SidebarSurface.html"
             };
 
             var sidebarLeft = new WebSection()
@@ -89,18 +89,18 @@ namespace WebsiteEditor
             var templatesUrl = new WebUrl()
             {
                 Template = surface,
-                Url = "/WebsiteEditor/cms/surfaces"
+                Url = "/websiteeditor/cms/surfaces"
             };
 
-            new WebMap() { Url = templatesUrl, Section = sidebarLeft, ForeignUrl = "/WebsiteEditor/help?topic=surfaces", SortNumber = 1 };
+            new WebMap() { Url = templatesUrl, Section = sidebarLeft, ForeignUrl = "/websiteeditor/help?topic=surfaces", SortNumber = 1 };
         }
 
         public void GenerateHolyGrailSurface()
         {
             var surface = new WebTemplate()
             {
-                Name = "HolyGrailTemplate",
-                Html = "/WebsiteEditor/templates/HolyGrailTemplate.html"
+                Name = "HolyGrailSurface",
+                Html = "/Website/surfaces/HolyGrailSurface.html"
             };
 
             var content = new WebSection()
@@ -178,38 +178,6 @@ namespace WebsiteEditor
             new WebMap() { Url = profileUrl, Section = header, ForeignUrl = "/content/dynamic/userprofile/header", SortNumber = 1 };
             new WebMap() { Url = profileUrl, Section = content, ForeignUrl = "/userprofile", SortNumber = 2 };
             new WebMap() { Url = profileUrl, Section = footer, ForeignUrl = "/content/dynamic/userprofile/footer", SortNumber = 3 };
-        }
-
-        public void GenerateLauncherSurface()
-        {
-            var surface = new WebTemplate()
-            {
-                Name = "LauncherTemplate",
-                Html = "/WebsiteEditor/templates/LauncherTemplate.html"
-            };
-
-            var topbar = new WebSection()
-            {
-                Template = surface,
-                Name = "TopBar",
-                Default = false
-            };
-
-            var leftbar = new WebSection()
-            {
-                Template = surface,
-                Name = "LeftBar",
-                Default = false
-            };
-
-            var main = new WebSection()
-            {
-                Template = surface,
-                Name = "Main",
-                Default = true
-            };
-
-            new WebMap() { Section = topbar, ForeignUrl = "/signin/user", SortNumber = 1 };
         }
     }
 }

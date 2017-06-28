@@ -44,7 +44,7 @@ namespace WebsiteProvider.Tests.Test
             var resourceName = "resource";
             var page = new AcceptanceHelperTwoContentPage(Driver).GoTo(resourceName);
             WaitForText(page.ContentElement, resourceName, 10);
-            WaitUntil(x => page.CheckForLauncherSurface());
+            WaitUntil(x => page.CheckForHolyGrailSurface());
         }
 
         /// <summary>

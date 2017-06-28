@@ -12,7 +12,7 @@
                         Cancel
                     </button>
                     <button type="button" class="btn btn-xs btn-default" value="{{model.Create$::click}}"
-                            onmousedown="++this.value;" title="Create template">
+                            onmousedown="++this.value;" title="Create surface">
                         Create
                     </button>
                     <button type="button" class="btn btn-xs btn-default" on-click="restore" title="Restore default surfaces">
@@ -49,7 +49,7 @@
     </template>
     <script>
         (function () {
-            var template = (document._currentScript || document.currentScript).previousElementSibling;
+            var template = document.currentScript.previousElementSibling;
 
             template.restore = function () {
                 template.set("model.Restore$", template.model.Restore$ + 1);

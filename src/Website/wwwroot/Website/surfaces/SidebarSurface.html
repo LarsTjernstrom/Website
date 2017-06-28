@@ -1,0 +1,29 @@
+﻿<template>
+    <template is="dom-bind">
+        <starcounter-include slot="website/left" view-model="{{model.Sections.Left}}"></starcounter-include>
+        <starcounter-include slot="website/right" view-model="{{model.Sections.Right}}"></starcounter-include>
+    </template>
+    <template is="declarative-shadow-dom">
+        <style>
+            .website-sidebarsurface {
+                display: flex;
+            }
+
+            .website-sidebarsurface__left {
+                flex: 0 0 200px;
+            }
+
+            .website-sidebarsurface__right {
+                flex: 1 0 200px;
+            }
+        </style>
+        <section class="website-sidebarsurface">
+            <section class="website-sidebarsurface__left">
+                <slot name="website/left"></slot>
+            </section>
+            <section class="website-sidebarsurface__right">
+                <slot name="website/right"></slot>
+            </section>
+        </section>
+    </template>
+</template>

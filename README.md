@@ -74,24 +74,19 @@ Calling this URI deletes all the current app data (surfaces, blending points, ca
 
 Calling thes URI replaces all the current app data (surfaces, blending points, catching rules and pinning rules) with the defaults, which are:
 
-- **DefaultTemplate** - a surface with two blending points (TopBar, Main). The default catch-all rule uses this surface.
-- **SidebarTemplate** - a surface with two blending points (Left, Right)
-- **HolyGrailTemplate** - a surface with five blending points (Header, Left, Content, Right, Footer). Useful if you're building a web site
-- **LauncherTemplate** - a surface that looks like the original Starcounter's Launcher app
+- **DefaultSurface** - a surface with two blending points (TopBar, Main). The default catch-all rule uses this surface.
+- **SidebarSurface** - a surface with two blending points (Left, Right)
+- **HolyGrailSurface** - a surface with five blending points (Header, Left, Content, Right, Footer). Useful if you're building a web site
 
 ## CSS Custom Properites
 
 Here is the list of CSS Custom Properties used by the app for themeing
 
-Template         | Name                      | Default   | Description
+Surface         | Name                      | Default   | Description
 ---              | ---                       | ---       | ---
 HolyGrail        | `--holy-grail-chalice`    | `#ffdb3a` | Background color of header
 HolyGrail        | `--holy-grail-background` | `#e6e6e6` | Background color of left and right area
 HolyGrail        | `--holy-grail-foot`       | `#646464` | Background color of footer area
-LauncherTemplate | `--primary-color`         | `#8a98b0` | Color of main area elements, hover color for top and left bar
-LauncherTemplate | `--primary-background`    | `#333c4e` | Background color of main area
-LauncherTemplate | `--secondary-color`       | `#8a98b0` | Color of top and left bar elements
-LauncherTemplate | `--secondary-background`  | `#333c4e` | Background color of top and left bars
 
 ## Developer instructions
 
