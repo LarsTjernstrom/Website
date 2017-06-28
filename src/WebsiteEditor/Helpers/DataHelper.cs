@@ -69,7 +69,7 @@ namespace Website
             var surface = new WebTemplate()
             {
                 Name = "SidebarSurface",
-                Html = "/Website/surfaces/SidebarSurface.html"
+                Html = "/Websiteeditor/surfaces/SidebarSurface.html"
             };
 
             var sidebarLeft = new WebSection()
@@ -100,7 +100,7 @@ namespace Website
             var surface = new WebTemplate()
             {
                 Name = "HolyGrailSurface",
-                Html = "/Website/surfaces/HolyGrailSurface.html"
+                Html = "/Websiteeditor/surfaces/HolyGrailSurface.html"
             };
 
             var content = new WebSection()
