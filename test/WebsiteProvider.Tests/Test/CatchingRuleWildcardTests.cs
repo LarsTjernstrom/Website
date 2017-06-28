@@ -53,7 +53,7 @@ namespace WebsiteProvider.Tests.Test
         [Test]
         public void RequestPage_ParametersWithEncodedNonHttpSymbols_RuleFoundAndApplied()
         {
-            var query = "return=/website/cms";
+            var query = "return=/websiteeditor/cms";
             var page = new AcceptanceHelperTwoQueryPage(Driver).Query(query);
             WaitForText(page.ContentElement, query, 10);
             WaitUntil(x => page.CheckForDefaultSurface());

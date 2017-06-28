@@ -1,7 +1,7 @@
 ﻿<template>
     <template is="dom-bind">
-        <starcounter-include slot="website/left" view-model="{{model.Sections.Left}}"></starcounter-include>
-        <starcounter-include slot="website/right" view-model="{{model.Sections.Right}}"></starcounter-include>
+        <starcounter-include slot="websiteeditor/left" view-model="{{model.Sections.Left}}"></starcounter-include>
+        <starcounter-include slot="websiteeditor/right" view-model="{{model.Sections.Right}}"></starcounter-include>
     </template>
     <template is="declarative-shadow-dom">
         <style>
@@ -19,10 +19,10 @@
         </style>
         <section class="website-sidebartemplate">
             <section class="website-sidebartemplate__left">
-                <slot name="website/left"></slot>
+                <slot name="websiteeditor/left"></slot>
             </section>
             <section class="website-sidebartemplate__right">
-                <slot name="website/right"></slot>
+                <slot name="websiteeditor/right"></slot>
             </section>
         </section>
     </template>

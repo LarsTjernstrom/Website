@@ -1,36 +1,36 @@
 <template>
-    <style slot="website/global-style">
+    <style slot="websiteeditor/global-style">
         body {
             margin: 0;
         }
     </style>
     <template is="dom-bind" name="holygrail">
-        <starcounter-include slot="website/header" view-model="{{model.Sections.Header}}"></starcounter-include>
-        <starcounter-include slot="website/left" view-model="{{model.Sections.Left}}"></starcounter-include>
-        <starcounter-include slot="website/content" view-model="{{model.Sections.Content}}"></starcounter-include>
-        <starcounter-include slot="website/right" view-model="{{model.Sections.Right}}"></starcounter-include>
-        <starcounter-include slot="website/footer" view-model="{{model.Sections.Footer}}"></starcounter-include>
+        <starcounter-include slot="websiteeditor/header" view-model="{{model.Sections.Header}}"></starcounter-include>
+        <starcounter-include slot="websiteeditor/left" view-model="{{model.Sections.Left}}"></starcounter-include>
+        <starcounter-include slot="websiteeditor/content" view-model="{{model.Sections.Content}}"></starcounter-include>
+        <starcounter-include slot="websiteeditor/right" view-model="{{model.Sections.Right}}"></starcounter-include>
+        <starcounter-include slot="websiteeditor/footer" view-model="{{model.Sections.Footer}}"></starcounter-include>
     </template>
     <template is="declarative-shadow-dom">
-        <slot name="website/global-style"></slot>
+        <slot name="websiteeditor/global-style"></slot>
         <style>
             @import url("/WebsiteEditor/css/holygrail.css");
         </style>
         <section class="website-holygrail">
             <section class="website-holygrail__header">
-                <slot name="website/header"></slot>
+                <slot name="websiteeditor/header"></slot>
             </section>
             <section class="website-holygrail__left">
-                <slot name="website/left"></slot>
+                <slot name="websiteeditor/left"></slot>
             </section>
             <section class="website-holygrail__content">
-                <slot name="website/content"></slot>
+                <slot name="websiteeditor/content"></slot>
             </section>
             <section class="website-holygrail__right">
-                <slot name="website/right"></slot>
+                <slot name="websiteeditor/right"></slot>
             </section>
             <section class="website-holygrail__footer">
-                <slot name="website/footer"></slot>
+                <slot name="websiteeditor/footer"></slot>
             </section>
         </section>
     </template>

@@ -107,7 +107,7 @@
     <Folder Include="wwwroot\sys\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="wwwroot\WebsiteEditor\css\website.css" />
+    <Content Include="wwwroot\WebsiteEditor\css\websiteeditor.css" />
     <Content Include="wwwroot\WebsiteEditor\css\holygrail.css" />
     <TypedJSON Include="ViewModels\CmsHelp.json">
       <Generator>MsBuild:Compile</Generator>
@@ -117,7 +117,7 @@
     </TypedJSON>
     <None Include="wwwroot\WebsiteEditor\templates\SidebarTemplate.html" />
     <None Include="wwwroot\WebsiteEditor\templates\AppHubTemplate.html" />
-    <Content Include="wwwroot\WebsiteEditor\images\website.png" />
+    <Content Include="wwwroot\WebsiteEditor\images\websiteeditor.png" />
     <None Include="wwwroot\WebsiteEditor\templates\HolyGrailTemplate.html" />
     <Content Include="wwwroot\WebsiteEditor\templates\DefaultTemplate.html" />
     <None Include="wwwroot\WebsiteEditor\viewmodels\CmsHelp.html" />

@@ -2,7 +2,7 @@
 <link rel="import" href="/sys/polymer/polymer.html" />
 
 <template>
-    <style slot="website/global-style" shim-shadowdom>
+    <style slot="websiteeditor/global-style" shim-shadowdom>
         html,
         body {
             font-family: Calibri, Helvetica, Arial, sans-serif;
@@ -155,23 +155,23 @@
         }
     </style>
     <template is="dom-bind">
-        <a slot="website/icon" href="/launcher" class="launcher-home-button"><i class="glyphicon glyphicon-home launcher-home-button__icon"></i></a>
-        <div slot="website/search" class="launcher-search">
+        <a slot="websiteeditor/icon" href="/launcher" class="launcher-home-button"><i class="glyphicon glyphicon-home launcher-home-button__icon"></i></a>
+        <div slot="websiteeditor/search" class="launcher-search">
             <a href="javascript:" value="{{model.searchBar.submit$}}" class="launcher-search__link" onclick="++this.value">
                 <i class="glyphicon glyphicon-search launcher-search__icon"></i>
             </a>
             <input type="text" class="launcher-search__input" placeholder="Search">
         </div>
-        <starcounter-include slot="website/topbar" view-model="{{model.Sections.TopBar}}" class="launcher-topbar"></starcounter-include>
-        <a slot="website/settings" href="/launcher/settings" class="launcher-settings-button"><img class="launcher-settings-button__icon" src="/WebsiteEditor/images/cog.svg" /></a>
-        <website-launchertemplate-menu slot="website/leftbar">
+        <starcounter-include slot="websiteeditor/topbar" view-model="{{model.Sections.TopBar}}" class="launcher-topbar"></starcounter-include>
+        <a slot="websiteeditor/settings" href="/launcher/settings" class="launcher-settings-button"><img class="launcher-settings-button__icon" src="/WebsiteEditor/images/cog.svg" /></a>
+        <website-launchertemplate-menu slot="websiteeditor/leftbar">
             <starcounter-include view-model="{{model.Sections.LeftBar}}"></starcounter-include>
             <ul class="launcher-menu"></ul>
         </website-launchertemplate-menu>
-        <starcounter-include slot="website/main" view-model="{{model.Sections.Main}}"></starcounter-include>
+        <starcounter-include slot="websiteeditor/main" view-model="{{model.Sections.Main}}"></starcounter-include>
     </template>
     <template is="declarative-shadow-dom">
-        <slot name="website/global-style"></slot>
+        <slot name="websiteeditor/global-style"></slot>
         <style shim-shadowdom>
             .launcher-layout {
                 display: flex;
@@ -230,21 +230,21 @@
         <div class="launcher-layout">
             <div class="launcher-layout__top">
                 <div class="launcher-layout__top-left">
-                    <slot name="website/icon"></slot>
-                    <slot name="website/search"></slot>
+                    <slot name="websiteeditor/icon"></slot>
+                    <slot name="websiteeditor/search"></slot>
                 </div>
                 <div class="launcher-layout__top-right">
-                    <slot name="website/topbar"></slot>
-                    <slot name="website/settings"></slot>
+                    <slot name="websiteeditor/topbar"></slot>
+                    <slot name="websiteeditor/settings"></slot>
                 </div>
             </div>
             <div class="launcher-layout__content">
                 <div class="launcher-layout__leftbar">
-                    <slot name="website/leftbar"></slot>
+                    <slot name="websiteeditor/leftbar"></slot>
                 </div>
                 <div class="launcher-layout__main">
                     <div class="launcher-layout__padded">
-                        <slot name="website/main"></slot>
+                        <slot name="websiteeditor/main"></slot>
                     </div>
                 </div>
             </div>
