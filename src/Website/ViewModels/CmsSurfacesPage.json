@@ -9,7 +9,9 @@
         }
     ],
 
-    "CanSave": false, 
+    "Trn": {
+        "IsDirty": false
+    },
     "Create$": 0,
     "Restore$": 0,
     "SaveChanges$": 0,

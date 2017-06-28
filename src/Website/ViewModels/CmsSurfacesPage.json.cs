@@ -10,12 +10,7 @@ namespace Website
         {
             this.Surfaces.Clear();
             this.Surfaces.Data = Db.SQL<WebTemplate>("SELECT t FROM Simplified.Ring6.WebTemplate t ORDER BY t.Name");
-            //this.CanSave = !this.Transaction.IsDirty;
-            //this.Trn.Data = Session.Current.Data.Transaction as Transaction;
-            var a = this.Transaction == null;
-            var b = Session.Current.Data.Transaction as Transaction;
-            var c = this.Transaction as Transaction;
-            this.CanSave = !a;
+            this.Trn.Data = this.Transaction as Transaction;
         }
 
         void Handle(Input.Restore Action)

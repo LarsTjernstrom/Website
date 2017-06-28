@@ -4,11 +4,11 @@
             <legend>
                 <span class="pull-right">
                     <button type="button" class="btn btn-xs btn-success" value="{{model.SaveChanges$::click}}"
-                            onmousedown="++this.value;" disabled="{{!model.CanSave}}" title="Save all changes">
+                            onmousedown="++this.value;" disabled="{{!model.Trn.IsDirty}}" title="Save all changes">
                         Save
                     </button>
                     <button type="button" class="btn btn-xs btn-default" value="{{model.CancelChanges$::click}}"
-                            onmousedown="++this.value;" disabled="{{!model.CanSave}}" title="Cancel all changes">
+                            onmousedown="++this.value;" disabled="{{!model.Trn.IsDirty}}" title="Cancel all changes">
                         Cancel
                     </button>
                     <button type="button" class="btn btn-xs btn-default" value="{{model.Create$::click}}"
