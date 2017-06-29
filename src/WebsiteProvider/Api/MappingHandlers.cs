@@ -57,16 +57,13 @@ namespace WebsiteProvider
 
         public void UpdatePinningRule(WebMap webMap)
         {
-            var newUri = webMap.ForeignUrl;
-            webMap.ForeignUrl = GetOldUri(webMap);
-            this.UnmapPinningRule(webMap);
-
-            webMap.ForeignUrl = newUri;
+            this.UnmapPinningRule(webMap, GetOldUri(webMap));
             this.MapPinningRule(webMap);
         }
 
-        public void UnmapPinningRule(WebMap webMap)
+        public void UnmapPinningRule(WebMap webMap, string webMapForeignUrl = null)
         {
+            webMapForeignUrl = webMapForeignUrl ?? webMap.ForeignUrl;
             if (webMap.Section?.Template == null)
             {
                 // if the Blending Point (WebSection) or the Surface (WebTemplate) was deleted earlier
@@ -76,7 +73,7 @@ namespace WebsiteProvider
             string token = webMap.GetMappingToken();
             string mapUri = webMap.GetMappingUrl();
 
-            Blender.UnmapUri(webMap.ForeignUrl, token);
+            Blender.UnmapUri(webMapForeignUrl, token);
 
             if (webMap.Url != null)
             {
