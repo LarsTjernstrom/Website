@@ -20,9 +20,13 @@ namespace WebsiteEditor
 
         protected void RefreshSignInState()
         {
-            var page = Session.Current.Data as MasterPage;
+            Session.ScheduleTask(Session.Current.SessionId, (session, id) =>
+            {
+                var page = Session.Current.Data as MasterPage;
 
-            page?.RefreshCurrentPage();
+                page?.Transaction.Scope(() => page.RefreshCurrentPage());
+                Session.Current.CalculatePatchAndPushOnWebSocket();
+            });
         }
     }
 }
