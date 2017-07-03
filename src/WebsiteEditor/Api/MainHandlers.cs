@@ -1,7 +1,8 @@
 ﻿using System;
 using Starcounter;
+using WebsiteEditor.Helpers;
 
-namespace WebsiteEditor
+namespace WebsiteEditor.Api
 {
     public class MainHandlers
     {

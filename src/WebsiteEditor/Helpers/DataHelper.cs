@@ -1,7 +1,7 @@
 ﻿using Starcounter;
 using Simplified.Ring6;
 
-namespace Website
+namespace WebsiteEditor.Helpers
 {
     public class DataHelper
     {
