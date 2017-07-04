@@ -27,12 +27,13 @@ namespace WebsiteProvider
 
         public void MapPinningRule(WebMap webMap, string registeredSectionUri = null)
         {
+            string sectionUri = registeredSectionUri ?? webMap.Section.GetMappingUrl();
+
             if (registeredSectionUri == null)
             {
                 RegisterEmptyHandler(sectionUri);
             }
-            
-            string sectionUri = registeredSectionUri ?? webMap.Section.GetMappingUrl();
+
             string token = webMap.GetMappingToken();
             string mapUri = webMap.GetMappingUrl();
 
@@ -62,13 +63,13 @@ namespace WebsiteProvider
 
         public void UnmapPinningRule(WebMap webMap, string webMapForeignUrl = null)
         {
-            webMapForeignUrl = webMapForeignUrl ?? webMap.ForeignUrl;
             if (webMap.Section?.Template == null)
             {
                 // if the Blending Point (WebSection) or the Surface (WebTemplate) was deleted earlier
                 return;
             }
 
+            webMapForeignUrl = webMapForeignUrl ?? webMap.ForeignUrl;
             string token = webMap.GetMappingToken();
             string mapUri = webMap.GetMappingUrl();
 
