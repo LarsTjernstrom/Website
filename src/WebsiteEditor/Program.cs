@@ -1,7 +1,6 @@
 using System;
 using Starcounter;
-using WebsiteEditor.Api;
-using WebsiteEditor.Helpers;
+using WebsiteEditor;
 
 namespace WebsiteEditor {
     class Program {

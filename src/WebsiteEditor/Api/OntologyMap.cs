@@ -1,6 +1,6 @@
 ﻿using Starcounter;
 
-namespace WebsiteEditor.Api
+namespace WebsiteEditor
 {
     internal class OntologyMap
     {

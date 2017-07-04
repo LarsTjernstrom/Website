@@ -1,7 +1,7 @@
 ﻿using Starcounter;
 using Simplified.Ring5;
 
-namespace WebsiteEditor.Api
+namespace WebsiteEditor
 {
     internal class CommitHooks
     {
