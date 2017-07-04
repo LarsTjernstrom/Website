@@ -27,13 +27,12 @@ namespace WebsiteProvider
 
         public void MapPinningRule(WebMap webMap, string registeredSectionUri = null)
         {
-            var sectionUri = registeredSectionUri ?? webMap.Section.GetMappingUrl();
-
             if (registeredSectionUri == null)
             {
                 RegisterEmptyHandler(sectionUri);
             }
-
+            
+            string sectionUri = registeredSectionUri ?? webMap.Section.GetMappingUrl();
             string token = webMap.GetMappingToken();
             string mapUri = webMap.GetMappingUrl();
 
