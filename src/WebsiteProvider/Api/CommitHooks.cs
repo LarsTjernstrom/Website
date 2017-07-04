@@ -10,9 +10,7 @@ namespace WebsiteProvider
 
         public CommitHooks(MappingHandlers mappingHandlers)
         {
-            if (mappingHandlers == null) throw new ArgumentNullException(nameof(mappingHandlers));
-
-            MappingHandlers = mappingHandlers;
+            MappingHandlers = mappingHandlers ?? throw new ArgumentNullException(nameof(mappingHandlers));
         }
 
         public void Register()
@@ -27,9 +25,10 @@ namespace WebsiteProvider
                 MappingHandlers.UnmapPinningRule(webMap);
             };
 
-            //Hook<WebMap>.CommitUpdate += (s, webMap) =>
-            //{
-            //};
+            Hook<WebMap>.CommitUpdate += (s, webMap) =>
+            {
+                MappingHandlers.UpdatePinningRule(webMap);
+            };
 
             Hook<WebSection>.BeforeDelete += (s, webSection) =>
             {
