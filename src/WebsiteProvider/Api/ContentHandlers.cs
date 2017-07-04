@@ -85,7 +85,7 @@ namespace WebsiteProvider
 
             Application.Current.Use((Request request) =>
             {
-                //Mark this request to be wrapped by Website response middleware.
+                //Mark this request to be wrapped by Websiteeditor response middleware.
                 //Without this we would wrap ALL requests, including the ones that shouldn't be wrapped
                 //(e.g. "Sign out" button in SignIn app, which uses HandlerOptions.SkipRequestFilters = true)
                 //Remove this when we have a flag to disable all middleware

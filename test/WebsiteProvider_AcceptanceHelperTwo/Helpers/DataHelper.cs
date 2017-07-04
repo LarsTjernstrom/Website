@@ -31,7 +31,7 @@ namespace WebsiteProvider_AcceptanceHelperTwo
             surface = new WebTemplate
             {
                 Name = surfaceName,
-                Html = "/Website/surfaces/SidebarSurface.html"
+                Html = "/Websiteeditor/surfaces/SidebarSurface.html"
             };
 
             new WebSection

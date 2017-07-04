@@ -128,7 +128,7 @@ namespace WebsiteProvider_AcceptanceHelperOne
             surface = new WebTemplate
             {
                 Name = surfaceName,
-                Html = "/Website/surfaces/DefaultSurface.html"
+                Html = "/websiteeditor/surfaces/DefaultSurface.html"
             };
 
             new WebSection
@@ -157,7 +157,7 @@ namespace WebsiteProvider_AcceptanceHelperOne
             surface = new WebTemplate
             {
                 Name = surfaceName,
-                Html = "/Website/surfaces/HolyGrailSurface.html"
+                Html = "/Websiteeditor/surfaces/HolyGrailSurface.html"
             };
 
             new WebSection()
