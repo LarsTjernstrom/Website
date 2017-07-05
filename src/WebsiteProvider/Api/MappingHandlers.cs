@@ -7,8 +7,6 @@ namespace WebsiteProvider
 {
     public class MappingHandlers
     {
-        private readonly HandlerOptions selfOnlyOptions = new HandlerOptions { SelfOnly = true };
-
         public void Register()
         {
             var webSections = Db.SQL<WebSection>("SELECT ws FROM Simplified.Ring6.WebSection ws");
@@ -101,7 +99,7 @@ namespace WebsiteProvider
                 UnmapPinningRule(webMap);
             }
             Blender.UnmapUri(mapUri, token);
-            if (Handle.IsHandlerRegistered("GET " + mapUri, selfOnlyOptions))
+            if (Handle.IsHandlerRegistered("GET", mapUri))
             {
                 Handle.UnregisterHttpHandler("GET", mapUri);
             }
@@ -109,9 +107,9 @@ namespace WebsiteProvider
 
         private void RegisterEmptyHandler(string uri)
         {
-            if (!Handle.IsHandlerRegistered("GET " + uri, selfOnlyOptions))
+            if (!Handle.IsHandlerRegistered("GET", uri))
             {
-                Handle.GET(uri, () => new Json(), selfOnlyOptions);
+                Handle.GET(uri, () => new Json(), new HandlerOptions { SelfOnly = true });
             }
         }
 
