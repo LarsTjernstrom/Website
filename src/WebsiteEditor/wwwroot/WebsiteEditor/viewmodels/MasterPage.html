@@ -1,0 +1,28 @@
+﻿<link href="/WebsiteEditor/css/websiteeditor.css" rel="stylesheet" />
+
+<template>
+    <template is="dom-bind">
+        <nav class="website-top-menu-panel">
+            <ul class="website-top-menu">
+                <li class="website-top-menu__item">
+                    <a href="/WebsiteEditor/cms" class="website-top-menu-item__link">Home</a>
+                </li>
+                <li class="website-top-menu__item">
+                    <a href="/WebsiteEditor/cms/surfaces" class="website-top-menu-item__link">Surfaces</a>
+                </li>
+                <li class="website-top-menu__item">
+                    <a href="/WebsiteEditor/cms/blendingpoints" class="website-top-menu-item__link">Blending points</a>
+                </li>
+                <li class="website-top-menu__item">
+                    <a href="/WebsiteEditor/cms/catchingrules" class="website-top-menu-item__link">Catching rules</a>
+                </li>
+                <li class="website-top-menu__item">
+                    <a href="/WebsiteEditor/cms/pinningrules" class="website-top-menu-item__link">Pinning rules</a>
+                </li>
+            </ul>
+        </nav>
+        <div class="website-body">
+            <starcounter-include view-model="{{model.CurrentPage}}"></starcounter-include>
+        </div>
+    </template>
+</template>

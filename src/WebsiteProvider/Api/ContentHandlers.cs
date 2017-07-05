@@ -36,7 +36,8 @@ namespace WebsiteProvider
             {
                 return Url;
             }
-            else {
+            else
+            {
                 return Url.Replace("{?}", Name);
             }
         }
@@ -60,7 +61,7 @@ namespace WebsiteProvider
 
                 if (template == null)
                 {
-                    throw new Exception("Default template is missing");
+                    throw new Exception("Default surface is missing");
                 }
 
                 SurfacePage surfacePage = GetSurfacePage(template);
@@ -84,7 +85,7 @@ namespace WebsiteProvider
 
             Application.Current.Use((Request request) =>
             {
-                //Mark this request to be wrapped by Website response middleware.
+                //Mark this request to be wrapped by Websiteeditor response middleware.
                 //Without this we would wrap ALL requests, including the ones that shouldn't be wrapped
                 //(e.g. "Sign out" button in SignIn app, which uses HandlerOptions.SkipRequestFilters = true)
                 //Remove this when we have a flag to disable all middleware
@@ -149,7 +150,7 @@ namespace WebsiteProvider
         {
             foreach (WebSection section in content.Data.Sections)
             {
-                var sectionJson = (SectionPage) content.Sections[section.Name];
+                var sectionJson = (SectionPage)content.Sections[section.Name];
 
                 var uri = section.GetMappingUrl(url);
                 sectionJson.PinContent = Self.GET(uri);
