@@ -87,6 +87,9 @@
     <Compile Include="ViewModels\CmsHelp.json.cs">
       <DependentUpon>CmsHelp.json</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\CmsSurfaceGroupsPage.json.cs">
+      <DependentUpon>CmsSurfaceGroupsPage.json</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\CmsSurfacesPage.json.cs">
       <DependentUpon>CmsSurfacesPage.json</DependentUpon>
     </Compile>
@@ -115,6 +118,9 @@
     <TypedJSON Include="ViewModels\AppName.json">
       <Generator>MsBuild:Compile</Generator>
     </TypedJSON>
+    <TypedJSON Include="ViewModels\CmsSurfaceGroupsPage.json">
+      <Generator>MsBuild:Compile</Generator>
+    </TypedJSON>
     <None Include="wwwroot\WebsiteEditor\surfaces\SidebarSurface.html" />
     <Content Include="wwwroot\WebsiteEditor\images\websiteeditor.png" />
     <None Include="wwwroot\WebsiteEditor\surfaces\HolyGrailSurface.html" />
@@ -124,6 +130,7 @@
     <Content Include="wwwroot\WebsiteEditor\viewmodels\CmsPinningRulesPage.html" />
     <Content Include="wwwroot\WebsiteEditor\viewmodels\CmsPage.html" />
     <Content Include="wwwroot\WebsiteEditor\viewmodels\CmsBlendingPointsPage.html" />
+    <None Include="wwwroot\WebsiteEditor\viewmodels\CmsSurfaceGroupsPage.html" />
     <Content Include="wwwroot\WebsiteEditor\viewmodels\CmsSurfacesPage.html" />
     <Content Include="wwwroot\WebsiteEditor\viewmodels\CmsCatchingRulesPage.html" />
     <Content Include="wwwroot\WebsiteEditor\viewmodels\DenyPage.html" />

@@ -1,6 +1,7 @@
 ﻿using System;
 using Starcounter;
 using WebsiteEditor;
+using WebsiteEditor.ViewModels;
 
 namespace WebsiteEditor
 {
@@ -55,7 +56,19 @@ namespace WebsiteEditor
                 });
             });
 
-            Handle.GET("/WebsiteEditor/cms/surfaces", () => 
+            Handle.GET("/WebsiteEditor/cms/surfaceGroups", () =>
+            {
+                return Db.Scope<MasterPage>(() =>
+                {
+                    MasterPage master = this.GetMasterPageFromSession();
+
+                    master.RefreshCurrentPage("/WebsiteEditor/partials/cms/surfaceGroups");
+
+                    return master;
+                });
+            });
+
+            Handle.GET("/WebsiteEditor/cms/surfaces", () =>
             {
                 return Db.Scope<MasterPage>(() =>
                 {
@@ -67,7 +80,7 @@ namespace WebsiteEditor
                 });
             });
 
-            Handle.GET("/WebsiteEditor/cms/blendingpoints", () => 
+            Handle.GET("/WebsiteEditor/cms/blendingpoints", () =>
             {
                 return Db.Scope<MasterPage>(() =>
                 {
@@ -79,7 +92,7 @@ namespace WebsiteEditor
                 });
             });
 
-            Handle.GET("/WebsiteEditor/cms/catchingrules", () => 
+            Handle.GET("/WebsiteEditor/cms/catchingrules", () =>
             {
                 return Db.Scope<MasterPage>(() =>
                 {
@@ -91,7 +104,7 @@ namespace WebsiteEditor
                 });
             });
 
-            Handle.GET("/WebsiteEditor/cms/pinningrules", () => 
+            Handle.GET("/WebsiteEditor/cms/pinningrules", () =>
             {
                 return Db.Scope<MasterPage>(() =>
                 {
@@ -113,7 +126,17 @@ namespace WebsiteEditor
                 return page;
             });
 
-            Handle.GET("/WebsiteEditor/partials/cms/surfaces", () => {
+            Handle.GET("/WebsiteEditor/partials/cms/surfaceGroups", () =>
+            {
+                CmsSurfaceGroupsPage page = new CmsSurfaceGroupsPage();
+
+                page.RefreshData();
+
+                return page;
+            });
+
+            Handle.GET("/WebsiteEditor/partials/cms/surfaces", () =>
+            {
                 CmsSurfacesPage page = new CmsSurfacesPage();
 
                 page.RefreshData();
@@ -121,7 +144,8 @@ namespace WebsiteEditor
                 return page;
             });
 
-            Handle.GET("/WebsiteEditor/partials/cms/blendingpoints", () => {
+            Handle.GET("/WebsiteEditor/partials/cms/blendingpoints", () =>
+            {
                 CmsBlendingPointsPage page = new CmsBlendingPointsPage();
 
                 page.RefreshData();
@@ -129,7 +153,8 @@ namespace WebsiteEditor
                 return page;
             });
 
-            Handle.GET("/WebsiteEditor/partials/cms/catchingrules", () => {
+            Handle.GET("/WebsiteEditor/partials/cms/catchingrules", () =>
+            {
                 CmsCatchingRulesPage page = new CmsCatchingRulesPage();
 
                 page.RefreshData();
@@ -137,7 +162,8 @@ namespace WebsiteEditor
                 return page;
             });
 
-            Handle.GET("/WebsiteEditor/partials/cms/pinningrules", () => {
+            Handle.GET("/WebsiteEditor/partials/cms/pinningrules", () =>
+            {
                 CmsPinningRulesPage page = new CmsPinningRulesPage();
 
                 page.RefreshData();
