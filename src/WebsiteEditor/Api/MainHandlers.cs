@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using Simplified.Ring6;
 using Starcounter;
 using WebsiteEditor;
 using WebsiteEditor.ViewModels;
@@ -39,78 +41,83 @@ namespace WebsiteEditor
                 return 200;
             });
 
-            Handle.GET("/websiteeditor", () =>
-            {
-                return Self.GET("/WebsiteEditor/cms");
-            });
+            Handle.GET("/websiteeditor", () => Self.GET("/WebsiteEditor/surfaceGroups"));
 
-            Handle.GET("/WebsiteEditor/cms", () =>
+            Handle.GET("/WebsiteEditor/surfaceGroups", () =>
             {
                 return Db.Scope<MasterPage>(() =>
                 {
                     MasterPage master = this.GetMasterPageFromSession();
-
-                    master.RefreshCurrentPage("/WebsiteEditor/partials/cms");
+                    master.ShowNavigation = false;
+                    master.RefreshCurrentPage("/WebsiteEditor/partials/surfaceGroups");
 
                     return master;
                 });
             });
 
-            Handle.GET("/WebsiteEditor/cms/surfaceGroups", () =>
+            Handle.GET("/WebsiteEditor/surface/{?}/general", (string key) =>
             {
                 return Db.Scope<MasterPage>(() =>
                 {
                     MasterPage master = this.GetMasterPageFromSession();
+                    master.ShowNavigation = true;
+                    master.Surface.Data = Db.SQL<WebTemplate>("SELECT t FROM Simplified.Ring6.WebTemplate t WHERE t.Key = ?", key).First();
 
-                    master.RefreshCurrentPage("/WebsiteEditor/partials/cms/surfaceGroups");
+                    master.RefreshCurrentPage("/WebsiteEditor/partials/general");
 
                     return master;
                 });
             });
 
-            Handle.GET("/WebsiteEditor/cms/surfaces", () =>
+            //Handle.GET("/WebsiteEditor/surfaces", () =>
+            //{
+            //    return Db.Scope<MasterPage>(() =>
+            //    {
+            //        MasterPage master = this.GetMasterPageFromSession();
+
+            //        master.RefreshCurrentPage("/WebsiteEditor/partials/surfaces");
+
+            //        return master;
+            //    });
+            //});
+
+            Handle.GET("/WebsiteEditor/surface/{?}/blendingpoints", (string key) =>
             {
                 return Db.Scope<MasterPage>(() =>
                 {
                     MasterPage master = this.GetMasterPageFromSession();
+                    master.ShowNavigation = true;
+                    master.Surface.Data = Db.SQL<WebTemplate>("SELECT t FROM Simplified.Ring6.WebTemplate t WHERE t.Key = ?", key).First();
 
-                    master.RefreshCurrentPage("/WebsiteEditor/partials/cms/surfaces");
+                    master.RefreshCurrentPage("/WebsiteEditor/partials/blendingpoints");
 
                     return master;
                 });
             });
 
-            Handle.GET("/WebsiteEditor/cms/blendingpoints", () =>
+            Handle.GET("/WebsiteEditor/surface/{?}/catchingrules", (string key) =>
             {
                 return Db.Scope<MasterPage>(() =>
                 {
                     MasterPage master = this.GetMasterPageFromSession();
+                    master.ShowNavigation = true;
+                    master.Surface.Data = Db.SQL<WebTemplate>("SELECT t FROM Simplified.Ring6.WebTemplate t WHERE t.Key = ?", key).First();
 
-                    master.RefreshCurrentPage("/WebsiteEditor/partials/cms/blendingpoints");
+                    master.RefreshCurrentPage("/WebsiteEditor/partials/catchingrules");
 
                     return master;
                 });
             });
 
-            Handle.GET("/WebsiteEditor/cms/catchingrules", () =>
+            Handle.GET("/WebsiteEditor/surface/{?}/pinningrules", (string key) =>
             {
                 return Db.Scope<MasterPage>(() =>
                 {
                     MasterPage master = this.GetMasterPageFromSession();
+                    master.ShowNavigation = true;
+                    master.Surface.Data = Db.SQL<WebTemplate>("SELECT t FROM Simplified.Ring6.WebTemplate t WHERE t.Key = ?", key).First();
 
-                    master.RefreshCurrentPage("/WebsiteEditor/partials/cms/catchingrules");
-
-                    return master;
-                });
-            });
-
-            Handle.GET("/WebsiteEditor/cms/pinningrules", () =>
-            {
-                return Db.Scope<MasterPage>(() =>
-                {
-                    MasterPage master = this.GetMasterPageFromSession();
-
-                    master.RefreshCurrentPage("/WebsiteEditor/partials/cms/pinningrules");
+                    master.RefreshCurrentPage("/WebsiteEditor/partials/pinningrules");
 
                     return master;
                 });
@@ -119,50 +126,48 @@ namespace WebsiteEditor
 
         protected void RegisterPartials()
         {
-            Handle.GET("/WebsiteEditor/partials/cms", () =>
+            Handle.GET("/WebsiteEditor/partials/surfaceGroups", () =>
             {
-                CmsPage page = new CmsPage();
-
-                return page;
-            });
-
-            Handle.GET("/WebsiteEditor/partials/cms/surfaceGroups", () =>
-            {
-                CmsSurfaceGroupsPage page = new CmsSurfaceGroupsPage();
+                SurfaceGroupsPage page = new SurfaceGroupsPage();
 
                 page.RefreshData();
 
                 return page;
             });
 
-            Handle.GET("/WebsiteEditor/partials/cms/surfaces", () =>
+            Handle.GET("/WebsiteEditor/partials/general", () =>
             {
-                CmsSurfacesPage page = new CmsSurfacesPage();
+                CmsGeneralPage page = new CmsGeneralPage();
+
+                return page;
+            });
+
+            //Handle.GET("/WebsiteEditor/partials/surfaces", () =>
+            //{
+            //    CmsSurfacesPage page = new CmsSurfacesPage();
+
+            //    page.RefreshData();
+
+            //    return page;
+            //});
+
+            Handle.GET("/WebsiteEditor/partials/blendingpoints", () =>
+            {
+                BlendingPointsPage page = new BlendingPointsPage();
+
+                return page;
+            });
+
+            Handle.GET("/WebsiteEditor/partials/catchingrules", () =>
+            {
+                CatchingRulesPage page = new CatchingRulesPage();
 
                 page.RefreshData();
 
                 return page;
             });
 
-            Handle.GET("/WebsiteEditor/partials/cms/blendingpoints", () =>
-            {
-                CmsBlendingPointsPage page = new CmsBlendingPointsPage();
-
-                page.RefreshData();
-
-                return page;
-            });
-
-            Handle.GET("/WebsiteEditor/partials/cms/catchingrules", () =>
-            {
-                CmsCatchingRulesPage page = new CmsCatchingRulesPage();
-
-                page.RefreshData();
-
-                return page;
-            });
-
-            Handle.GET("/WebsiteEditor/partials/cms/pinningrules", () =>
+            Handle.GET("/WebsiteEditor/partials/pinningrules", () =>
             {
                 CmsPinningRulesPage page = new CmsPinningRulesPage();
 

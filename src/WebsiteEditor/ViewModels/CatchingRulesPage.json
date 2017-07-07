@@ -1,11 +1,10 @@
 {
-    "Html": "/WebsiteEditor/viewmodels/CmsCatchingRulesPage.html",
-    "Surfaces": [
+    "Html": "/WebsiteEditor/viewmodels/CatchingRulesPage.html",
+    "Surface":
         {
             "Key": "",
             "Name": ""
-        }
-    ],
+        },
     "CatchingRules": [
         {
             "Key": "",

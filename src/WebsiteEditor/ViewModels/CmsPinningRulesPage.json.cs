@@ -1,12 +1,12 @@
 using Starcounter;
 using Simplified.Ring6;
 
-namespace WebsiteEditor {
+namespace WebsiteEditor
+{
     partial class CmsPinningRulesPage : Json
     {
         public void RefreshData()
         {
-
             this.BlendingPoints.Clear();
             this.CatchingRules.Clear();
             this.PinningRules.Clear();
