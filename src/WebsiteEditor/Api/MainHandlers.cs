@@ -137,7 +137,7 @@ namespace WebsiteEditor
 
             Handle.GET("/WebsiteEditor/partials/general", () =>
             {
-                CmsGeneralPage page = new CmsGeneralPage();
+                GeneralPage page = new GeneralPage();
 
                 return page;
             });
@@ -169,17 +169,14 @@ namespace WebsiteEditor
 
             Handle.GET("/WebsiteEditor/partials/pinningrules", () =>
             {
-                CmsPinningRulesPage page = new CmsPinningRulesPage();
+                PinningRulesPage page = new PinningRulesPage();
 
                 page.RefreshData();
 
                 return page;
             });
 
-            Handle.GET("/WebsiteEditor/partials/deny", () =>
-            {
-                return new DenyPage();
-            });
+            Handle.GET("/WebsiteEditor/partials/deny", () => new DenyPage());
         }
 
         protected MasterPage GetMasterPageFromSession()

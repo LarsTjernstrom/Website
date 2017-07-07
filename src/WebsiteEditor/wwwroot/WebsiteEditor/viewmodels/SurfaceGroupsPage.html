@@ -4,7 +4,7 @@
     <template is="dom-bind">
         <h1>Surface groups</h1>
         <br />
-        <p><b>Unassign surfaces</b></p>
+        <h3><b>Unassign surfaces</b> <span href="#" value="{{model.Create$::click}}" onmousedown="++this.value;" class="glyphicon glyphicon-plus-sign"></span></h3>
         <template is="dom-repeat" items="{{model.Surfaces}}">
             <a href="/WebsiteEditor/surface/{{item.Key}}/general" class="website-surface-groups__button">{{item.Name}}</a>
         </template>

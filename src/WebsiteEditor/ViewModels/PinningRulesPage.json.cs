@@ -1,18 +1,21 @@
 using Starcounter;
 using Simplified.Ring6;
+using WebsiteEditor.Helpers;
 
 namespace WebsiteEditor
 {
-    partial class CmsPinningRulesPage : Json
+    partial class PinningRulesPage : Json, IKnowSurfacePage
     {
+        public string SurfaceKey { get; set; }
         public void RefreshData()
         {
             this.BlendingPoints.Clear();
             this.CatchingRules.Clear();
             this.PinningRules.Clear();
-            this.CatchingRules.Data = Db.SQL<WebUrl>("SELECT u FROM Simplified.Ring6.WebUrl u ORDER BY u.Template.Name, u.Url");
-            this.BlendingPoints.Data = Db.SQL<WebSection>("SELECT s FROM Simplified.Ring6.WebSection s ORDER BY s.Template.Name, s.Name");
-            this.PinningRules.Data = Db.SQL<WebMap>("SELECT m FROM Simplified.Ring6.WebMap m ORDER BY m.Section.Template.Name, m.Section.Name, m.Url.Url");
+            var surface = Db.SQL<WebTemplate>("SELECT t FROM Simplified.Ring6.WebTemplate t WHERE t.Key = ?", SurfaceKey).First;
+            this.CatchingRules.Data = Db.SQL<WebUrl>("SELECT u FROM Simplified.Ring6.WebUrl u WHERE u.Template = ? ORDER BY u.Template.Name, u.Url", surface);
+            this.BlendingPoints.Data = Db.SQL<WebSection>("SELECT s FROM Simplified.Ring6.WebSection s WHERE s.Template = ? ORDER BY s.Template.Name, s.Name", surface);
+            this.PinningRules.Data = Db.SQL<WebMap>("SELECT m FROM Simplified.Ring6.WebMap m WHERE m.Section.Template = ?  ORDER BY m.Section.Template.Name, m.Section.Name, m.Url.Url", surface);
             this.Trn.Data = this.Transaction as Transaction;
         }
 
@@ -32,7 +35,7 @@ namespace WebsiteEditor
             this.PinningRules.Add().Data = new WebMap();
         }
 
-        [CmsPinningRulesPage_json.PinningRules]
+        [PinningRulesPage_json.PinningRules]
         partial class CmsPinningRulesItemPage : Json, IBound<WebMap>
         {
             protected override void OnData()
@@ -43,11 +46,11 @@ namespace WebsiteEditor
                 this.UrlKey = (this.Data != null && this.Data.Url != null) ? this.Data.Url.Key : string.Empty;
             }
 
-            CmsPinningRulesPage ParentPage
+            PinningRulesPage ParentPage
             {
                 get
                 {
-                    return this.Parent.Parent as CmsPinningRulesPage;
+                    return this.Parent.Parent as PinningRulesPage;
                 }
             }
 
@@ -82,7 +85,7 @@ namespace WebsiteEditor
             }
         }
 
-        [CmsPinningRulesPage_json.BlendingPoints]
+        [PinningRulesPage_json.BlendingPoints]
         partial class CmsPinningRulesBlendingPointPage : Json, IBound<WebSection>
         {
             protected override void OnData()
@@ -99,21 +102,21 @@ namespace WebsiteEditor
                 }
             }
 
-            CmsPinningRulesPage ParentPage
+            PinningRulesPage ParentPage
             {
                 get
                 {
-                    return this.Parent.Parent as CmsPinningRulesPage;
+                    return this.Parent.Parent as PinningRulesPage;
                 }
             }
         }
 
-        [CmsPinningRulesPage_json.CatchingRules]
+        [PinningRulesPage_json.CatchingRules]
         partial class CmsPinningRulesCatchingRulePage : Json, IBound<WebUrl>
         {
         }
 
-        [CmsPinningRulesPage_json.Trn]
+        [PinningRulesPage_json.Trn]
         partial class CmsPinningRulesTransactionPage : Json, IBound<Transaction>
         {
         }
