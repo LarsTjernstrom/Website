@@ -1,10 +1,8 @@
-using System;
 using Starcounter;
-using WebsiteEditor;
 using Simplified.Ring6;
 
-namespace WebsiteEditor {
-
+namespace WebsiteEditor
+{
     partial class CmsSurfacesPage : Json
     {
         public void RefreshData()

@@ -1,9 +1,7 @@
-using System;
 using Simplified.Ring6;
 using Starcounter;
-using WebsiteEditor.Helpers;
 
-namespace WebsiteEditor.ViewModels
+namespace WebsiteEditor
 {
     partial class GeneralPage : Json, IKnowSurfacePage
     {

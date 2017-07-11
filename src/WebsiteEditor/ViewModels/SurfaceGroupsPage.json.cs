@@ -1,7 +1,7 @@
 using Simplified.Ring6;
 using Starcounter;
 
-namespace WebsiteEditor.ViewModels
+namespace WebsiteEditor
 {
     partial class SurfaceGroupsPage : Json
     {
@@ -13,6 +13,7 @@ namespace WebsiteEditor.ViewModels
 
         void Handle(Input.Create action)
         {
+
             this.Surfaces.Add().Data = new WebTemplate { Name = "New surface" };
             this.Transaction.Commit();
             this.RefreshData();

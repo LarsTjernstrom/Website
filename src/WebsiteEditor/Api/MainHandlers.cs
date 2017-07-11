@@ -1,9 +1,6 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Simplified.Ring6;
 using Starcounter;
-using WebsiteEditor;
-using WebsiteEditor.ViewModels;
 
 namespace WebsiteEditor
 {
