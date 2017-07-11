@@ -1,6 +1,8 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Simplified.Ring6;
 using Starcounter;
+using WebsiteEditor.ViewModels;
 
 namespace WebsiteEditor
 {
@@ -46,6 +48,7 @@ namespace WebsiteEditor
                 {
                     MasterPage master = this.GetMasterPageFromSession();
                     master.ShowNavigation = false;
+
                     master.RefreshCurrentPage("/WebsiteEditor/partials/surfaceGroups");
 
                     return master;
@@ -60,7 +63,14 @@ namespace WebsiteEditor
                     master.ShowNavigation = true;
                     master.Surface.Data = Db.SQL<WebTemplate>("SELECT t FROM Simplified.Ring6.WebTemplate t WHERE t.Key = ?", key).First();
 
-                    master.RefreshCurrentPage("/WebsiteEditor/partials/general");
+                    try
+                    {
+                        master.RefreshCurrentPage("/WebsiteEditor/partials/general");
+                    }
+                    catch (InvalidOperationException ex)
+                    {
+                        master.CurrentPage = new ErrorPage { Message = ex.Message };
+                    }
 
                     return master;
                 });
@@ -86,7 +96,14 @@ namespace WebsiteEditor
                     master.ShowNavigation = true;
                     master.Surface.Data = Db.SQL<WebTemplate>("SELECT t FROM Simplified.Ring6.WebTemplate t WHERE t.Key = ?", key).First();
 
-                    master.RefreshCurrentPage("/WebsiteEditor/partials/blendingpoints");
+                    try
+                    {
+                        master.RefreshCurrentPage("/WebsiteEditor/partials/blendingpoints");
+                    }
+                    catch (InvalidOperationException ex)
+                    {
+                        master.CurrentPage = new ErrorPage { Message = ex.Message };
+                    }
 
                     return master;
                 });
@@ -100,7 +117,14 @@ namespace WebsiteEditor
                     master.ShowNavigation = true;
                     master.Surface.Data = Db.SQL<WebTemplate>("SELECT t FROM Simplified.Ring6.WebTemplate t WHERE t.Key = ?", key).First();
 
-                    master.RefreshCurrentPage("/WebsiteEditor/partials/catchingrules");
+                    try
+                    {
+                        master.RefreshCurrentPage("/WebsiteEditor/partials/catchingrules");
+                    }
+                    catch (InvalidOperationException ex)
+                    {
+                        master.CurrentPage = new ErrorPage { Message = ex.Message };
+                    }
 
                     return master;
                 });
@@ -114,7 +138,14 @@ namespace WebsiteEditor
                     master.ShowNavigation = true;
                     master.Surface.Data = Db.SQL<WebTemplate>("SELECT t FROM Simplified.Ring6.WebTemplate t WHERE t.Key = ?", key).First();
 
-                    master.RefreshCurrentPage("/WebsiteEditor/partials/pinningrules");
+                    try
+                    {
+                        master.RefreshCurrentPage("/WebsiteEditor/partials/pinningrules");
+                    }
+                    catch (InvalidOperationException ex)
+                    {
+                        master.CurrentPage = new ErrorPage { Message = ex.Message };
+                    }
 
                     return master;
                 });
@@ -159,16 +190,12 @@ namespace WebsiteEditor
             {
                 CatchingRulesPage page = new CatchingRulesPage();
 
-                page.RefreshData();
-
                 return page;
             });
 
             Handle.GET("/WebsiteEditor/partials/pinningrules", () =>
             {
                 PinningRulesPage page = new PinningRulesPage();
-
-                page.RefreshData();
 
                 return page;
             });

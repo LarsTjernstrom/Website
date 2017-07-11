@@ -119,7 +119,7 @@ body {
     text-decoration: none;
 }
 
-.website-surface-groups__plus-button {
+.website-surface-groups__add-button {
     width: 30px;
     height: 30px;
     text-align: center;
@@ -127,4 +127,8 @@ body {
     font-size: 12px;
     line-height: 1.428571429;
     border-radius: 15px;
+}
+
+.website-surface-groups__plus {
+    pointer-events: none;
 }

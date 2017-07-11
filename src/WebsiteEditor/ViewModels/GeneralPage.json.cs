@@ -1,3 +1,4 @@
+using System;
 using Simplified.Ring6;
 using Starcounter;
 
@@ -8,6 +9,11 @@ namespace WebsiteEditor
         public string SurfaceKey { get; set; }
         public void RefreshData()
         {
+            if (string.IsNullOrEmpty(SurfaceKey))
+            {
+                throw new InvalidOperationException("Surface key is empty.");
+            }
+
             this.Surface.Data = Db.SQL<WebTemplate>("SELECT t FROM Simplified.Ring6.WebTemplate t WHERE t.Key = ? ORDER BY t.Name", SurfaceKey).First;
             this.Trn.Data = this.Transaction as Transaction;
         }

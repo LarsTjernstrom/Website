@@ -1,3 +1,4 @@
+using System;
 using Starcounter;
 using Simplified.Ring6;
 
@@ -9,6 +10,11 @@ namespace WebsiteEditor
 
         public void RefreshData()
         {
+            if (string.IsNullOrEmpty(SurfaceKey))
+            {
+                throw new InvalidOperationException("Surface key is empty.");
+            }
+
             this.BlendingPoints.Clear();
             this.Surface.Data = Db.SQL<WebTemplate>("SELECT t FROM Simplified.Ring6.WebTemplate t WHERE t.Key = ? ORDER BY t.Name", SurfaceKey).First;
             this.BlendingPoints.Data = Db.SQL<WebSection>("SELECT s FROM Simplified.Ring6.WebSection s WHERE s.Template = ? ORDER BY s.Template.Name, s.Name", this.Surface.Data);

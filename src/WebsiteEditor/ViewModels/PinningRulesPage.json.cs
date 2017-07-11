@@ -1,3 +1,4 @@
+using System;
 using Starcounter;
 using Simplified.Ring6;
 
@@ -8,6 +9,11 @@ namespace WebsiteEditor
         public string SurfaceKey { get; set; }
         public void RefreshData()
         {
+            if (string.IsNullOrEmpty(SurfaceKey))
+            {
+                throw new InvalidOperationException("Surface key is empty.");
+            }
+
             this.BlendingPoints.Clear();
             this.CatchingRules.Clear();
             this.PinningRules.Clear();
