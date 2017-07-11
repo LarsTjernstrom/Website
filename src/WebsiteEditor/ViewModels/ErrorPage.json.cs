@@ -1,6 +1,6 @@
 using Starcounter;
 
-namespace WebsiteEditor.ViewModels
+namespace WebsiteEditor
 {
     partial class ErrorPage : Json
     {

@@ -2,7 +2,6 @@
 using System.Linq;
 using Simplified.Ring6;
 using Starcounter;
-using WebsiteEditor.ViewModels;
 
 namespace WebsiteEditor
 {
@@ -62,31 +61,11 @@ namespace WebsiteEditor
                     MasterPage master = this.GetMasterPageFromSession();
                     master.ShowNavigation = true;
                     master.Surface.Data = Db.SQL<WebTemplate>("SELECT t FROM Simplified.Ring6.WebTemplate t WHERE t.Key = ?", key).First();
-
-                    try
-                    {
-                        master.RefreshCurrentPage("/WebsiteEditor/partials/general");
-                    }
-                    catch (InvalidOperationException ex)
-                    {
-                        master.CurrentPage = new ErrorPage { Message = ex.Message };
-                    }
+                    SetMasterCurrentPage(master, "/WebsiteEditor/partials/general");
 
                     return master;
                 });
             });
-
-            //Handle.GET("/WebsiteEditor/surfaces", () =>
-            //{
-            //    return Db.Scope<MasterPage>(() =>
-            //    {
-            //        MasterPage master = this.GetMasterPageFromSession();
-
-            //        master.RefreshCurrentPage("/WebsiteEditor/partials/surfaces");
-
-            //        return master;
-            //    });
-            //});
 
             Handle.GET("/WebsiteEditor/surface/{?}/blendingpoints", (string key) =>
             {
@@ -95,15 +74,7 @@ namespace WebsiteEditor
                     MasterPage master = this.GetMasterPageFromSession();
                     master.ShowNavigation = true;
                     master.Surface.Data = Db.SQL<WebTemplate>("SELECT t FROM Simplified.Ring6.WebTemplate t WHERE t.Key = ?", key).First();
-
-                    try
-                    {
-                        master.RefreshCurrentPage("/WebsiteEditor/partials/blendingpoints");
-                    }
-                    catch (InvalidOperationException ex)
-                    {
-                        master.CurrentPage = new ErrorPage { Message = ex.Message };
-                    }
+                    SetMasterCurrentPage(master, "/WebsiteEditor/partials/blendingpoints");
 
                     return master;
                 });
@@ -116,15 +87,7 @@ namespace WebsiteEditor
                     MasterPage master = this.GetMasterPageFromSession();
                     master.ShowNavigation = true;
                     master.Surface.Data = Db.SQL<WebTemplate>("SELECT t FROM Simplified.Ring6.WebTemplate t WHERE t.Key = ?", key).First();
-
-                    try
-                    {
-                        master.RefreshCurrentPage("/WebsiteEditor/partials/catchingrules");
-                    }
-                    catch (InvalidOperationException ex)
-                    {
-                        master.CurrentPage = new ErrorPage { Message = ex.Message };
-                    }
+                    SetMasterCurrentPage(master, "/WebsiteEditor/partials/catchingrules");
 
                     return master;
                 });
@@ -137,15 +100,7 @@ namespace WebsiteEditor
                     MasterPage master = this.GetMasterPageFromSession();
                     master.ShowNavigation = true;
                     master.Surface.Data = Db.SQL<WebTemplate>("SELECT t FROM Simplified.Ring6.WebTemplate t WHERE t.Key = ?", key).First();
-
-                    try
-                    {
-                        master.RefreshCurrentPage("/WebsiteEditor/partials/pinningrules");
-                    }
-                    catch (InvalidOperationException ex)
-                    {
-                        master.CurrentPage = new ErrorPage { Message = ex.Message };
-                    }
+                    SetMasterCurrentPage(master, "/WebsiteEditor/partials/pinningrules");
 
                     return master;
                 });
@@ -163,42 +118,13 @@ namespace WebsiteEditor
                 return page;
             });
 
-            Handle.GET("/WebsiteEditor/partials/general", () =>
-            {
-                GeneralPage page = new GeneralPage();
+            Handle.GET("/WebsiteEditor/partials/general", () => new GeneralPage());
 
-                return page;
-            });
+            Handle.GET("/WebsiteEditor/partials/blendingpoints", () => new BlendingPointsPage());
 
-            //Handle.GET("/WebsiteEditor/partials/surfaces", () =>
-            //{
-            //    CmsSurfacesPage page = new CmsSurfacesPage();
+            Handle.GET("/WebsiteEditor/partials/catchingrules", () => new CatchingRulesPage());
 
-            //    page.RefreshData();
-
-            //    return page;
-            //});
-
-            Handle.GET("/WebsiteEditor/partials/blendingpoints", () =>
-            {
-                BlendingPointsPage page = new BlendingPointsPage();
-
-                return page;
-            });
-
-            Handle.GET("/WebsiteEditor/partials/catchingrules", () =>
-            {
-                CatchingRulesPage page = new CatchingRulesPage();
-
-                return page;
-            });
-
-            Handle.GET("/WebsiteEditor/partials/pinningrules", () =>
-            {
-                PinningRulesPage page = new PinningRulesPage();
-
-                return page;
-            });
+            Handle.GET("/WebsiteEditor/partials/pinningrules", () => new PinningRulesPage());
 
             Handle.GET("/WebsiteEditor/partials/deny", () => new DenyPage());
         }
@@ -219,6 +145,17 @@ namespace WebsiteEditor
             }
 
             return master;
+        }
+        private static void SetMasterCurrentPage(MasterPage master, string uri)
+        {
+            try
+            {
+                master.RefreshCurrentPage(uri);
+            }
+            catch (InvalidOperationException ex)
+            {
+                master.CurrentPage = new ErrorPage { Message = ex.Message };
+            }
         }
     }
 }

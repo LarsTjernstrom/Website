@@ -94,9 +94,6 @@
     <Compile Include="ViewModels\SurfaceGroupsPage.json.cs">
       <DependentUpon>SurfaceGroupsPage.json</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\CmsSurfacesPage.json.cs">
-      <DependentUpon>CmsSurfacesPage.json</DependentUpon>
-    </Compile>
     <Compile Include="ViewModels\CatchingRulesPage.json.cs">
       <DependentUpon>CatchingRulesPage.json</DependentUpon>
     </Compile>
@@ -142,7 +139,6 @@
     <Content Include="wwwroot\WebsiteEditor\viewmodels\PinningRulesPage.html" />
     <Content Include="wwwroot\WebsiteEditor\viewmodels\BlendingPointsPage.html" />
     <None Include="wwwroot\WebsiteEditor\viewmodels\SurfaceGroupsPage.html" />
-    <Content Include="wwwroot\WebsiteEditor\viewmodels\CmsSurfacesPage.html" />
     <Content Include="wwwroot\WebsiteEditor\viewmodels\CatchingRulesPage.html" />
     <Content Include="wwwroot\WebsiteEditor\viewmodels\DenyPage.html" />
     <Content Include="wwwroot\WebsiteEditor\viewmodels\MasterPage.html" />
@@ -160,9 +156,6 @@
       <Generator>MsBuild:Compile</Generator>
     </TypedJSON>
     <TypedJSON Include="ViewModels\BlendingPointsPage.json">
-      <Generator>MsBuild:Compile</Generator>
-    </TypedJSON>
-    <TypedJSON Include="ViewModels\CmsSurfacesPage.json">
       <Generator>MsBuild:Compile</Generator>
     </TypedJSON>
     <TypedJSON Include="ViewModels\MasterPage.json">
