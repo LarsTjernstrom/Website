@@ -89,7 +89,7 @@ body {
     font-size: 16px;
 }
 
-.website-surface-groups__button {
+.website-surface-groups-surface {
     color: #333;
     background-color: #D3D3D3;
     border-color: #ccc;
@@ -114,12 +114,12 @@ body {
     border-radius: 4px;
 }
 
-.website-surface-groups__button:hover {
+.website-surface-groups-surface:hover {
     background-color: #F3F3F3;
     text-decoration: none;
 }
 
-.website-surface-groups__add-button {
+.website-surface-groups-add {
     width: 30px;
     height: 30px;
     text-align: center;
@@ -129,6 +129,6 @@ body {
     border-radius: 15px;
 }
 
-.website-surface-groups__plus {
+.website-surface-groups-add__span {
     pointer-events: none;
 }
