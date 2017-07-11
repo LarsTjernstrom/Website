@@ -73,25 +73,29 @@
     <Compile Include="Api\MappingHandlers.cs" />
     <Compile Include="Api\OntologyMap.cs" />
     <Compile Include="Helpers\DataHelper.cs" />
+    <Compile Include="Helpers\IKnowSurfacePage.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModels\CmsPinningRulesPage.json.cs">
-      <DependentUpon>CmsPinningRulesPage.json</DependentUpon>
+    <Compile Include="ViewModels\ErrorPage.json.cs">
+      <DependentUpon>ErrorPage.json</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\CmsPage.json.cs">
-      <DependentUpon>CmsPage.json</DependentUpon>
+    <Compile Include="ViewModels\GeneralPage.json.cs">
+      <DependentUpon>GeneralPage.json</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\CmsBlendingPointsPage.json.cs">
-      <DependentUpon>CmsBlendingPointsPage.json</DependentUpon>
+    <Compile Include="ViewModels\PinningRulesPage.json.cs">
+      <DependentUpon>PinningRulesPage.json</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\BlendingPointsPage.json.cs">
+      <DependentUpon>BlendingPointsPage.json</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\CmsHelp.json.cs">
       <DependentUpon>CmsHelp.json</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\CmsSurfacesPage.json.cs">
-      <DependentUpon>CmsSurfacesPage.json</DependentUpon>
+    <Compile Include="ViewModels\SurfaceGroupsPage.json.cs">
+      <DependentUpon>SurfaceGroupsPage.json</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\CmsCatchingRulesPage.json.cs">
-      <DependentUpon>CmsCatchingRulesPage.json</DependentUpon>
+    <Compile Include="ViewModels\CatchingRulesPage.json.cs">
+      <DependentUpon>CatchingRulesPage.json</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\DenyPage.json.cs">
       <DependentUpon>DenyPage.json</DependentUpon>
@@ -115,17 +119,27 @@
     <TypedJSON Include="ViewModels\AppName.json">
       <Generator>MsBuild:Compile</Generator>
     </TypedJSON>
+    <TypedJSON Include="ViewModels\SurfaceGroupsPage.json">
+      <Generator>MsBuild:Compile</Generator>
+    </TypedJSON>
+    <TypedJSON Include="ViewModels\GeneralPage.json">
+      <Generator>MsBuild:Compile</Generator>
+    </TypedJSON>
+    <TypedJSON Include="ViewModels\ErrorPage.json">
+      <Generator>MsBuild:Compile</Generator>
+    </TypedJSON>
     <None Include="wwwroot\WebsiteEditor\surfaces\SidebarSurface.html" />
     <Content Include="wwwroot\WebsiteEditor\images\websiteeditor.png" />
     <None Include="wwwroot\WebsiteEditor\surfaces\HolyGrailSurface.html" />
     <Content Include="wwwroot\WebsiteEditor\surfaces\DefaultSurface.html" />
     <None Include="wwwroot\WebsiteEditor\viewmodels\CmsHelp.html" />
     <None Include="wwwroot\WebsiteEditor\viewmodels\AppIcon.html" />
-    <Content Include="wwwroot\WebsiteEditor\viewmodels\CmsPinningRulesPage.html" />
-    <Content Include="wwwroot\WebsiteEditor\viewmodels\CmsPage.html" />
-    <Content Include="wwwroot\WebsiteEditor\viewmodels\CmsBlendingPointsPage.html" />
-    <Content Include="wwwroot\WebsiteEditor\viewmodels\CmsSurfacesPage.html" />
-    <Content Include="wwwroot\WebsiteEditor\viewmodels\CmsCatchingRulesPage.html" />
+    <None Include="wwwroot\WebsiteEditor\viewmodels\GeneralPage.html" />
+    <None Include="wwwroot\WebsiteEditor\viewmodels\ErrorPage.html" />
+    <Content Include="wwwroot\WebsiteEditor\viewmodels\PinningRulesPage.html" />
+    <Content Include="wwwroot\WebsiteEditor\viewmodels\BlendingPointsPage.html" />
+    <None Include="wwwroot\WebsiteEditor\viewmodels\SurfaceGroupsPage.html" />
+    <Content Include="wwwroot\WebsiteEditor\viewmodels\CatchingRulesPage.html" />
     <Content Include="wwwroot\WebsiteEditor\viewmodels\DenyPage.html" />
     <Content Include="wwwroot\WebsiteEditor\viewmodels\MasterPage.html" />
   </ItemGroup>
@@ -135,22 +149,16 @@
     <TypedJSON Include="ViewModels\DenyPage.json">
       <Generator>MsBuild:Compile</Generator>
     </TypedJSON>
-    <TypedJSON Include="ViewModels\CmsPinningRulesPage.json">
+    <TypedJSON Include="ViewModels\PinningRulesPage.json">
       <Generator>MsBuild:Compile</Generator>
     </TypedJSON>
-    <TypedJSON Include="ViewModels\CmsCatchingRulesPage.json">
+    <TypedJSON Include="ViewModels\CatchingRulesPage.json">
       <Generator>MsBuild:Compile</Generator>
     </TypedJSON>
-    <TypedJSON Include="ViewModels\CmsBlendingPointsPage.json">
-      <Generator>MsBuild:Compile</Generator>
-    </TypedJSON>
-    <TypedJSON Include="ViewModels\CmsSurfacesPage.json">
+    <TypedJSON Include="ViewModels\BlendingPointsPage.json">
       <Generator>MsBuild:Compile</Generator>
     </TypedJSON>
     <TypedJSON Include="ViewModels\MasterPage.json">
-      <Generator>MsBuild:Compile</Generator>
-    </TypedJSON>
-    <TypedJSON Include="ViewModels\CmsPage.json">
       <Generator>MsBuild:Compile</Generator>
     </TypedJSON>
     <TypedJSON Include="ViewModels\JsonCache.json">

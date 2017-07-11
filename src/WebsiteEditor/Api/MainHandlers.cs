@@ -1,6 +1,7 @@
 ﻿using System;
+using System.Linq;
+using Simplified.Ring6;
 using Starcounter;
-using WebsiteEditor;
 
 namespace WebsiteEditor
 {
@@ -38,66 +39,68 @@ namespace WebsiteEditor
                 return 200;
             });
 
-            Handle.GET("/websiteeditor", () =>
-            {
-                return Self.GET("/WebsiteEditor/cms");
-            });
+            Handle.GET("/websiteeditor", () => Self.GET("/WebsiteEditor/surfaceGroups"));
 
-            Handle.GET("/WebsiteEditor/cms", () =>
+            Handle.GET("/WebsiteEditor/surfaceGroups", () =>
             {
                 return Db.Scope<MasterPage>(() =>
                 {
                     MasterPage master = this.GetMasterPageFromSession();
+                    master.ShowNavigation = false;
 
-                    master.RefreshCurrentPage("/WebsiteEditor/partials/cms");
+                    master.RefreshCurrentPage("/WebsiteEditor/partials/surfaceGroups");
 
                     return master;
                 });
             });
 
-            Handle.GET("/WebsiteEditor/cms/surfaces", () => 
+            Handle.GET("/WebsiteEditor/surface/{?}/general", (string key) =>
             {
                 return Db.Scope<MasterPage>(() =>
                 {
                     MasterPage master = this.GetMasterPageFromSession();
-
-                    master.RefreshCurrentPage("/WebsiteEditor/partials/cms/surfaces");
+                    master.ShowNavigation = true;
+                    master.Surface.Data = Db.SQL<WebTemplate>("SELECT t FROM Simplified.Ring6.WebTemplate t WHERE t.Key = ?", key).First();
+                    SetMasterCurrentPage(master, "/WebsiteEditor/partials/general");
 
                     return master;
                 });
             });
 
-            Handle.GET("/WebsiteEditor/cms/blendingpoints", () => 
+            Handle.GET("/WebsiteEditor/surface/{?}/blendingpoints", (string key) =>
             {
                 return Db.Scope<MasterPage>(() =>
                 {
                     MasterPage master = this.GetMasterPageFromSession();
-
-                    master.RefreshCurrentPage("/WebsiteEditor/partials/cms/blendingpoints");
+                    master.ShowNavigation = true;
+                    master.Surface.Data = Db.SQL<WebTemplate>("SELECT t FROM Simplified.Ring6.WebTemplate t WHERE t.Key = ?", key).First();
+                    SetMasterCurrentPage(master, "/WebsiteEditor/partials/blendingpoints");
 
                     return master;
                 });
             });
 
-            Handle.GET("/WebsiteEditor/cms/catchingrules", () => 
+            Handle.GET("/WebsiteEditor/surface/{?}/catchingrules", (string key) =>
             {
                 return Db.Scope<MasterPage>(() =>
                 {
                     MasterPage master = this.GetMasterPageFromSession();
-
-                    master.RefreshCurrentPage("/WebsiteEditor/partials/cms/catchingrules");
+                    master.ShowNavigation = true;
+                    master.Surface.Data = Db.SQL<WebTemplate>("SELECT t FROM Simplified.Ring6.WebTemplate t WHERE t.Key = ?", key).First();
+                    SetMasterCurrentPage(master, "/WebsiteEditor/partials/catchingrules");
 
                     return master;
                 });
             });
 
-            Handle.GET("/WebsiteEditor/cms/pinningrules", () => 
+            Handle.GET("/WebsiteEditor/surface/{?}/pinningrules", (string key) =>
             {
                 return Db.Scope<MasterPage>(() =>
                 {
                     MasterPage master = this.GetMasterPageFromSession();
-
-                    master.RefreshCurrentPage("/WebsiteEditor/partials/cms/pinningrules");
+                    master.ShowNavigation = true;
+                    master.Surface.Data = Db.SQL<WebTemplate>("SELECT t FROM Simplified.Ring6.WebTemplate t WHERE t.Key = ?", key).First();
+                    SetMasterCurrentPage(master, "/WebsiteEditor/partials/pinningrules");
 
                     return master;
                 });
@@ -106,49 +109,24 @@ namespace WebsiteEditor
 
         protected void RegisterPartials()
         {
-            Handle.GET("/WebsiteEditor/partials/cms", () =>
+            Handle.GET("/WebsiteEditor/partials/surfaceGroups", () =>
             {
-                CmsPage page = new CmsPage();
-
-                return page;
-            });
-
-            Handle.GET("/WebsiteEditor/partials/cms/surfaces", () => {
-                CmsSurfacesPage page = new CmsSurfacesPage();
+                SurfaceGroupsPage page = new SurfaceGroupsPage();
 
                 page.RefreshData();
 
                 return page;
             });
 
-            Handle.GET("/WebsiteEditor/partials/cms/blendingpoints", () => {
-                CmsBlendingPointsPage page = new CmsBlendingPointsPage();
+            Handle.GET("/WebsiteEditor/partials/general", () => new GeneralPage());
 
-                page.RefreshData();
+            Handle.GET("/WebsiteEditor/partials/blendingpoints", () => new BlendingPointsPage());
 
-                return page;
-            });
+            Handle.GET("/WebsiteEditor/partials/catchingrules", () => new CatchingRulesPage());
 
-            Handle.GET("/WebsiteEditor/partials/cms/catchingrules", () => {
-                CmsCatchingRulesPage page = new CmsCatchingRulesPage();
+            Handle.GET("/WebsiteEditor/partials/pinningrules", () => new PinningRulesPage());
 
-                page.RefreshData();
-
-                return page;
-            });
-
-            Handle.GET("/WebsiteEditor/partials/cms/pinningrules", () => {
-                CmsPinningRulesPage page = new CmsPinningRulesPage();
-
-                page.RefreshData();
-
-                return page;
-            });
-
-            Handle.GET("/WebsiteEditor/partials/deny", () =>
-            {
-                return new DenyPage();
-            });
+            Handle.GET("/WebsiteEditor/partials/deny", () => new DenyPage());
         }
 
         protected MasterPage GetMasterPageFromSession()
@@ -167,6 +145,17 @@ namespace WebsiteEditor
             }
 
             return master;
+        }
+        private static void SetMasterCurrentPage(MasterPage master, string uri)
+        {
+            try
+            {
+                master.RefreshCurrentPage(uri);
+            }
+            catch (InvalidOperationException ex)
+            {
+                master.CurrentPage = new ErrorPage { Message = ex.Message };
+            }
         }
     }
 }

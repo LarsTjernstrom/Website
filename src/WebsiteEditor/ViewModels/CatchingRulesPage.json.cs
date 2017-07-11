@@ -1,16 +1,23 @@
+using System;
 using Starcounter;
 using Simplified.Ring6;
 
 namespace WebsiteEditor
 {
-    partial class CmsCatchingRulesPage : Json
+    partial class CatchingRulesPage : Json, IKnowSurfacePage
     {
+        public string SurfaceKey { get; set; }
+
         public void RefreshData()
         {
+            if (string.IsNullOrEmpty(SurfaceKey))
+            {
+                throw new InvalidOperationException("Surface key is empty.");
+            }
+
             this.CatchingRules.Clear();
-            this.Surfaces.Clear();
-            this.Surfaces.Data = Db.SQL<WebTemplate>("SELECT t FROM Simplified.Ring6.WebTemplate t ORDER BY t.Name");
-            this.CatchingRules.Data = Db.SQL<WebUrl>("SELECT u FROM Simplified.Ring6.WebUrl u ORDER BY u.Template.Name, u.Url");
+            this.Surface.Data = Db.SQL<WebTemplate>("SELECT t FROM Simplified.Ring6.WebTemplate t WHERE t.Key = ? ORDER BY t.Name", SurfaceKey).First;
+            this.CatchingRules.Data = Db.SQL<WebUrl>("SELECT u FROM Simplified.Ring6.WebUrl u WHERE u.Template = ? ORDER BY u.Template.Name, u.Url", this.Surface.Data);
             this.Trn.Data = this.Transaction as Transaction;
         }
 
@@ -30,7 +37,7 @@ namespace WebsiteEditor
             this.CatchingRules.Add().Data = new WebUrl();
         }
 
-        [CmsCatchingRulesPage_json.CatchingRules]
+        [CatchingRulesPage_json.CatchingRules]
         partial class CmsCatchingRulesItemPage : Json, IBound<WebUrl>
         {
             protected override void OnData()
@@ -56,16 +63,16 @@ namespace WebsiteEditor
                 this.Data.Template = DbHelper.FromID(DbHelper.Base64DecodeObjectID(Action.Value)) as WebTemplate;
             }
 
-            CmsCatchingRulesPage ParentPage
+            CatchingRulesPage ParentPage
             {
                 get
                 {
-                    return this.Parent.Parent as CmsCatchingRulesPage;
+                    return this.Parent.Parent as CatchingRulesPage;
                 }
             }
         }
 
-        [CmsCatchingRulesPage_json.Trn]
+        [CatchingRulesPage_json.Trn]
         partial class CmsCatchingRulesTransactionPage : Json, IBound<Transaction>
         {
         }

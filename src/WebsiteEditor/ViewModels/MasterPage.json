@@ -1,5 +1,10 @@
 {
-    "Html": "/WebsiteEditor/viewmodels/MasterPage.html",
-    "PartialUrl": "",
-    "CurrentPage": { }
+  "Html": "/WebsiteEditor/viewmodels/MasterPage.html",
+  "PartialUrl": "",
+  "ShowNavigation": false,
+  "Surface": {
+    "Key": "",
+    "Name": ""
+  },
+  "CurrentPage": {}
 }

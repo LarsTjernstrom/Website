@@ -1,0 +1,14 @@
+{
+  "Html": "/WebsiteEditor/viewmodels/GeneralPage.html",
+  "Surface": {
+    "Key": "",
+    "Name$": "",
+    "Html$": ""
+  },
+  "Trn": {
+    "IsDirty": false
+  },
+  "Delete$": 0,
+  "Save$": 0,
+  "RedirectUrl$": ""
+}

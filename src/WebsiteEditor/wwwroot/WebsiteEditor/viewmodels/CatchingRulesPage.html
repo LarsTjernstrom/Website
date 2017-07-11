@@ -12,37 +12,32 @@
                         Cancel
                     </button>
                     <button type="button" class="btn btn-xs btn-default" value="{{model.Create$::click}}"
-                            onmousedown="++this.value;" title="Create blending point">
+                            onmousedown="++this.value;" title="Create catching rule">
                         Create
                     </button>
                 </span>
-                Blending points
+                Catching rules
             </legend>
             <table class="website-table table">
                 <thead>
                     <tr>
                         <th>Surface</th>
-                        <th>Blending point name</th>
-                        <th>Default</th>
+                        <th>Catch URI</th>
+                        <th>Final</th>
                         <th class="website-table__cell-actions"></th>
                     </tr>
                 </thead>
                 <tbody>
-                    <template is="dom-repeat" items="{{model.BlendingPoints}}">
+                    <template is="dom-repeat" items="{{model.CatchingRules}}">
                         <tr>
                             <td>
-                                <select class="website-table__control form-control" key="[[item.TemplateKey$]]" value="{{item.TemplateKey$::change}}">
-                                    <option value=""></option>
-                                    <template is="dom-repeat" items="{{model.Surfaces}}">
-                                        <option value="{{item.Key}}">{{item.Name}}</option>
-                                    </template>
-                                </select>
+                                <label class="website-table__label">{{model.Surface.Name}}</label>
                             </td>
                             <td>
-                                <input type="text" value="{{item.Name$::change}}" class="website-table__control form-control" />
+                                <input type="text" value="{{item.Url$::change}}" class="website-table__control form-control" />
                             </td>
                             <td>
-                                <input type="checkbox" checked="{{item.Default$::change}}" class="website-table__control " />
+                                <input type="checkbox" checked="{{item.IsFinal$::change}}" class="website-table__control"/>
                             </td>
                             <td>
                                 <button type="button" class="btn btn-xs btn-default" value="{{item.Delete$::click}}" onmousedown="++this.value;">Delete</button>

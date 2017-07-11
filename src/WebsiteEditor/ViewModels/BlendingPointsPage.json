@@ -1,11 +1,10 @@
 {
-    "Html": "/WebsiteEditor/viewmodels/CmsBlendingPointsPage.html",
-    "Surfaces": [
+    "Html": "/WebsiteEditor/viewmodels/BlendingPointsPage.html",
+    "Surface": 
         {
             "Key": "",
             "Name": ""
-        }
-    ],
+        },
     "BlendingPoints": [
         {
             "Key": "",
