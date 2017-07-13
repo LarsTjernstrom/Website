@@ -71,7 +71,10 @@ namespace WebsiteProvider
             string token = webMap.GetMappingToken();
             string mapUri = webMap.GetMappingUrl();
 
-            Blender.UnmapUri(webMapForeignUrl, token);
+            if (webMapForeignUrl != null)
+            {
+                Blender.UnmapUri(webMapForeignUrl, token);
+            }
 
             if (webMap.Url != null)
             {

@@ -132,3 +132,23 @@ body {
 .website-surface-groups-add__span {
     pointer-events: none;
 }
+
+.website-pinning-rules {
+    pointer-events: none;
+}
+
+.website-pinning-rule-add {
+    padding-bottom: 5px;
+}
+
+.website-pinning-rule-order {
+    max-width: 40px;
+}
+
+.website-general-section {
+    padding-top: 40px;
+}
+
+.website-general-select {
+    padding-right: 20px;
+}

@@ -1,18 +1,27 @@
 ﻿<link rel="import" href="/sys/polymer/polymer.html">
+<link rel="import" href="/sys/juicy-select/juicy-select.html" />
 <link rel="import" href="/sys/puppet-redirect/puppet-redirect.html" />
 
 <template>
     <template is="dom-bind">
+        <legend>General</legend>
         <p>Name:</p>
-        <input type="text" placeholder="Name" value="{{model.Surface.Name$::change}}" class="website-table__control form-control" />
-        <br />
-        <br />
-        <p>View URI:</p>
-        <input type="text" placeholder="URI" value="{{model.Surface.Html$::change}}" class="website-table__control form-control" />
-        <br />
-        <br />
-        <a class="btn btn-xs btn-success" disabled="{{!model.Trn.IsDirty}}" value="{{model.Save$::click}}" onmousedown="++this.value;">Save</a>
-        <a class="btn btn-xs btn-default" value="{{model.Delete$::click}}" onmousedown="++this.value;">Delete</a>
+        <input type="text" placeholder="Name" value="{{model.Surface.Name$::change}}" class="website-table__control form-control"/>
+        <div class="website-general-section">
+            <p>View URI:</p>
+            <input type="text" placeholder="URI" value="{{model.Surface.Html$::change}}" class="website-table__control form-control"/>
+        </div>
+        <div class="website-general-section">
+            <p>Default blending point:</p>
+            <juicy-select caption-text=" " class="website-table__control" value="{{model.DefaultBlendingPointKey$}}" options="{{model.BlendingPoints}}" text-property="Name" value-property="Key">
+                <select class="website-general-select"></select>
+            </juicy-select>
+
+        </div>
+        <div class="website-general-section">
+            <a class="btn btn-xs btn-success" disabled="{{!model.Trn.IsDirty}}" value="{{model.Save$::click}}" onmousedown="++this.value;">Save</a>
+            <a class="btn btn-xs btn-default" value="{{model.Delete$::click}}" onmousedown="++this.value;">Delete</a>
+        </div>
         <link is="puppet-redirect" history url$="{{model.RedirectUrl$}}" />
     </template>
 </template>

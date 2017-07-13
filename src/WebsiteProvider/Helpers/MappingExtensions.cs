@@ -24,8 +24,8 @@ namespace WebsiteProvider
         public static string GetMappingUrl(this WebSection webSection, WebUrl webUrl = null)
         {
             return string.IsNullOrWhiteSpace(webUrl?.Url)
-                ? $"/WebsiteEditor/blender/surface/{webSection.Template.Key}/point/{webSection.Key}"
-                : $"/WebsiteEditor/blender/surface/{webSection.Template.Key}/point/{webSection.Key}/uri/{webUrl.Key}";
+                ? $"/WebsiteEditor/blender/surface/{webSection?.Template.Key}/point/{webSection?.Key}"
+                : $"/WebsiteEditor/blender/surface/{webSection?.Template.Key}/point/{webSection?.Key}/uri/{webUrl.Key}";
         }
     }
 }
