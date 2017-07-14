@@ -3,7 +3,7 @@
 
 <template>
     <template is="dom-bind">
-        <!--<legend>
+        <legend>
             <span class="pull-right">
                 <button type="button" class="btn btn-xs btn-success" value="{{model.SaveChanges$::click}}"
                         onmousedown="++this.value;" disabled="{{!model.Trn.IsDirty}}" title="Save all changes">
@@ -19,16 +19,13 @@
                 </button>
             </span>
             Blending points
-        </legend>-->
-        <legend>
-            Blending points
         </legend>
         <template is="dom-repeat" items="{{model.BlendingPoints}}" as="blendingPoint">
             <paper-collapse-item>
                 <div slot="header">
                     Name: <input type="text" value="{{blendingPoint.Name$::change}}" class="website-table__control" on-tap="tappedOnInput"/>
                     <span class="website-pinning-rules">Pinning rules: {{blendingPoint.PinningRules.length}}</span>
-                    <button type="button" class="btn btn-xs btn-default" style="position: relative; left: 10em" value="{{blendingPoint.Delete$::click}}" onmousedown="++this.value;">Delete</button>
+                    <button type="button" class="btn btn-xs btn-default website-blending-point-delete" value="{{blendingPoint.Delete$::click}}" onmousedown="++this.value;">Delete</button>
                 </div>
                     <table class="website-table table">
                         <thead>
@@ -43,11 +40,11 @@
                         <template is="dom-repeat" items="{{blendingPoint.PinningRules}}" as="pinningRule">
                             <tr>
                                 <td>
-                                    <input type="text" value="{{pinningRule.ForeignUrl$::change}}" class="website-table__control"/>
+                                    <input type="text" value="{{pinningRule.ForeignUrl$::change}}" class="website-table__control website-pin-uri-input"/>
                                 </td>
                                 <td>
                                     <juicy-select caption-text=" " class="website-table__control" value="{{pinningRule.UrlKey$}}" options="{{model.CatchingRules}}" text-property="Url" value-property="Key">
-                                        <select class="website-general-select">
+                                        <select class="website-select">
                                         </select>
                                     </juicy-select>
                                 </td>
@@ -70,47 +67,6 @@
                 </div>
             </paper-collapse-item>
         </template>
-        <br />
-        <button type="button" class="btn btn-xs btn-success" value="{{model.SaveChanges$::click}}"
-                onmousedown="++this.value;" disabled="{{!model.Trn.IsDirty}}" title="Save all changes">
-            Save
-        </button>
-        <button type="button" class="btn btn-xs btn-default" value="{{model.CancelChanges$::click}}"
-                onmousedown="++this.value;" disabled="{{!model.Trn.IsDirty}}" title="Cancel all changes">
-            Cancel
-        </button>
-        <button type="button" class="btn btn-xs btn-default" value="{{model.Create$::click}}"
-                onmousedown="++this.value;" title="Create blending point">
-            Create
-        </button>
-        <!--<table class="website-table table">
-            <thead>
-            <tr>
-                <th>Surface</th>
-                <th>Blending point name</th>
-                <th>Default</th>
-                <th class="website-table__cell-actions"></th>
-            </tr>
-            </thead>
-            <tbody>
-            <template is="dom-repeat" items="{{model.BlendingPoints}}">
-                <tr>
-                    <td>
-                        <label class="website-table__label">{{model.Surface.Name}}</label>
-                    </td>
-                    <td>
-                        <input type="text" value="{{item.Name$::change}}" class="website-table__control form-control"/>
-                    </td>
-                    <td>
-                        <input type="checkbox" checked="{{item.Default$::change}}" class="website-table__control "/>
-                    </td>
-                    <td>
-                        <button type="button" class="btn btn-xs btn-default" value="{{item.Delete$::click}}" onmousedown="++this.value;">Delete</button>
-                    </td>
-                </tr>
-            </template>
-            </tbody>
-        </table>-->
     </template>
     <script>
         (function () {

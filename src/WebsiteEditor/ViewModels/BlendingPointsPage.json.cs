@@ -42,7 +42,6 @@ namespace WebsiteEditor
         [BlendingPointsPage_json.BlendingPoints.PinningRules]
         partial class PinningRulesItemPage : Json, IBound<WebMap>
         {
-
             public Action DeleteAction { get; set; }
             protected override void OnData()
             {
@@ -52,9 +51,21 @@ namespace WebsiteEditor
                 this.UrlKey = Data?.Url != null ? this.Data.Url.Key : string.Empty;
             }
 
-            void Handle(Input.Delete Action)
+            void Handle(Input.Delete action)
             {
                 this.DeleteAction?.Invoke();
+            }
+
+            void Handle(Input.UrlKey action)
+            {
+                if (string.IsNullOrEmpty(action.Value))
+                {
+                    this.Data.Url = null;
+                }
+                else
+                {
+                    this.Data.Url = DbHelper.FromID(DbHelper.Base64DecodeObjectID(action.Value)) as WebUrl;
+                }
             }
         }
 
@@ -94,6 +105,7 @@ namespace WebsiteEditor
                     this.PinningRules.Remove(pinningRulesItemPage);
                     pinningRulesItemPage.Data.Delete();
                 };
+
                 pinningRulesItemPage.Data = newPinningRule;
             }
 

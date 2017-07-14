@@ -92,19 +92,6 @@ namespace WebsiteEditor
                     return master;
                 });
             });
-
-            Handle.GET("/WebsiteEditor/surface/{?}/pinningrules", (string key) =>
-            {
-                return Db.Scope<MasterPage>(() =>
-                {
-                    MasterPage master = this.GetMasterPageFromSession();
-                    master.ShowNavigation = true;
-                    master.Surface.Data = Db.SQL<WebTemplate>("SELECT t FROM Simplified.Ring6.WebTemplate t WHERE t.Key = ?", key).First();
-                    SetMasterCurrentPage(master, "/WebsiteEditor/partials/pinningrules");
-
-                    return master;
-                });
-            });
         }
 
         protected void RegisterPartials()
@@ -123,8 +110,6 @@ namespace WebsiteEditor
             Handle.GET("/WebsiteEditor/partials/blendingpoints", () => new BlendingPointsPage());
 
             Handle.GET("/WebsiteEditor/partials/catchingrules", () => new CatchingRulesPage());
-
-            Handle.GET("/WebsiteEditor/partials/pinningrules", () => new PinningRulesPage());
 
             Handle.GET("/WebsiteEditor/partials/deny", () => new DenyPage());
         }
