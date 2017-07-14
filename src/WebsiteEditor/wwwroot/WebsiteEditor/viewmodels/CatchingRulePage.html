@@ -1,0 +1,35 @@
+﻿<link rel="import" href="/sys/polymer/polymer.html">
+<link rel="import" href="/sys/puppet-redirect/puppet-redirect.html" />
+
+<template>
+    <template is="dom-bind">
+        <link is="puppet-redirect" history url$="{{model.RedirectUrl$}}" />
+        <fieldset>
+            <legend>
+                <span class="pull-right">
+                    <button type="button" class="btn btn-xs btn-success" value="{{model.SaveChangesTrigger$::click}}"
+                            onmousedown="++this.value;" disabled="{{!model.Trn.IsDirty}}" title="Save all changes">
+                        Save
+                    </button>
+                    <button type="button" class="btn btn-xs btn-default" value="{{model.CancelChangesTrigger$::click}}"
+                            onmousedown="++this.value;" title="Cancel all changes and go back">
+                        Cancel
+                    </button>
+                    <button type="button" class="btn btn-xs btn-default" value="{{model.AddOptionTrigger$::click}}"
+                            onmousedown="++this.value;" title="Add a new catching option">
+                        Add a catching option
+                    </button>
+                </span>
+                Edit catching rule
+            </legend>
+            <p>
+                <label for="Url$">Catch URI</label>
+                <input type="text" id="Url$" value="{{model.Url$::change}}" class="form-control" />
+            </p>
+            <p>
+                <label for="IsFinal$">Final rule</label>
+                <input type="checkbox" id="IsFinal$" checked="{{model.IsFinal$::change}}" />
+            </p>
+        </fieldset>
+    </template>
+</template>

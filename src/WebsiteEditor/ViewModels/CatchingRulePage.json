@@ -1,0 +1,13 @@
+{
+  "Html": "/WebsiteEditor/viewmodels/CatchingRulePage.html",
+  "Key": "",
+  "Url$": "",
+  "IsFinal$": false,
+  "Trn": {
+    "IsDirty": false
+  },
+  "RedirectUrl$": "",
+  "SaveChangesTrigger$": 0,
+  "CancelChangesTrigger$": 0,
+  "AddOptionTrigger$": 0
+}

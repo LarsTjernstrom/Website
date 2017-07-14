@@ -1,49 +1,47 @@
-﻿<template>
+﻿<link rel="import" href="/sys/puppet-redirect/puppet-redirect.html" />
+
+<template>
     <template is="dom-bind">
+        <link is="puppet-redirect" history url$="{{model.RedirectUrl$}}" />
         <fieldset>
             <legend>
                 <span class="pull-right">
-                    <button type="button" class="btn btn-xs btn-success" value="{{model.SaveChanges$::click}}"
+                    <button type="button" class="btn btn-xs btn-success" value="{{model.SaveChangesTrigger$::click}}"
                             onmousedown="++this.value;" disabled="{{!model.Trn.IsDirty}}" title="Save all changes">
                         Save
                     </button>
-                    <button type="button" class="btn btn-xs btn-default" value="{{model.CancelChanges$::click}}"
+                    <button type="button" class="btn btn-xs btn-default" value="{{model.CancelChangesTrigger$::click}}"
                             onmousedown="++this.value;" disabled="{{!model.Trn.IsDirty}}" title="Cancel all changes">
                         Cancel
                     </button>
-                    <button type="button" class="btn btn-xs btn-default" value="{{model.Create$::click}}"
+                    <button type="button" class="btn btn-xs btn-default" value="{{model.CreateTrigger$::click}}"
                             onmousedown="++this.value;" title="Create catching rule">
                         Create
                     </button>
                 </span>
-                Catching rules
+                Catching rules for {{model.SurfaceName}}
             </legend>
             <table class="website-table table">
                 <thead>
-                    <tr>
-                        <th>Surface</th>
-                        <th>Catch URI</th>
-                        <th>Final</th>
-                        <th class="website-table__cell-actions"></th>
-                    </tr>
+                <tr>
+                    <th>URI/Description</th>
+                    <th class="website-table__cell-actions"></th>
+                </tr>
                 </thead>
                 <tbody>
-                    <template is="dom-repeat" items="{{model.CatchingRules}}">
-                        <tr>
-                            <td>
-                                <label class="website-table__label">{{model.Surface.Name}}</label>
-                            </td>
-                            <td>
-                                <input type="text" value="{{item.Url$::change}}" class="website-table__control form-control" />
-                            </td>
-                            <td>
-                                <input type="checkbox" checked="{{item.IsFinal$::change}}" class="website-table__control"/>
-                            </td>
-                            <td>
-                                <button type="button" class="btn btn-xs btn-default" value="{{item.Delete$::click}}" onmousedown="++this.value;">Delete</button>
-                            </td>
-                        </tr>
-                    </template>
+                <template is="dom-repeat" items="{{model.CatchingRules}}">
+                    <tr>
+                        <td>
+                            {{item.Url}}
+                            <br>
+                            <span class="text-nonessential"></span>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-xs btn-default" value="{{item.EditTrigger$::click}}" onmousedown="++this.value;">Edit</button>
+                            <button type="button" class="btn btn-xs btn-default" value="{{item.DeleteTrigger$::click}}" onmousedown="++this.value;">Delete</button>
+                        </td>
+                    </tr>
+                </template>
                 </tbody>
             </table>
         </fieldset>

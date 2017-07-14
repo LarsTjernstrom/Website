@@ -76,6 +76,9 @@
     <Compile Include="Helpers\IKnowSurfacePage.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\CatchingRulePage.json.cs">
+      <DependentUpon>CatchingRulePage.json</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\ErrorPage.json.cs">
       <DependentUpon>ErrorPage.json</DependentUpon>
     </Compile>
@@ -128,6 +131,9 @@
     <TypedJSON Include="ViewModels\ErrorPage.json">
       <Generator>MsBuild:Compile</Generator>
     </TypedJSON>
+    <TypedJSON Include="ViewModels\CatchingRulePage.json">
+      <Generator>MsBuild:Compile</Generator>
+    </TypedJSON>
     <None Include="wwwroot\WebsiteEditor\surfaces\SidebarSurface.html" />
     <Content Include="wwwroot\WebsiteEditor\images\websiteeditor.png" />
     <None Include="wwwroot\WebsiteEditor\surfaces\HolyGrailSurface.html" />
@@ -136,6 +142,7 @@
     <None Include="wwwroot\WebsiteEditor\viewmodels\AppIcon.html" />
     <None Include="wwwroot\WebsiteEditor\viewmodels\GeneralPage.html" />
     <None Include="wwwroot\WebsiteEditor\viewmodels\ErrorPage.html" />
+    <None Include="wwwroot\WebsiteEditor\viewmodels\CatchingRulePage.html" />
     <Content Include="wwwroot\WebsiteEditor\viewmodels\PinningRulesPage.html" />
     <Content Include="wwwroot\WebsiteEditor\viewmodels\BlendingPointsPage.html" />
     <None Include="wwwroot\WebsiteEditor\viewmodels\SurfaceGroupsPage.html" />

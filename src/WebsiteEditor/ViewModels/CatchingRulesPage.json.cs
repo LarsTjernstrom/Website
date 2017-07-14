@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Starcounter;
 using Simplified.Ring6;
 
@@ -16,59 +17,55 @@ namespace WebsiteEditor
             }
 
             this.CatchingRules.Clear();
-            this.Surface.Data = Db.SQL<WebTemplate>("SELECT t FROM Simplified.Ring6.WebTemplate t WHERE t.Key = ? ORDER BY t.Name", SurfaceKey).First;
-            this.CatchingRules.Data = Db.SQL<WebUrl>("SELECT u FROM Simplified.Ring6.WebUrl u WHERE u.Template = ? ORDER BY u.Template.Name, u.Url", this.Surface.Data);
+            this.SurfaceName = this.GetCurrentSurface().Name;
+            this.CatchingRules.Data = Db.SQL<WebUrl>("SELECT u FROM Simplified.Ring6.WebUrl u WHERE u.Template.Key = ? ORDER BY u.Template.Name, u.Url", this.SurfaceKey);
             this.Trn.Data = this.Transaction as Transaction;
         }
 
-        void Handle(Input.CancelChanges Action)
+        void Handle(Input.CancelChangesTrigger action)
         {
             this.Transaction.Rollback();
             this.RefreshData();
         }
 
-        void Handle(Input.SaveChanges Action)
+        void Handle(Input.SaveChangesTrigger action)
         {
             this.Transaction.Commit();
         }
 
-        void Handle(Input.Create Action)
+        void Handle(Input.CreateTrigger action)
         {
-            this.CatchingRules.Add().Data = new WebUrl();
+            Db.Transact(() =>
+            {
+                var surface = this.GetCurrentSurface();
+                this.CatchingRules.Add().Data = new WebUrl
+                {
+                    Template = surface,
+                    Url = string.Empty,
+                };
+            });
+        }
+
+        private WebTemplate GetCurrentSurface()
+        {
+            return Db.SQL<WebTemplate>("SELECT t FROM Simplified.Ring6.WebTemplate t WHERE t.Key = ?", this.SurfaceKey).FirstOrDefault()
+                   ?? throw new Exception("The surface with specified key is not found.");
         }
 
         [CatchingRulesPage_json.CatchingRules]
         partial class CmsCatchingRulesItemPage : Json, IBound<WebUrl>
         {
-            protected override void OnData()
-            {
-                base.OnData();
-                this.TemplateKey = (this.Data != null && this.Data.Template != null) ? this.Data.Template.Key : string.Empty;
-            }
+            CatchingRulesPage ParentPage => this.Parent.Parent as CatchingRulesPage;
 
-            void Handle(Input.Delete Action)
+            void Handle(Input.DeleteTrigger action)
             {
                 this.ParentPage.CatchingRules.Remove(this);
                 this.Data.Delete();
             }
 
-            void Handle(Input.TemplateKey Action)
+            void Handle(Input.EditTrigger action)
             {
-                if (string.IsNullOrEmpty(Action.Value))
-                {
-                    this.Data.Template = null;
-                    return;
-                }
-
-                this.Data.Template = DbHelper.FromID(DbHelper.Base64DecodeObjectID(Action.Value)) as WebTemplate;
-            }
-
-            CatchingRulesPage ParentPage
-            {
-                get
-                {
-                    return this.Parent.Parent as CatchingRulesPage;
-                }
+                this.ParentPage.RedirectUrl = "/WebsiteEditor/catchingrule/" + this.Key;
             }
         }
 

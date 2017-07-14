@@ -105,6 +105,18 @@ namespace WebsiteEditor
                     return master;
                 });
             });
+
+            Handle.GET("/WebsiteEditor/catchingrule/{?}", (string key) =>
+            {
+                return Db.Scope<MasterPage>(() =>
+                {
+                    MasterPage master = this.GetMasterPageFromSession();
+                    master.ShowNavigation = false;
+                    SetMasterCurrentPage(master, "/WebsiteEditor/partials/catchingrule/" + key);
+
+                    return master;
+                });
+            });
         }
 
         protected void RegisterPartials()
@@ -127,6 +139,12 @@ namespace WebsiteEditor
             Handle.GET("/WebsiteEditor/partials/pinningrules", () => new PinningRulesPage());
 
             Handle.GET("/WebsiteEditor/partials/deny", () => new DenyPage());
+
+            Handle.GET("/WebsiteEditor/partials/catchingrule/{?}",
+                (string key) => new CatchingRulePage
+                {
+                    Data = Db.SQL<WebUrl>($"SELECT u FROM {typeof(WebUrl).FullName} u WHERE u.Key = ?", key).FirstOrDefault()
+                });
         }
 
         protected MasterPage GetMasterPageFromSession()
