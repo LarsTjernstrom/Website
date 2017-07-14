@@ -39,16 +39,16 @@ namespace WebsiteEditor
                 return 200;
             });
 
-            Handle.GET("/websiteeditor", () => Self.GET("/WebsiteEditor/surfaceGroups"));
+            Handle.GET("/websiteeditor", () => Self.GET("/WebsiteEditor/surfacegroups"));
 
-            Handle.GET("/WebsiteEditor/surfaceGroups", () =>
+            Handle.GET("/WebsiteEditor/surfacegroups", () =>
             {
                 return Db.Scope<MasterPage>(() =>
                 {
                     MasterPage master = this.GetMasterPageFromSession();
                     master.ShowNavigation = false;
 
-                    master.RefreshCurrentPage("/WebsiteEditor/partials/surfaceGroups");
+                    master.RefreshCurrentPage("/WebsiteEditor/partials/surfacegroups");
 
                     return master;
                 });
@@ -93,19 +93,6 @@ namespace WebsiteEditor
                 });
             });
 
-            Handle.GET("/WebsiteEditor/surface/{?}/pinningrules", (string key) =>
-            {
-                return Db.Scope<MasterPage>(() =>
-                {
-                    MasterPage master = this.GetMasterPageFromSession();
-                    master.ShowNavigation = true;
-                    master.Surface.Data = Db.SQL<WebTemplate>("SELECT t FROM Simplified.Ring6.WebTemplate t WHERE t.Key = ?", key).First();
-                    SetMasterCurrentPage(master, "/WebsiteEditor/partials/pinningrules");
-
-                    return master;
-                });
-            });
-
             Handle.GET("/WebsiteEditor/catchingrule/{?}", (string key) =>
             {
                 return Db.Scope<MasterPage>(() =>
@@ -121,7 +108,7 @@ namespace WebsiteEditor
 
         protected void RegisterPartials()
         {
-            Handle.GET("/WebsiteEditor/partials/surfaceGroups", () =>
+            Handle.GET("/WebsiteEditor/partials/surfacegroups", () =>
             {
                 SurfaceGroupsPage page = new SurfaceGroupsPage();
 
@@ -135,8 +122,6 @@ namespace WebsiteEditor
             Handle.GET("/WebsiteEditor/partials/blendingpoints", () => new BlendingPointsPage());
 
             Handle.GET("/WebsiteEditor/partials/catchingrules", () => new CatchingRulesPage());
-
-            Handle.GET("/WebsiteEditor/partials/pinningrules", () => new PinningRulesPage());
 
             Handle.GET("/WebsiteEditor/partials/deny", () => new DenyPage());
 

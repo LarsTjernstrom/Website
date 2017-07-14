@@ -25,6 +25,11 @@ namespace WebsiteProvider
 
         public void MapPinningRule(WebMap webMap, string registeredSectionUri = null)
         {
+            if (webMap.Section == null)
+            {
+                return;
+            }
+
             string sectionUri = registeredSectionUri ?? webMap.Section.GetMappingUrl();
 
             if (registeredSectionUri == null)
@@ -71,7 +76,10 @@ namespace WebsiteProvider
             string token = webMap.GetMappingToken();
             string mapUri = webMap.GetMappingUrl();
 
-            Blender.UnmapUri(webMapForeignUrl, token);
+            if (webMapForeignUrl != null)
+            {
+                Blender.UnmapUri(webMapForeignUrl, token);
+            }
 
             if (webMap.Url != null)
             {

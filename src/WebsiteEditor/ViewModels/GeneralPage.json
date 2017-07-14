@@ -8,6 +8,16 @@
   "Trn": {
     "IsDirty": false
   },
+  "BlendingPoints": [
+    {
+      "Key": "",
+      "Name": "",
+      "FullName": "", 
+      "Default$": false,
+      "TemplateKey$": ""
+    }
+  ],
+  "DefaultBlendingPointKey$":"",
   "Delete$": 0,
   "Save$": 0,
   "RedirectUrl$": ""

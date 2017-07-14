@@ -1,0 +1,22 @@
+{
+  "name": "WebsiteEditor",
+  "version": "1.2.0",
+  "authors": [
+    "Patryk Szwermer <patryk.szwer@gmail.com>"
+  ],
+  "description": "CMS that allows to configure the wrapping of the app responses in surfaces.",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "wwwroot/sys",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "juicy-select": "Juicy/juicy-select#master",
+	"paper-collapse-item": "PatrykSzwer/paper-collapse-item#master"
+  }
+}
