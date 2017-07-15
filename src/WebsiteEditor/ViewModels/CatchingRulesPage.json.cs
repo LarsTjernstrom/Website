@@ -19,6 +19,10 @@ namespace WebsiteEditor
             this.CatchingRules.Clear();
             this.SurfaceName = this.GetCurrentSurface().Name;
             this.CatchingRules.Data = Db.SQL<WebUrl>("SELECT u FROM Simplified.Ring6.WebUrl u WHERE u.Template.Key = ? ORDER BY u.Template.Name, u.Url", this.SurfaceKey);
+            foreach (var catchingRule in this.CatchingRules)
+            {
+                catchingRule.DeleteAction = this.DeleteCatchingRule;
+            }
             this.Trn.Data = this.Transaction as Transaction;
         }
 
@@ -35,15 +39,22 @@ namespace WebsiteEditor
 
         void Handle(Input.CreateTrigger action)
         {
-            Db.Transact(() =>
+            var surface = this.GetCurrentSurface();
+            this.CatchingRules.Add(new CatchingRulesItemPage
             {
-                var surface = this.GetCurrentSurface();
-                this.CatchingRules.Add().Data = new WebUrl
+                Data = new WebUrl
                 {
                     Template = surface,
                     Url = string.Empty,
-                };
+                },
+                DeleteAction = this.DeleteCatchingRule
             });
+        }
+
+        private void DeleteCatchingRule(CatchingRulesItemPage catchingRule)
+        {
+            this.CatchingRules.Remove(catchingRule);
+            catchingRule.Data.Delete();
         }
 
         private WebTemplate GetCurrentSurface()
@@ -52,25 +63,55 @@ namespace WebsiteEditor
                    ?? throw new Exception("The surface with specified key is not found.");
         }
 
+
         [CatchingRulesPage_json.CatchingRules]
-        partial class CmsCatchingRulesItemPage : Json, IBound<WebUrl>
+        partial class CatchingRulesItemPage : Json, IBound<WebUrl>
         {
-            CatchingRulesPage ParentPage => this.Parent.Parent as CatchingRulesPage;
+            public Action<CatchingRulesItemPage> DeleteAction { get; set; }
+
+            protected override void OnData()
+            {
+                base.OnData();
+                foreach (var header in this.Headers)
+                {
+                    header.DeleteAction = this.DeleteHeader;
+                }
+            }
 
             void Handle(Input.DeleteTrigger action)
             {
-                this.ParentPage.CatchingRules.Remove(this);
-                this.Data.Delete();
+                this.DeleteAction?.Invoke(this);
             }
 
-            void Handle(Input.EditTrigger action)
+            void Handle(Input.AddHeaderTrigger action)
             {
-                this.ParentPage.RedirectUrl = "/WebsiteEditor/catchingrule/" + this.Key;
+                this.Headers.Add(new CatchHeadersItemPage
+                {
+                    Data = new WebHttpHeader { Url = this.Data },
+                    DeleteAction = this.DeleteHeader
+                });
+            }
+
+            private void DeleteHeader(CatchHeadersItemPage header)
+            {
+                this.Headers.Remove(header);
+                header.Data.Delete();
+            }
+        }
+
+        [CatchingRulesPage_json.CatchingRules.Headers]
+        partial class CatchHeadersItemPage : Json, IBound<WebHttpHeader>
+        {
+            public Action<CatchHeadersItemPage> DeleteAction { get; set; }
+
+            void Handle(Input.DeleteTrigger action)
+            {
+                this.DeleteAction?.Invoke(this);
             }
         }
 
         [CatchingRulesPage_json.Trn]
-        partial class CmsCatchingRulesTransactionPage : Json, IBound<Transaction>
+        partial class CatchingRulesTransactionPage : Json, IBound<Transaction>
         {
         }
     }

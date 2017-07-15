@@ -4,16 +4,22 @@
   "CatchingRules": [
     {
       "Key": "",
-      "Url": "",
-      "IsFinal": false,
+      "Url$": "",
+      "IsFinal$": false,
       "DeleteTrigger$": 0,
-      "EditTrigger$": 0
+      "AddHeaderTrigger$": 0,
+      "Headers": [
+        {
+          "Name$": "",
+          "Value$": "",
+          "DeleteTrigger$": 0
+        }
+      ]
     }
   ],
   "Trn": {
     "IsDirty": false
   },
-  "RedirectUrl$": "",
   "CreateTrigger$": 0,
   "SaveChangesTrigger$": 0,
   "CancelChangesTrigger$": 0

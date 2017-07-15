@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using Simplified.Ring6;
 using Starcounter;
@@ -10,10 +12,12 @@ namespace WebsiteProvider
     {
         private static string runResponseMiddleware = "X-Run-Response-Middleware";
 
+        protected Storage<Request> RequestStorage { get; private set; }
         protected Storage<Response> ResponseStorage { get; private set; }
 
         public ContentHandlers()
         {
+            RequestStorage = new Storage<Request>();
             ResponseStorage = new Storage<Response>();
         }
 
@@ -52,11 +56,13 @@ namespace WebsiteProvider
                 return "Welcome to WebsiteProvider.";
             });
 
-            Handle.GET("/WebsiteProvider/partial/wrapper?uri={?}&response={?}", (string requestUri, string responseKey) =>
+            Handle.GET("/WebsiteProvider/partial/wrapper?uri={?}&response={?}&request={?}", (string requestUri, string responseKey, string requestKey) =>
             {
                 requestUri = Uri.UnescapeDataString(requestUri);
                 Response currentResponse = ResponseStorage.Get(responseKey);
-                WebUrl webUrl = this.GetWebUrl(requestUri);
+                Request originalRequest = RequestStorage.Get(requestKey);
+
+                WebUrl webUrl = this.GetWebUrl(originalRequest);
                 WebTemplate template = webUrl?.Template;
 
                 if (template == null)
@@ -104,19 +110,34 @@ namespace WebsiteProvider
                         var wrapper = response.Resource as SurfacePage;
                         var requestUri = request.Uri;
                         var isWrapped = false;
+                        var requestKey = RequestStorage.Put(request);
 
-                        while ((wrapper == null || wrapper.IsFinal == false) && this.HasCatchingRule(requestUri))
+                        try
                         {
-                            var responseKey = ResponseStorage.Put(response);
-                            isWrapped = true;
+                            while ((wrapper == null || wrapper.IsFinal == false) && this.HasCatchingRule(request))
+                            {
+                                isWrapped = true;
+                                var responseKey = ResponseStorage.Put(response);
 
-                            var escapedRequestUri = Uri.EscapeDataString(requestUri);
-                            response = Self.GET($"/WebsiteProvider/partial/wrapper?uri={escapedRequestUri}&response={responseKey}");
+                                try
+                                {
+                                    var escapedRequestUri = Uri.EscapeDataString(requestUri);
+                                    response = Self.GET($"/WebsiteProvider/partial/wrapper?uri={escapedRequestUri}&response={responseKey}&request={requestKey}");
+                                }
+                                finally
+                                {
+                                    ResponseStorage.Remove(responseKey);
+                                }
 
-                            ResponseStorage.Remove(responseKey);
-                            wrapper = response.Resource as SurfacePage;
-                            requestUri = wrapper?.Data.Html;
+                                wrapper = response.Resource as SurfacePage;
+                                requestUri = wrapper?.Data.Html;
+                            }
                         }
+                        finally
+                        {
+                            RequestStorage.Remove(requestKey);
+                        }
+
                         if (!isWrapped)
                         {
                             //Morph to a view that is stateless and not catched by any surface
@@ -221,24 +242,37 @@ namespace WebsiteProvider
             return page;
         }
 
-        public bool HasCatchingRule(string requestUri)
+        public bool HasCatchingRule(Request request)
         {
-            return this.GetWebUrl(requestUri) != null;
+            return this.GetWebUrl(request) != null;
         }
 
-        protected WebUrl GetWebUrl(string requestUri)
+        protected WebUrl GetWebUrl(Request request)
         {
-            WebUrl webUrl = Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE wu.Url = ?", requestUri).First;
+            var headers = request.HeadersDictionary;
+
+            WebUrl webUrl = this.FindUrlByHeaders(Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE wu.Url = ?", request.Uri), headers);
 
             if (webUrl == null)
             {
-                string wildCard = GetWildCardUrl(requestUri);
+                string wildCard = GetWildCardUrl(request.Uri);
 
-                webUrl = Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE wu.Url = ?", wildCard).First
-                         ?? Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE (wu.Url IS NULL OR wu.Url = ?) AND wu.IsFinal = ?", string.Empty, true).First
-                         ?? Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE wu.Url IS NULL OR wu.Url = ?", string.Empty).First;
+                webUrl = this.FindUrlByHeaders(Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE wu.Url = ?", wildCard), headers)
+                         ?? this.FindUrlByHeaders(Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE (wu.Url IS NULL OR wu.Url = ?) AND wu.IsFinal = ?", string.Empty, true), headers)
+                         ?? this.FindUrlByHeaders(Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE wu.Url IS NULL OR wu.Url = ?", string.Empty), headers);
             }
             return webUrl;
+        }
+
+        private WebUrl FindUrlByHeaders(QueryResultRows<WebUrl> webUrls, Dictionary<string, string> requestHeaders)
+        {
+            return webUrls.Count() == 1 && webUrls.All(x => !x.Headers.Any())
+                ? webUrls.FirstOrDefault()
+                : (webUrls.FirstOrDefault(x => x.Headers.All(
+                       wh => requestHeaders.Any(
+                           rh => rh.Key.Equals(wh.Name, StringComparison.InvariantCultureIgnoreCase) &&
+                                 rh.Value == wh.Value)))
+                   ?? webUrls.FirstOrDefault(x => !x.Headers.Any()));
         }
     }
 }
