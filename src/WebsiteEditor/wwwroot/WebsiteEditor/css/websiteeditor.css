@@ -161,3 +161,28 @@ body {
     position: relative;
     left: 10em;
 }
+
+.website-catch-headers {
+    pointer-events: none;
+    margin: 0 5em 0 1em;
+}
+
+.website-catch-header-add {
+    padding-bottom: 5px;
+}
+
+.website-catching-rule-delete {
+    position: relative;
+    left: 10em;
+}
+
+.website-catch-header-delete {
+    position: relative;
+    left: 10em;
+}
+
+.website-table-header-uri {
+    box-shadow: none !important; /*To override bootstrap styles*/
+    border-bottom: none;
+    width: 50%;
+}

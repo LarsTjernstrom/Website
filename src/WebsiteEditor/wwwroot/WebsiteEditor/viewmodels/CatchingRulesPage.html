@@ -24,12 +24,15 @@
                 <paper-collapse-item>
                     <div slot="header">
                         <span>
-                            Catch URI: <input type="text" id="" value="{{catchingRule.Url$::change}}" class="website-table__control" on-tap="tappedOnInput" />
+                            Catch URI: <input type="text" id="" value="{{catchingRule.Url$::change}}" class="website-table-header-uri" on-tap="tappedOnInput" />
                         </span>
+                        <span class="website-catch-headers">Catch headers: {{catchingRule.Headers.length}}</span>
                         <span>
                             Final <input type="checkbox" checked="{{catchingRule.IsFinal$::change}}" class="website-table__control" on-tap="tappedOnInput" />
                         </span>
-                        <button type="button" class="btn btn-xs btn-default" value="{{catchingRule.DeleteTrigger$::click}}" onmousedown="++this.value;">Delete</button>
+                        <button type="button" class="btn btn-xs btn-default website-catching-rule-delete" value="{{catchingRule.DeleteTrigger$::click}}" onmousedown="++this.value;">
+                            Delete
+                        </button>
                     </div>
                     <div>
                         <table class="website-table table">
@@ -50,7 +53,7 @@
                                             <input type="text" value="{{catchHeader.Value$::change}}" class="website-table__control website-header-value-input" />
                                         </td>
                                         <td>
-                                            <button type="button" class="btn btn-xs btn-danger website-header-delete" value="{{catchHeader.DeleteTrigger$::click}}" onmousedown="++this.value;" title="Remove catch header">
+                                            <button type="button" class="btn btn-xs btn-danger" value="{{catchHeader.DeleteTrigger$::click}}" onmousedown="++this.value;" title="Remove catch header">
                                                 Delete
                                             </button>
                                         </td>
