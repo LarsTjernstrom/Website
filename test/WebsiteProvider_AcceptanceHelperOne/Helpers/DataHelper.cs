@@ -10,7 +10,7 @@ namespace WebsiteProvider_AcceptanceHelperOne
         {
             Db.Transact(() =>
             {
-                Db.SlowSQL("DELETE FROM Simplified.Ring6.WebHttpOption");
+                Db.SlowSQL("DELETE FROM Simplified.Ring6.WebUrlProperty");
                 Db.SlowSQL("DELETE FROM Simplified.Ring6.WebMap");
                 Db.SlowSQL("DELETE FROM Simplified.Ring6.WebUrl");
                 Db.SlowSQL("DELETE FROM Simplified.Ring6.WebSection");
