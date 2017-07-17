@@ -1,4 +1,5 @@
-﻿using Simplified.Ring6;
+﻿using System.Linq;
+using Simplified.Ring6;
 using Starcounter;
 
 namespace WebsiteProvider_AcceptanceHelperOne
@@ -116,6 +117,35 @@ namespace WebsiteProvider_AcceptanceHelperOne
                              };
                 webUrl.Template = defaultSurface;
                 webUrl.IsFinal = true;
+            });
+        }
+
+        public void SetCatchingRulesHeaders()
+        {
+            Db.Transact(() =>
+            {
+                var defaultSurface = this.GenerateDefaultSurface();
+                var holyGrailSurface = this.GenerateHolyGrailSurface();
+                var webUrl = Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE wu.Template = ? AND (wu.Url = ? OR wu.Url IS NULL)", defaultSurface, string.Empty).FirstOrDefault()
+                             ?? new WebUrl
+                             {
+                                 Template = defaultSurface,
+                                 Url = string.Empty
+                             };
+                webUrl.IsFinal = true;
+                webUrl = Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE wu.Template = ? AND (wu.Url = ? OR wu.Url IS NULL)", holyGrailSurface, string.Empty).FirstOrDefault()
+                         ?? new WebUrl
+                         {
+                             Template = holyGrailSurface,
+                             Url = string.Empty
+                         };
+                webUrl.IsFinal = true;
+                var header = new WebHttpHeader
+                {
+                    Url = webUrl,
+                    Name = "test-header",
+                    Value = "test-header-value"
+                };
             });
         }
 
