@@ -34,6 +34,14 @@ namespace WebsiteEditor
 
         void Handle(Input.SaveChangesTrigger action)
         {
+            foreach (var catchingRule in this.CatchingRules)
+            {
+                var emptyHeaders = catchingRule.Headers.Where(h => string.IsNullOrWhiteSpace(h.Name)).ToList();
+                foreach (var catchHeader in emptyHeaders)
+                {
+                    catchingRule.DeleteHeader(catchHeader);
+                }
+            }
             this.Transaction.Commit();
         }
 
@@ -51,7 +59,7 @@ namespace WebsiteEditor
             });
         }
 
-        private void DeleteCatchingRule(CatchingRulesItemPage catchingRule)
+        public void DeleteCatchingRule(CatchingRulesItemPage catchingRule)
         {
             this.CatchingRules.Remove(catchingRule);
             catchingRule.Data.Delete();
@@ -92,7 +100,7 @@ namespace WebsiteEditor
                 });
             }
 
-            private void DeleteHeader(CatchHeadersItemPage header)
+            public void DeleteHeader(CatchHeadersItemPage header)
             {
                 this.Headers.Remove(header);
                 header.Data.Delete();

@@ -22,17 +22,18 @@
             </legend>
             <template is="dom-repeat" items="{{model.CatchingRules}}" as="catchingRule">
                 <paper-collapse-item>
-                    <div slot="header">
-                        <span>
-                            Catch URI: <input type="text" id="" value="{{catchingRule.Url$::change}}" class="website-table-header-uri" on-tap="tappedOnInput" />
-                        </span>
-                        <span class="website-catch-headers">Catch headers: {{catchingRule.Headers.length}}</span>
-                        <span>
-                            Final <input type="checkbox" checked="{{catchingRule.IsFinal$::change}}" class="website-table__control" on-tap="tappedOnInput" />
-                        </span>
-                        <button type="button" class="btn btn-xs btn-default website-catching-rule-delete" value="{{catchingRule.DeleteTrigger$::click}}" onmousedown="++this.value;">
-                            Delete
-                        </button>
+                    <div slot="header" class="website-catching-rules-table-header">
+                        <div class="website-catching-rules-table-header-uri">
+                            <label for="websiteCatchingRulesHeaderUri" class="website-catching-rules-table-header-uri__label">Catch URI: </label>
+                            <input type="text" id="websiteCatchingRulesHeaderUri" value="{{catchingRule.Url$::change}}" class="website-table__control website-catching-rules-table-header-uri__uri" on-tap="tappedOnInput"/>
+                        </div>
+                        <div class="website-catching-rules-table-header-headers-summary">Catch headers: {{catchingRule.Headers.length}}</div>
+                        <label>Final <input type="checkbox" checked="{{catchingRule.IsFinal$::change}}" class="website-table__control" on-tap="tappedOnInput" /></label>
+                        <div class="website-catching-rules-table-header-delete">
+                            <button type="button" class="btn btn-xs btn-default" value="{{catchingRule.DeleteTrigger$::click}}" onmousedown="++this.value;">
+                                Delete
+                            </button>
+                        </div>
                     </div>
                     <div>
                         <table class="website-table table">
@@ -62,7 +63,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="website-catch-header-add">
+                    <div class="website-catching-rules-table-add-header">
                         <button type="button" class="btn btn-xs btn-success" value="{{catchingRule.AddHeaderTrigger$::click}}" onmousedown="++this.value;" title="Add new catch header">
                             Add
                         </button>
