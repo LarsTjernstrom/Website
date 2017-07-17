@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Simplified.Ring6;
 using Starcounter;
@@ -27,7 +28,7 @@ namespace WebsiteProvider
         {
             if (webMap.Section == null)
             {
-                return;
+                throw new InvalidOperationException("Section cannot be null!");
             }
 
             string sectionUri = registeredSectionUri ?? webMap.Section.GetMappingUrl();
@@ -73,6 +74,7 @@ namespace WebsiteProvider
             }
 
             webMapForeignUrl = webMapForeignUrl ?? webMap.ForeignUrl;
+
             string token = webMap.GetMappingToken();
             string mapUri = webMap.GetMappingUrl();
 
