@@ -1,13 +1,19 @@
 {
   "Html": "/WebsiteEditor/viewmodels/SurfaceGroupsPage.html",
-  "Surfaces": [
+  "SurfaceGroups": [
     {
-      "Key": "",
-      "Name": "",
-      "Html$": "",
-      "Select$": 0
+      "Name$": "", 
+      "CreateSurface$": 0,
+      "Surfaces": [
+        {
+          "Key": "",
+          "Name": "",
+          "Html$": "",
+          "Select$": 0
+        }
+      ]
     }
   ],
 
-  "Create$": 0
+  "CreateGroup$": 0 
 }

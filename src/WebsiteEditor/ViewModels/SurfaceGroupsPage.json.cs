@@ -7,16 +7,27 @@ namespace WebsiteEditor
     {
         public void RefreshData()
         {
-            this.Surfaces.Clear();
-            this.Surfaces.Data = Db.SQL<WebTemplate>("SELECT t FROM Simplified.Ring6.WebTemplate t ORDER BY t.Name");
+            this.SurfaceGroups.Clear();
+            this.SurfaceGroups.Data = Db.SQL<WebGroup>("SELECT g FROM Simplified.Ring6.WebGroup g ORDER BY g.Name");
         }
 
-        void Handle(Input.Create action)
+        [SurfaceGroupsPage_json.SurfaceGroups]
+        partial class SurfaceGroupPage : Json, IBound<WebGroup>
+        {
+        }
+
+        [SurfaceGroupsPage_json.SurfaceGroups.Surfaces]
+        partial class SurfacesPage : Json, IBound<WebTemplate>
         {
 
-            this.Surfaces.Add().Data = new WebTemplate { Name = "New surface" };
-            this.Transaction.Commit();
-            this.RefreshData();
         }
+
+        //void Handle(Input.Create action)
+        //{
+
+        //    //this.Surfaces.Add().Data = new WebTemplate { Name = "New surface" };
+        //    this.Transaction.Commit();
+        //    this.RefreshData();
+        //}
     }
 }
