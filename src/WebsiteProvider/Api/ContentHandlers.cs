@@ -266,8 +266,7 @@ namespace WebsiteProvider
 
         private WebUrl FindUrlByHeaders(QueryResultRows<WebUrl> webUrls, Dictionary<string, string> requestHeaders)
         {
-            var urlsCount = webUrls.Count();
-            if (urlsCount == 0)
+            if (!webUrls.Any())
             {
                 return null;
             }
