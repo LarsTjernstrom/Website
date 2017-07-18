@@ -40,7 +40,7 @@
                         <template is="dom-repeat" items="{{blendingPoint.PinningRules}}" as="pinningRule">
                             <tr>
                                 <td>
-                                    <input type="text" value="{{pinningRule.ForeignUrl$::change}}" class="website-table__control website-pin-uri-input"/>
+                                    <input type="text" value="{{pinningRule.ForeignUrl$::change}}" class="website-pin-uri-input"/>
                                 </td>
                                 <td>
                                     <juicy-select caption-text=" " value="{{pinningRule.UrlKey$}}" options="{{model.CatchingRules}}" text-property="Url" value-property="Key">
