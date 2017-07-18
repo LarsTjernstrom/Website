@@ -12,7 +12,7 @@ module.exports = function(grunt) {
           ]
         },
         files: [
-          {src: ['src/Website/package/package.config'], dest: './'}
+          {src: ['src/Websiteeditor/package/package.config'], dest: './'}
         ]
       },
       scversion: {
@@ -25,16 +25,16 @@ module.exports = function(grunt) {
           ]
         },
         files: [
-          {src: ['src/Website/package/package.config'], dest: './'}
+          {src: ['src/Websiteeditor/package/package.config'], dest: './'}
         ]
       }
     },
     bump: {
       options: {
-        files: ['package.json', 'src/Website/package/package.config'],
+        files: ['package.json', 'src/Websiteeditor/package/package.config'],
         commit: true,
         commitMessage: '%VERSION%',
-        commitFiles: ['package.json', 'src/Website/package/package.config'],
+        commitFiles: ['package.json', 'src/Websiteeditor/package/package.config'],
         createTag: true,
         tagName: '%VERSION%',
         tagMessage: 'Version %VERSION%',

@@ -1,7 +1,7 @@
-# Website
+# Websiteeditor
 Suite of two apps allowing to create surfaces with blending points and attach the result from different applications in the blending points.
 
-Note: Website only wraps responses where the response resource is `Json` (not null) with a session.
+Note: Websiteeditor only wraps responses where the response resource is `Json` (not null) with a session.
 
 ## Requirements
 
@@ -12,7 +12,7 @@ The app requires a user to be signed in in order to work. This can be done with 
 This solution consists of two apps
 
 1. **WebsiteProvider** - wraps the responses according to the configuration stored in the database.
-2. **Website CMS** - serves the admin panel. It is used to create the configuration for WebsiteProvider in the database.
+2. **WebsiteEditor** - serves the admin panel. It is used to create the configuration for WebsiteProvider in the database.
 
 ### WebsiteProvider
 
@@ -22,9 +22,9 @@ When the end user visits one of the wrapped URLs (or any URL, if there is a defa
 
 The view-model includes all of the blending points and the filling responses from the pinned URIs.
 
-### Website CMS
+### WebsiteEditor
 
-Website CMS allows to configure the wrapping of the app responses in surfaces.
+WebsiteEditor allows to configure the wrapping of the app responses in surfaces.
 
 CMS interface is divided into four tabs:
 
@@ -66,32 +66,27 @@ If a rule has no value in the **Catch URI** column, it becomes a "catch-all" rul
 
 ## Administrative tools
 
-### `/website/cleardata`
+### `/websiteeditor/cleardata`
 
 Calling this URI deletes all the current app data (surfaces, blending points, catching rules and pinning rules).
 
-### `/website/resetdata`
+### `/websiteeditor/resetdata`
 
 Calling thes URI replaces all the current app data (surfaces, blending points, catching rules and pinning rules) with the defaults, which are:
 
-- **DefaultTemplate** - a surface with two blending points (TopBar, Main). The default catch-all rule uses this surface.
-- **SidebarTemplate** - a surface with two blending points (Left, Right)
-- **HolyGrailTemplate** - a surface with five blending points (Header, Left, Content, Right, Footer). Useful if you're building a web site
-- **LauncherTemplate** - a surface that looks like the original Starcounter's Launcher app
+- **DefaultSurface** - a surface with two blending points (TopBar, Main). The default catch-all rule uses this surface.
+- **SidebarSurface** - a surface with two blending points (Left, Right)
+- **HolyGrailSurface** - a surface with five blending points (Header, Left, Content, Right, Footer). Useful if you're building a web site
 
 ## CSS Custom Properites
 
 Here is the list of CSS Custom Properties used by the app for themeing
 
-Template         | Name                      | Default   | Description
+Surface         | Name                      | Default   | Description
 ---              | ---                       | ---       | ---
 HolyGrail        | `--holy-grail-chalice`    | `#ffdb3a` | Background color of header
 HolyGrail        | `--holy-grail-background` | `#e6e6e6` | Background color of left and right area
 HolyGrail        | `--holy-grail-foot`       | `#646464` | Background color of footer area
-LauncherTemplate | `--primary-color`         | `#8a98b0` | Color of main area elements, hover color for top and left bar
-LauncherTemplate | `--primary-background`    | `#333c4e` | Background color of main area
-LauncherTemplate | `--secondary-color`       | `#8a98b0` | Color of top and left bar elements
-LauncherTemplate | `--secondary-background`  | `#333c4e` | Background color of top and left bars
 
 ## Developer instructions
 

@@ -1,6 +1,6 @@
 @ECHO OFF
 
-PUSHD %~dp0src\Website
+PUSHD %~dp0src\WebsiteEditor
 starpack -p
 POPD
 

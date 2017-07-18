@@ -1,0 +1,33 @@
+﻿<link href="/WebsiteEditor/css/websiteeditor.css" rel="stylesheet" />
+
+<template>
+    <template is="dom-bind">
+        <template is="dom-if" if="{{model.ShowNavigation}}">
+            <nav class="website-top-menu-panel">
+                <ul class="website-top-menu">
+                    <li class="website-top-menu__item">
+                        <a href="/WebsiteEditor/surfacegroups" class="website-top-menu-item__link"><span class="glyphicon glyphicon-chevron-left"></span> Back to groups</a>
+                    </li>
+                    <li class="website-top-menu__item">
+                        <a href="#" class="website-top-menu-item__surface-name">Surface: <b>{{model.Surface.Name}}</b></a>
+                    </li>
+                    <li class="website-top-menu__item">
+                        <a href="/WebsiteEditor/surface/{{model.Surface.Key}}/general" class="website-top-menu-item__link">General</a>
+                    </li>
+                    <li class="website-top-menu__item">
+                        <a href="/WebsiteEditor/surface/{{model.Surface.Key}}/catchingrules" class="website-top-menu-item__link">Catching rules</a>
+                    </li>
+                    <li class="website-top-menu__item">
+                        <a href="/WebsiteEditor/surface/{{model.Surface.Key}}/blendingpoints" class="website-top-menu-item__link">Blending points</a>
+                    </li>
+                    <li class="website-top-menu__item">
+                        <a href="/WebsiteEditor/surface/{{model.Surface.Key}}/pinningRules" class="website-top-menu-item__link">Pinning rules</a>
+                    </li>
+                </ul>
+            </nav>
+        </template>
+        <div class="website-body">
+            <starcounter-include view-model="{{model.CurrentPage}}"></starcounter-include>
+        </div>
+    </template>
+</template>

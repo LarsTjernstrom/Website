@@ -52,7 +52,7 @@ namespace WebsiteProvider.Tests.Test
         {
             var page = new AcceptanceHelperOneMasterPage(Driver).LoadSimplePage();
             WaitForText(page.HeaderElement, "Simple Page");
-            WaitUntil(x => page.CheckForLauncherSurface());
+            WaitUntil(x => page.CheckForHolyGrailSurface());
         }
 
         /// <summary>
@@ -75,7 +75,7 @@ namespace WebsiteProvider.Tests.Test
             var masterPage = new AcceptanceHelperOneMasterPage(Driver).LoadMasterPage();
             var simplePage = masterPage.GoToSimplePage();
             WaitForText(simplePage.HeaderElement, "Simple Page");
-            WaitUntil(x => simplePage.CheckForLauncherSurface());
+            WaitUntil(x => simplePage.CheckForHolyGrailSurface());
         }
 
         /// <summary>

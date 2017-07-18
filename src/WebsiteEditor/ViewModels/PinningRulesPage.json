@@ -1,0 +1,32 @@
+{
+    "Html": "/WebsiteEditor/viewmodels/PinningRulesPage.html",
+    "BlendingPoints": [
+        {
+            "Key": "",
+            "Name": "",
+            "FullName": ""
+        }
+    ],
+    "CatchingRules": [
+        {
+            "Key": "",
+            "Url": ""
+        }
+    ],
+    "PinningRules": [
+        {
+            "Key": "",
+            "SectionKey$": "",
+            "UrlKey$": "",
+            "ForeignUrl$": "",
+            "SortNumber$": 0,
+            "Delete$": 0
+        }
+    ],
+    "Trn": {
+        "IsDirty": false
+    },
+    "Create$": 0,
+    "SaveChanges$": 0,
+    "CancelChanges$": 0
+}

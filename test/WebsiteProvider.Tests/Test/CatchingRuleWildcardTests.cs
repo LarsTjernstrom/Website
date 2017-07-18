@@ -44,7 +44,7 @@ namespace WebsiteProvider.Tests.Test
             var resourceName = "resource";
             var page = new AcceptanceHelperTwoContentPage(Driver).GoTo(resourceName);
             WaitForText(page.ContentElement, resourceName, 10);
-            WaitUntil(x => page.CheckForLauncherSurface());
+            WaitUntil(x => page.CheckForHolyGrailSurface());
         }
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace WebsiteProvider.Tests.Test
         [Test]
         public void RequestPage_ParametersWithEncodedNonHttpSymbols_RuleFoundAndApplied()
         {
-            var query = "return=/website/cms";
+            var query = "return=/websiteeditor/cms";
             var page = new AcceptanceHelperTwoQueryPage(Driver).Query(query);
             WaitForText(page.ContentElement, query, 10);
             WaitUntil(x => page.CheckForDefaultSurface());
