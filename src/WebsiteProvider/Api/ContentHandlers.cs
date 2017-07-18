@@ -266,13 +266,22 @@ namespace WebsiteProvider
 
         private WebUrl FindUrlByHeaders(QueryResultRows<WebUrl> webUrls, Dictionary<string, string> requestHeaders)
         {
-            return webUrls.Count() == 1 && webUrls.All(x => !x.Headers.Any())
-                ? webUrls.FirstOrDefault()
-                : (webUrls.FirstOrDefault(x => x.Headers.All(
-                       wh => requestHeaders.Any(
-                           rh => rh.Key.Equals(wh.Name, StringComparison.InvariantCultureIgnoreCase) &&
-                                 rh.Value == wh.Value)))
-                   ?? webUrls.FirstOrDefault(x => !x.Headers.Any()));
+            var urlsCount = webUrls.Count();
+            if (urlsCount == 0)
+            {
+                return null;
+            }
+            if (webUrls.All(x => !x.Headers.Any()))
+            {
+                return webUrls.First();
+            }
+
+            return webUrls.Where(x => x.Headers.Any())
+                       .FirstOrDefault(x => x.Headers.All(
+                           wh => requestHeaders.Any(
+                               rh => rh.Key.Equals(wh.Name, StringComparison.InvariantCultureIgnoreCase) &&
+                                     rh.Value == wh.Value)))
+                   ?? webUrls.FirstOrDefault(x => !x.Headers.Any());
         }
     }
 }
