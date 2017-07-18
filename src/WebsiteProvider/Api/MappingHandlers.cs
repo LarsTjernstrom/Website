@@ -113,7 +113,7 @@ namespace WebsiteProvider
         private static string GetOldUri(WebMap webMap)
         {
             var token = webMap.GetMappingToken();
-            var currentMappingUrls = new HashSet<string> { webMap.Section.GetMappingUrl() };
+            var currentMappingUrls = new List<string> {webMap.Section.GetMappingUrl()};
 
             foreach (WebMap map in webMap.Section.Maps)
             {
