@@ -6,15 +6,16 @@
         <br />
         <template is="dom-repeat" items="{{model.SurfaceGroups}}">
             <h4>
-                <b>{{item.Name$}}</b>
-                <button class="btn website-surface-groups__add-button btn-success" value="{{item.CreateSurface$::click}}" onmousedown="++this.value;">
-                    <span class="glyphicon glyphicon-plus website-surface-groups__plus"></span>
+                <input type="text" value="{{item.Name$::change}}" class="website-surface-group-name" />
+                <button class="btn website-surface-groups__button btn-success" value="{{item.CreateSurface$::click}}" onmousedown="++this.value;">
+                    <span class="glyphicon glyphicon-plus website-surface-groups__glif"></span>
                 </button>
             </h4>
-                <template is="dom-repeat" items="{{item.Surfaces}}" as="surface">
-                    <a href="/WebsiteEditor/surface/{{surface.Key}}/general" class="website-surface-groups__button">{{surface.Name}}</a>
-                </template>
-                <hr/>
+            <template is="dom-repeat" items="{{item.Surfaces}}" as="surface">
+                <a href="/WebsiteEditor/surface/{{surface.Key}}/general" class="website-surface-groups-surface">{{surface.Name}}</a>
+            </template>
+            <hr/>
         </template>
+        <button class="btn btn-success" value="{{model.CreateGroup$::click}}" onmousedown="++this.value">Add Group</button>
     </template>
 </template>

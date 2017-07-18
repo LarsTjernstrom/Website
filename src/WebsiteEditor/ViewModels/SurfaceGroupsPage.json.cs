@@ -11,6 +11,14 @@ namespace WebsiteEditor
             this.SurfaceGroups.Data = Db.SQL<WebTemplateGroup>("SELECT g FROM Simplified.Ring6.WebTemplateGroup g ORDER BY g.Name");
         }
 
+        void Handle(Input.CreateGroup action)
+        {
+            Db.Transact(() =>
+            {
+                this.SurfaceGroups.Add().Data = new WebTemplateGroup { Name = "New group" };
+            });
+        }
+
         [SurfaceGroupsPage_json.SurfaceGroups]
         partial class SurfaceGroupPage : Json, IBound<WebTemplateGroup>
         {
