@@ -132,3 +132,14 @@ body {
 .website-surface-groups__plus {
     pointer-events: none;
 }
+
+.website-surface-groups-surfaces {
+    padding-bottom: 20px;
+}
+
+.website-surface-group-name {
+    box-shadow: none !important;
+    border-bottom: none;
+    font-weight: bold;
+    font-size: 20px;
+}

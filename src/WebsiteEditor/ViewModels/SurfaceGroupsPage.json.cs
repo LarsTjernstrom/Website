@@ -8,12 +8,33 @@ namespace WebsiteEditor
         public void RefreshData()
         {
             this.SurfaceGroups.Clear();
-            this.SurfaceGroups.Data = Db.SQL<WebGroup>("SELECT g FROM Simplified.Ring6.WebGroup g ORDER BY g.Name");
+            this.SurfaceGroups.Data = Db.SQL<WebTemplateGroup>("SELECT g FROM Simplified.Ring6.WebTemplateGroup g ORDER BY g.Name");
         }
 
         [SurfaceGroupsPage_json.SurfaceGroups]
-        partial class SurfaceGroupPage : Json, IBound<WebGroup>
+        partial class SurfaceGroupPage : Json, IBound<WebTemplateGroup>
         {
+            SurfaceGroupsPage ParentPage => this.Parent.Parent as SurfaceGroupsPage;
+
+            protected override void OnData()
+            {
+                base.OnData();
+                this.Surfaces.Data = Db.SQL<WebTemplate>("SELECT wt FROM Simplified.Ring6.WebTemplate wt WHERE wt.WebTemplateGroup.Name = ? ORDER BY wt.Name", this.Name);
+            }
+
+            void Handle(Input.CreateSurface action)
+            {
+                Db.Transact(() =>
+                {
+                    this.Surfaces.Add().Data = new WebTemplate
+                    {
+                        Name = "New surface",
+                        WebTemplateGroup = this.Data
+                    };
+                });
+
+                ParentPage.RefreshData();
+            }
         }
 
         [SurfaceGroupsPage_json.SurfaceGroups.Surfaces]
