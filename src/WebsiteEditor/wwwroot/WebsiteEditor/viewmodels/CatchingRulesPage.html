@@ -34,10 +34,10 @@
                                 <label class="website-table__label">{{model.Surface.Name}}</label>
                             </td>
                             <td>
-                                <input type="text" value="{{item.Url$::change}}" class="website-table__control form-control" />
+                                <input type="text" value="{{item.Url$::change}}" class="form-control" />
                             </td>
                             <td>
-                                <input type="checkbox" checked="{{item.IsFinal$::change}}" class="website-table__control"/>
+                                <input type="checkbox" checked="{{item.IsFinal$::change}}"/>
                             </td>
                             <td>
                                 <button type="button" class="btn btn-xs btn-default" value="{{item.Delete$::click}}" onmousedown="++this.value;">Delete</button>
