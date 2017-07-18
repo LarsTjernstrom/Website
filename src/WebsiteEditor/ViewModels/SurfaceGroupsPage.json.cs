@@ -43,6 +43,12 @@ namespace WebsiteEditor
 
                 ParentPage.RefreshData();
             }
+
+            void Handle(Input.Name action)
+            {
+                this.Name = action.Value;
+                this.Transaction.Commit();
+            }
         }
 
         [SurfaceGroupsPage_json.SurfaceGroups.Surfaces]
