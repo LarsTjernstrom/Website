@@ -73,14 +73,11 @@ namespace WebsiteProvider
 
             Blender.UnmapUri(webMapForeignUrl, token);
 
-            if (webMap.Url != null)
+            if (webMap.Url != null &&
+                Blender.ListByTokens()[token].Count == 2) // one URI for empty WebMap's handler and another one for empty WebSection's handler
             {
-                var uriByTokenCount = Blender.ListAll().Where(x => x.Key == token).SelectMany(x => x.Value).Count();
-                if (uriByTokenCount == 2) // one URI for empty WebMap's handler and another one for empty WebSection's handler
-                {
-                    Blender.UnmapUri(mapUri, token);
-                    Handle.UnregisterHttpHandler("GET", mapUri);
-                }
+                Blender.UnmapUri(mapUri, token);
+                Handle.UnregisterHttpHandler("GET", mapUri);
             }
         }
 
@@ -116,16 +113,15 @@ namespace WebsiteProvider
         private static string GetOldUri(WebMap webMap)
         {
             var token = webMap.GetMappingToken();
-            var actualMappings = Blender.ListAll().Where(x => x.Key == token).SelectMany(x => x.Value);
-            var newMappings = new List<string> { webMap.Section.GetMappingUrl() };
+            var currentMappingUrls = new HashSet<string> { webMap.Section.GetMappingUrl() };
 
             foreach (WebMap map in webMap.Section.Maps)
             {
-                newMappings.Add(map.GetMappingUrl());
-                newMappings.Add(map.ForeignUrl);
+                currentMappingUrls.Add(map.GetMappingUrl());
+                currentMappingUrls.Add(map.ForeignUrl);
             }
 
-            return actualMappings.FirstOrDefault(x => !newMappings.Distinct().Contains(x));
+            return Blender.ListByTokens()[token].FirstOrDefault(x => !currentMappingUrls.Contains(x.Uri))?.Uri;
         }
     }
 }
