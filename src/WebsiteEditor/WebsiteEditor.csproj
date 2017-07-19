@@ -82,9 +82,6 @@
     <Compile Include="ViewModels\GeneralPage.json.cs">
       <DependentUpon>GeneralPage.json</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\PinningRulesPage.json.cs">
-      <DependentUpon>PinningRulesPage.json</DependentUpon>
-    </Compile>
     <Compile Include="ViewModels\BlendingPointsPage.json.cs">
       <DependentUpon>BlendingPointsPage.json</DependentUpon>
     </Compile>
@@ -136,7 +133,6 @@
     <None Include="wwwroot\WebsiteEditor\viewmodels\AppIcon.html" />
     <None Include="wwwroot\WebsiteEditor\viewmodels\GeneralPage.html" />
     <None Include="wwwroot\WebsiteEditor\viewmodels\ErrorPage.html" />
-    <Content Include="wwwroot\WebsiteEditor\viewmodels\PinningRulesPage.html" />
     <Content Include="wwwroot\WebsiteEditor\viewmodels\BlendingPointsPage.html" />
     <None Include="wwwroot\WebsiteEditor\viewmodels\SurfaceGroupsPage.html" />
     <Content Include="wwwroot\WebsiteEditor\viewmodels\CatchingRulesPage.html" />
@@ -147,9 +143,6 @@
     <None Include=".bowerrc" />
     <None Include="App.config" />
     <TypedJSON Include="ViewModels\DenyPage.json">
-      <Generator>MsBuild:Compile</Generator>
-    </TypedJSON>
-    <TypedJSON Include="ViewModels\PinningRulesPage.json">
       <Generator>MsBuild:Compile</Generator>
     </TypedJSON>
     <TypedJSON Include="ViewModels\CatchingRulesPage.json">

@@ -1,23 +1,39 @@
 {
-    "Html": "/WebsiteEditor/viewmodels/BlendingPointsPage.html",
-    "Surface": 
+  "Html": "/WebsiteEditor/viewmodels/BlendingPointsPage.html",
+  "Surface": {
+    "Key": "",
+    "Name": ""
+  },
+  "BlendingPoints": [
+    {
+      "Key": "",
+      "Name$": "",
+      "Default$": false,
+      "TemplateKey$": "",
+      "Delete$": 0,
+      "AddPinningRule$": 0,
+      "PinningRules": [
         {
-            "Key": "",
-            "Name": ""
-        },
-    "BlendingPoints": [
-        {
-            "Key": "",
-            "Name$": "",
-            "Default$": false,
-            "TemplateKey$": "",
-            "Delete$": 0
+          "Key": "",
+          "SectionKey$": "",
+          "UrlKey$": "",
+          "ForeignUrl$": "",
+          "SortNumber$": 0,
+          "Delete$": 0
         }
-    ],
-    "Trn": {
-        "IsDirty": false
-    },
-    "Create$": 0,
-    "SaveChanges$": 0,
-    "CancelChanges$": 0
+      ]
+    }
+  ],
+  "CatchingRules": [
+    {
+      "Key": "",
+      "Url": ""
+    }
+  ],
+  "Trn": {
+    "IsDirty": false
+  },
+  "Create$": 0,
+  "SaveChanges$": 0,
+  "CancelChanges$": 0
 }
