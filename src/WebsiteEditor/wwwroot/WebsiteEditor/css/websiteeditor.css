@@ -80,11 +80,6 @@ body {
     width: 150px;
 }
 
-.website-table__control {
-    box-shadow: none !important; /*To override bootstrap styles*/
-    border-bottom: none;
-}
-
 .website-table__label {
     font-size: 16px;
 }

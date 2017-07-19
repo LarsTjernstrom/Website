@@ -90,7 +90,7 @@ namespace WebsiteEditor
             var templatesUrl = new WebUrl()
             {
                 Template = surface,
-                Url = "/websiteeditor/cms/surfaces"
+                Url = "/websiteeditor/surfaces"
             };
 
             new WebMap() { Url = templatesUrl, Section = sidebarLeft, ForeignUrl = "/websiteeditor/help?topic=surfaces", SortNumber = 1 };

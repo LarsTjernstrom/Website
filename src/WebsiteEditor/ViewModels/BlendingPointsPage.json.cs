@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Starcounter;
 using Simplified.Ring6;
@@ -31,12 +32,27 @@ namespace WebsiteEditor
 
         void Handle(Input.SaveChanges action)
         {
+            RemoveEmptyPinningRules();
             this.Transaction.Commit();
         }
 
         void Handle(Input.Create action)
         {
             this.BlendingPoints.Add().Data = new WebSection { Template = this.Surface.Data as WebTemplate };
+        }
+
+        private void RemoveEmptyPinningRules()
+        {
+            var emptyPinningRules = new List<PinningRulesItemPage>();
+            foreach (var blendingPoint in this.BlendingPoints)
+            {
+                emptyPinningRules.AddRange(blendingPoint.PinningRules.Where(x => string.IsNullOrEmpty(x.ForeignUrl)));
+            }
+
+            foreach (var emptyPinningRule in emptyPinningRules)
+            {
+                emptyPinningRule.DeleteAction?.Invoke();
+            }
         }
 
         [BlendingPointsPage_json.BlendingPoints.PinningRules]
@@ -70,7 +86,7 @@ namespace WebsiteEditor
         }
 
         [BlendingPointsPage_json.BlendingPoints]
-        partial class CmsBlendingPointsItemPage : Json, IBound<WebSection>
+        partial class BlendingPointsItemPage : Json, IBound<WebSection>
         {
             private BlendingPointsPage ParentPage => this.Parent.Parent as BlendingPointsPage;
 
@@ -122,7 +138,7 @@ namespace WebsiteEditor
         }
 
         [BlendingPointsPage_json.Trn]
-        partial class CmsBlendingPointsTransactinPage : Json, IBound<Transaction>
+        partial class BlendingPointsTransactinPage : Json, IBound<Transaction>
         {
         }
     }
