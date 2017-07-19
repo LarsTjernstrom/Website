@@ -35,150 +35,150 @@ namespace WebsiteEditor
 
         public void GenerateDefaultSurface()
         {
-            var surface = new WebTemplate()
+            var surface = new WebTemplate
             {
                 Name = "DefaultSurface",
                 Html = "/Websiteeditor/surfaces/DefaultSurface.html"
             };
 
-            var topbar = new WebSection()
+            var topbar = new WebSection
             {
                 Template = surface,
                 Name = "TopBar",
                 Default = false
             };
 
-            var main = new WebSection()
+            var main = new WebSection
             {
                 Template = surface,
                 Name = "Main",
                 Default = true
             };
 
-            var catchAllUrl = new WebUrl()
+            var catchAllUrl = new WebUrl
             {
                 Template = surface,
                 Url = null,
                 IsFinal = true
             };
 
-            new WebMap() { Section = topbar, ForeignUrl = "/signin/user", SortNumber = 1 };
+            new WebMap { Section = topbar, ForeignUrl = "/signin/user", SortNumber = 1 };
         }
 
         public void GenerateSidebarSurface()
         {
-            var surface = new WebTemplate()
+            var surface = new WebTemplate
             {
                 Name = "SidebarSurface",
                 Html = "/Websiteeditor/surfaces/SidebarSurface.html"
             };
 
-            var sidebarLeft = new WebSection()
+            var sidebarLeft = new WebSection
             {
                 Template = surface,
                 Name = "Left",
                 Default = false
             };
 
-            new WebSection()
+            new WebSection
             {
                 Template = surface,
                 Name = "Right",
                 Default = true
             };
 
-            var templatesUrl = new WebUrl()
+            var templatesUrl = new WebUrl
             {
                 Template = surface,
                 Url = "/websiteeditor/surfaces"
             };
 
-            new WebMap() { Url = templatesUrl, Section = sidebarLeft, ForeignUrl = "/websiteeditor/help?topic=surfaces", SortNumber = 1 };
+            new WebMap { Url = templatesUrl, Section = sidebarLeft, ForeignUrl = "/websiteeditor/help?topic=surfaces", SortNumber = 1 };
         }
 
         public void GenerateHolyGrailSurface()
         {
-            var surface = new WebTemplate()
+            var surface = new WebTemplate
             {
                 Name = "HolyGrailSurface",
                 Html = "/Websiteeditor/surfaces/HolyGrailSurface.html"
             };
 
-            var content = new WebSection()
+            var content = new WebSection
             {
                 Template = surface,
                 Name = "Content",
                 Default = true
             };
 
-            var header = new WebSection()
+            var header = new WebSection
             {
                 Template = surface,
                 Name = "Header",
                 Default = false
             };
 
-            var left = new WebSection()
+            var left = new WebSection
             {
                 Template = surface,
                 Name = "Left",
                 Default = false
             };
 
-            var right = new WebSection()
+            var right = new WebSection
             {
                 Template = surface,
                 Name = "Right",
                 Default = false
             };
 
-            var footer = new WebSection()
+            var footer = new WebSection
             {
                 Template = surface,
                 Name = "Footer",
                 Default = false
             };
 
-            var homeUrl = new WebUrl()
+            var homeUrl = new WebUrl
             {
                 Template = surface,
                 Url = "/content/dynamic/apps",
                 IsFinal = true
             };
 
-            var appsUrl = new WebUrl()
+            var appsUrl = new WebUrl
             {
                 Template = surface,
                 Url = "/content/dynamic/apps/wanted-apps",
                 IsFinal = true
             };
 
-            var profileUrl = new WebUrl()
+            var profileUrl = new WebUrl
             {
                 Template = surface,
                 Url = "/content/dynamic/userprofile",
                 IsFinal = true
             };
 
-            new WebMap() { Section = header, ForeignUrl = "/signin/user", SortNumber = 1 };
-            new WebMap() { Section = header, ForeignUrl = "/content/dynamic/navigation", SortNumber = 2, };
-            new WebMap() { Url = homeUrl, Section = header, ForeignUrl = "/content/dynamic/index/header", SortNumber = 3 };
-            new WebMap() { Url = homeUrl, Section = header, ForeignUrl = "/signin/signinuser", SortNumber = 4 };
-            new WebMap() { Url = homeUrl, Section = header, ForeignUrl = "/registration", SortNumber = 5 };
-            new WebMap() { Url = homeUrl, Section = header, ForeignUrl = "/content/dynamic/index/registration", SortNumber = 6 };
+            new WebMap { Section = header, ForeignUrl = "/signin/user", SortNumber = 1 };
+            new WebMap { Section = header, ForeignUrl = "/content/dynamic/navigation", SortNumber = 2, };
+            new WebMap { Url = homeUrl, Section = header, ForeignUrl = "/content/dynamic/index/header", SortNumber = 3 };
+            new WebMap { Url = homeUrl, Section = header, ForeignUrl = "/signin/signinuser", SortNumber = 4 };
+            new WebMap { Url = homeUrl, Section = header, ForeignUrl = "/registration", SortNumber = 5 };
+            new WebMap { Url = homeUrl, Section = header, ForeignUrl = "/content/dynamic/index/registration", SortNumber = 6 };
 
-            new WebMap() { Url = homeUrl, Section = left, ForeignUrl = "/content/dynamic/index/left", SortNumber = 1 };
+            new WebMap { Url = homeUrl, Section = left, ForeignUrl = "/content/dynamic/index/left", SortNumber = 1 };
 
-            new WebMap() { Url = homeUrl, Section = right, ForeignUrl = "/content/dynamic/index/right", SortNumber = 1 };
+            new WebMap { Url = homeUrl, Section = right, ForeignUrl = "/content/dynamic/index/right", SortNumber = 1 };
 
-            new WebMap() { Url = homeUrl, Section = footer, ForeignUrl = "/content/dynamic/index/footer", SortNumber = 1 };
+            new WebMap { Url = homeUrl, Section = footer, ForeignUrl = "/content/dynamic/index/footer", SortNumber = 1 };
 
-            new WebMap() { Url = appsUrl, Section = header, ForeignUrl = "/content/dynamic/apps/header", SortNumber = 1 };
-            new WebMap() { Url = appsUrl, Section = header, ForeignUrl = "/content/dynamic/apps/footer", SortNumber = 2 };
+            new WebMap { Url = appsUrl, Section = header, ForeignUrl = "/content/dynamic/apps/header", SortNumber = 1 };
+            new WebMap { Url = appsUrl, Section = header, ForeignUrl = "/content/dynamic/apps/footer", SortNumber = 2 };
 
-            new WebMap() { Url = profileUrl, Section = header, ForeignUrl = "/content/dynamic/userprofile/header", SortNumber = 1 };
-            new WebMap() { Url = profileUrl, Section = content, ForeignUrl = "/userprofile", SortNumber = 2 };
-            new WebMap() { Url = profileUrl, Section = footer, ForeignUrl = "/content/dynamic/userprofile/footer", SortNumber = 3 };
+            new WebMap { Url = profileUrl, Section = header, ForeignUrl = "/content/dynamic/userprofile/header", SortNumber = 1 };
+            new WebMap { Url = profileUrl, Section = content, ForeignUrl = "/userprofile", SortNumber = 2 };
+            new WebMap { Url = profileUrl, Section = footer, ForeignUrl = "/content/dynamic/userprofile/footer", SortNumber = 3 };
         }
     }
 }

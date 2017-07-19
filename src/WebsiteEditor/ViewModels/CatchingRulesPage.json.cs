@@ -11,7 +11,7 @@ namespace WebsiteEditor
 
         public void RefreshData()
         {
-            if (string.IsNullOrEmpty(SurfaceKey))
+            if (string.IsNullOrEmpty(this.SurfaceKey))
             {
                 throw new InvalidOperationException("Surface key is empty.");
             }

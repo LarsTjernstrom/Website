@@ -12,13 +12,13 @@ namespace WebsiteProvider
     {
         private static string runResponseMiddleware = "X-Run-Response-Middleware";
 
-        protected Storage<Request> RequestStorage { get; private set; }
-        protected Storage<Response> ResponseStorage { get; private set; }
+        protected Storage<Request> RequestStorage { get; }
+        protected Storage<Response> ResponseStorage { get; }
 
         public ContentHandlers()
         {
-            RequestStorage = new Storage<Request>();
-            ResponseStorage = new Storage<Response>();
+            this.RequestStorage = new Storage<Request>();
+            this.ResponseStorage = new Storage<Response>();
         }
 
         public string GetWildCardUrl(string url)
@@ -34,33 +34,18 @@ namespace WebsiteProvider
             return reg.Replace(url, "?{?}");
         }
 
-        public string FormatUrl(string Url, string Name)
-        {
-            if (string.IsNullOrEmpty(Name))
-            {
-                return Url;
-            }
-            else
-            {
-                return Url.Replace("{?}", Name);
-            }
-        }
-
         public void Register()
         {
             Application.Current.Use(new HtmlFromJsonProvider());
             Application.Current.Use(new PartialToStandaloneHtmlProvider());
 
-            Handle.GET("/WebsiteProvider", () =>
-            {
-                return "Welcome to WebsiteProvider.";
-            });
+            Handle.GET("/WebsiteProvider", () => "Welcome to WebsiteProvider.");
 
             Handle.GET("/WebsiteProvider/partial/wrapper?uri={?}&response={?}&request={?}", (string requestUri, string responseKey, string requestKey) =>
             {
                 requestUri = Uri.UnescapeDataString(requestUri);
-                Response currentResponse = ResponseStorage.Get(responseKey);
-                Request originalRequest = RequestStorage.Get(requestKey);
+                Response currentResponse = this.ResponseStorage.Get(responseKey);
+                Request originalRequest = this.RequestStorage.Get(requestKey);
 
                 WebUrl webUrl = this.GetWebUrl(originalRequest);
                 WebTemplate template = webUrl?.Template;
@@ -110,14 +95,14 @@ namespace WebsiteProvider
                         var wrapper = response.Resource as SurfacePage;
                         var requestUri = request.Uri;
                         var isWrapped = false;
-                        var requestKey = RequestStorage.Put(request);
+                        var requestKey = this.RequestStorage.Put(request);
 
                         try
                         {
                             while ((wrapper == null || wrapper.IsFinal == false) && this.HasCatchingRule(request))
                             {
                                 isWrapped = true;
-                                var responseKey = ResponseStorage.Put(response);
+                                var responseKey = this.ResponseStorage.Put(response);
 
                                 try
                                 {
@@ -126,16 +111,16 @@ namespace WebsiteProvider
                                 }
                                 finally
                                 {
-                                    ResponseStorage.Remove(responseKey);
+                                    this.ResponseStorage.Remove(responseKey);
                                 }
 
                                 wrapper = response.Resource as SurfacePage;
-                                requestUri = wrapper?.Data.Html;
+                                requestUri = wrapper?.Data.Html ?? string.Empty;
                             }
                         }
                         finally
                         {
-                            RequestStorage.Remove(requestKey);
+                            this.RequestStorage.Remove(requestKey);
                         }
 
                         if (!isWrapped)
@@ -143,7 +128,7 @@ namespace WebsiteProvider
                             //Morph to a view that is stateless and not catched by any surface
                             //This is tested by RedirectToOtherAppPageTest
                             //Should be improved by https://github.com/Starcounter/level1/issues/4159
-                            Session.Current.Data = response.Resource as Json;
+                            Session.Current.Data = (Json)response.Resource;
                         }
                         return response;
                     }
@@ -200,11 +185,6 @@ namespace WebsiteProvider
                     }
                 }
             }
-        }
-
-        private SurfacePage WrapExternalRequest(string uri)
-        {
-            return Self.GET<SurfacePage>(uri, () => new SurfacePage());
         }
 
         protected SurfacePage GetSurfacePage(WebTemplate template)

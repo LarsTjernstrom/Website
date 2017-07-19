@@ -191,35 +191,35 @@ namespace WebsiteProvider_AcceptanceHelperOne
                 Html = "/Websiteeditor/surfaces/HolyGrailSurface.html"
             };
 
-            new WebSection()
+            new WebSection
             {
                 Template = surface,
                 Name = "Content",
                 Default = true
             };
 
-            new WebSection()
+            new WebSection
             {
                 Template = surface,
                 Name = "Header",
                 Default = false
             };
 
-            new WebSection()
+            new WebSection
             {
                 Template = surface,
                 Name = "Left",
                 Default = false
             };
 
-            new WebSection()
+            new WebSection
             {
                 Template = surface,
                 Name = "Right",
                 Default = false
             };
 
-            new WebSection()
+            new WebSection
             {
                 Template = surface,
                 Name = "Footer",
