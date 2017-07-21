@@ -34,7 +34,10 @@ namespace WebsiteEditor
 
         void Handle(Input.Create Action)
         {
-            this.CatchingRules.Add().Data = new WebUrl();
+            this.CatchingRules.Add().Data = new WebUrl()
+            {
+                Template = (WebTemplate)this.Surface.Data
+            };
         }
 
         [CatchingRulesPage_json.CatchingRules]
