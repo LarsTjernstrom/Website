@@ -116,21 +116,17 @@ namespace WebsiteEditor
 
         protected MasterPage GetMasterPageFromSession()
         {
-            if (Session.Current == null)
-            {
-                Session.Current = new Session(SessionOptions.PatchVersioning);
-            }
-
-            MasterPage master = Session.Current.Data as MasterPage;
+            MasterPage master = Session.Ensure().Store[nameof(MasterPage)] as MasterPage;
 
             if (master == null)
             {
                 master = new MasterPage();
-                Session.Current.Data = master;
+                Session.Current.Store[nameof(MasterPage)] = master;
             }
-
+ 
             return master;
         }
+
         private static void SetMasterCurrentPage(MasterPage master, string uri)
         {
             try
