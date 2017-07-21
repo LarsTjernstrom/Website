@@ -8,7 +8,8 @@ namespace WebsiteProvider
 {
     public class MappingHandlers
     {
-        private static bool isRegistered;
+        private /*static*/ bool isRegistered;
+        private readonly object locker = new object();
         private readonly List<WebsiteBlendingInfo> blendingInfos = new List<WebsiteBlendingInfo>();
 
         public void Register()
@@ -66,7 +67,7 @@ namespace WebsiteProvider
             // map URI for WebMap's Pin URI on the same token
             Blender.MapUri(webMap.ForeignUrl, token);
 
-            this.blendingInfos.Add(new WebsiteBlendingInfo
+            this.AddBlendingInfo(new WebsiteBlendingInfo
             {
                 MapId = webMap.GetObjectNo(),
                 SectionId = webMap.Section.GetObjectNo(),
@@ -90,19 +91,19 @@ namespace WebsiteProvider
         public void UnmapPinningRule(ulong mapId)
         {
             this.ValidateState(isExpectedRegistered: true);
-            this.UnmapPinningRule(this.blendingInfos.First(x => x.MapId == mapId));
+            this.UnmapPinningRule(this.TakeBlendingInfo(x => x.MapId == mapId));
         }
 
         public void UnmapBlendingPoint(ulong sectionId)
         {
             this.ValidateState(isExpectedRegistered: true);
-            this.UnmapBlendingPoint(this.blendingInfos.Where(x => x.SectionId == sectionId).ToList());
+            this.UnmapBlendingPoint(this.TakeBlendingInfos(x => x.SectionId == sectionId));
         }
 
         public void UnmapSurface(ulong templateId)
         {
             this.ValidateState(isExpectedRegistered: true);
-            var infos = this.blendingInfos.Where(x => x.TemplateId == templateId);
+            var infos = this.TakeBlendingInfos(x => x.TemplateId == templateId);
             foreach (var infosBySection in infos.GroupBy(x => x.SectionId))
             {
                 this.UnmapBlendingPoint(infosBySection.ToList());
@@ -145,6 +146,37 @@ namespace WebsiteProvider
             if (Handle.IsHandlerRegistered("GET", sectionInfo.SectionHandlerUri))
             {
                 Handle.UnregisterHttpHandler("GET", sectionInfo.SectionHandlerUri);
+            }
+        }
+
+        private void AddBlendingInfo(WebsiteBlendingInfo info)
+        {
+            lock (locker)
+            {
+                this.blendingInfos.Add(info);
+            }
+        }
+
+        private WebsiteBlendingInfo TakeBlendingInfo(Func<WebsiteBlendingInfo, bool> predicate)
+        {
+            lock (locker)
+            {
+                var item = this.blendingInfos.FirstOrDefault(predicate);
+                this.blendingInfos.Remove(item);
+                return item;
+            }
+        }
+
+        private List<WebsiteBlendingInfo> TakeBlendingInfos(Func<WebsiteBlendingInfo, bool> predicate)
+        {
+            lock (locker)
+            {
+                var items = this.blendingInfos.Where(predicate).ToList();
+                foreach (var info in items)
+                {
+                    this.blendingInfos.Remove(info);
+                }
+                return items;
             }
         }
 
