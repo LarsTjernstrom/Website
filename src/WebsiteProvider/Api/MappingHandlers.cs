@@ -8,24 +8,32 @@ namespace WebsiteProvider
 {
     public class MappingHandlers
     {
+        private static bool isRegistered;
+        private readonly List<WebsiteBlendingInfo> blendingInfos = new List<WebsiteBlendingInfo>();
+
         public void Register()
         {
+            this.ValidateState(isExpectedRegistered: false);
+            isRegistered = true;
+
             var webSections = Db.SQL<WebSection>("SELECT ws FROM Simplified.Ring6.WebSection ws");
 
             foreach (WebSection section in webSections)
             {
                 var sectionUri = section.GetMappingUrl();
-                RegisterEmptyHandler(sectionUri);
+                this.RegisterEmptyHandler(sectionUri);
 
                 foreach (WebMap webMap in section.Maps.OrderBy(x => x.SortNumber))
                 {
-                    MapPinningRule(webMap, sectionUri);
+                    this.MapPinningRule(webMap, sectionUri);
                 }
             }
         }
 
         public void MapPinningRule(WebMap webMap, string registeredSectionUri = null)
         {
+            this.ValidateState(isExpectedRegistered: true);
+
             if (webMap.Section == null)
             {
                 throw new InvalidOperationException("Section cannot be null!");
@@ -35,7 +43,7 @@ namespace WebsiteProvider
 
             if (registeredSectionUri == null)
             {
-                RegisterEmptyHandler(sectionUri);
+                this.RegisterEmptyHandler(sectionUri);
             }
 
             string token = webMap.GetMappingToken();
@@ -51,59 +59,72 @@ namespace WebsiteProvider
             // this will be calling by WebsiteProvider
             if (!Blender.IsMapped(mapUri, token))
             {
-                RegisterEmptyHandler(mapUri);
+                this.RegisterEmptyHandler(mapUri);
                 Blender.MapUri(mapUri, token);
             }
 
             // map URI for WebMap's Pin URI on the same token
             Blender.MapUri(webMap.ForeignUrl, token);
+
+            this.blendingInfos.Add(new WebsiteBlendingInfo
+            {
+                MapId = webMap.GetObjectNo(),
+                SectionId = webMap.Section.GetObjectNo(),
+                TemplateId = webMap.Section.Template.GetObjectNo(),
+                HasUrl = webMap.Url != null,
+                Token = token,
+                EmptyHandlerUri = mapUri,
+                SectionHandlerUri = sectionUri,
+                ForeignUri = webMap.ForeignUrl
+            });
         }
 
         public void UpdatePinningRule(WebMap webMap)
         {
-            this.UnmapPinningRule(webMap, GetOldUri(webMap));
+            this.ValidateState(isExpectedRegistered: true);
+
+            this.UnmapPinningRule(webMap.GetObjectNo());
             this.MapPinningRule(webMap);
         }
 
-        public void UnmapPinningRule(WebMap webMap, string webMapForeignUrl = null)
+        public void UnmapPinningRule(ulong mapId)
         {
-            if (webMap.Section?.Template == null)
+            this.ValidateState(isExpectedRegistered: true);
+            
+            //if (webMap.Section?.Template == null)
+            //{
+            //    // if the Blending Point (WebSection) or the Surface (WebTemplate) was deleted earlier
+            //    return;
+            //}
+
+            var info = this.blendingInfos.FirstOrDefault(x => x.MapId == mapId);
+
+            Blender.UnmapUri(info.ForeignUri, info.Token);
+
+            // TODO : what is this
+            if (info.HasUrl &&
+                Blender.ListByTokens()[info.Token].Count == 2) // one URI for empty WebMap's handler and another one for empty WebSection's handler
             {
-                // if the Blending Point (WebSection) or the Surface (WebTemplate) was deleted earlier
-                return;
-            }
-
-            webMapForeignUrl = webMapForeignUrl ?? webMap.ForeignUrl;
-
-            string token = webMap.GetMappingToken();
-            string mapUri = webMap.GetMappingUrl();
-
-            if (webMapForeignUrl != null)
-            {
-                Blender.UnmapUri(webMapForeignUrl, token);
-            }
-
-            if (webMap.Url != null &&
-                Blender.ListByTokens()[token].Count == 2) // one URI for empty WebMap's handler and another one for empty WebSection's handler
-            {
-                Blender.UnmapUri(mapUri, token);
-                Handle.UnregisterHttpHandler("GET", mapUri);
+                Blender.UnmapUri(info.EmptyHandlerUri, info.Token);
+                Handle.UnregisterHttpHandler("GET", info.EmptyHandlerUri);
             }
         }
 
-        public void UnmapBlendingPoint(WebSection webSection)
+        public void UnmapBlendingPoint(ulong sectionId)
         {
-            if (webSection.Template == null)
-            {
-                // if the Surface (WebTemplate) was deleted earlier
-                return;
-            }
+            this.ValidateState(isExpectedRegistered: true);
+
+            //if (webSection.Template == null)
+            //{
+            //    // if the Surface (WebTemplate) was deleted earlier
+            //    return;
+            //}
             string token = webSection.GetMappingToken();
             string mapUri = webSection.GetMappingUrl();
 
             foreach (WebMap webMap in webSection.Maps)
             {
-                UnmapPinningRule(webMap);
+                UnmapPinningRule(webMap.GetObjectNo());
             }
             Blender.UnmapUri(mapUri, token);
             if (Handle.IsHandlerRegistered("GET", mapUri))
@@ -120,18 +141,30 @@ namespace WebsiteProvider
             }
         }
 
-        private static string GetOldUri(WebMap webMap)
+        private void ValidateState(bool isExpectedRegistered)
         {
-            var token = webMap.GetMappingToken();
-            var currentMappingUrls = new List<string> {webMap.Section.GetMappingUrl()};
-
-            foreach (WebMap map in webMap.Section.Maps)
+            if (isExpectedRegistered && !isRegistered)
             {
-                currentMappingUrls.Add(map.GetMappingUrl());
-                currentMappingUrls.Add(map.ForeignUrl);
+                throw new InvalidOperationException("Mappings should be registered first.");
             }
+            if (!isExpectedRegistered && isRegistered)
+            {
+                throw new InvalidOperationException("Mappings is already registered.");
+            }
+        }
 
-            return Blender.ListByTokens()[token].FirstOrDefault(x => !currentMappingUrls.Contains(x.Uri))?.Uri;
+        private class WebsiteBlendingInfo
+        {
+            public ulong MapId { get; set; }
+            public ulong SectionId { get; set; }
+            public ulong TemplateId { get; set; }
+
+            public bool HasUrl { get; set; }
+
+            public string EmptyHandlerUri { get; set; }
+            public string SectionHandlerUri { get; set; }
+            public string ForeignUri { get; set; }
+            public string Token { get; set; }
         }
     }
 }

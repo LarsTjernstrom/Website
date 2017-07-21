@@ -12,8 +12,8 @@ namespace WebsiteProvider
         public static string GetMappingToken(this WebSection webSection, WebUrl webUrl = null)
         {
             return webUrl == null
-                ? $"websiteeditor%{webSection.Template.Key}%{webSection.Key}"
-                : $"websiteeditor%{webSection.Template.Key}%{webSection.Key}%{webUrl.Key}";
+                ? $"websiteprovider%{webSection.Template.Key}%{webSection.Key}"
+                : $"websiteprovider%{webSection.Template.Key}%{webSection.Key}%{webUrl.Key}";
         }
 
         public static string GetMappingUrl(this WebMap webMap)
@@ -24,8 +24,8 @@ namespace WebsiteProvider
         public static string GetMappingUrl(this WebSection webSection, WebUrl webUrl = null)
         {
             return string.IsNullOrWhiteSpace(webUrl?.Url)
-                ? $"/WebsiteEditor/blender/surface/{webSection.Template.Key}/point/{webSection.Key}"
-                : $"/WebsiteEditor/blender/surface/{webSection.Template.Key}/point/{webSection.Key}/uri/{webUrl.Key}";
+                ? $"/WebsiteProvider/blender/surface/{webSection.Template.Key}/point/{webSection.Key}"
+                : $"/WebsiteProvider/blender/surface/{webSection.Template.Key}/point/{webSection.Key}/uri/{webUrl.Key}";
         }
     }
 }

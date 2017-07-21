@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Simplified.Ring6;
 using Starcounter;
 
@@ -20,9 +21,9 @@ namespace WebsiteProvider
                 MappingHandlers.MapPinningRule(webMap);
             };
 
-            Hook<WebMap>.BeforeDelete += (s, webMap) =>
+            Hook<WebMap>.CommitDelete += (s, id) =>
             {
-                MappingHandlers.UnmapPinningRule(webMap);
+                MappingHandlers.UnmapPinningRule(id);
             };
 
             Hook<WebMap>.CommitUpdate += (s, webMap) =>
@@ -30,9 +31,9 @@ namespace WebsiteProvider
                 MappingHandlers.UpdatePinningRule(webMap);
             };
 
-            Hook<WebSection>.BeforeDelete += (s, webSection) =>
+            Hook<WebSection>.CommitDelete += (s, id) =>
             {
-                MappingHandlers.UnmapBlendingPoint(webSection);
+                MappingHandlers.UnmapBlendingPoint(id);
             };
 
             Hook<WebTemplate>.BeforeDelete += (s, webTemplate) =>
