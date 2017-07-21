@@ -36,12 +36,9 @@ namespace WebsiteProvider
                 MappingHandlers.UnmapBlendingPoint(id);
             };
 
-            Hook<WebTemplate>.BeforeDelete += (s, webTemplate) =>
+            Hook<WebTemplate>.CommitDelete += (s, id) =>
             {
-                foreach (WebSection webSection in webTemplate.Sections)
-                {
-                    MappingHandlers.UnmapBlendingPoint(webSection);
-                }
+                MappingHandlers.UnmapSurface(id);
             };
         }
     }

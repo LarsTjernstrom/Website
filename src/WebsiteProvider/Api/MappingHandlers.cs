@@ -90,18 +90,35 @@ namespace WebsiteProvider
         public void UnmapPinningRule(ulong mapId)
         {
             this.ValidateState(isExpectedRegistered: true);
-            
-            //if (webMap.Section?.Template == null)
-            //{
-            //    // if the Blending Point (WebSection) or the Surface (WebTemplate) was deleted earlier
-            //    return;
-            //}
+            this.UnmapPinningRule(this.blendingInfos.First(x => x.MapId == mapId));
+        }
 
-            var info = this.blendingInfos.FirstOrDefault(x => x.MapId == mapId);
+        public void UnmapBlendingPoint(ulong sectionId)
+        {
+            this.ValidateState(isExpectedRegistered: true);
+            this.UnmapBlendingPoint(this.blendingInfos.Where(x => x.SectionId == sectionId).ToList());
+        }
+
+        public void UnmapSurface(ulong templateId)
+        {
+            this.ValidateState(isExpectedRegistered: true);
+            var infos = this.blendingInfos.Where(x => x.TemplateId == templateId);
+            foreach (var infosBySection in infos.GroupBy(x => x.SectionId))
+            {
+                this.UnmapBlendingPoint(infosBySection.ToList());
+            }
+        }
+
+        private void UnmapPinningRule(WebsiteBlendingInfo info)
+        {
+            if (!IsSectionExists(info.SectionId) || !IsTemplateExists(info.TemplateId))
+            {
+                // if the Blending Point (WebSection) or the Surface (WebTemplate) was deleted earlier
+                return;
+            }
 
             Blender.UnmapUri(info.ForeignUri, info.Token);
 
-            // TODO : what is this
             if (info.HasUrl &&
                 Blender.ListByTokens()[info.Token].Count == 2) // one URI for empty WebMap's handler and another one for empty WebSection's handler
             {
@@ -110,27 +127,35 @@ namespace WebsiteProvider
             }
         }
 
-        public void UnmapBlendingPoint(ulong sectionId)
+        private void UnmapBlendingPoint(List<WebsiteBlendingInfo> mapInfos)
         {
-            this.ValidateState(isExpectedRegistered: true);
+            var sectionInfo = mapInfos[0];
 
-            //if (webSection.Template == null)
-            //{
-            //    // if the Surface (WebTemplate) was deleted earlier
-            //    return;
-            //}
-            string token = webSection.GetMappingToken();
-            string mapUri = webSection.GetMappingUrl();
+            if (!IsTemplateExists(sectionInfo.TemplateId))
+            {
+                // if the Surface (WebTemplate) was deleted earlier
+                return;
+            }
 
-            foreach (WebMap webMap in webSection.Maps)
+            foreach (var info in mapInfos)
             {
-                UnmapPinningRule(webMap.GetObjectNo());
+                UnmapPinningRule(info);
             }
-            Blender.UnmapUri(mapUri, token);
-            if (Handle.IsHandlerRegistered("GET", mapUri))
+            //Blender.UnmapUri(sectionInfo.SectionHandlerUri, sec);
+            if (Handle.IsHandlerRegistered("GET", sectionInfo.SectionHandlerUri))
             {
-                Handle.UnregisterHttpHandler("GET", mapUri);
+                Handle.UnregisterHttpHandler("GET", sectionInfo.SectionHandlerUri);
             }
+        }
+
+        private bool IsTemplateExists(ulong templateId)
+        {
+            return Db.SQL<WebTemplate>("SELECT t FROM Simplified.Ring6.WebTemplate t WHERE t.ObjectNo = ?", templateId).Any();
+        }
+
+        private bool IsSectionExists(ulong sectionId)
+        {
+            return Db.SQL<WebSection>("SELECT s FROM Simplified.Ring6.WebSection s WHERE s.ObjectNo = ?", sectionId).Any();
         }
 
         private void RegisterEmptyHandler(string uri)
