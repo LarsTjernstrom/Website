@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Simplified.Ring6;
 using Starcounter;
 
@@ -7,38 +6,38 @@ namespace WebsiteProvider
 {
     internal class CommitHooks
     {
-        public MappingHandlers MappingHandlers { get; }
+        public PinningHandlers PinningHandlers { get; }
 
-        public CommitHooks(MappingHandlers mappingHandlers)
+        public CommitHooks(PinningHandlers pinningHandlers)
         {
-            MappingHandlers = mappingHandlers ?? throw new ArgumentNullException(nameof(mappingHandlers));
+            PinningHandlers = pinningHandlers ?? throw new ArgumentNullException(nameof(pinningHandlers));
         }
 
         public void Register()
         {
             Hook<WebMap>.CommitInsert += (s, webMap) =>
             {
-                MappingHandlers.MapPinningRule(webMap);
+                PinningHandlers.MapPinningRule(webMap);
             };
 
             Hook<WebMap>.CommitDelete += (s, id) =>
             {
-                MappingHandlers.UnmapPinningRule(id);
+                PinningHandlers.UnmapPinningRule(id);
             };
 
             Hook<WebMap>.CommitUpdate += (s, webMap) =>
             {
-                MappingHandlers.UpdatePinningRule(webMap);
+                PinningHandlers.UpdatePinningRule(webMap);
             };
 
             Hook<WebSection>.CommitDelete += (s, id) =>
             {
-                MappingHandlers.UnmapBlendingPoint(id);
+                PinningHandlers.UnmapBlendingPoint(id);
             };
 
             Hook<WebTemplate>.CommitDelete += (s, id) =>
             {
-                MappingHandlers.UnmapSurface(id);
+                PinningHandlers.UnmapSurface(id);
             };
         }
     }

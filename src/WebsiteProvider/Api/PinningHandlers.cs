@@ -6,11 +6,21 @@ using Starcounter;
 
 namespace WebsiteProvider
 {
-    public class MappingHandlers
+    public class PinningHandlers
     {
-        private /*static*/ bool isRegistered;
+        private static PinningHandlers instance;
+        private bool isRegistered;
         private readonly object locker = new object();
         private readonly List<WebsiteBlendingInfo> blendingInfos = new List<WebsiteBlendingInfo>();
+
+        private PinningHandlers()
+        {
+        }
+
+        public static PinningHandlers GetInstance()
+        {
+            return instance ?? (instance = new PinningHandlers());
+        }
 
         public void Register()
         {
@@ -114,14 +124,13 @@ namespace WebsiteProvider
         {
             if (!IsSectionExists(info.SectionId) || !IsTemplateExists(info.TemplateId))
             {
-                // if the Blending Point (WebSection) or the Surface (WebTemplate) was deleted earlier
-                return;
+                return;     // if the Blending Point (WebSection) or the Surface (WebTemplate) was deleted earlier
             }
 
             Blender.UnmapUri(info.ForeignUri, info.Token);
 
             if (info.HasUrl &&
-                Blender.ListByTokens()[info.Token].Count == 2) // one URI for empty WebMap's handler and another one for empty WebSection's handler
+                Blender.ListByTokens()[info.Token].Count == 2)      // one URI for empty WebMap's handler and another one for empty WebSection's handler
             {
                 Blender.UnmapUri(info.EmptyHandlerUri, info.Token);
                 Handle.UnregisterHttpHandler("GET", info.EmptyHandlerUri);
@@ -134,15 +143,18 @@ namespace WebsiteProvider
 
             if (!IsTemplateExists(sectionInfo.TemplateId))
             {
-                // if the Surface (WebTemplate) was deleted earlier
-                return;
+                return;     // if the Surface (WebTemplate) was deleted earlier
             }
 
             foreach (var info in mapInfos)
             {
                 UnmapPinningRule(info);
             }
-            //Blender.UnmapUri(sectionInfo.SectionHandlerUri, sec);
+
+            foreach (var blendingInfo in Blender.ListByUris()[sectionInfo.SectionHandlerUri])
+            {
+                Blender.UnmapUri(blendingInfo.Uri, blendingInfo.Token);
+            }
             if (Handle.IsHandlerRegistered("GET", sectionInfo.SectionHandlerUri))
             {
                 Handle.UnregisterHttpHandler("GET", sectionInfo.SectionHandlerUri);
