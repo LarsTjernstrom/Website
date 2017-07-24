@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Simplified.Ring6;
 using Starcounter;
@@ -25,6 +26,11 @@ namespace WebsiteProvider
 
         public void MapPinningRule(WebMap webMap, string registeredSectionUri = null)
         {
+            if (webMap.Section == null)
+            {
+                throw new InvalidOperationException("Section cannot be null!");
+            }
+
             string sectionUri = registeredSectionUri ?? webMap.Section.GetMappingUrl();
 
             if (registeredSectionUri == null)
@@ -68,10 +74,14 @@ namespace WebsiteProvider
             }
 
             webMapForeignUrl = webMapForeignUrl ?? webMap.ForeignUrl;
+
             string token = webMap.GetMappingToken();
             string mapUri = webMap.GetMappingUrl();
 
-            Blender.UnmapUri(webMapForeignUrl, token);
+            if (webMapForeignUrl != null)
+            {
+                Blender.UnmapUri(webMapForeignUrl, token);
+            }
 
             if (webMap.Url != null &&
                 Blender.ListByTokens()[token].Count == 2) // one URI for empty WebMap's handler and another one for empty WebSection's handler

@@ -1,56 +1,80 @@
-﻿<template>
+﻿<link rel="import" href="/sys/paper-collapse-item/paper-collapse-item.html" />
+<link rel="import" href="/sys/juicy-select/juicy-select.html" />
+
+<template>
     <template is="dom-bind">
-        <fieldset>
-            <legend>
-                <span class="pull-right">
-                    <button type="button" class="btn btn-xs btn-success" value="{{model.SaveChanges$::click}}"
-                            onmousedown="++this.value;" disabled="{{!model.Trn.IsDirty}}" title="Save all changes">
-                        Save
-                    </button>
-                    <button type="button" class="btn btn-xs btn-default" value="{{model.CancelChanges$::click}}"
-                            onmousedown="++this.value;" disabled="{{!model.Trn.IsDirty}}" title="Cancel all changes">
-                        Cancel
-                    </button>
-                    <button type="button" class="btn btn-xs btn-default" value="{{model.Create$::click}}"
-                            onmousedown="++this.value;" title="Create blending point">
-                        Create
-                    </button>
-                </span>
-                Blending points
-            </legend>
-            <table class="website-table table">
-                <thead>
-                    <tr>
-                        <th>Surface</th>
-                        <th>Blending point name</th>
-                        <th>Default</th>
-                        <th class="website-table__cell-actions"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <template is="dom-repeat" items="{{model.BlendingPoints}}">
+        <legend>
+            <span class="pull-right">
+                <button type="button" class="btn btn-xs btn-success" value="{{model.SaveChanges$::click}}"
+                        onmousedown="++this.value;" disabled="{{!model.Trn.IsDirty}}" title="Save all changes">
+                    Save
+                </button>
+                <button type="button" class="btn btn-xs btn-default" value="{{model.CancelChanges$::click}}"
+                        onmousedown="++this.value;" disabled="{{!model.Trn.IsDirty}}" title="Cancel all changes">
+                    Cancel
+                </button>
+                <button type="button" class="btn btn-xs btn-default" value="{{model.Create$::click}}"
+                        onmousedown="++this.value;" title="Create blending point">
+                    Create
+                </button>
+            </span>
+            Blending points
+        </legend>
+        <template is="dom-repeat" items="{{model.BlendingPoints}}" as="blendingPoint">
+            <paper-collapse-item>
+                <div slot="header">
+                    Name: <input type="text" value="{{blendingPoint.Name$::change}}" on-tap="tappedOnInput"/>
+                    <span class="website-no-pointer-events">Pinning rules: {{blendingPoint.PinningRules.length}}</span>
+                    <button type="button" class="btn btn-xs btn-default website-blending-point-delete" value="{{blendingPoint.Delete$::click}}" onmousedown="++this.value;">Delete</button>
+                </div>
+                    <table class="website-table table">
+                        <thead>
                         <tr>
-                            <td>
-                                <label class="website-table__label">{{model.Surface.Name}}</label>
-                            </td>
-                            <td>
-                                <input type="text" value="{{item.Name$::change}}" class="website-table__control form-control" />
-                            </td>
-                            <td>
-                                <input type="checkbox" checked="{{item.Default$::change}}" class="website-table__control " />
-                            </td>
-                            <td>
-                                <button type="button" class="btn btn-xs btn-default" value="{{item.Delete$::click}}" onmousedown="++this.value;">Delete</button>
-                            </td>
+                            <th>Pin URI</th>
+                            <th>Catch URI</th>
+                            <th>Order</th>
+                            <th class="website-table__cell-actions"></th>
                         </tr>
-                    </template>
-                </tbody>
-            </table>
-        </fieldset>
+                        </thead>
+                        <tbody>
+                        <template is="dom-repeat" items="{{blendingPoint.PinningRules}}" as="pinningRule">
+                            <tr>
+                                <td>
+                                    <input type="text" value="{{pinningRule.ForeignUrl$::change}}" class="website-pin-uri-input"/>
+                                </td>
+                                <td>
+                                    <juicy-select caption-text=" " value="{{pinningRule.UrlKey$}}" options="{{model.CatchingRules}}" text-property="Url" value-property="Key">
+                                        <select class="website-select">
+                                        </select>
+                                    </juicy-select>
+                                </td>
+                                <td>
+                                    <input type="number" min="0" value="{{pinningRule.SortNumber$::change}}" class="website-pinning-rule-order" />
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-xs btn-danger website-pinning-rule-delete" value="{{pinningRule.Delete$::click}}" onmousedown="++this.value;" title="Remove pinning rule">
+                                        Delete
+                                    </button> 
+                                </td>
+                            </tr>
+                        </template>
+                        </tbody>
+                    </table>
+                <div class="website-pinning-rule-add">                
+                    <button type="button" class="btn btn-xs btn-success" value="{{blendingPoint.AddPinningRule$::click}}" onmousedown="++this.value;" title="Add new pinning rule">
+                        Add
+                    </button>
+                </div>
+            </paper-collapse-item>
+        </template>
     </template>
     <script>
         (function () {
             var template = document.currentScript.previousElementSibling;
+
+            template.tappedOnInput = function(event) {
+                event.stopPropagation();
+            }
 
             setTimeout(function () {
                 var selects = template.parentNode.querySelectorAll("select");

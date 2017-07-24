@@ -39,16 +39,16 @@ namespace WebsiteEditor
                 return 200;
             });
 
-            Handle.GET("/websiteeditor", () => Self.GET("/WebsiteEditor/surfaceGroups"));
+            Handle.GET("/websiteeditor", () => Self.GET("/WebsiteEditor/surfacegroups"));
 
-            Handle.GET("/WebsiteEditor/surfaceGroups", () =>
+            Handle.GET("/WebsiteEditor/surfacegroups", () =>
             {
                 return Db.Scope<MasterPage>(() =>
                 {
                     MasterPage master = this.GetMasterPageFromSession();
                     master.ShowNavigation = false;
 
-                    master.RefreshCurrentPage("/WebsiteEditor/partials/surfaceGroups");
+                    master.RefreshCurrentPage("/WebsiteEditor/partials/surfacegroups");
 
                     return master;
                 });
@@ -92,24 +92,11 @@ namespace WebsiteEditor
                     return master;
                 });
             });
-
-            Handle.GET("/WebsiteEditor/surface/{?}/pinningrules", (string key) =>
-            {
-                return Db.Scope<MasterPage>(() =>
-                {
-                    MasterPage master = this.GetMasterPageFromSession();
-                    master.ShowNavigation = true;
-                    master.Surface.Data = Db.SQL<WebTemplate>("SELECT t FROM Simplified.Ring6.WebTemplate t WHERE t.Key = ?", key).First();
-                    SetMasterCurrentPage(master, "/WebsiteEditor/partials/pinningrules");
-
-                    return master;
-                });
-            });
         }
 
         protected void RegisterPartials()
         {
-            Handle.GET("/WebsiteEditor/partials/surfaceGroups", () =>
+            Handle.GET("/WebsiteEditor/partials/surfacegroups", () =>
             {
                 SurfaceGroupsPage page = new SurfaceGroupsPage();
 
@@ -124,28 +111,22 @@ namespace WebsiteEditor
 
             Handle.GET("/WebsiteEditor/partials/catchingrules", () => new CatchingRulesPage());
 
-            Handle.GET("/WebsiteEditor/partials/pinningrules", () => new PinningRulesPage());
-
             Handle.GET("/WebsiteEditor/partials/deny", () => new DenyPage());
         }
 
         protected MasterPage GetMasterPageFromSession()
         {
-            if (Session.Current == null)
-            {
-                Session.Current = new Session(SessionOptions.PatchVersioning);
-            }
-
-            MasterPage master = Session.Current.Data as MasterPage;
+            MasterPage master = Session.Ensure().Store[nameof(MasterPage)] as MasterPage;
 
             if (master == null)
             {
                 master = new MasterPage();
-                Session.Current.Data = master;
+                Session.Current.Store[nameof(MasterPage)] = master;
             }
-
+ 
             return master;
         }
+
         private static void SetMasterCurrentPage(MasterPage master, string uri)
         {
             try

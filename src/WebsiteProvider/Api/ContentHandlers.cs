@@ -103,13 +103,11 @@ namespace WebsiteProvider
                     {
                         var wrapper = response.Resource as SurfacePage;
                         var requestUri = request.Uri;
-                        var isWrapped = false;
-
+                        
                         while ((wrapper == null || wrapper.IsFinal == false) && this.HasCatchingRule(requestUri))
                         {
                             var responseKey = ResponseStorage.Put(response);
-                            isWrapped = true;
-
+                        
                             var escapedRequestUri = Uri.EscapeDataString(requestUri);
                             response = Self.GET($"/WebsiteProvider/partial/wrapper?uri={escapedRequestUri}&response={responseKey}");
 
@@ -117,13 +115,7 @@ namespace WebsiteProvider
                             wrapper = response.Resource as SurfacePage;
                             requestUri = wrapper?.Data.Html;
                         }
-                        if (!isWrapped)
-                        {
-                            //Morph to a view that is stateless and not catched by any surface
-                            //This is tested by RedirectToOtherAppPageTest
-                            //Should be improved by https://github.com/Starcounter/level1/issues/4159
-                            Session.Current.Data = response.Resource as Json;
-                        }
+                        
                         return response;
                     }
                 }
@@ -190,33 +182,19 @@ namespace WebsiteProvider
         {
             SurfacePage page;
 
-            if (Session.Current != null)
-            {
-                page = Session.Current.Data as SurfacePage;
-                var sessionWebTemplate = page?.Data;
+            page = Session.Ensure().Store[nameof(SurfacePage)] as SurfacePage;
+            var sessionWebTemplate = page?.Data;
 
-                if (sessionWebTemplate != null)
+            if (sessionWebTemplate != null)
+            {
+                if (sessionWebTemplate.Equals(template))
                 {
-                    if (sessionWebTemplate.Equals(template))
-                    {
-                        return page;
-                    }
+                    return page;
                 }
             }
-            else
-            {
-                Session.Current = new Session(SessionOptions.PatchVersioning);
-            }
 
-            page = new SurfacePage
-            {
-                Session = Session.Current
-            };
-
-            if (page.Session.PublicViewModel != page)
-            {
-                page.Session.PublicViewModel = page;
-            }
+            page = new SurfacePage();
+            Session.Current.Store[nameof(SurfacePage)] = page;
 
             return page;
         }

@@ -7,8 +7,8 @@
         <template is="dom-repeat" items="{{model.SurfaceGroups}}">
             <h4>
                 <input type="text" value="{{item.Name$::change}}" class="website-surface-group-name" />
-                <button class="btn website-surface-groups__button btn-success" value="{{item.CreateSurface$::click}}" onmousedown="++this.value;">
-                    <span class="glyphicon glyphicon-plus website-surface-groups__glif"></span>
+                <button class="btn website-surface-groups-add btn-success" value="{{item.CreateSurface$::click}}" onmousedown="++this.value;">
+                    <span class="glyphicon glyphicon-plus website-no-pointer-events"></span>
                 </button>
             </h4>
             <template is="dom-repeat" items="{{item.Surfaces}}" as="surface">

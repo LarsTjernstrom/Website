@@ -80,11 +80,6 @@ body {
     width: 150px;
 }
 
-.website-table__control {
-    box-shadow: none !important; /*To override bootstrap styles*/
-    border-bottom: none;
-}
-
 .website-table__label {
     font-size: 16px;
 }
@@ -119,7 +114,7 @@ body {
     text-decoration: none;
 }
 
-.website-surface-groups__button {
+.website-surface-groups-add {
     width: 30px;
     height: 30px;
     text-align: center;
@@ -129,14 +124,35 @@ body {
     border-radius: 15px;
 }
 
-.website-surface-groups__glif {
+.website-select {
+    padding-right: 20px;
+}
+
+.website-no-pointer-events {
     pointer-events: none;
 }
 
-.website-surface-groups-surfaces {
-    padding-bottom: 20px;
+.website-pinning-rule-add {
+    padding-bottom: 5px;
 }
 
 .website-surface-group-name {
     font-weight: bold;
+}
+
+.website-pinning-rule-order {
+    max-width: 40px;
+}
+
+.website-general-section {
+    padding-top: 40px;
+}
+
+.website-pin-uri-input {
+    width: 100%;
+}
+
+.website-blending-point-delete {
+    position: relative;
+    left: 10em;
 }
