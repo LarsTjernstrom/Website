@@ -24,7 +24,7 @@
             <paper-collapse-item>
                 <div slot="header">
                     Name: <input type="text" value="{{blendingPoint.Name$::change}}" on-tap="tappedOnInput"/>
-                    <span class="website-pinning-rules">Pinning rules: {{blendingPoint.PinningRules.length}}</span>
+                    <span class="website-no-pointer-events">Pinning rules: {{blendingPoint.PinningRules.length}}</span>
                     <button type="button" class="btn btn-xs btn-default website-blending-point-delete" value="{{blendingPoint.Delete$::click}}" onmousedown="++this.value;">Delete</button>
                 </div>
                     <table class="website-table table">

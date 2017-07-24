@@ -128,16 +128,16 @@ body {
     padding-right: 20px;
 }
 
-.website-surface-groups-add__span {
-    pointer-events: none;
-}
-
-.website-pinning-rules {
+.website-no-pointer-events {
     pointer-events: none;
 }
 
 .website-pinning-rule-add {
     padding-bottom: 5px;
+}
+
+.website-surface-group-name {
+    font-weight: bold;
 }
 
 .website-pinning-rule-order {
