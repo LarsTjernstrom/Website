@@ -47,7 +47,9 @@ namespace WebsiteProvider
                 Response currentResponse = this.ResponseStorage.Get(responseKey);
                 Request originalRequest = this.RequestStorage.Get(requestKey);
 
-                WebUrl webUrl = this.GetWebUrl(originalRequest);
+                WebUrl webUrl = originalRequest.Uri == requestUri
+                    ? this.GetWebUrl(originalRequest)
+                    : this.GetWebUrl(requestUri);
                 WebTemplate template = webUrl?.Template;
 
                 if (template == null)
@@ -98,13 +100,13 @@ namespace WebsiteProvider
 
                         try
                         {
-                            while ((wrapper == null || wrapper.IsFinal == false) && this.HasCatchingRule(request))
+                            while ((wrapper == null || wrapper.IsFinal == false) && this.HasCatchingRule(requestUri))
                             {
                                 var responseKey = this.ResponseStorage.Put(response);
 
                                 try
                                 {
-                                    var escapedRequestUri = Uri.EscapeDataString(requestUri);
+                                    var escapedRequestUri = Uri.EscapeDataString(requestUri ?? string.Empty);
                                     response = Self.GET($"/WebsiteProvider/partial/wrapper?uri={escapedRequestUri}&response={responseKey}&request={requestKey}");
                                 }
                                 finally
@@ -113,7 +115,7 @@ namespace WebsiteProvider
                                 }
 
                                 wrapper = response.Resource as SurfacePage;
-                                requestUri = wrapper?.Data.Html ?? string.Empty;
+                                requestUri = wrapper?.Data.Html;
                             }
                         }
                         finally
@@ -180,17 +182,12 @@ namespace WebsiteProvider
 
         protected SurfacePage GetSurfacePage(WebTemplate template)
         {
-            SurfacePage page;
-
-            page = Session.Ensure().Store[nameof(SurfacePage)] as SurfacePage;
+            var page = Session.Ensure().Store[nameof(SurfacePage)] as SurfacePage;
             var sessionWebTemplate = page?.Data;
 
-            if (sessionWebTemplate != null)
+            if (sessionWebTemplate != null && sessionWebTemplate.Equals(template))
             {
-                if (sessionWebTemplate.Equals(template))
-                {
-                    return page;
-                }
+                return page;
             }
 
             page = new SurfacePage();
@@ -199,25 +196,34 @@ namespace WebsiteProvider
             return page;
         }
 
-        public bool HasCatchingRule(Request request)
+        public bool HasCatchingRule(string requestUri)
         {
-            return this.GetWebUrl(request) != null;
+            return this.GetWebUrl(requestUri) != null;
+        }
+
+        protected WebUrl GetWebUrl(string requestUri)
+        {
+            return this.GetWebUrl(requestUri, urls => urls.FirstOrDefault());
         }
 
         protected WebUrl GetWebUrl(Request request)
         {
-            var headers = request.HeadersDictionary;
+            return this.GetWebUrl(request.Uri, urls => this.FindUrlByHeaders(urls, request.HeadersDictionary));
+        }
 
-            WebUrl webUrl = this.FindUrlByHeaders(Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE wu.Url = ?", request.Uri), headers);
+        private WebUrl GetWebUrl(string requestUri, Func<QueryResultRows<WebUrl>, WebUrl> findWebUrlFunc)
+        {
+            WebUrl webUrl = findWebUrlFunc(Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE wu.Url = ?", requestUri));
 
             if (webUrl == null)
             {
-                string wildCard = GetWildCardUrl(request.Uri);
+                string wildCard = GetWildCardUrl(requestUri);
 
-                webUrl = this.FindUrlByHeaders(Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE wu.Url = ?", wildCard), headers)
-                         ?? this.FindUrlByHeaders(Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE (wu.Url IS NULL OR wu.Url = ?) AND wu.IsFinal = ?", string.Empty, true), headers)
-                         ?? this.FindUrlByHeaders(Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE wu.Url IS NULL OR wu.Url = ?", string.Empty), headers);
+                webUrl = findWebUrlFunc(Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE wu.Url = ?", wildCard))
+                         ?? findWebUrlFunc(Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE (wu.Url IS NULL OR wu.Url = ?) AND wu.IsFinal = ?", string.Empty, true))
+                         ?? findWebUrlFunc(Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE wu.Url IS NULL OR wu.Url = ?", string.Empty));
             }
+
             return webUrl;
         }
 
