@@ -17,6 +17,8 @@ namespace WebsiteEditor
             {
                 this.SurfaceGroups.Add().Data = new WebTemplateGroup { Name = "New group" };
             });
+
+            this.RefreshData();
         }
 
         [SurfaceGroupsPage_json.SurfaceGroups]
@@ -49,20 +51,33 @@ namespace WebsiteEditor
                 this.Name = action.Value;
                 this.Transaction.Commit();
             }
+
+            void Handle(Input.DeleteGroup action)
+            {
+                var unassignedGroupName = "Unassigned";
+
+                var surfaces =
+                    Db.SQL<WebTemplate>(
+                        "SELECT w FROM Simplified.Ring6.WebTemplate w WHERE w.WebTemplateGroup = ?", this.Data);
+
+                var unassignedGroup =
+                    Db.SQL<WebTemplateGroup>($"SELECT g FROM Simplified.Ring6.WebTemplateGroup g WHERE g.Name = ?", unassignedGroupName).First;
+
+                // Move surfaces from this group to unassigned.
+                foreach (var surface in surfaces)
+                {
+                    (surface as WebTemplate).WebTemplateGroup = unassignedGroup;
+                }
+
+                this.Data.Delete();
+                this.Transaction.Commit();
+                this.ParentPage.RefreshData();
+            }
         }
 
         [SurfaceGroupsPage_json.SurfaceGroups.Surfaces]
         partial class SurfacesPage : Json, IBound<WebTemplate>
         {
-
         }
-
-        //void Handle(Input.Create action)
-        //{
-
-        //    //this.Surfaces.Add().Data = new WebTemplate { Name = "New surface" };
-        //    this.Transaction.Commit();
-        //    this.RefreshData();
-        //}
     }
 }
