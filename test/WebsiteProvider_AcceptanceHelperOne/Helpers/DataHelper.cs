@@ -1,4 +1,5 @@
-﻿using Simplified.Ring6;
+﻿using System.Linq;
+using Simplified.Ring6;
 using Starcounter;
 
 namespace WebsiteProvider_AcceptanceHelperOne
@@ -9,6 +10,7 @@ namespace WebsiteProvider_AcceptanceHelperOne
         {
             Db.Transact(() =>
             {
+                Db.SlowSQL("DELETE FROM Simplified.Ring6.WebUrlProperty");
                 Db.SlowSQL("DELETE FROM Simplified.Ring6.WebMap");
                 Db.SlowSQL("DELETE FROM Simplified.Ring6.WebUrl");
                 Db.SlowSQL("DELETE FROM Simplified.Ring6.WebSection");
@@ -118,6 +120,35 @@ namespace WebsiteProvider_AcceptanceHelperOne
             });
         }
 
+        public void SetCatchingRulesHeaders()
+        {
+            Db.Transact(() =>
+            {
+                var defaultSurface = this.GenerateDefaultSurface();
+                var holyGrailSurface = this.GenerateHolyGrailSurface();
+                var webUrl = Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE wu.Template = ? AND (wu.Url = ? OR wu.Url IS NULL)", defaultSurface, string.Empty).FirstOrDefault()
+                             ?? new WebUrl
+                             {
+                                 Template = defaultSurface,
+                                 Url = string.Empty
+                             };
+                webUrl.IsFinal = true;
+                webUrl = Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE wu.Template = ? AND (wu.Url = ? OR wu.Url IS NULL)", holyGrailSurface, string.Empty).FirstOrDefault()
+                         ?? new WebUrl
+                         {
+                             Template = holyGrailSurface,
+                             Url = string.Empty
+                         };
+                webUrl.IsFinal = true;
+                var header = new WebHttpHeader
+                {
+                    Url = webUrl,
+                    Name = "test-header",
+                    Value = "test-header-value"
+                };
+            });
+        }
+
         protected WebTemplate GenerateDefaultSurface()
         {
             const string surfaceName = "TestDefaultSurface";
@@ -160,35 +191,35 @@ namespace WebsiteProvider_AcceptanceHelperOne
                 Html = "/Websiteeditor/surfaces/HolyGrailSurface.html"
             };
 
-            new WebSection()
+            new WebSection
             {
                 Template = surface,
                 Name = "Content",
                 Default = true
             };
 
-            new WebSection()
+            new WebSection
             {
                 Template = surface,
                 Name = "Header",
                 Default = false
             };
 
-            new WebSection()
+            new WebSection
             {
                 Template = surface,
                 Name = "Left",
                 Default = false
             };
 
-            new WebSection()
+            new WebSection
             {
                 Template = surface,
                 Name = "Right",
                 Default = false
             };
 
-            new WebSection()
+            new WebSection
             {
                 Template = surface,
                 Name = "Footer",

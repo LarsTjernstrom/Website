@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using Simplified.Ring6;
 using Starcounter;
@@ -10,11 +12,13 @@ namespace WebsiteProvider
     {
         private static string runResponseMiddleware = "X-Run-Response-Middleware";
 
-        protected Storage<Response> ResponseStorage { get; private set; }
+        protected Storage<Request> RequestStorage { get; }
+        protected Storage<Response> ResponseStorage { get; }
 
         public ContentHandlers()
         {
-            ResponseStorage = new Storage<Response>();
+            this.RequestStorage = new Storage<Request>();
+            this.ResponseStorage = new Storage<Response>();
         }
 
         public string GetWildCardUrl(string url)
@@ -30,33 +34,22 @@ namespace WebsiteProvider
             return reg.Replace(url, "?{?}");
         }
 
-        public string FormatUrl(string Url, string Name)
-        {
-            if (string.IsNullOrEmpty(Name))
-            {
-                return Url;
-            }
-            else
-            {
-                return Url.Replace("{?}", Name);
-            }
-        }
-
         public void Register()
         {
             Application.Current.Use(new HtmlFromJsonProvider());
             Application.Current.Use(new PartialToStandaloneHtmlProvider());
 
-            Handle.GET("/WebsiteProvider", () =>
-            {
-                return "Welcome to WebsiteProvider.";
-            });
+            Handle.GET("/WebsiteProvider", () => "Welcome to WebsiteProvider.");
 
-            Handle.GET("/WebsiteProvider/partial/wrapper?uri={?}&response={?}", (string requestUri, string responseKey) =>
+            Handle.GET("/WebsiteProvider/partial/wrapper?uri={?}&response={?}&request={?}", (string requestUri, string responseKey, string requestKey) =>
             {
                 requestUri = Uri.UnescapeDataString(requestUri);
-                Response currentResponse = ResponseStorage.Get(responseKey);
-                WebUrl webUrl = this.GetWebUrl(requestUri);
+                Response currentResponse = this.ResponseStorage.Get(responseKey);
+                Request originalRequest = this.RequestStorage.Get(requestKey);
+
+                WebUrl webUrl = originalRequest.Uri == requestUri
+                    ? this.GetWebUrl(originalRequest)
+                    : this.GetWebUrl(requestUri);
                 WebTemplate template = webUrl?.Template;
 
                 if (template == null)
@@ -103,19 +96,33 @@ namespace WebsiteProvider
                     {
                         var wrapper = response.Resource as SurfacePage;
                         var requestUri = request.Uri;
-                        
-                        while ((wrapper == null || wrapper.IsFinal == false) && this.HasCatchingRule(requestUri))
-                        {
-                            var responseKey = ResponseStorage.Put(response);
-                        
-                            var escapedRequestUri = Uri.EscapeDataString(requestUri);
-                            response = Self.GET($"/WebsiteProvider/partial/wrapper?uri={escapedRequestUri}&response={responseKey}");
+                        var requestKey = this.RequestStorage.Put(request);
 
-                            ResponseStorage.Remove(responseKey);
-                            wrapper = response.Resource as SurfacePage;
-                            requestUri = wrapper?.Data.Html;
+                        try
+                        {
+                            while ((wrapper == null || wrapper.IsFinal == false) && this.HasCatchingRule(requestUri))
+                            {
+                                var responseKey = this.ResponseStorage.Put(response);
+
+                                try
+                                {
+                                    var escapedRequestUri = Uri.EscapeDataString(requestUri ?? string.Empty);
+                                    response = Self.GET($"/WebsiteProvider/partial/wrapper?uri={escapedRequestUri}&response={responseKey}&request={requestKey}");
+                                }
+                                finally
+                                {
+                                    this.ResponseStorage.Remove(responseKey);
+                                }
+
+                                wrapper = response.Resource as SurfacePage;
+                                requestUri = wrapper?.Data.Html;
+                            }
                         }
-                        
+                        finally
+                        {
+                            this.RequestStorage.Remove(requestKey);
+                        }
+
                         return response;
                     }
                 }
@@ -173,24 +180,14 @@ namespace WebsiteProvider
             }
         }
 
-        private SurfacePage WrapExternalRequest(string uri)
-        {
-            return Self.GET<SurfacePage>(uri, () => new SurfacePage());
-        }
-
         protected SurfacePage GetSurfacePage(WebTemplate template)
         {
-            SurfacePage page;
-
-            page = Session.Ensure().Store[nameof(SurfacePage)] as SurfacePage;
+            var page = Session.Ensure().Store[nameof(SurfacePage)] as SurfacePage;
             var sessionWebTemplate = page?.Data;
 
-            if (sessionWebTemplate != null)
+            if (sessionWebTemplate != null && sessionWebTemplate.Equals(template))
             {
-                if (sessionWebTemplate.Equals(template))
-                {
-                    return page;
-                }
+                return page;
             }
 
             page = new SurfacePage();
@@ -206,17 +203,47 @@ namespace WebsiteProvider
 
         protected WebUrl GetWebUrl(string requestUri)
         {
-            WebUrl webUrl = Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE wu.Url = ?", requestUri).First;
+            return this.GetWebUrl(requestUri, urls => urls.FirstOrDefault());
+        }
+
+        protected WebUrl GetWebUrl(Request request)
+        {
+            return this.GetWebUrl(request.Uri, urls => this.FindUrlByHeaders(urls, request.HeadersDictionary));
+        }
+
+        private WebUrl GetWebUrl(string requestUri, Func<QueryResultRows<WebUrl>, WebUrl> findWebUrlFunc)
+        {
+            WebUrl webUrl = findWebUrlFunc(Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE wu.Url = ?", requestUri));
 
             if (webUrl == null)
             {
                 string wildCard = GetWildCardUrl(requestUri);
 
-                webUrl = Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE wu.Url = ?", wildCard).First
-                         ?? Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE (wu.Url IS NULL OR wu.Url = ?) AND wu.IsFinal = ?", string.Empty, true).First
-                         ?? Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE wu.Url IS NULL OR wu.Url = ?", string.Empty).First;
+                webUrl = findWebUrlFunc(Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE wu.Url = ?", wildCard))
+                         ?? findWebUrlFunc(Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE (wu.Url IS NULL OR wu.Url = ?) AND wu.IsFinal = ?", string.Empty, true))
+                         ?? findWebUrlFunc(Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE wu.Url IS NULL OR wu.Url = ?", string.Empty));
             }
+
             return webUrl;
+        }
+
+        private WebUrl FindUrlByHeaders(QueryResultRows<WebUrl> webUrls, Dictionary<string, string> requestHeaders)
+        {
+            if (!webUrls.Any())
+            {
+                return null;
+            }
+            if (webUrls.All(x => !x.Headers.Any()))
+            {
+                return webUrls.First();
+            }
+
+            return webUrls.Where(x => x.Headers.Any())
+                       .FirstOrDefault(x => x.Headers.All(
+                           wh => requestHeaders.Any(
+                               rh => rh.Key.Equals(wh.Name, StringComparison.InvariantCultureIgnoreCase) &&
+                                     rh.Value == wh.Value)))
+                   ?? webUrls.FirstOrDefault(x => !x.Headers.Any());
         }
     }
 }

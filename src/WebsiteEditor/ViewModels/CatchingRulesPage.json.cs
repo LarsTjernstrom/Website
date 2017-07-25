@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Starcounter;
 using Simplified.Ring6;
 
@@ -10,70 +11,115 @@ namespace WebsiteEditor
 
         public void RefreshData()
         {
-            if (string.IsNullOrEmpty(SurfaceKey))
+            if (string.IsNullOrEmpty(this.SurfaceKey))
             {
                 throw new InvalidOperationException("Surface key is empty.");
             }
 
             this.CatchingRules.Clear();
-            this.Surface.Data = Db.SQL<WebTemplate>("SELECT t FROM Simplified.Ring6.WebTemplate t WHERE t.Key = ? ORDER BY t.Name", SurfaceKey).First;
-            this.CatchingRules.Data = Db.SQL<WebUrl>("SELECT u FROM Simplified.Ring6.WebUrl u WHERE u.Template = ? ORDER BY u.Template.Name, u.Url", this.Surface.Data);
+            this.SurfaceName = this.GetCurrentSurface().Name;
+            this.CatchingRules.Data = Db.SQL<WebUrl>("SELECT u FROM Simplified.Ring6.WebUrl u WHERE u.Template.Key = ? ORDER BY u.Template.Name, u.Url", this.SurfaceKey);
+            foreach (var catchingRule in this.CatchingRules)
+            {
+                catchingRule.DeleteAction = this.DeleteCatchingRule;
+            }
             this.Trn.Data = this.Transaction as Transaction;
         }
 
-        void Handle(Input.CancelChanges Action)
+        void Handle(Input.CancelChangesTrigger action)
         {
             this.Transaction.Rollback();
             this.RefreshData();
         }
 
-        void Handle(Input.SaveChanges Action)
+        void Handle(Input.SaveChangesTrigger action)
         {
+            foreach (var catchingRule in this.CatchingRules)
+            {
+                var emptyHeaders = catchingRule.Headers.Where(h => string.IsNullOrWhiteSpace(h.Name)).ToList();
+                foreach (var catchHeader in emptyHeaders)
+                {
+                    catchingRule.DeleteHeader(catchHeader);
+                }
+            }
             this.Transaction.Commit();
         }
 
-        void Handle(Input.Create Action)
+        void Handle(Input.CreateTrigger action)
         {
-            this.CatchingRules.Add().Data = new WebUrl();
+            var surface = this.GetCurrentSurface();
+            this.CatchingRules.Add(new CatchingRulesItemPage
+            {
+                Data = new WebUrl
+                {
+                    Template = surface,
+                    Url = string.Empty,
+                },
+                DeleteAction = this.DeleteCatchingRule
+            });
         }
 
-        [CatchingRulesPage_json.CatchingRules]
-        partial class CmsCatchingRulesItemPage : Json, IBound<WebUrl>
+        public void DeleteCatchingRule(CatchingRulesItemPage catchingRule)
         {
+            this.CatchingRules.Remove(catchingRule);
+            catchingRule.Data.Delete();
+        }
+
+        private WebTemplate GetCurrentSurface()
+        {
+            return Db.SQL<WebTemplate>("SELECT t FROM Simplified.Ring6.WebTemplate t WHERE t.Key = ?", this.SurfaceKey).FirstOrDefault()
+                   ?? throw new Exception("The surface with specified key is not found.");
+        }
+
+
+        [CatchingRulesPage_json.CatchingRules]
+        partial class CatchingRulesItemPage : Json, IBound<WebUrl>
+        {
+            public Action<CatchingRulesItemPage> DeleteAction { get; set; }
+
             protected override void OnData()
             {
                 base.OnData();
-                this.TemplateKey = (this.Data != null && this.Data.Template != null) ? this.Data.Template.Key : string.Empty;
-            }
-
-            void Handle(Input.Delete Action)
-            {
-                this.ParentPage.CatchingRules.Remove(this);
-                this.Data.Delete();
-            }
-
-            void Handle(Input.TemplateKey Action)
-            {
-                if (string.IsNullOrEmpty(Action.Value))
+                foreach (var header in this.Headers)
                 {
-                    this.Data.Template = null;
-                    return;
+                    header.DeleteAction = this.DeleteHeader;
                 }
-
-                this.Data.Template = DbHelper.FromID(DbHelper.Base64DecodeObjectID(Action.Value)) as WebTemplate;
             }
 
-            CatchingRulesPage ParentPage
+            void Handle(Input.DeleteTrigger action)
             {
-                get
+                this.DeleteAction?.Invoke(this);
+            }
+
+            void Handle(Input.AddHeaderTrigger action)
+            {
+                this.Headers.Add(new CatchHeadersItemPage
                 {
-                    return this.Parent.Parent as CatchingRulesPage;
-                }
+                    Data = new WebHttpHeader { Url = this.Data },
+                    DeleteAction = this.DeleteHeader
+                });
+            }
+
+            public void DeleteHeader(CatchHeadersItemPage header)
+            {
+                this.Headers.Remove(header);
+                header.Data.Delete();
+            }
+        }
+
+        [CatchingRulesPage_json.CatchingRules.Headers]
+        partial class CatchHeadersItemPage : Json, IBound<WebHttpHeader>
+        {
+            public Action<CatchHeadersItemPage> DeleteAction { get; set; }
+
+            void Handle(Input.DeleteTrigger action)
+            {
+                this.DeleteAction?.Invoke(this);
             }
         }
 
         [CatchingRulesPage_json.Trn]
-        partial class CmsCatchingRulesTransactionPage : Json, IBound<Transaction>
+        partial class CatchingRulesTransactionPage : Json, IBound<Transaction>
         {
         }
     }
