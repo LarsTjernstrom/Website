@@ -8,7 +8,7 @@
 2. Build the solution by executing `build.bat` in Windows or `./build.bat` in Git Bash
 3. Run it by executing `run.bat` in Windows or `./run.bat` in Git Bash
 4. Build and run SignIn and Launcher if they are not already running
-5. Go to [http://localhost:8080/Websiteeditor](http://localhost:8080/Websiteeditor)
+5. Go to [http://localhost:8080/websiteeditor](http://localhost:8080/websiteeditor)
 
 ### Build and run using Visual Studio
 
@@ -16,7 +16,7 @@
 2. Open the `.sln` file in Visual Studio
 3. Build and run it using Debug in Visual Studio (**Debug** > **Start debugging** or <kbd>F5</kbd>)
 4. Build and run SignIn and Launcher if they are not already running
-5. Go to [http://localhost:8080/Websiteeditor](http://localhost:8080/Websiteeditor)
+5. Go to [http://localhost:8080/websiteeditor](http://localhost:8080/websiteeditor)
 
 ## Contributing code
 
@@ -40,9 +40,9 @@ Before running the steps, you need to:
 ### Run the test (from Visual Studio)
 
 1. Start Selenium Remote Driver: `java -jar selenium-server-standalone-3.*.jar`
-2. Open `Websiteeditor.sln` in Visual Studio and enable Test Explorer (Test > Window > Test Explorer)
+2. Open `Website.sln` in Visual Studio and enable Test Explorer (Test > Window > Test Explorer)
 3. You need to install NUnit 3 Test Adapter in VS addon window in order to see tests in Test Explorer window
-3. Start the Websiteeditor, WebsiteProvider_AcceptanceHelperOne, WebsiteProvider_AcceptanceHelperTwo and WebsiteProvider apps
+3. Start the WebsiteEditor, WebsiteProvider_AcceptanceHelperOne, WebsiteProvider_AcceptanceHelperTwo and WebsiteProvider apps
 4. Press "Run all" in Test Explorer
    - If you get an error about some packages not installed, right click on the project in Solution Explorer. Choose "Manage NuGet Packages" and click on "Restore".
 

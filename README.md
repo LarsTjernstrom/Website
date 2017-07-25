@@ -1,7 +1,8 @@
-# Websiteeditor
+# WebsiteEditor and WebsiteProvider
+
 Suite of two apps allowing to create surfaces with blending points and attach the result from different applications in the blending points.
 
-Note: Websiteeditor only wraps responses where the response resource is `Json` (not null) with a session.
+Note: WebsiteEditor only wraps responses where the response resource is `Json` (not null) with a session.
 
 ## Requirements
 
