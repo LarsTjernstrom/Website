@@ -37,7 +37,7 @@ namespace WebsiteProvider.Tests.Test
         /// <summary>
         /// Make a request without additional headers and check received JSON data for Default Surface
         /// </summary>
-        [TestCase(null, "/websiteeditor/surfaces/DefaultSurface.html")]
+        [TestCase(null, "/websiteprovider/surfaces/DefaultSurface.html")]
         public void MakeHttpRequest_WoAdditionalHeaders_DefaultPageisLoaded(string testHeaderValue, string surfacePath)
         {
             RequestPageAndCheckSurface(testHeaderValue, surfacePath);
@@ -46,7 +46,7 @@ namespace WebsiteProvider.Tests.Test
         /// <summary>
         /// Make a request with test header and check received JSON data for HolyGrail Surface
         /// </summary>
-        [TestCase("test-header-value", "/websiteeditor/surfaces/HolyGrailSurface.html")]
+        [TestCase("test-header-value", "/websiteprovider/surfaces/HolyGrailSurface.html")]
         public void MakeHttpRequest_WithTestHeader_AnotherPageisLoaded(string testHeaderValue, string surfacePath)
         {
             RequestPageAndCheckSurface(testHeaderValue, surfacePath);
