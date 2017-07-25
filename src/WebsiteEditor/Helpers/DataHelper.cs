@@ -14,6 +14,7 @@ namespace WebsiteEditor
                 Db.SlowSQL("DELETE FROM Simplified.Ring6.WebUrl");
                 Db.SlowSQL("DELETE FROM Simplified.Ring6.WebSection");
                 Db.SlowSQL("DELETE FROM Simplified.Ring6.WebTemplate");
+                Db.SlowSQL("DELETE FROM Simplified.Ring6.WebTemplateGroup");
             });
         }
 
@@ -27,18 +28,35 @@ namespace WebsiteEditor
             Db.Transact(() =>
             {
                 ClearData();
-                GenerateDefaultSurface();
-                GenerateSidebarSurface();
-                GenerateHolyGrailSurface();
+                var initialGroup = GenerateGroups();
+                GenerateDefaultSurface(initialGroup);
+                GenerateSidebarSurface(initialGroup);
+                GenerateHolyGrailSurface(initialGroup);
             });
         }
 
-        public void GenerateDefaultSurface()
+        public WebTemplateGroup GenerateGroups()
+        {
+            var unassigned = new WebTemplateGroup
+            {
+                Name = "Unassigned"
+            };
+
+            var initial = new WebTemplateGroup
+            {
+                Name = "Initial"
+            };
+
+            return initial;
+        }
+
+        public void GenerateDefaultSurface(WebTemplateGroup group)
         {
             var surface = new WebTemplate
             {
                 Name = "DefaultSurface",
-                Html = "/Websiteeditor/surfaces/DefaultSurface.html"
+                Html = "/Websiteeditor/surfaces/DefaultSurface.html",
+                WebTemplateGroup = group
             };
 
             var topbar = new WebSection
@@ -65,12 +83,13 @@ namespace WebsiteEditor
             new WebMap { Section = topbar, ForeignUrl = "/signin/user", SortNumber = 1 };
         }
 
-        public void GenerateSidebarSurface()
+        public void GenerateSidebarSurface(WebTemplateGroup group)
         {
             var surface = new WebTemplate
             {
                 Name = "SidebarSurface",
-                Html = "/Websiteeditor/surfaces/SidebarSurface.html"
+                Html = "/Websiteeditor/surfaces/SidebarSurface.html",
+                WebTemplateGroup = group
             };
 
             var sidebarLeft = new WebSection
@@ -96,12 +115,13 @@ namespace WebsiteEditor
             new WebMap { Url = templatesUrl, Section = sidebarLeft, ForeignUrl = "/websiteeditor/help?topic=surfaces", SortNumber = 1 };
         }
 
-        public void GenerateHolyGrailSurface()
+        public void GenerateHolyGrailSurface(WebTemplateGroup group)
         {
             var surface = new WebTemplate
             {
                 Name = "HolyGrailSurface",
-                Html = "/Websiteeditor/surfaces/HolyGrailSurface.html"
+                Html = "/Websiteeditor/surfaces/HolyGrailSurface.html",
+                WebTemplateGroup = group
             };
 
             var content = new WebSection
