@@ -15,6 +15,7 @@ namespace WebsiteProvider_AcceptanceHelperOne
                 Db.SlowSQL("DELETE FROM Simplified.Ring6.WebUrl");
                 Db.SlowSQL("DELETE FROM Simplified.Ring6.WebSection");
                 Db.SlowSQL("DELETE FROM Simplified.Ring6.WebTemplate");
+                Db.SlowSQL("DELETE FROM Simplified.Ring6.WebTemplateGroup");
             });
         }
 

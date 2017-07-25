@@ -122,9 +122,9 @@ namespace WebsiteProvider
 
         private void UnmapPinningRule(WebsiteBlendingInfo info)
         {
-            if (!IsSectionExists(info.SectionId) || !IsTemplateExists(info.TemplateId))
+            if (info == null || !IsSectionExists(info.SectionId) || !IsTemplateExists(info.TemplateId))
             {
-                return;     // if the Blending Point (WebSection) or the Surface (WebTemplate) was deleted earlier
+                return;     // if the Pinning Rule (WebMap) or the Blending Point (WebSection) or the Surface (WebTemplate) was deleted earlier
             }
 
             Blender.UnmapUri(info.ForeignUri, info.Token);
@@ -134,16 +134,17 @@ namespace WebsiteProvider
             {
                 Blender.UnmapUri(info.EmptyHandlerUri, info.Token);
                 Handle.UnregisterHttpHandler("GET", info.EmptyHandlerUri);
+                this.CompleteUnmapBlendingPoint(info);
             }
         }
 
         private void UnmapBlendingPoint(List<WebsiteBlendingInfo> mapInfos)
         {
-            var sectionInfo = mapInfos[0];
+            var sectionInfo = mapInfos.FirstOrDefault();
 
-            if (!IsTemplateExists(sectionInfo.TemplateId))
+            if (sectionInfo == null || !IsTemplateExists(sectionInfo.TemplateId))
             {
-                return;     // if the Surface (WebTemplate) was deleted earlier
+                return;     // if the Blending Point (WebSection) or the Surface (WebTemplate) was deleted earlier
             }
 
             foreach (var info in mapInfos)
@@ -151,6 +152,11 @@ namespace WebsiteProvider
                 UnmapPinningRule(info);
             }
 
+            this.CompleteUnmapBlendingPoint(sectionInfo);
+        }
+
+        private void CompleteUnmapBlendingPoint(WebsiteBlendingInfo sectionInfo)
+        {
             foreach (var blendingInfo in Blender.ListByUris()[sectionInfo.SectionHandlerUri])
             {
                 Blender.UnmapUri(blendingInfo.Uri, blendingInfo.Token);
