@@ -6,7 +6,7 @@ namespace WebsiteEditor
     {
         public void Register()
         {
-            Handle.GET("/WebsiteEditor/app-name", () => new AppName());
+            Handle.GET("/websiteeditor/app-name", () => new AppName());
         }
     }
 }
