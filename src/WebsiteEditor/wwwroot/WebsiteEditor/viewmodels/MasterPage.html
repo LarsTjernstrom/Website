@@ -5,20 +5,20 @@
         <template is="dom-if" if="{{model.ShowNavigation}}">
             <nav class="website-top-menu-panel">
                 <ul class="website-top-menu">
-                    <li class="website-nav-element">
-                        <a href="/WebsiteEditor/surfacegroups" class="website-nav-element__link"><span class="glyphicon glyphicon-chevron-left"></span> Back to groups</a>
+                    <li>
+                        <a href="/WebsiteEditor/surfacegroups" class="website-nav-link"><span class="glyphicon glyphicon-chevron-left"></span> Back to groups</a>
                     </li>
-                    <li class="website-nav-element">
-                        <a href="#" class="website-nav-element__surface-name">Surface: <b>{{model.Surface.Name}}</b></a>
+                    <li>
+                        <a href="#" class="website-nav-surface-name">Surface: <b>{{model.Surface.Name}}</b></a>
                     </li>
-                    <li class="website-nav-element">
-                        <a href="/WebsiteEditor/surface/{{model.Surface.Key}}/general" class="website-nav-element__link">General</a>
+                    <li>
+                        <a href="/WebsiteEditor/surface/{{model.Surface.Key}}/general" class="website-nav-link">General</a>
                     </li>
-                    <li class="website-nav-element">
-                        <a href="/WebsiteEditor/surface/{{model.Surface.Key}}/catchingrules" class="website-nav-element__link">Catching rules</a>
+                    <li>
+                        <a href="/WebsiteEditor/surface/{{model.Surface.Key}}/catchingrules" class="website-nav-link">Catching rules</a>
                     </li>
-                    <li class="website-nav-element">
-                        <a href="/WebsiteEditor/surface/{{model.Surface.Key}}/blendingpoints" class="website-nav-element__link">Blending points</a>
+                    <li>
+                        <a href="/WebsiteEditor/surface/{{model.Surface.Key}}/blendingpoints" class="website-nav-link">Blending points</a>
                     </li>
                 </ul>
             </nav>

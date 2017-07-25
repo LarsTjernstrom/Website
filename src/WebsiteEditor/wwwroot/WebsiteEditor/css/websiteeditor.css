@@ -27,25 +27,21 @@ body {
     overflow: auto;
 }
 
-.website-nav-element {
-    float: left;
-}
-
-.website-nav-element__surface-name {
+.website-nav-surface-name {
     display: block;
     padding: 5px 20px;
     color: white;
     pointer-events: none;
 }
 
-.website-nav-element__link {
+.website-nav-link {
     display: block;
     padding: 5px 20px;
     text-decoration: none;
     color: white;
 }
 
-.website-nav-element__link:hover {
+.website-nav-link:hover {
     background-color: #333333;
     color: white;
 }
