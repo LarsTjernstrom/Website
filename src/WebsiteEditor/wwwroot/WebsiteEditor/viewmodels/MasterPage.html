@@ -5,20 +5,20 @@
         <template is="dom-if" if="{{model.ShowNavigation}}">
             <nav class="website-top-menu-panel">
                 <ul class="website-top-menu">
-                    <li class="website-top-menu__item">
-                        <a href="/WebsiteEditor/surfacegroups" class="website-top-menu-item__link"><span class="glyphicon glyphicon-chevron-left"></span> Back to groups</a>
+                    <li class="website-nav-element">
+                        <a href="/WebsiteEditor/surfacegroups" class="website-nav-element__link"><span class="glyphicon glyphicon-chevron-left"></span> Back to groups</a>
                     </li>
-                    <li class="website-top-menu__item">
-                        <a href="#" class="website-top-menu-item__surface-name">Surface: <b>{{model.Surface.Name}}</b></a>
+                    <li class="website-nav-element">
+                        <a href="#" class="website-nav-element__surface-name">Surface: <b>{{model.Surface.Name}}</b></a>
                     </li>
-                    <li class="website-top-menu__item">
-                        <a href="/WebsiteEditor/surface/{{model.Surface.Key}}/general" class="website-top-menu-item__link">General</a>
+                    <li class="website-nav-element">
+                        <a href="/WebsiteEditor/surface/{{model.Surface.Key}}/general" class="website-nav-element__link">General</a>
                     </li>
-                    <li class="website-top-menu__item">
-                        <a href="/WebsiteEditor/surface/{{model.Surface.Key}}/catchingrules" class="website-top-menu-item__link">Catching rules</a>
+                    <li class="website-nav-element">
+                        <a href="/WebsiteEditor/surface/{{model.Surface.Key}}/catchingrules" class="website-nav-element__link">Catching rules</a>
                     </li>
-                    <li class="website-top-menu__item">
-                        <a href="/WebsiteEditor/surface/{{model.Surface.Key}}/blendingpoints" class="website-top-menu-item__link">Blending points</a>
+                    <li class="website-nav-element">
+                        <a href="/WebsiteEditor/surface/{{model.Surface.Key}}/blendingpoints" class="website-nav-element__link">Blending points</a>
                     </li>
                 </ul>
             </nav>

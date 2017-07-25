@@ -22,30 +22,30 @@ body {
 .website-top-menu {
     display: flex;
     list-style-type: none;
-    padding: 0px;
-    margin: 0px;
+    padding: 0;
+    margin: 0;
     overflow: auto;
 }
 
-.website-top-menu__item {
+.website-nav-element {
     float: left;
 }
 
-.website-top-menu-item__surface-name {
+.website-nav-element__surface-name {
     display: block;
     padding: 5px 20px;
     color: white;
     pointer-events: none;
 }
 
-.website-top-menu-item__link {
+.website-nav-element__link {
     display: block;
     padding: 5px 20px;
     text-decoration: none;
     color: white;
 }
 
-.website-top-menu-item__link:hover {
+.website-nav-element__link:hover {
     background-color: #333333;
     color: white;
 }
