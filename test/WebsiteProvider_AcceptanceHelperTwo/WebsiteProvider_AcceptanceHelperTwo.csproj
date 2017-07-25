@@ -76,6 +76,9 @@
     <Compile Include="ViewModels\ContentPage.json.cs">
       <DependentUpon>ContentPage.json</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\MasterPage.json.cs">
+      <DependentUpon>MasterPage.json</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\PinPage.json.cs">
       <DependentUpon>PinPage.json</DependentUpon>
     </Compile>
@@ -96,13 +99,22 @@
     <TypedJSON Include="ViewModels\PinPage.json">
       <Generator>MsBuild:Compile</Generator>
     </TypedJSON>
-    <None Include="wwwroot\WebsiteProvider_AcceptanceHelperTwo\Master.html" />
+    <TypedJSON Include="ViewModels\MasterPage.json">
+      <Generator>MsBuild:Compile</Generator>
+    </TypedJSON>
+    <None Include="wwwroot\WebsiteProvider_AcceptanceHelperTwo\AcceptanceHelperTwoPage.html" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="wwwroot\WebsiteProvider_AcceptanceHelperTwo\Content.html" />
+    <None Include="wwwroot\WebsiteProvider_AcceptanceHelperTwo\ContentPage.html" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="wwwroot\WebsiteProvider_AcceptanceHelperTwo\Query.html" />
+    <None Include="wwwroot\WebsiteProvider_AcceptanceHelperTwo\QueryPage.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="wwwroot\WebsiteProvider_AcceptanceHelperTwo\MasterPage.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="wwwroot\WebsiteProvider_AcceptanceHelperTwo\PinPage.html" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(StarcounterBin)\Starcounter.MsBuild.targets" />

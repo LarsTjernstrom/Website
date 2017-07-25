@@ -10,14 +10,12 @@ namespace WebsiteProvider_AcceptanceHelperTwo
 
         public MainHandlers(DataHelper dataHelper)
         {
-            if (dataHelper == null) throw new ArgumentNullException(nameof(dataHelper));
-
-            DataHelper = dataHelper;
+            DataHelper = dataHelper ?? throw new ArgumentNullException(nameof(dataHelper));
         }
 
         public void Register()
         {
-            Handle.GET("/WebsiteProvider_AcceptanceHelperTwo", () => new AcceptanceHelperTwoPage());
+            Handle.GET("/WebsiteProvider_AcceptanceHelperTwo", () => this.GetMasterPageFromSession(new AcceptanceHelperTwoPage()));
 
             Handle.GET("/WebsiteProvider_AcceptanceHelperTwo/SetDefaultCatchingRules", () =>
             {
@@ -27,13 +25,31 @@ namespace WebsiteProvider_AcceptanceHelperTwo
             });
 
             Handle.GET("/WebsiteProvider_AcceptanceHelperTwo/content/{?}",
-                (string resourceName) => new ContentPage {ResourceName = resourceName});
+                (string resourceName) => this.GetMasterPageFromSession(new ContentPage { ResourceName = resourceName }));
             Handle.GET("/WebsiteProvider_AcceptanceHelperTwo/query?{?}",
-                (string query) => new QueryPage {QueryString = HttpUtility.UrlDecode(query)});
+                (string query) => this.GetMasterPageFromSession(new QueryPage { QueryString = HttpUtility.UrlDecode(query) }));
 
-            Handle.GET("/WebsiteProvider_AcceptanceHelperTwo/pin1", () => null);
-            Handle.GET("/WebsiteProvider_AcceptanceHelperTwo/pin2", () => null);
-            Handle.GET("/WebsiteProvider_AcceptanceHelperTwo/pin3", () => null);
+            Handle.GET("/WebsiteProvider_AcceptanceHelperTwo/pin1", () => new PinPage { MarkerText = "Pin 1" });
+            Handle.GET("/WebsiteProvider_AcceptanceHelperTwo/pin2", () => new PinPage { MarkerText = "Pin 2" });
+            Handle.GET("/WebsiteProvider_AcceptanceHelperTwo/pin3", () => new PinPage { MarkerText = "Pin 3" });
+        }
+
+        protected MasterPage GetMasterPageFromSession(Json content = null)
+        {
+            MasterPage master = Session.Ensure().Store[nameof(MasterPage)] as MasterPage;
+
+            if (master == null)
+            {
+                master = new MasterPage();
+                Session.Current.Store[nameof(MasterPage)] = master;
+            }
+
+            if (content != null)
+            {
+                master.Content = content;
+            }
+
+            return master;
         }
     }
 }

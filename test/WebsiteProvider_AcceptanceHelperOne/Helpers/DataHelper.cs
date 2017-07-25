@@ -6,6 +6,9 @@ namespace WebsiteProvider_AcceptanceHelperOne
 {
     public class DataHelper
     {
+        const string DefaultSurfaceName = "TestDefaultSurface";
+        const string HolyGrailSurfaceName = "TestHolyGrailSurface";
+
         public void ResetData()
         {
             Db.Transact(() =>
@@ -166,21 +169,79 @@ namespace WebsiteProvider_AcceptanceHelperOne
                 var webMap = new WebMap
                 {
                     Section = topBar,
-                    ForeignUrl = ""
+                    ForeignUrl = "/WebsiteProvider_AcceptanceHelperTwo/pin1"
                 };
+                webMap = new WebMap
+                {
+                    Section = topBar,
+                    ForeignUrl = "/WebsiteProvider_AcceptanceHelperTwo/pin2"
+                };
+                webMap = new WebMap
+                {
+                    Section = topBar,
+                    ForeignUrl = "/WebsiteProvider_AcceptanceHelperTwo/pin3"
+                };
+            });
+        }
+
+        public bool DeleteWebMap(string pinningRuleId)
+        {
+            bool isDeleted = false;
+            Db.Transact(() =>
+            {
+                var webMap = Db.SQL<WebMap>("SELECT m FROM Simplified.Ring6.WebMap m WHERE m.ForeignUrl = ?", "/WebsiteProvider_AcceptanceHelperTwo/pin" + pinningRuleId).FirstOrDefault();
+                isDeleted = webMap != null;
+                webMap?.Delete();
+            });
+            return isDeleted;
+        }
+
+        public void RenewWebSectionsForPinningRules()
+        {
+            Db.Transact(() =>
+            {
+                Db.SlowSQL("DELETE FROM Simplified.Ring6.WebSection");
+                var surface = Db.SQL<WebTemplate>("SELECT wt FROM Simplified.Ring6.WebTemplate wt WHERE wt.Name = ?", DefaultSurfaceName).First;
+                new WebSection
+                {
+                    Template = surface,
+                    Name = "TopBar",
+                    Default = false
+                };
+                new WebSection
+                {
+                    Template = surface,
+                    Name = "Main",
+                    Default = true
+                };
+            });
+        }
+
+        public void RenewWebTemplatesForPinningRules()
+        {
+            Db.Transact(() =>
+            {
+                Db.SlowSQL("DELETE FROM Simplified.Ring6.WebTemplate");
+                var defaultSurface = this.GenerateDefaultSurface();
+                var webUrl = Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE wu.Url = ? OR wu.Url IS NULL", string.Empty).First
+                             ?? new WebUrl
+                             {
+                                 Url = string.Empty,
+                                 IsFinal = true
+                             };
+                webUrl.Template = defaultSurface;
             });
         }
 
         protected WebTemplate GenerateDefaultSurface()
         {
-            const string surfaceName = "TestDefaultSurface";
-            var surface = Db.SQL<WebTemplate>("SELECT wt FROM Simplified.Ring6.WebTemplate wt WHERE wt.Name = ?", surfaceName).First;
+            var surface = Db.SQL<WebTemplate>("SELECT wt FROM Simplified.Ring6.WebTemplate wt WHERE wt.Name = ?", DefaultSurfaceName).First;
 
             if (surface != null) return surface;
 
             surface = new WebTemplate
             {
-                Name = surfaceName,
+                Name = DefaultSurfaceName,
                 Html = "/websiteeditor/surfaces/DefaultSurface.html"
             };
 
@@ -202,14 +263,13 @@ namespace WebsiteProvider_AcceptanceHelperOne
 
         protected WebTemplate GenerateHolyGrailSurface()
         {
-            const string surfaceName = "TestHolyGrailSurface";
-            var surface = Db.SQL<WebTemplate>("SELECT wt FROM Simplified.Ring6.WebTemplate wt WHERE wt.Name = ?", surfaceName).First;
+            var surface = Db.SQL<WebTemplate>("SELECT wt FROM Simplified.Ring6.WebTemplate wt WHERE wt.Name = ?", HolyGrailSurfaceName).First;
 
             if (surface != null) return surface;
 
             surface = new WebTemplate
             {
-                Name = surfaceName,
+                Name = HolyGrailSurfaceName,
                 Html = "/Websiteeditor/surfaces/HolyGrailSurface.html"
             };
 
