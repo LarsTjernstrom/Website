@@ -1,23 +1,26 @@
 {
-    "Html": "/WebsiteEditor/viewmodels/CatchingRulesPage.html",
-    "Surface":
+  "Html": "/WebsiteEditor/viewmodels/CatchingRulesPage.html",
+  "SurfaceName": "",
+  "CatchingRules": [
+    {
+      "Key": "",
+      "Url$": "",
+      "IsFinal$": false,
+      "DeleteTrigger$": 0,
+      "AddHeaderTrigger$": 0,
+      "Headers": [
         {
-            "Key": "",
-            "Name": ""
-        },
-    "CatchingRules": [
-        {
-            "Key": "",
-            "Url$": "",
-            "TemplateKey$": "",
-            "IsFinal$": false,
-            "Delete$": 0
+          "Name$": "",
+          "Value$": "",
+          "DeleteTrigger$": 0
         }
-    ],
-    "Trn": {
-        "IsDirty": false
-    },
-    "Create$": 0,
-    "SaveChanges$": 0,
-    "CancelChanges$": 0
+      ]
+    }
+  ],
+  "Trn": {
+    "IsDirty": false
+  },
+  "CreateTrigger$": 0,
+  "SaveChangesTrigger$": 0,
+  "CancelChangesTrigger$": 0
 }

@@ -14,13 +14,13 @@ namespace WebsiteEditor
             Application.Current.Use(new HtmlFromJsonProvider());
             Application.Current.Use(new PartialToStandaloneHtmlProvider());
 
-            Handle.GET("/WebsiteEditor/help?topic={?}", (string topic) =>
+            Handle.GET("/websiteeditor/help?topic={?}", (string topic) =>
             {
                 var json = new CmsHelp();
                 return json;
             });
 
-            Handle.GET("/WebsiteEditor/cleardata", () =>
+            Handle.GET("/websiteeditor/cleardata", () =>
             {
                 DataHelper helper = new DataHelper();
 
@@ -29,7 +29,7 @@ namespace WebsiteEditor
                 return 200;
             });
 
-            Handle.GET("/WebsiteEditor/resetdata", () =>
+            Handle.GET("/websiteeditor/resetdata", () =>
             {
                 DataHelper helper = new DataHelper();
 
@@ -39,55 +39,55 @@ namespace WebsiteEditor
                 return 200;
             });
 
-            Handle.GET("/websiteeditor", () => Self.GET("/WebsiteEditor/surfacegroups"));
+            Handle.GET("/websiteeditor", () => Self.GET("/websiteeditor/surfacegroups"));
 
-            Handle.GET("/WebsiteEditor/surfacegroups", () =>
+            Handle.GET("/websiteeditor/surfacegroups", () =>
             {
                 return Db.Scope<MasterPage>(() =>
                 {
                     MasterPage master = this.GetMasterPageFromSession();
                     master.ShowNavigation = false;
 
-                    master.RefreshCurrentPage("/WebsiteEditor/partials/surfacegroups");
+                    master.RefreshCurrentPage("/websiteeditor/partials/surfacegroups");
 
                     return master;
                 });
             });
 
-            Handle.GET("/WebsiteEditor/surface/{?}/general", (string key) =>
+            Handle.GET("/websiteeditor/surface/{?}/general", (string key) =>
             {
                 return Db.Scope<MasterPage>(() =>
                 {
                     MasterPage master = this.GetMasterPageFromSession();
                     master.ShowNavigation = true;
                     master.Surface.Data = Db.SQL<WebTemplate>("SELECT t FROM Simplified.Ring6.WebTemplate t WHERE t.Key = ?", key).First();
-                    SetMasterCurrentPage(master, "/WebsiteEditor/partials/general");
+                    SetMasterCurrentPage(master, "/websiteeditor/partials/general");
 
                     return master;
                 });
             });
 
-            Handle.GET("/WebsiteEditor/surface/{?}/blendingpoints", (string key) =>
+            Handle.GET("/websiteeditor/surface/{?}/blendingpoints", (string key) =>
             {
                 return Db.Scope<MasterPage>(() =>
                 {
                     MasterPage master = this.GetMasterPageFromSession();
                     master.ShowNavigation = true;
                     master.Surface.Data = Db.SQL<WebTemplate>("SELECT t FROM Simplified.Ring6.WebTemplate t WHERE t.Key = ?", key).First();
-                    SetMasterCurrentPage(master, "/WebsiteEditor/partials/blendingpoints");
+                    SetMasterCurrentPage(master, "/websiteeditor/partials/blendingpoints");
 
                     return master;
                 });
             });
 
-            Handle.GET("/WebsiteEditor/surface/{?}/catchingrules", (string key) =>
+            Handle.GET("/websiteeditor/surface/{?}/catchingrules", (string key) =>
             {
                 return Db.Scope<MasterPage>(() =>
                 {
                     MasterPage master = this.GetMasterPageFromSession();
                     master.ShowNavigation = true;
                     master.Surface.Data = Db.SQL<WebTemplate>("SELECT t FROM Simplified.Ring6.WebTemplate t WHERE t.Key = ?", key).First();
-                    SetMasterCurrentPage(master, "/WebsiteEditor/partials/catchingrules");
+                    SetMasterCurrentPage(master, "/websiteeditor/partials/catchingrules");
 
                     return master;
                 });
@@ -96,7 +96,7 @@ namespace WebsiteEditor
 
         protected void RegisterPartials()
         {
-            Handle.GET("/WebsiteEditor/partials/surfacegroups", () =>
+            Handle.GET("/websiteeditor/partials/surfacegroups", () =>
             {
                 SurfaceGroupsPage page = new SurfaceGroupsPage();
 
@@ -105,13 +105,13 @@ namespace WebsiteEditor
                 return page;
             });
 
-            Handle.GET("/WebsiteEditor/partials/general", () => new GeneralPage());
+            Handle.GET("/websiteeditor/partials/general", () => new GeneralPage());
 
-            Handle.GET("/WebsiteEditor/partials/blendingpoints", () => new BlendingPointsPage());
+            Handle.GET("/websiteeditor/partials/blendingpoints", () => new BlendingPointsPage());
 
-            Handle.GET("/WebsiteEditor/partials/catchingrules", () => new CatchingRulesPage());
+            Handle.GET("/websiteeditor/partials/catchingrules", () => new CatchingRulesPage());
 
-            Handle.GET("/WebsiteEditor/partials/deny", () => new DenyPage());
+            Handle.GET("/websiteeditor/partials/deny", () => new DenyPage());
         }
 
         protected MasterPage GetMasterPageFromSession()
@@ -123,7 +123,7 @@ namespace WebsiteEditor
                 master = new MasterPage();
                 Session.Current.Store[nameof(MasterPage)] = master;
             }
- 
+
             return master;
         }
 

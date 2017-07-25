@@ -6,7 +6,7 @@ namespace WebsiteEditor
     {
         public void Register()
         {
-            Blender.MapUri("/WebsiteEditor/app-name", "app-name");
+            Blender.MapUri("/websiteeditor/app-name", "app-name");
 
         }
     }

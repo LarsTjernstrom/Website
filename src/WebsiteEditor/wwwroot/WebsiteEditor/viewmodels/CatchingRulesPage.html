@@ -1,56 +1,85 @@
-﻿<template>
+﻿<link rel="import" href="/sys/polymer/polymer.html">
+<link rel="import" href="/sys/paper-collapse-item/paper-collapse-item.html" />
+
+<template>
     <template is="dom-bind">
         <fieldset>
             <legend>
                 <span class="pull-right">
-                    <button type="button" class="btn btn-xs btn-success" value="{{model.SaveChanges$::click}}"
+                    <button type="button" class="btn btn-xs btn-success" value="{{model.SaveChangesTrigger$::click}}"
                             onmousedown="++this.value;" disabled="{{!model.Trn.IsDirty}}" title="Save all changes">
                         Save
                     </button>
-                    <button type="button" class="btn btn-xs btn-default" value="{{model.CancelChanges$::click}}"
+                    <button type="button" class="btn btn-xs btn-default" value="{{model.CancelChangesTrigger$::click}}"
                             onmousedown="++this.value;" disabled="{{!model.Trn.IsDirty}}" title="Cancel all changes">
                         Cancel
                     </button>
-                    <button type="button" class="btn btn-xs btn-default" value="{{model.Create$::click}}"
+                    <button type="button" class="btn btn-xs btn-default" value="{{model.CreateTrigger$::click}}"
                             onmousedown="++this.value;" title="Create catching rule">
                         Create
                     </button>
                 </span>
                 Catching rules
             </legend>
-            <table class="website-table table">
-                <thead>
-                    <tr>
-                        <th>Surface</th>
-                        <th>Catch URI</th>
-                        <th>Final</th>
-                        <th class="website-table__cell-actions"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <template is="dom-repeat" items="{{model.CatchingRules}}">
-                        <tr>
-                            <td>
-                                <label class="website-table__label">{{model.Surface.Name}}</label>
-                            </td>
-                            <td>
-                                <input type="text" value="{{item.Url$::change}}" class="form-control" />
-                            </td>
-                            <td>
-                                <input type="checkbox" checked="{{item.IsFinal$::change}}"/>
-                            </td>
-                            <td>
-                                <button type="button" class="btn btn-xs btn-default" value="{{item.Delete$::click}}" onmousedown="++this.value;">Delete</button>
-                            </td>
-                        </tr>
-                    </template>
-                </tbody>
-            </table>
+            <template is="dom-repeat" items="{{model.CatchingRules}}" as="catchingRule">
+                <paper-collapse-item>
+                    <div slot="header" class="website-catching-rules-table-header">
+                        <div class="website-catching-rules-table-header-uri">
+                            <label for="websiteCatchingRulesHeaderUri" class="website-catching-rules-table-header-uri__label">Catch URI: </label>
+                            <input type="text" id="websiteCatchingRulesHeaderUri" value="{{catchingRule.Url$::change}}" class="website-catching-rules-table-header-uri__uri" on-tap="tappedOnInput" />
+                        </div>
+                        <div class="website-catching-rules-table-header-headers-summary">Catch headers: {{catchingRule.Headers.length}}</div>
+                        <label>Final <input type="checkbox" checked="{{catchingRule.IsFinal$::change}}" on-tap="tappedOnInput" /></label>
+                        <div class="website-catching-rules-table-header-delete">
+                            <button type="button" class="btn btn-xs btn-default" value="{{catchingRule.DeleteTrigger$::click}}" onmousedown="++this.value;">
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                    <div>
+                        <table class="website-table table">
+                            <thead>
+                                <tr>
+                                    <th>Header key</th>
+                                    <th>Header value</th>
+                                    <th class="website-table__cell-actions"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template is="dom-repeat" items="{{catchingRule.Headers}}" as="catchHeader">
+                                    <tr>
+                                        <td>
+                                            <input type="text" value="{{catchHeader.Name$::change}}" />
+                                        </td>
+                                        <td>
+                                            <input type="text" value="{{catchHeader.Value$::change}}" />
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-xs btn-danger" value="{{catchHeader.DeleteTrigger$::click}}" onmousedown="++this.value;" title="Remove catch header">
+                                                Delete
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="website-catching-rules-table-add-header">
+                        <button type="button" class="btn btn-xs btn-success" value="{{catchingRule.AddHeaderTrigger$::click}}" onmousedown="++this.value;" title="Add new catch header">
+                            Add
+                        </button>
+                    </div>
+                </paper-collapse-item>
+            </template>
         </fieldset>
     </template>
     <script>
         (function () {
             var template = document.currentScript.previousElementSibling;
+
+            template.tappedOnInput = function (event) {
+                event.stopPropagation();
+            }
 
             setTimeout(function () {
                 var selects = template.parentNode.querySelectorAll("select");

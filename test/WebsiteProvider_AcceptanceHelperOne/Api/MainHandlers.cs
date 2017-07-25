@@ -9,9 +9,7 @@ namespace WebsiteProvider_AcceptanceHelperOne
 
         public MainHandlers(DataHelper dataHelper)
         {
-            if (dataHelper == null) throw new ArgumentNullException(nameof(dataHelper));
-
-            DataHelper = dataHelper;
+            DataHelper = dataHelper ?? throw new ArgumentNullException(nameof(dataHelper));
         }
 
         public void Register()
@@ -55,6 +53,13 @@ namespace WebsiteProvider_AcceptanceHelperOne
                 DataHelper.SetCatchingRulesWithWildcards();
                 Handle.SetOutgoingStatusCode(200);
                 return "Data for testing catching rule wildcards is set up";
+            });
+
+            Handle.GET("/WebsiteProvider_AcceptanceHelperOne/SetupCatchingRuleHeadersTests", () =>
+            {
+                DataHelper.SetCatchingRulesHeaders();
+                Handle.SetOutgoingStatusCode(200);
+                return "Data for testing catching rule headers is set up";
             });
 
             Handle.GET("/WebsiteProvider_AcceptanceHelperOne/SetupPinningRulesMappingTests", () =>

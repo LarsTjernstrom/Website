@@ -128,16 +128,16 @@ body {
     padding-right: 20px;
 }
 
-.website-surface-groups-add__span {
-    pointer-events: none;
-}
-
-.website-pinning-rules {
+.website-no-pointer-events {
     pointer-events: none;
 }
 
 .website-pinning-rule-add {
     padding-bottom: 5px;
+}
+
+.website-surface-group-name {
+    font-weight: bold;
 }
 
 .website-pinning-rule-order {
@@ -155,4 +155,40 @@ body {
 .website-blending-point-delete {
     position: relative;
     left: 10em;
+}
+
+.website-catching-rules-table-header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 80%;
+}
+
+.website-catching-rules-table-header-uri {
+    flex: 1 0 auto;
+    display: flex;
+    align-items: flex-start;
+}
+
+.website-catching-rules-table-header-uri__uri {
+    width: 100%;
+}
+
+.website-catching-rules-table-header-uri__label {
+    margin-right: 1em;
+}
+
+.website-catching-rules-table-header-delete {
+    padding-bottom: 5px;
+    margin-left: 10em;
+}
+
+.website-catching-rules-table-header-headers-summary {
+    flex: 0 1 auto;
+    pointer-events: none;
+    margin: 0 2em 0 3em;
+}
+
+.website-catching-rules-table-add-header {
+    padding-bottom: 5px;
 }
