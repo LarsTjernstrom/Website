@@ -56,6 +56,13 @@ namespace WebsiteProvider_AcceptanceHelperOne
                 Handle.SetOutgoingStatusCode(200);
                 return "Data for testing catching rule wildcards is set up";
             });
+
+            Handle.GET("/WebsiteProvider_AcceptanceHelperOne/SetupPinningRulesMappingTests", () =>
+            {
+                DataHelper.SetupPinningRules();
+                Handle.SetOutgoingStatusCode(200);
+                return "Data for testing pinning rules mapping/unmapping is set up";
+            });
         }
     }
 }

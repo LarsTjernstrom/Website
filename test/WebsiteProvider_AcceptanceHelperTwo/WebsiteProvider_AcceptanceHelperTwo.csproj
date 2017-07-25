@@ -76,6 +76,9 @@
     <Compile Include="ViewModels\ContentPage.json.cs">
       <DependentUpon>ContentPage.json</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\PinPage.json.cs">
+      <DependentUpon>PinPage.json</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\QueryPage.json.cs">
       <DependentUpon>QueryPage.json</DependentUpon>
     </Compile>
@@ -88,6 +91,9 @@
       <Generator>MsBuild:Compile</Generator>
     </TypedJSON>
     <TypedJSON Include="ViewModels\QueryPage.json">
+      <Generator>MsBuild:Compile</Generator>
+    </TypedJSON>
+    <TypedJSON Include="ViewModels\PinPage.json">
       <Generator>MsBuild:Compile</Generator>
     </TypedJSON>
     <None Include="wwwroot\WebsiteProvider_AcceptanceHelperTwo\Master.html" />

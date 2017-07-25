@@ -1,4 +1,5 @@
-﻿using Simplified.Ring6;
+﻿using System.Linq;
+using Simplified.Ring6;
 using Starcounter;
 
 namespace WebsiteProvider_AcceptanceHelperOne
@@ -115,6 +116,27 @@ namespace WebsiteProvider_AcceptanceHelperOne
                              };
                 webUrl.Template = defaultSurface;
                 webUrl.IsFinal = true;
+            });
+        }
+
+        public void SetupPinningRules()
+        {
+            Db.Transact(() =>
+            {
+                var defaultSurface = GenerateDefaultSurface();
+                var webUrl = Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE wu.Url = ? OR wu.Url IS NULL", string.Empty).First
+                             ?? new WebUrl
+                             {
+                                 Template = defaultSurface,
+                                 Url = string.Empty,
+                                 IsFinal = true
+                             };
+                var topBar = defaultSurface.Sections.First(x => x.Name == "TopBar");
+                var webMap = new WebMap
+                {
+                    Section = topBar,
+                    ForeignUrl = ""
+                };
             });
         }
 

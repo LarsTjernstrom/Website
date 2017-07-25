@@ -30,6 +30,10 @@ namespace WebsiteProvider_AcceptanceHelperTwo
                 (string resourceName) => new ContentPage {ResourceName = resourceName});
             Handle.GET("/WebsiteProvider_AcceptanceHelperTwo/query?{?}",
                 (string query) => new QueryPage {QueryString = HttpUtility.UrlDecode(query)});
+
+            Handle.GET("/WebsiteProvider_AcceptanceHelperTwo/pin1", () => null);
+            Handle.GET("/WebsiteProvider_AcceptanceHelperTwo/pin2", () => null);
+            Handle.GET("/WebsiteProvider_AcceptanceHelperTwo/pin3", () => null);
         }
     }
 }
