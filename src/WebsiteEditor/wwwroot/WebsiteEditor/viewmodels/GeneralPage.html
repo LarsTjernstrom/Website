@@ -12,6 +12,13 @@
             <input type="text" placeholder="URI" value="{{model.Surface.Html$::change}}" class="form-control"/>
         </div>
         <div class="website-general-section">
+            <p>Surface group:</p>
+            <juicy-select value="{{model.CurrentGroupKey$}}" options="{{model.SurfaceGroups}}" text-property="Name" value-property="Key">
+                <select class="website-select"></select>
+            </juicy-select>
+
+        </div>
+        <div class="website-general-section">
             <p>Default blending point:</p>
             <juicy-select caption-text=" " value="{{model.DefaultBlendingPointKey$}}" options="{{model.BlendingPoints}}" text-property="Name" value-property="Key">
                 <select class="website-select"></select>
