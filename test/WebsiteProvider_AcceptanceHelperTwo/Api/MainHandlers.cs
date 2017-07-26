@@ -29,9 +29,11 @@ namespace WebsiteProvider_AcceptanceHelperTwo
             Handle.GET("/WebsiteProvider_AcceptanceHelperTwo/query?{?}",
                 (string query) => this.GetMasterPageFromSession(new QueryPage { QueryString = HttpUtility.UrlDecode(query) }));
 
-            Handle.GET("/WebsiteProvider_AcceptanceHelperTwo/pin1", () => new PinPage { MarkerText = "Pin 1" });
-            Handle.GET("/WebsiteProvider_AcceptanceHelperTwo/pin2", () => new PinPage { MarkerText = "Pin 2" });
-            Handle.GET("/WebsiteProvider_AcceptanceHelperTwo/pin3", () => new PinPage { MarkerText = "Pin 3" });
+            for (int i = 1; i <= 7; i++)
+            {
+                var markerText = "Pin " + i;
+                Handle.GET("/WebsiteProvider_AcceptanceHelperTwo/pin" + i, () => new PinPage { MarkerText = markerText });
+            }
         }
 
         protected MasterPage GetMasterPageFromSession(Json content = null)

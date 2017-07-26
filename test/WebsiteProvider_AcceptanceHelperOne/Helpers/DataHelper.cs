@@ -166,21 +166,23 @@ namespace WebsiteProvider_AcceptanceHelperOne
                                  IsFinal = true
                              };
                 var topBar = defaultSurface.Sections.First(x => x.Name == "TopBar");
-                var webMap = new WebMap
+                var main = defaultSurface.Sections.First(x => x.Name == "Main");
+                for (int i = 1; i <= 3; i++)
                 {
-                    Section = topBar,
-                    ForeignUrl = "/WebsiteProvider_AcceptanceHelperTwo/pin1"
-                };
-                webMap = new WebMap
+                    var webMap = new WebMap
+                    {
+                        Section = topBar,
+                        ForeignUrl = "/WebsiteProvider_AcceptanceHelperTwo/pin" + i
+                    };
+                }
+                for (int i = 6; i <= 7; i++)
                 {
-                    Section = topBar,
-                    ForeignUrl = "/WebsiteProvider_AcceptanceHelperTwo/pin2"
-                };
-                webMap = new WebMap
-                {
-                    Section = topBar,
-                    ForeignUrl = "/WebsiteProvider_AcceptanceHelperTwo/pin3"
-                };
+                    var webMap = new WebMap
+                    {
+                        Section = main,
+                        ForeignUrl = "/WebsiteProvider_AcceptanceHelperTwo/pin" + i
+                    };
+                }
             });
         }
 
@@ -196,25 +198,40 @@ namespace WebsiteProvider_AcceptanceHelperOne
             return isDeleted;
         }
 
-        public void RenewWebSectionsForPinningRules()
+        public bool EditWebMap(string pinningRuleId, string newId)
         {
+            bool isEdited = false;
             Db.Transact(() =>
             {
-                Db.SlowSQL("DELETE FROM Simplified.Ring6.WebSection");
-                var surface = Db.SQL<WebTemplate>("SELECT wt FROM Simplified.Ring6.WebTemplate wt WHERE wt.Name = ?", DefaultSurfaceName).First;
-                new WebSection
+                var webMap = Db.SQL<WebMap>("SELECT m FROM Simplified.Ring6.WebMap m WHERE m.ForeignUrl = ?", "/WebsiteProvider_AcceptanceHelperTwo/pin" + pinningRuleId).FirstOrDefault();
+                if (webMap != null)
                 {
-                    Template = surface,
-                    Name = "TopBar",
-                    Default = false
-                };
-                new WebSection
-                {
-                    Template = surface,
-                    Name = "Main",
-                    Default = true
-                };
+                    webMap.ForeignUrl = "/WebsiteProvider_AcceptanceHelperTwo/pin" + newId;
+                    isEdited = true;
+                }
             });
+            return isEdited;
+        }
+
+        public bool RenewWebSectionForPinningRules(string sectionId)
+        {
+            bool isUpdated = false;
+            Db.Transact(() =>
+            {
+                var section = Db.SQL<WebSection>("SELECT s FROM Simplified.Ring6.WebSection s WHERE s.Name = ?", sectionId).FirstOrDefault();
+                if (section != null)
+                {
+                    section.Delete();
+                    new WebSection
+                    {
+                        Template = Db.SQL<WebTemplate>("SELECT t FROM Simplified.Ring6.WebTemplate t WHERE t.Name = ?", DefaultSurfaceName).First(),
+                        Name = sectionId,
+                        Default = false
+                    };
+                    isUpdated = true;
+                }
+            });
+            return isUpdated;
         }
 
         public void RenewWebTemplatesForPinningRules()
@@ -231,6 +248,23 @@ namespace WebsiteProvider_AcceptanceHelperOne
                              };
                 webUrl.Template = defaultSurface;
             });
+        }
+
+        public bool ChangeWebMapSection(string pinningRuleId)
+        {
+            bool isEdited = false;
+            Db.Transact(() =>
+            {
+                var webMap = Db.SQL<WebMap>("SELECT m FROM Simplified.Ring6.WebMap m WHERE m.ForeignUrl = ?", "/WebsiteProvider_AcceptanceHelperTwo/pin" + pinningRuleId).FirstOrDefault();
+                if (webMap != null)
+                {
+                    webMap.Section = webMap.Section.Name == "Main"
+                        ? Db.SQL<WebSection>("SELECT s FROM Simplified.Ring6.WebSection s WHERE s.Name = ?", "TopBar").First()
+                        : Db.SQL<WebSection>("SELECT s FROM Simplified.Ring6.WebSection s WHERE s.Name = ?", "Main").First();
+                    isEdited = true;
+                }
+            });
+            return isEdited;
         }
 
         protected WebTemplate GenerateDefaultSurface()

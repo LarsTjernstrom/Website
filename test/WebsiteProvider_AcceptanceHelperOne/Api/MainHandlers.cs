@@ -83,11 +83,46 @@ namespace WebsiteProvider_AcceptanceHelperOne
                 }
             });
 
-            Handle.GET("/WebsiteProvider_AcceptanceHelperOne/sections/renew", () =>
+            Handle.GET("/WebsiteProvider_AcceptanceHelperOne/pin/{?}/edit/{?}", (string pinId, string newPinId) =>
             {
-                DataHelper.RenewWebSectionsForPinningRules();
-                Handle.SetOutgoingStatusCode(200);
-                return "Blending points are deleted and recreated";
+                if (this.DataHelper.EditWebMap(pinId, newPinId))
+                {
+                    Handle.SetOutgoingStatusCode(200);
+                    return "Pinning rule edited";
+                }
+                else
+                {
+                    Handle.SetOutgoingStatusCode(404);
+                    return "Pinning rule is not found";
+                }
+            });
+
+            Handle.GET("/WebsiteProvider_AcceptanceHelperOne/pin/{?}/change-section", (string pinId) =>
+            {
+                if (this.DataHelper.ChangeWebMapSection(pinId))
+                {
+                    Handle.SetOutgoingStatusCode(200);
+                    return "Pinning rule edited";
+                }
+                else
+                {
+                    Handle.SetOutgoingStatusCode(404);
+                    return "Pinning rule is not found";
+                }
+            });
+
+            Handle.GET("/WebsiteProvider_AcceptanceHelperOne/section/renew/{?}", (string sectionId) =>
+            {
+                if (this.DataHelper.RenewWebSectionForPinningRules(sectionId))
+                {
+                    Handle.SetOutgoingStatusCode(200);
+                    return "Blending points are deleted and recreated";
+                }
+                else
+                {
+                    Handle.SetOutgoingStatusCode(404);
+                    return "Blending point is not found";
+                }
             });
 
             Handle.GET("/WebsiteProvider_AcceptanceHelperOne/surfaces/renew", () =>

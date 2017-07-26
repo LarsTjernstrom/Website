@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using WebsiteProvider.Tests.Ui;
@@ -38,21 +39,27 @@ namespace WebsiteProvider.Tests.Test
         }
 
         /// <summary>
-        /// Load page with 3 defined pinning rules content and check it.
+        /// Load page with defined pinning rules content and check it.
         /// </summary>
         [Test]
         public void RequestPage_PinningRulesDefined_ThePinningContentLoaded()
         {
             var page = new AcceptanceHelperOneMasterPage(Driver).LoadSimplePage();
             WaitForText(page.HeaderElement, "Simple Page");
-            var pins = Driver.FindElements(By.ClassName("websiteprovider-acceptancehelperone-pin-marker"));
-            WaitUntil(x => pins.Any(p => p.Text == "Pin 1"));
-            WaitUntil(x => pins.Any(p => p.Text == "Pin 2"));
-            WaitUntil(x => pins.Any(p => p.Text == "Pin 3"));
+
+            var topPins = this.GetTopBarPins();
+            var mainPins = this.GetMainPins();
+            var expectedTopPinsContent = new[] { "Pin 1", "Pin 2", "Pin 3" };
+            var expectedMainPinsContent = new[] { "Pin 6", "Pin 7" };
+
+            Assert.AreEqual(3, topPins.Count);
+            Assert.AreEqual(2, mainPins.Count);
+            WaitUntil(x => topPins.All(p => expectedTopPinsContent.Contains(p.Text)));
+            WaitUntil(x => mainPins.All(p => expectedMainPinsContent.Contains(p.Text)));
         }
 
         /// <summary>
-        /// Delete one pinning rule, load page with 2 ones, check it and check that page odes not contain remove rule content.
+        /// Delete one pinning rule, load page with another ones, check it and check that page does not contain the removed rule content.
         /// </summary>
         [Test]
         public void RequestPage_PinningRuleDeleted_TheDeletedRuleContenNotLoaded()
@@ -61,23 +68,34 @@ namespace WebsiteProvider.Tests.Test
             var page = new AcceptanceHelperOneMasterPage(Driver).LoadSimplePage();
             WaitForText(page.HeaderElement, "Simple Page");
 
-            var pins = Driver.FindElements(By.ClassName("websiteprovider-acceptancehelperone-pin-marker"));
-            WaitUntil(x => pins.Any(p => p.Text == "Pin 1"));
-            WaitUntil(x => pins.All(p => p.Text != "Pin 2"));
-            WaitUntil(x => pins.Any(p => p.Text == "Pin 3"));
+            var topPins = this.GetTopBarPins();
+            var mainPins = this.GetMainPins();
+            var expectedTopPinsContent = new[] { "Pin 1", "Pin 3" };
+            var expectedMainPinsContent = new[] { "Pin 6", "Pin 7" };
+
+            Assert.AreEqual(2, topPins.Count);
+            Assert.AreEqual(2, mainPins.Count);
+            WaitUntil(x => topPins.All(p => expectedTopPinsContent.Contains(p.Text)));
+            WaitUntil(x => mainPins.All(p => expectedMainPinsContent.Contains(p.Text)));
         }
 
         /// <summary>
-        /// Delete blending point, load page without any pinning rules content and check it.
+        /// Delete and recreate blending point, load page without pinning rules content on the changed blending point and check it.
         /// </summary>
         [Test]
-        public void RequestPage_BlendingPointsDeleted_ThePinningContenNotLoaded()
+        public void RequestPage_BlendingPointDeleted_ThePinningContenLoadedOnlyForAnotherPoint()
         {
-            Driver.Navigate().GoToUrl(Config.AcceptanceHelperOneUrl + "/sections/renew");
+            Driver.Navigate().GoToUrl(Config.AcceptanceHelperOneUrl + "/section/renew/TopBar");
             var page = new AcceptanceHelperOneMasterPage(Driver).LoadSimplePage();
             WaitForText(page.HeaderElement, "Simple Page");
 
-            WaitUntil(x => !Driver.FindElements(By.ClassName("websiteprovider-acceptancehelperone-pin-marker")).Any());
+            var topPins = this.GetTopBarPins();
+            var mainPins = this.GetMainPins();
+            var expectedMainPinsContent = new[] { "Pin 6", "Pin 7" };
+
+            Assert.AreEqual(0, topPins.Count);
+            Assert.AreEqual(2, mainPins.Count);
+            WaitUntil(x => mainPins.All(p => expectedMainPinsContent.Contains(p.Text)));
         }
 
         /// <summary>
@@ -90,7 +108,45 @@ namespace WebsiteProvider.Tests.Test
             var page = new AcceptanceHelperOneMasterPage(Driver).LoadSimplePage();
             WaitForText(page.HeaderElement, "Simple Page");
 
-            WaitUntil(x => !Driver.FindElements(By.ClassName("websiteprovider-acceptancehelperone-pin-marker")).Any());
+            var topPins = this.GetTopBarPins();
+            var mainPins = this.GetMainPins();
+
+            Assert.AreEqual(0, topPins.Count);
+            Assert.AreEqual(0, mainPins.Count);
+        }
+
+        /// <summary>
+        /// Edit pinning rules, load page with pinning rules content, check that page contains changed rule content.
+        /// </summary>
+        [Test]
+        public void RequestPage_PinningRuleUrlEdited_TheEditedRuleContenLoadedChanged()
+        {
+            Driver.Navigate().GoToUrl(Config.AcceptanceHelperOneUrl + "/pin/2/edit/5");
+            Driver.Navigate().GoToUrl(Config.AcceptanceHelperOneUrl + "/pin/7/change-section");
+            var page = new AcceptanceHelperOneMasterPage(Driver).LoadSimplePage();
+            WaitForText(page.HeaderElement, "Simple Page");
+
+            var topPins = this.GetTopBarPins();
+            var mainPins = this.GetMainPins();
+            var expectedTopPinsContent = new[] { "Pin 1", "Pin 5", "Pin 3", "Pin 7" };
+            var expectedMainPinsContent = new[] { "Pin 6" };
+
+            Assert.AreEqual(4, topPins.Count);
+            Assert.AreEqual(1, mainPins.Count);
+            WaitUntil(x => topPins.All(p => expectedTopPinsContent.Contains(p.Text)));
+            WaitUntil(x => mainPins.All(p => expectedMainPinsContent.Contains(p.Text)));
+        }
+
+        private ICollection<IWebElement> GetTopBarPins()
+        {
+            var topBar = Driver.FindElement(By.ClassName("website-defaultsurface-topbar"));
+            return topBar.FindElements(By.ClassName("websiteprovider-acceptancehelperone-pin-marker"));
+        }
+
+        private ICollection<IWebElement> GetMainPins()
+        {
+            var main = Driver.FindElement(By.XPath("//starcounter-include[@slot = 'websiteeditor/main']"));
+            return main.FindElements(By.ClassName("websiteprovider-acceptancehelperone-pin-marker"));
         }
     }
 }
