@@ -47,15 +47,7 @@ namespace WebsiteProvider.Tests.Test
             var page = new AcceptanceHelperOneMasterPage(Driver).LoadSimplePage();
             WaitForText(page.HeaderElement, "Simple Page");
 
-            var topPins = this.GetTopBarPins();
-            var mainPins = this.GetMainPins();
-            var expectedTopPinsContent = new[] { "Pin 1", "Pin 2", "Pin 3" };
-            var expectedMainPinsContent = new[] { "Pin 6", "Pin 7" };
-
-            Assert.AreEqual(3, topPins.Count);
-            Assert.AreEqual(2, mainPins.Count);
-            WaitUntil(x => topPins.All(p => expectedTopPinsContent.Contains(p.Text)));
-            WaitUntil(x => mainPins.All(p => expectedMainPinsContent.Contains(p.Text)));
+            this.CheckCommonRulesSet();
         }
 
         /// <summary>
@@ -133,6 +125,117 @@ namespace WebsiteProvider.Tests.Test
 
             Assert.AreEqual(4, topPins.Count);
             Assert.AreEqual(1, mainPins.Count);
+            WaitUntil(x => topPins.All(p => expectedTopPinsContent.Contains(p.Text)));
+            WaitUntil(x => mainPins.All(p => expectedMainPinsContent.Contains(p.Text)));
+        }
+
+        /// <summary>
+        /// Load page in scope of long-running transaction, change pinning rules, refresh and check that nothing was changed in blending
+        /// </summary>
+        [Test]
+        public void ChangeRulesInTransaction_ChangeAndRollback_RulesIsNotChanged()
+        {
+            var page = new AcceptanceHelperTwoPinningPage(Driver).Load();
+            WaitForText(page.HeaderElement, "Pinning Rules");
+
+            page.DeleteRuleButton.Click();
+            page.EditRuleButton.Click();
+            WaitUntil(x => !page.DeleteRuleButton.Enabled);
+            WaitUntil(x => !page.EditRuleButton.Enabled);
+            page.CancelChangesButton.Click();
+            WaitUntil(x => !page.CancelChangesButton.Enabled);
+
+            Driver.Navigate().Refresh();
+            WaitForText(page.HeaderElement, "Pinning Rules");
+
+            this.CheckCommonRulesSet();
+        }
+
+        /// <summary>
+        /// Load page in scope of long-running transaction, change pinning rules, commit, refresh and check changes was applied in blending
+        /// </summary>
+        [Test]
+        public void ChangeRulesInTransaction_ChangeAndCommit_RulesIsChanged()
+        {
+            var page = new AcceptanceHelperTwoPinningPage(Driver).Load();
+            WaitForText(page.HeaderElement, "Pinning Rules");
+
+            page.DeleteRuleButton.Click();
+            page.EditRuleButton.Click();
+            WaitUntil(x => !page.DeleteRuleButton.Enabled);
+            WaitUntil(x => !page.EditRuleButton.Enabled);
+            page.SaveChangesButton.Click();
+            WaitUntil(x => !page.SaveChangesButton.Enabled);
+
+            Driver.Navigate().Refresh();
+            WaitForText(page.HeaderElement, "Pinning Rules");
+
+            var topPins = this.GetTopBarPins();
+            var mainPins = this.GetMainPins();
+            var expectedTopPinsContent = new[] { "Pin 3", "Pin 4" };
+            var expectedMainPinsContent = new[] { "Pin 6", "Pin 7" };
+
+            Assert.AreEqual(2, topPins.Count);
+            Assert.AreEqual(2, mainPins.Count);
+            WaitUntil(x => topPins.All(p => expectedTopPinsContent.Contains(p.Text)));
+            WaitUntil(x => mainPins.All(p => expectedMainPinsContent.Contains(p.Text)));
+        }
+
+        /// <summary>
+        /// Load page in scope of long-running transaction, replace blending point, refresh and check that nothing was changed in blending
+        /// </summary>
+        [Test]
+        public void ChangePointInTransaction_ChangeAndRollback_RulesIsNotChanged()
+        {
+            var page = new AcceptanceHelperTwoPinningPage(Driver).Load();
+            WaitForText(page.HeaderElement, "Pinning Rules");
+
+            page.DeletePointButton.Click();
+            WaitUntil(x => !page.DeletePointButton.Enabled);
+            page.CancelChangesButton.Click();
+            WaitUntil(x => !page.CancelChangesButton.Enabled);
+
+            Driver.Navigate().Refresh();
+            WaitForText(page.HeaderElement, "Pinning Rules");
+
+            this.CheckCommonRulesSet();
+        }
+
+        /// <summary>
+        /// Load page in scope of long-running transaction, change blending point, commit, refresh and check that changes was applied in blending
+        /// </summary>
+        [Test]
+        public void ChangePointInTransaction_ChangeAndCommit_RulesIsChanged()
+        {
+            var page = new AcceptanceHelperTwoPinningPage(Driver).Load();
+            WaitForText(page.HeaderElement, "Pinning Rules");
+
+            page.DeletePointButton.Click();
+            WaitUntil(x => !page.DeletePointButton.Enabled);
+            page.SaveChangesButton.Click();
+            WaitUntil(x => !page.SaveChangesButton.Enabled);
+
+            Driver.Navigate().Refresh();
+            WaitForText(page.HeaderElement, "Pinning Rules");
+
+            var topPins = this.GetTopBarPins();
+            var mainPins = this.GetMainPins();
+            var expectedMainPinsContent = new[] { "Pin 6", "Pin 7" };
+
+            Assert.AreEqual(0, topPins.Count);
+            Assert.AreEqual(2, mainPins.Count);
+            WaitUntil(x => mainPins.All(p => expectedMainPinsContent.Contains(p.Text)));
+        }
+
+        private void CheckCommonRulesSet()
+        {
+            var topPins = this.GetTopBarPins();
+            var mainPins = this.GetMainPins();
+            var expectedTopPinsContent = new[] { "Pin 1", "Pin 2", "Pin 3" };
+            var expectedMainPinsContent = new[] { "Pin 6", "Pin 7" };
+
+            Assert.AreEqual(3, topPins.Count);
+            Assert.AreEqual(2, mainPins.Count);
             WaitUntil(x => topPins.All(p => expectedTopPinsContent.Contains(p.Text)));
             WaitUntil(x => mainPins.All(p => expectedMainPinsContent.Contains(p.Text)));
         }

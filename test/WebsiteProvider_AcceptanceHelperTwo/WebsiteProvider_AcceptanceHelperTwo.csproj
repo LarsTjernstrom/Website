@@ -79,6 +79,9 @@
     <Compile Include="ViewModels\MasterPage.json.cs">
       <DependentUpon>MasterPage.json</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\PinningPage.json.cs">
+      <DependentUpon>PinningPage.json</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\PinPage.json.cs">
       <DependentUpon>PinPage.json</DependentUpon>
     </Compile>
@@ -102,6 +105,9 @@
     <TypedJSON Include="ViewModels\MasterPage.json">
       <Generator>MsBuild:Compile</Generator>
     </TypedJSON>
+    <TypedJSON Include="ViewModels\PinningPage.json">
+      <Generator>MsBuild:Compile</Generator>
+    </TypedJSON>
     <None Include="wwwroot\WebsiteProvider_AcceptanceHelperTwo\AcceptanceHelperTwoPage.html" />
   </ItemGroup>
   <ItemGroup>
@@ -115,6 +121,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="wwwroot\WebsiteProvider_AcceptanceHelperTwo\PinPage.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="wwwroot\WebsiteProvider_AcceptanceHelperTwo\PinningPage.html" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(StarcounterBin)\Starcounter.MsBuild.targets" />

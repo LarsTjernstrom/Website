@@ -47,7 +47,7 @@ namespace WebsiteProvider
 
             if (webMap.Section == null)
             {
-                throw new InvalidOperationException("Section cannot be null!");
+                throw new Exception("Section cannot be null!");
             }
 
             string sectionUri = registeredSectionUri ?? webMap.Section.GetMappingUrl();

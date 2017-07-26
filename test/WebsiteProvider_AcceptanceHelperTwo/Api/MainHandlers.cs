@@ -34,6 +34,10 @@ namespace WebsiteProvider_AcceptanceHelperTwo
                 var markerText = "Pin " + i;
                 Handle.GET("/WebsiteProvider_AcceptanceHelperTwo/pin" + i, () => new PinPage { MarkerText = markerText });
             }
+
+            // Should be called "/WebsiteProvider_AcceptanceHelperOne/SetupPinningRulesMappingTests" first
+            Handle.GET("/WebsiteProvider_AcceptanceHelperTwo/pinning",
+                () => Db.Scope(() => this.GetMasterPageFromSession(PinningPage.Create())));
         }
 
         protected MasterPage GetMasterPageFromSession(Json content = null)
