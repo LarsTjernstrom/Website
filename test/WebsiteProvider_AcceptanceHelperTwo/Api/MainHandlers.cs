@@ -29,7 +29,7 @@ namespace WebsiteProvider_AcceptanceHelperTwo
             Handle.GET("/WebsiteProvider_AcceptanceHelperTwo/query?{?}",
                 (string query) => this.GetMasterPageFromSession(new QueryPage { QueryString = HttpUtility.UrlDecode(query) }));
 
-            for (int i = 1; i <= 7; i++)
+            for (int i = 1; i <= 9; i++)
             {
                 var markerText = "Pin " + i;
                 Handle.GET("/WebsiteProvider_AcceptanceHelperTwo/pin" + i, () => new PinPage { MarkerText = markerText });

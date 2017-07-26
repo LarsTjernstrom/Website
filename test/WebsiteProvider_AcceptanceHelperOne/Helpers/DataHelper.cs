@@ -158,8 +158,7 @@ namespace WebsiteProvider_AcceptanceHelperOne
             Db.Transact(() =>
             {
                 var defaultSurface = GenerateDefaultSurface();
-                var webUrl = Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE wu.Url = ? OR wu.Url IS NULL", string.Empty).First
-                             ?? new WebUrl
+                var webUrl = new WebUrl
                              {
                                  Template = defaultSurface,
                                  Url = string.Empty,
@@ -180,6 +179,21 @@ namespace WebsiteProvider_AcceptanceHelperOne
                     var webMap = new WebMap
                     {
                         Section = main,
+                        ForeignUrl = "/WebsiteProvider_AcceptanceHelperTwo/pin" + i
+                    };
+                }
+                webUrl = new WebUrl
+                {
+                    Template = defaultSurface,
+                    Url = "/WebsiteProvider_AcceptanceHelperTwo",
+                    IsFinal = true
+                };
+                for (int i = 8; i <= 9; i++)
+                {
+                    var webMap = new WebMap
+                    {
+                        Section = topBar,
+                        Url = webUrl,
                         ForeignUrl = "/WebsiteProvider_AcceptanceHelperTwo/pin" + i
                     };
                 }

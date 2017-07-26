@@ -51,6 +51,26 @@ namespace WebsiteProvider.Tests.Test
         }
 
         /// <summary>
+        /// Load page with additionaly for catching rule defined pinning rules content and check it.
+        /// </summary>
+        [Test]
+        public void RequestPage_PinningRulesDefinedForCatchingRule_ThePinningContentLoaded()
+        {
+            var page = new AcceptanceHelperTwoMasterPage(Driver).LoadMasterPage();
+            WaitForText(page.HeaderElement, "Acceptance Helper 2");
+
+            var topPins = this.GetTopBarPins();
+            var mainPins = this.GetMainPins();
+            var expectedTopPinsContent = new[] { "Pin 1", "Pin 2", "Pin 3", "Pin 8", "Pin 9" };
+            var expectedMainPinsContent = new[] { "Pin 6", "Pin 7" };
+
+            Assert.AreEqual(5, topPins.Count);
+            Assert.AreEqual(2, mainPins.Count);
+            WaitUntil(x => topPins.All(p => expectedTopPinsContent.Contains(p.Text)));
+            WaitUntil(x => mainPins.All(p => expectedMainPinsContent.Contains(p.Text)));
+        }
+
+        /// <summary>
         /// Delete one pinning rule, load page with another ones, check it and check that page does not contain the removed rule content.
         /// </summary>
         [Test]
