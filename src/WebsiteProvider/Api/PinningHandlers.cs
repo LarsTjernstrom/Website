@@ -11,7 +11,7 @@ namespace WebsiteProvider
         private static PinningHandlers instance;
         private bool isRegistered;
         private readonly object locker = new object();
-        private readonly List<WebsiteBlendingInfo> blendingInfos = new List<WebsiteBlendingInfo>();
+        private readonly List<PinningBlendingInfo> pinningInfos = new List<PinningBlendingInfo>();
 
         private PinningHandlers()
         {
@@ -29,19 +29,14 @@ namespace WebsiteProvider
 
             var webSections = Db.SQL<WebSection>("SELECT ws FROM Simplified.Ring6.WebSection ws");
 
-            foreach (WebSection section in webSections)
+            // TODO : optimize
+            foreach (WebMap webMap in webSections.SelectMany(x => x.Maps.OrderBy(m => m.SortNumber)))
             {
-                var sectionUri = section.GetMappingUrl();
-                this.RegisterEmptyHandler(sectionUri);
-
-                foreach (WebMap webMap in section.Maps.OrderBy(x => x.SortNumber))
-                {
-                    this.MapPinningRule(webMap, sectionUri);
-                }
+                this.MapPinningRule(webMap);
             }
         }
 
-        public void MapPinningRule(WebMap webMap, string registeredSectionUri = null)
+        public void MapPinningRule(WebMap webMap)
         {
             this.ValidateState(isExpectedRegistered: true);
 
@@ -50,44 +45,53 @@ namespace WebsiteProvider
                 throw new Exception("Section cannot be null!");
             }
 
-            string sectionUri = registeredSectionUri ?? webMap.Section.GetMappingUrl();
-
-            if (registeredSectionUri == null)
-            {
-                this.RegisterEmptyHandler(sectionUri);
-            }
-
             string token = webMap.GetMappingToken();
-            string mapUri = webMap.GetMappingUrl();
+            string callerUri = webMap.GetMappingUrl();
 
-            // map URI for empty Catch URI on the blending token
-            if (webMap.Url != null && !Blender.IsMapped(sectionUri, token))
+            var mapInfo = new PinningBlendingInfo
             {
-                Blender.MapUri(sectionUri, token);
+                MapId = webMap.GetObjectNo(),
+                SectionId = webMap.Section.GetObjectNo(),
+                TemplateId = webMap.Section.Template.GetObjectNo(),
+                HasUrl = !string.IsNullOrEmpty(webMap.Url?.Url),
+                Token = token,
+                CallerUri = callerUri,
+                ForeignUri = webMap.ForeignUrl
+            };
+
+            if (!Blender.IsMapped(callerUri, token))
+            {
+                this.RegisterEmptyHandler(callerUri);
+                Blender.MapUri(callerUri, token);
             }
 
-            // map URI for WebMap's Catch URI on the same blending token;
-            // this will be calling by WebsiteProvider
-            if (!Blender.IsMapped(mapUri, token))
+            if (mapInfo.HasUrl)
             {
-                this.RegisterEmptyHandler(mapUri);
-                Blender.MapUri(mapUri, token);
+                var emptyUrlMaps = this.GetPinningInfos(info => info.SectionId == mapInfo.SectionId && !info.HasUrl);
+                foreach (var info in emptyUrlMaps)
+                {
+                    if (!Blender.IsMapped(info.ForeignUri, token))
+                    {
+                        Blender.MapUri(info.ForeignUri, token);
+                    }
+                }
+            }
+            else
+            {
+                var notEmptyUrlMaps = this.GetPinningInfos(info => info.SectionId == mapInfo.SectionId && info.HasUrl);
+                foreach (var otherTokens in notEmptyUrlMaps.Select(x => x.Token).Distinct())
+                {
+                    if (!Blender.IsMapped(webMap.ForeignUrl, otherTokens))
+                    {
+                        Blender.MapUri(webMap.ForeignUrl, otherTokens);
+                    }
+                }
             }
 
             // map URI for WebMap's Pin URI on the same token
             Blender.MapUri(webMap.ForeignUrl, token);
 
-            this.AddBlendingInfo(new WebsiteBlendingInfo
-            {
-                MapId = webMap.GetObjectNo(),
-                SectionId = webMap.Section.GetObjectNo(),
-                TemplateId = webMap.Section.Template.GetObjectNo(),
-                HasUrl = webMap.Url != null,
-                Token = token,
-                EmptyHandlerUri = mapUri,
-                SectionHandlerUri = sectionUri,
-                ForeignUri = webMap.ForeignUrl
-            });
+            this.AddPinningInfo(mapInfo);
         }
 
         public void UpdatePinningRule(WebMap webMap)
@@ -101,111 +105,92 @@ namespace WebsiteProvider
         public void UnmapPinningRule(ulong mapId)
         {
             this.ValidateState(isExpectedRegistered: true);
-            this.UnmapPinningRule(this.TakeBlendingInfo(x => x.MapId == mapId));
+
+            var info = this.TakePinningInfo(x => x.MapId == mapId);
+            if (info == null)
+            {
+                return;     // if the Pinning Rule (WebMap) or the Blending Point (WebSection) or the Surface (WebTemplate) was deleted earlier
+            }
+
+            this.UnmapPinningRule(info);
         }
 
         public void UnmapBlendingPoint(ulong sectionId)
         {
             this.ValidateState(isExpectedRegistered: true);
-            this.UnmapBlendingPoint(this.TakeBlendingInfos(x => x.SectionId == sectionId));
+
+            var mapInfos = this.TakePinningInfos(x => x.SectionId == sectionId);
+            foreach (var info in mapInfos)
+            {
+                UnmapPinningRule(info);
+            }
         }
 
         public void UnmapSurface(ulong templateId)
         {
             this.ValidateState(isExpectedRegistered: true);
-            var infos = this.TakeBlendingInfos(x => x.TemplateId == templateId);
-            foreach (var infosBySection in infos.GroupBy(x => x.SectionId))
-            {
-                this.UnmapBlendingPoint(infosBySection.ToList());
-            }
-        }
 
-        private void UnmapPinningRule(WebsiteBlendingInfo info)
-        {
-            if (info == null || !IsSectionExists(info.SectionId) || !IsTemplateExists(info.TemplateId))
-            {
-                return;     // if the Pinning Rule (WebMap) or the Blending Point (WebSection) or the Surface (WebTemplate) was deleted earlier
-            }
-
-            Blender.UnmapUri(info.ForeignUri, info.Token);
-
-            if (info.HasUrl &&
-                Blender.ListByTokens()[info.Token].Count == 2)      // one URI for empty WebMap's handler and another one for empty WebSection's handler
-            {
-                Blender.UnmapUri(info.EmptyHandlerUri, info.Token);
-                Handle.UnregisterHttpHandler("GET", info.EmptyHandlerUri);
-                this.CompleteUnmapBlendingPoint(info);
-            }
-        }
-
-        private void UnmapBlendingPoint(List<WebsiteBlendingInfo> mapInfos)
-        {
-            var sectionInfo = mapInfos.FirstOrDefault();
-
-            if (sectionInfo == null || !IsTemplateExists(sectionInfo.TemplateId))
-            {
-                return;     // if the Blending Point (WebSection) or the Surface (WebTemplate) was deleted earlier
-            }
-
-            foreach (var info in mapInfos)
+            var infos = this.TakePinningInfos(x => x.TemplateId == templateId);
+            foreach (var info in infos.GroupBy(x => x.SectionId).SelectMany(x => x))
             {
                 UnmapPinningRule(info);
             }
-
-            this.CompleteUnmapBlendingPoint(sectionInfo);
         }
 
-        private void CompleteUnmapBlendingPoint(WebsiteBlendingInfo sectionInfo)
+        private void UnmapPinningRule(PinningBlendingInfo info)
         {
-            foreach (var blendingInfo in Blender.ListByUris()[sectionInfo.SectionHandlerUri])
+            var urlMappings = Blender.ListByUris()[info.ForeignUri];
+            foreach (var mapping in urlMappings)
             {
-                Blender.UnmapUri(blendingInfo.Uri, blendingInfo.Token);
+                Blender.UnmapUri(mapping.Uri, mapping.Token);
             }
-            if (Handle.IsHandlerRegistered("GET", sectionInfo.SectionHandlerUri))
+
+            urlMappings = Blender.ListByTokens()[info.Token];
+            if (urlMappings.Count == 1)
             {
-                Handle.UnregisterHttpHandler("GET", sectionInfo.SectionHandlerUri);
+                Blender.UnmapUri(info.CallerUri, info.Token);
+                Handle.UnregisterHttpHandler("GET", info.CallerUri);
             }
         }
 
-        private void AddBlendingInfo(WebsiteBlendingInfo info)
-        {
-            lock (locker)
-            {
-                this.blendingInfos.Add(info);
-            }
-        }
-
-        private WebsiteBlendingInfo TakeBlendingInfo(Func<WebsiteBlendingInfo, bool> predicate)
+        private void AddPinningInfo(PinningBlendingInfo info)
         {
             lock (locker)
             {
-                var item = this.blendingInfos.FirstOrDefault(predicate);
-                this.blendingInfos.Remove(item);
+                this.pinningInfos.Add(info);
+            }
+        }
+
+        private PinningBlendingInfo TakePinningInfo(Func<PinningBlendingInfo, bool> predicate)
+        {
+            lock (locker)
+            {
+                var item = this.pinningInfos.FirstOrDefault(predicate);
+                this.pinningInfos.Remove(item);
                 return item;
             }
         }
 
-        private List<WebsiteBlendingInfo> TakeBlendingInfos(Func<WebsiteBlendingInfo, bool> predicate)
+        private List<PinningBlendingInfo> TakePinningInfos(Func<PinningBlendingInfo, bool> predicate)
         {
             lock (locker)
             {
-                var items = this.blendingInfos.Where(predicate).ToList();
+                var items = this.pinningInfos.Where(predicate).ToList();
                 foreach (var info in items)
                 {
-                    this.blendingInfos.Remove(info);
+                    this.pinningInfos.Remove(info);
                 }
                 return items;
             }
         }
 
-        private bool IsTemplateExists(ulong templateId)
+        private List<PinningBlendingInfo> GetPinningInfos(Func<PinningBlendingInfo, bool> predicate)
         {
-            return Db.SQL<WebTemplate>("SELECT t FROM Simplified.Ring6.WebTemplate t WHERE t.ObjectNo = ?", templateId).Any();
-        }
-
-        private bool IsSectionExists(ulong sectionId)
-        {
-            return Db.SQL<WebSection>("SELECT s FROM Simplified.Ring6.WebSection s WHERE s.ObjectNo = ?", sectionId).Any();
+            lock (locker)
+            {
+                var items = this.pinningInfos.Where(predicate).ToList();
+                return items;
+            }
         }
 
         private void RegisterEmptyHandler(string uri)
@@ -228,7 +213,7 @@ namespace WebsiteProvider
             }
         }
 
-        private class WebsiteBlendingInfo
+        private class PinningBlendingInfo
         {
             public ulong MapId { get; set; }
             public ulong SectionId { get; set; }
@@ -236,8 +221,7 @@ namespace WebsiteProvider
 
             public bool HasUrl { get; set; }
 
-            public string EmptyHandlerUri { get; set; }
-            public string SectionHandlerUri { get; set; }
+            public string CallerUri { get; set; }
             public string ForeignUri { get; set; }
             public string Token { get; set; }
         }
