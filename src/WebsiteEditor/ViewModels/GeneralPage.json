@@ -12,11 +12,18 @@
     {
       "Key": "",
       "Name": "",
-      "FullName": "", 
+      "FullName": "",
       "Default$": false,
       "TemplateKey$": ""
     }
   ],
+  "SurfaceGroups": [
+    {
+      "Name": "",
+      "Key": ""
+    }
+  ],
+  "CurrentGroupKey$": "", 
   "DefaultBlendingPointKey$":"",
   "Delete$": 0,
   "Save$": 0,
