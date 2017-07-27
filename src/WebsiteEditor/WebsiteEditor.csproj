@@ -42,8 +42,15 @@
     <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Simplified.Data.Model, Version=1.0.0.0, Culture=neutral, processorArchitecture=AMD64">
       <Private>False</Private>
+    </Reference>
+    <Reference Include="Starcounter.Authorization, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Starcounter.Authorization.1.2.0\lib\net45\Starcounter.Authorization.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -68,10 +75,14 @@
     <Reference Include="System.Web.Extensions" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Api\Authorization\AuthorizedHandlers.cs" />
+    <Compile Include="Api\Authorization\PartialUrlAttribute.cs" />
+    <Compile Include="Api\Authorization\Permissions\RunTestPage.cs" />
     <Compile Include="Api\CommitHooks.cs" />
     <Compile Include="Api\MainHandlers.cs" />
     <Compile Include="Api\MappingHandlers.cs" />
     <Compile Include="Api\OntologyMap.cs" />
+    <Compile Include="Helpers\AuthHelper.cs" />
     <Compile Include="Helpers\DataHelper.cs" />
     <Compile Include="Helpers\IKnowSurfacePage.cs" />
     <Compile Include="Program.cs" />
@@ -103,6 +114,9 @@
     <Compile Include="ViewModels\MasterPage.json.cs">
       <DependentUpon>MasterPage.json</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\TestPage.json.cs">
+      <DependentUpon>TestPage.json</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="wwwroot\sys\" />
@@ -110,6 +124,8 @@
   <ItemGroup>
     <Content Include="wwwroot\WebsiteEditor\css\websiteeditor.css" />
     <Content Include="wwwroot\WebsiteEditor\css\holygrail.css" />
+    <None Include="packages.config" />
+    <None Include="wwwroot\WebsiteEditor\viewmodels\TestPage.html" />
     <TypedJSON Include="ViewModels\CmsHelp.json">
       <Generator>MsBuild:Compile</Generator>
     </TypedJSON>
@@ -123,6 +139,9 @@
       <Generator>MsBuild:Compile</Generator>
     </TypedJSON>
     <TypedJSON Include="ViewModels\ErrorPage.json">
+      <Generator>MsBuild:Compile</Generator>
+    </TypedJSON>
+    <TypedJSON Include="ViewModels\TestPage.json">
       <Generator>MsBuild:Compile</Generator>
     </TypedJSON>
     <None Include="wwwroot\WebsiteEditor\surfaces\SidebarSurface.html" />
