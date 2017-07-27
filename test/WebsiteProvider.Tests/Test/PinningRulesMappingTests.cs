@@ -47,7 +47,15 @@ namespace WebsiteProvider.Tests.Test
             var page = new AcceptanceHelperOneMasterPage(Driver).LoadSimplePage();
             WaitForText(page.HeaderElement, "Simple Page");
 
-            this.CheckCommonRulesSet();
+            var topPins = this.GetTopBarPins();
+            var mainPins = this.GetMainPins();
+            var expectedTopPinsContent = new[] { "Pin 1", "Pin 2", "Pin 3" };
+            var expectedMainPinsContent = new[] { "Pin 6", "Pin 7" };
+
+            Assert.AreEqual(3, topPins.Count);
+            Assert.AreEqual(2, mainPins.Count);
+            WaitUntil(x => topPins.All(p => expectedTopPinsContent.Contains(p.Text)));
+            WaitUntil(x => mainPins.All(p => expectedMainPinsContent.Contains(p.Text)));
         }
 
         /// <summary>
@@ -185,7 +193,15 @@ namespace WebsiteProvider.Tests.Test
             Driver.Navigate().Refresh();
             WaitForText(page.HeaderElement, "Pinning Rules");
 
-            this.CheckCommonRulesSet();
+            var topPins = this.GetTopBarPins();
+            var mainPins = this.GetMainPins();
+            var expectedTopPinsContent = new[] { "Pin 1", "Pin 2", "Pin 3", "Pin 10" };
+            var expectedMainPinsContent = new[] { "Pin 6", "Pin 7" };
+
+            Assert.AreEqual(4, topPins.Count);
+            Assert.AreEqual(2, mainPins.Count);
+            WaitUntil(x => topPins.All(p => expectedTopPinsContent.Contains(p.Text)));
+            WaitUntil(x => mainPins.All(p => expectedMainPinsContent.Contains(p.Text)));
         }
 
         /// <summary>
@@ -209,10 +225,10 @@ namespace WebsiteProvider.Tests.Test
 
             var topPins = this.GetTopBarPins();
             var mainPins = this.GetMainPins();
-            var expectedTopPinsContent = new[] { "Pin 3", "Pin 4" };
+            var expectedTopPinsContent = new[] { "Pin 3", "Pin 4", "Pin 10" };
             var expectedMainPinsContent = new[] { "Pin 6", "Pin 7" };
 
-            Assert.AreEqual(2, topPins.Count);
+            Assert.AreEqual(3, topPins.Count);
             Assert.AreEqual(2, mainPins.Count);
             WaitUntil(x => topPins.All(p => expectedTopPinsContent.Contains(p.Text)));
             WaitUntil(x => mainPins.All(p => expectedMainPinsContent.Contains(p.Text)));
@@ -235,7 +251,15 @@ namespace WebsiteProvider.Tests.Test
             Driver.Navigate().Refresh();
             WaitForText(page.HeaderElement, "Pinning Rules");
 
-            this.CheckCommonRulesSet();
+            var topPins = this.GetTopBarPins();
+            var mainPins = this.GetMainPins();
+            var expectedTopPinsContent = new[] { "Pin 1", "Pin 2", "Pin 3", "Pin 10" };
+            var expectedMainPinsContent = new[] { "Pin 6", "Pin 7" };
+
+            Assert.AreEqual(4, topPins.Count);
+            Assert.AreEqual(2, mainPins.Count);
+            WaitUntil(x => topPins.All(p => expectedTopPinsContent.Contains(p.Text)));
+            WaitUntil(x => mainPins.All(p => expectedMainPinsContent.Contains(p.Text)));
         }
 
         /// <summary>
@@ -261,19 +285,6 @@ namespace WebsiteProvider.Tests.Test
 
             Assert.AreEqual(0, topPins.Count);
             Assert.AreEqual(2, mainPins.Count);
-            WaitUntil(x => mainPins.All(p => expectedMainPinsContent.Contains(p.Text)));
-        }
-
-        private void CheckCommonRulesSet()
-        {
-            var topPins = this.GetTopBarPins();
-            var mainPins = this.GetMainPins();
-            var expectedTopPinsContent = new[] { "Pin 1", "Pin 2", "Pin 3" };
-            var expectedMainPinsContent = new[] { "Pin 6", "Pin 7" };
-
-            Assert.AreEqual(3, topPins.Count);
-            Assert.AreEqual(2, mainPins.Count);
-            WaitUntil(x => topPins.All(p => expectedTopPinsContent.Contains(p.Text)));
             WaitUntil(x => mainPins.All(p => expectedMainPinsContent.Contains(p.Text)));
         }
 

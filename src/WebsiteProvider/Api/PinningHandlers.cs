@@ -55,6 +55,7 @@ namespace WebsiteProvider
                 TemplateId = webMap.Section.Template.GetObjectNo(),
                 HasUrl = !string.IsNullOrEmpty(webMap.Url?.Url),
                 Token = token,
+                TokenBase = webMap.Section.GetMappingToken(),
                 CallerUri = callerUri,
                 ForeignUri = webMap.ForeignUrl
             };
@@ -88,7 +89,6 @@ namespace WebsiteProvider
                 }
             }
 
-            // map URI for WebMap's Pin URI on the same token
             Blender.MapUri(webMap.ForeignUrl, token);
 
             this.AddPinningInfo(mapInfo);
@@ -109,7 +109,7 @@ namespace WebsiteProvider
             var info = this.TakePinningInfo(x => x.MapId == mapId);
             if (info == null)
             {
-                return;     // if the Pinning Rule (WebMap) or the Blending Point (WebSection) or the Surface (WebTemplate) was deleted earlier
+                return;
             }
 
             this.UnmapPinningRule(info);
@@ -139,7 +139,9 @@ namespace WebsiteProvider
 
         private void UnmapPinningRule(PinningBlendingInfo info)
         {
-            var urlMappings = Blender.ListByUris()[info.ForeignUri];
+            var urlMappings = Blender.ListByUris()[info.ForeignUri]
+                .Where(x => x.Token.StartsWith(info.TokenBase))
+                .ToList();
             foreach (var mapping in urlMappings)
             {
                 Blender.UnmapUri(mapping.Uri, mapping.Token);
@@ -224,6 +226,7 @@ namespace WebsiteProvider
             public string CallerUri { get; set; }
             public string ForeignUri { get; set; }
             public string Token { get; set; }
+            public string TokenBase { get; set; }
         }
     }
 }

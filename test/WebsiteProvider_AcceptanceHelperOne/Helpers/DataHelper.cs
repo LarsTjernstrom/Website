@@ -197,6 +197,18 @@ namespace WebsiteProvider_AcceptanceHelperOne
                         ForeignUrl = "/WebsiteProvider_AcceptanceHelperTwo/pin" + i
                     };
                 }
+
+                new WebMap
+                {
+                    Section = topBar,
+                    Url = new WebUrl
+                    {
+                        Template = defaultSurface,
+                        Url = "/WebsiteProvider_AcceptanceHelperTwo/pinning",
+                        IsFinal = true
+                    },
+                    ForeignUrl = "/WebsiteProvider_AcceptanceHelperTwo/pin10"
+                };
             });
         }
 
