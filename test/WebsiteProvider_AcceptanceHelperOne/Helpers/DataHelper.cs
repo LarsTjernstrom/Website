@@ -29,7 +29,7 @@ namespace WebsiteProvider_AcceptanceHelperOne
                 var defaultSurface = GenerateDefaultSurface();
                 var holyGrailSurface = GenerateHolyGrailSurface();
 
-                var webUrl = Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE wu.Url = ? OR wu.Url IS NULL", string.Empty).First
+                var webUrl = Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE wu.Url = ? OR wu.Url IS NULL", string.Empty).FirstOrDefault()
                     ?? new WebUrl
                     {
                         Template = defaultSurface,
@@ -37,7 +37,7 @@ namespace WebsiteProvider_AcceptanceHelperOne
                         IsFinal = true
                     };
                 webUrl = Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE wu.Url = ?",
-                             "/WebsiteProvider_AcceptanceHelperOne/SimplePage").First ??
+                             "/WebsiteProvider_AcceptanceHelperOne/SimplePage").FirstOrDefault() ??
                          new WebUrl
                          {
                              Template = holyGrailSurface,
@@ -68,7 +68,7 @@ namespace WebsiteProvider_AcceptanceHelperOne
             if (createCatchAllRule)
             {
                 var defaultSurface = GenerateDefaultSurface();
-                var webUrl2 = Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE wu.Url = ? OR wu.Url IS NULL", string.Empty).First
+                var webUrl2 = Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE wu.Url = ? OR wu.Url IS NULL", string.Empty).FirstOrDefault()
                         ?? new WebUrl
                         {
                             Url = string.Empty,
@@ -89,7 +89,7 @@ namespace WebsiteProvider_AcceptanceHelperOne
 
             var holyGrailSurface = GenerateHolyGrailSurface();
             var webUrl = Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE wu.Url = ?",
-                             "/WebsiteProvider_AcceptanceHelperOne").First ??
+                             "/WebsiteProvider_AcceptanceHelperOne").FirstOrDefault() ??
                          new WebUrl
                          {
                              Url = "/WebsiteProvider_AcceptanceHelperOne",
@@ -104,7 +104,7 @@ namespace WebsiteProvider_AcceptanceHelperOne
             {
                 var holyGrailSurface = GenerateHolyGrailSurface();
                 var webUrl = Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE wu.Url = ?",
-                                 "/WebsiteProvider_AcceptanceHelperTwo/content/{?}").First ??
+                                 "/WebsiteProvider_AcceptanceHelperTwo/content/{?}").FirstOrDefault() ??
                              new WebUrl
                              {
                                  Url = "/WebsiteProvider_AcceptanceHelperTwo/content/{?}",
@@ -114,7 +114,7 @@ namespace WebsiteProvider_AcceptanceHelperOne
 
                 var defaultSurface = GenerateDefaultSurface();
                 webUrl = Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE wu.Url = ?",
-                                 "/WebsiteProvider_AcceptanceHelperTwo/query?{?}").First ??
+                                 "/WebsiteProvider_AcceptanceHelperTwo/query?{?}").FirstOrDefault() ??
                              new WebUrl
                              {
                                  Url = "/WebsiteProvider_AcceptanceHelperTwo/query?{?}",
@@ -161,7 +161,7 @@ namespace WebsiteProvider_AcceptanceHelperOne
                 var webUrl = new WebUrl
                              {
                                  Template = defaultSurface,
-                                 Url = string.Empty,
+                                 Url = null,
                                  IsFinal = true
                              };
                 var topBar = defaultSurface.Sections.First(x => x.Name == "TopBar");
@@ -254,7 +254,7 @@ namespace WebsiteProvider_AcceptanceHelperOne
             {
                 Db.SlowSQL("DELETE FROM Simplified.Ring6.WebTemplate");
                 var defaultSurface = this.GenerateDefaultSurface();
-                var webUrl = Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE wu.Url = ? OR wu.Url IS NULL", string.Empty).First
+                var webUrl = Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE wu.Url = ? OR wu.Url IS NULL", string.Empty).FirstOrDefault()
                              ?? new WebUrl
                              {
                                  Url = string.Empty,
@@ -264,7 +264,7 @@ namespace WebsiteProvider_AcceptanceHelperOne
             });
         }
 
-        public bool ChangeWebMapSection(string pinningRuleId)
+        public bool ChangeWebMapUrl(string pinningRuleId)
         {
             bool isEdited = false;
             Db.Transact(() =>
@@ -272,9 +272,9 @@ namespace WebsiteProvider_AcceptanceHelperOne
                 var webMap = Db.SQL<WebMap>("SELECT m FROM Simplified.Ring6.WebMap m WHERE m.ForeignUrl = ?", "/WebsiteProvider_AcceptanceHelperTwo/pin" + pinningRuleId).FirstOrDefault();
                 if (webMap != null)
                 {
-                    webMap.Section = webMap.Section.Name == "Main"
-                        ? Db.SQL<WebSection>("SELECT s FROM Simplified.Ring6.WebSection s WHERE s.Name = ?", "TopBar").First()
-                        : Db.SQL<WebSection>("SELECT s FROM Simplified.Ring6.WebSection s WHERE s.Name = ?", "Main").First();
+                    webMap.Url = string.IsNullOrEmpty(webMap.Url?.Url)
+                        ? Db.SQL<WebUrl>("SELECT u FROM Simplified.Ring6.WebUrl u WHERE u.Url = ?", "/WebsiteProvider_AcceptanceHelperTwo").First()
+                        : Db.SQL<WebUrl>("SELECT u FROM Simplified.Ring6.WebUrl u WHERE u.Url IS NULL OR u.Url = ?", string.Empty).First();
                     isEdited = true;
                 }
             });
@@ -283,7 +283,7 @@ namespace WebsiteProvider_AcceptanceHelperOne
 
         protected WebTemplate GenerateDefaultSurface()
         {
-            var surface = Db.SQL<WebTemplate>("SELECT wt FROM Simplified.Ring6.WebTemplate wt WHERE wt.Name = ?", DefaultSurfaceName).First;
+            var surface = Db.SQL<WebTemplate>("SELECT wt FROM Simplified.Ring6.WebTemplate wt WHERE wt.Name = ?", DefaultSurfaceName).FirstOrDefault();
 
             if (surface != null) return surface;
 
@@ -311,7 +311,7 @@ namespace WebsiteProvider_AcceptanceHelperOne
 
         protected WebTemplate GenerateHolyGrailSurface()
         {
-            var surface = Db.SQL<WebTemplate>("SELECT wt FROM Simplified.Ring6.WebTemplate wt WHERE wt.Name = ?", HolyGrailSurfaceName).First;
+            var surface = Db.SQL<WebTemplate>("SELECT wt FROM Simplified.Ring6.WebTemplate wt WHERE wt.Name = ?", HolyGrailSurfaceName).FirstOrDefault();
 
             if (surface != null) return surface;
 

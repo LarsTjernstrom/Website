@@ -134,19 +134,36 @@ namespace WebsiteProvider.Tests.Test
         public void RequestPage_PinningRuleUrlEdited_TheEditedRuleContenLoadedChanged()
         {
             Driver.Navigate().GoToUrl(Config.AcceptanceHelperOneUrl + "/pin/2/edit/5");
-            Driver.Navigate().GoToUrl(Config.AcceptanceHelperOneUrl + "/pin/7/change-section");
-            var page = new AcceptanceHelperOneMasterPage(Driver).LoadSimplePage();
-            WaitForText(page.HeaderElement, "Simple Page");
+            Driver.Navigate().GoToUrl(Config.AcceptanceHelperOneUrl + "/pin/7/change-url");
+            Driver.Navigate().GoToUrl(Config.AcceptanceHelperOneUrl + "/pin/9/change-url");
+
+            // check with catch-all rule
+            var pageOne = new AcceptanceHelperOneMasterPage(Driver).LoadSimplePage();
+            WaitForText(pageOne.HeaderElement, "Simple Page");
 
             var topPins = this.GetTopBarPins();
             var mainPins = this.GetMainPins();
-            var expectedTopPinsContent = new[] { "Pin 1", "Pin 5", "Pin 3", "Pin 7" };
+            var expectedTopPinsContent = new[] { "Pin 1", "Pin 5", "Pin 3", "Pin 9" };
             var expectedMainPinsContent = new[] { "Pin 6" };
 
             Assert.AreEqual(4, topPins.Count);
             Assert.AreEqual(1, mainPins.Count);
             WaitUntil(x => topPins.All(p => expectedTopPinsContent.Contains(p.Text)));
             WaitUntil(x => mainPins.All(p => expectedMainPinsContent.Contains(p.Text)));
+
+            // check with custom catching rule
+            var page = new AcceptanceHelperTwoMasterPage(Driver).LoadMasterPage();
+            WaitForText(page.HeaderElement, "Acceptance Helper 2");
+
+            var topPins2 = this.GetTopBarPins();
+            var mainPins2 = this.GetMainPins();
+            var expectedTopPinsContent2 = new[] { "Pin 1", "Pin 5", "Pin 3", "Pin 8", "Pin 9" };
+            var expectedMainPinsContent2 = new[] { "Pin 6", "Pin 7" };
+
+            Assert.AreEqual(5, topPins2.Count);
+            Assert.AreEqual(2, mainPins2.Count);
+            WaitUntil(x => topPins2.All(p => expectedTopPinsContent2.Contains(p.Text)));
+            WaitUntil(x => mainPins2.All(p => expectedMainPinsContent2.Contains(p.Text)));
         }
 
         /// <summary>

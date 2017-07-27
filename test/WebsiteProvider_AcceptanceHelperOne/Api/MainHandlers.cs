@@ -97,9 +97,9 @@ namespace WebsiteProvider_AcceptanceHelperOne
                 }
             });
 
-            Handle.GET("/WebsiteProvider_AcceptanceHelperOne/pin/{?}/change-section", (string pinId) =>
+            Handle.GET("/WebsiteProvider_AcceptanceHelperOne/pin/{?}/change-url", (string pinId) =>
             {
-                if (this.DataHelper.ChangeWebMapSection(pinId))
+                if (this.DataHelper.ChangeWebMapUrl(pinId))
                 {
                     Handle.SetOutgoingStatusCode(200);
                     return "Pinning rule edited";
