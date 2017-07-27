@@ -209,6 +209,12 @@ namespace WebsiteProvider_AcceptanceHelperOne
                     },
                     ForeignUrl = "/WebsiteProvider_AcceptanceHelperTwo/pin10"
                 };
+                new WebUrl
+                {
+                    Template = defaultSurface,
+                    Url = "/WebsiteProvider_AcceptanceHelperTwo/content/{?}",
+                    IsFinal = true
+                };
             });
         }
 
