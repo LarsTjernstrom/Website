@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 
-namespace WebsiteProvider
+namespace WebsiteProvider.Helpers
 {
     public class Storage<T>
     {

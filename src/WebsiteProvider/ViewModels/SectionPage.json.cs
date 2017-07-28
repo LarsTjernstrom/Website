@@ -1,6 +1,6 @@
 using Starcounter;
 
-namespace WebsiteProvider
+namespace WebsiteProvider.ViewModels
 {
     partial class SectionPage : Json
     {

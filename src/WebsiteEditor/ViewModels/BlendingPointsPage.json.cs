@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Starcounter;
 using Simplified.Ring6;
+using Starcounter;
+using WebsiteEditor.Helpers;
 
-namespace WebsiteEditor
+namespace WebsiteEditor.ViewModels
 {
     partial class BlendingPointsPage : Json, IKnowSurfacePage
     {

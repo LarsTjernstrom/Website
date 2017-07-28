@@ -1,4 +1,6 @@
-﻿namespace WebsiteProvider
+﻿using WebsiteProvider.Api;
+
+namespace WebsiteProvider
 {
     class Program
     {

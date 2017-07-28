@@ -1,7 +1,7 @@
 using Simplified.Ring6;
 using Starcounter;
 
-namespace WebsiteEditor
+namespace WebsiteEditor.ViewModels
 {
     partial class SurfaceGroupsPage : Json
     {

@@ -1,7 +1,7 @@
 using Simplified.Ring6;
 using Starcounter;
 
-namespace WebsiteProvider
+namespace WebsiteProvider.ViewModels
 {
     partial class SurfacePage : Json, IBound<WebTemplate>
     {
