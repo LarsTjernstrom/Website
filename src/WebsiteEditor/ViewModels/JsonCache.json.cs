@@ -1,6 +1,6 @@
 using Starcounter;
 
-namespace WebsiteEditor {
+namespace WebsiteEditor.ViewModels {
     partial class JsonCache : Json {
     }
 }

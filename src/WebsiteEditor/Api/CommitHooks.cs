@@ -1,7 +1,8 @@
-﻿using Starcounter;
-using Simplified.Ring5;
+﻿using Simplified.Ring5;
+using Starcounter;
+using WebsiteEditor.ViewModels;
 
-namespace WebsiteEditor
+namespace WebsiteEditor.Api
 {
     internal class CommitHooks
     {
@@ -20,7 +21,7 @@ namespace WebsiteEditor
 
         protected void RefreshSignInState()
         {
-            if (Session.Current == null) 
+            if (Session.Current == null)
             {
                 return;
             }

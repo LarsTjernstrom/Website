@@ -1,4 +1,4 @@
-﻿namespace WebsiteEditor
+﻿namespace WebsiteEditor.Helpers
 {
     public interface IKnowSurfacePage
     {

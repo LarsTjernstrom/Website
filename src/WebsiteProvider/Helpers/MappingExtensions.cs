@@ -1,6 +1,6 @@
 ﻿using Simplified.Ring6;
 
-namespace WebsiteProvider
+namespace WebsiteProvider.Helpers
 {
     public static class MappingExtensions
     {

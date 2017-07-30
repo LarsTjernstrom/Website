@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Simplified.Ring6;
 using Starcounter;
+using WebsiteProvider.Helpers;
 
-namespace WebsiteProvider
+namespace WebsiteProvider.Api
 {
     public class MappingHandlers
     {
@@ -123,7 +124,7 @@ namespace WebsiteProvider
         private static string GetOldUri(WebMap webMap)
         {
             var token = webMap.GetMappingToken();
-            var currentMappingUrls = new List<string> {webMap.Section.GetMappingUrl()};
+            var currentMappingUrls = new List<string> { webMap.Section.GetMappingUrl() };
 
             foreach (WebMap map in webMap.Section.Maps)
             {
