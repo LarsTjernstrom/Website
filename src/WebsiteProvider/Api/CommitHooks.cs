@@ -2,7 +2,7 @@
 using Simplified.Ring6;
 using Starcounter;
 
-namespace WebsiteProvider
+namespace WebsiteProvider.Api
 {
     internal class CommitHooks
     {

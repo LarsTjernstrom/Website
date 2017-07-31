@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Simplified.Ring6;
 using Starcounter;
+using WebsiteProvider.Helpers;
 
-namespace WebsiteProvider
+namespace WebsiteProvider.Api
 {
     /// <summary>
     /// Do mapping/unmapping of the Pinning Rules

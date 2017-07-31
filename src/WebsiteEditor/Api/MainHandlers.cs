@@ -2,8 +2,10 @@
 using System.Linq;
 using Simplified.Ring6;
 using Starcounter;
+using WebsiteEditor.Helpers;
+using WebsiteEditor.ViewModels;
 
-namespace WebsiteEditor
+namespace WebsiteEditor.Api
 {
     public class MainHandlers
     {

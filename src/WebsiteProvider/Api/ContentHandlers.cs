@@ -5,8 +5,10 @@ using System.Text.RegularExpressions;
 using Simplified.Ring6;
 using Starcounter;
 using Starcounter.Advanced.XSON;
+using WebsiteProvider.Helpers;
+using WebsiteProvider.ViewModels;
 
-namespace WebsiteProvider
+namespace WebsiteProvider.Api
 {
     public class ContentHandlers
     {

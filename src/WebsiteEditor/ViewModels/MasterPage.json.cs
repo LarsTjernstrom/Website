@@ -1,7 +1,8 @@
-using Starcounter;
 using Simplified.Ring3;
+using Starcounter;
+using WebsiteEditor.Helpers;
 
-namespace WebsiteEditor
+namespace WebsiteEditor.ViewModels
 {
     partial class MasterPage : Json
     {
