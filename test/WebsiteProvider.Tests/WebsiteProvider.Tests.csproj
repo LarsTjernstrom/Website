@@ -54,7 +54,9 @@
     <Compile Include="Test\CatchingRuleHeadersTests.cs" />
     <Compile Include="Test\CatchingRuleWildcardTests.cs" />
     <Compile Include="Test\PageLoadTests.cs" />
+    <Compile Include="Test\PinningRulesMappingTests.cs" />
     <Compile Include="Ui\AcceptanceHelperOneSimplePage.cs" />
+    <Compile Include="Ui\AcceptanceHelperTwoPinningPage.cs" />
     <Compile Include="Ui\AcceptanceHelperTwoQueryPage.cs" />
     <Compile Include="Ui\AcceptanceHelperTwoContentPage.cs" />
     <Compile Include="Ui\AcceptanceHelperTwoMasterPage.cs" />

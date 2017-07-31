@@ -6,13 +6,13 @@ namespace WebsiteProvider
     {
         static void Main()
         {
-            var mapping = new MappingHandlers();
-            var content = new ContentHandlers();
-            var hooks = new CommitHooks(mapping);
+            var pinningHandlers = PinningHandlers.GetInstance();
+            var contentHandlers = new ContentHandlers();
+            var commitHooks = new CommitHooks(pinningHandlers);
 
-            mapping.Register();
-            content.Register();
-            hooks.Register();
+            pinningHandlers.Register();
+            contentHandlers.Register();
+            commitHooks.Register();
         }
     }
 }
