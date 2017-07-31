@@ -92,7 +92,7 @@ namespace WebsiteProvider.Api
             if (!Blender.IsMapped(callerUri, token))
             {
                 this.RegisterEmptyHandler(callerUri);
-                Blender.MapUri(callerUri, token);
+                Blender.MapUri(callerUri, token, true, false);
             }
 
             if (mapInfo.UseCustomCatchingRule)
@@ -104,7 +104,7 @@ namespace WebsiteProvider.Api
                 {
                     if (!Blender.IsMapped(info.ForeignUri, token))
                     {
-                        Blender.MapUri(info.ForeignUri, token);
+                        Blender.MapUri(info.ForeignUri, token, false, true);
                     }
                 }
             }
@@ -117,13 +117,13 @@ namespace WebsiteProvider.Api
                 {
                     if (!Blender.IsMapped(webMap.ForeignUrl, otherTokens))
                     {
-                        Blender.MapUri(webMap.ForeignUrl, otherTokens);
+                        Blender.MapUri(webMap.ForeignUrl, otherTokens, false, true);
                     }
                 }
             }
 
             // now do map current Pinning Rule's URI to the current token and save mapping info
-            Blender.MapUri(webMap.ForeignUrl, token);
+            Blender.MapUri(webMap.ForeignUrl, token, false, true);
 
             this.AddMappingInfo(mapInfo);
         }
