@@ -24,35 +24,55 @@
             <template is="dom-repeat" items="{{model.CatchingRules}}" as="catchingRule">
                 <paper-collapse-item>
                     <div slot="header" class="website-catching-rules-table-header">
-                        <div class="website-catching-rules-table-header-uri">
+                        <template is="dom-if" if="{{catchingRule.Url$}}"> <!-- jak pusty to false -->
+                            <label for="websiteCatchingRulesHeaderUri" class="website-catching-rules-table-header-uri__label">URI: {{catchingRule.Url$}}</label>
+                        </template>
+                        <template is="dom-if" if="{{!catchingRule.Url$}}">
+                            <label for="websiteCatchingRulesHeaderUri" class="website-catching-rules-table-header-uri__label">URI: Any URI</label>
+                        </template>
+                        <template is="dom-if" if="{{!catchingRule.Headers.length}}"> <!-- jak pusty to false -->
+                            Headers placeholder
+                        </template>
+                        <!--<div class="website-catching-rules-table-header-uri">
                             <label for="websiteCatchingRulesHeaderUri" class="website-catching-rules-table-header-uri__label">Catch URI: </label>
-                            <input type="text" id="websiteCatchingRulesHeaderUri" value="{{catchingRule.Url$::change}}" class="website-catching-rules-table-header-uri__uri" on-tap="tappedOnInput" />
-                        </div>
-                        <div class="website-catching-rules-table-header-headers-summary">Catch headers: {{catchingRule.Headers.length}}</div>
-                        <label>Final <input type="checkbox" checked="{{catchingRule.IsFinal$::change}}" on-tap="tappedOnInput" /></label>
-                        <div class="website-catching-rules-table-header-delete">
-                            <button type="button" class="btn btn-xs btn-default" value="{{catchingRule.DeleteTrigger$::click}}" onmousedown="++this.value;">
-                                Delete
-                            </button>
+                            <input type="text" id="websiteCatchingRulesHeaderUri" value="{{catchingRule.Url$::change}}" class="website-catching-rules-table-header-uri__uri" on-tap="tappedOnInput"/>
+                        </div>-->
+                        <!--<div class="website-catching-rules-table-header-headers-summary">Catch headers: {{catchingRule.Headers.length}}</div>-->
+                        <template is="dom-if" if="{{catchingRule.IsFinal$}}">
+                            <label class="website-catching-rules-table-header-uri__label">Nestable</label>
+                        </template>
+                        <!--<label>Final <input type="checkbox" checked="{{catchingRule.IsFinal$::change}}" on-tap="tappedOnInput"/></label>-->
+                    </div>
+                    <div class="website-catching-rules-catch-uri-section">
+                        <label for="websiteCatchingRuleUri">Catch URI: </label>
+                        <input type="text" id="websiteCatchingRuleUri" value="{{catchingRule.Url$::change}}" class="website-catching-rules-table-header-uri__uri" on-tap="tappedOnInput"/>
+                    </div>
+                    <div>
+                        <label for="websiteCatchingRuleNestable">Final</label>
+                        <input type="checkbox" id="websiteCatchingRuleNestable" checked="{{catchingRule.IsFinal$::change}}" on-tap="tappedOnInput"/>
+                        <div class="website-catching-rules-final-note">
+                            If a rule is nestable, other surfaces will be matched against this surface's View URI. It results in this surface being pinned in the default blending point of another surface that catches it.<br/>
+                            <b>Note:</b> currently only rules with specified URI are nestable.
                         </div>
                     </div>
                     <div>
-                        <table class="website-table table">
-                            <thead>
+                        <template is="dom-if" if="{{catchingRule.Headers.length}}">
+                            <table class="website-table table">
+                                <thead>
                                 <tr>
                                     <th>Header key</th>
                                     <th>Header value</th>
                                     <th class="website-table__cell-actions"></th>
                                 </tr>
-                            </thead>
-                            <tbody>
+                                </thead>
+                                <tbody>
                                 <template is="dom-repeat" items="{{catchingRule.Headers}}" as="catchHeader">
                                     <tr>
                                         <td>
-                                            <input type="text" value="{{catchHeader.Name$::change}}" />
+                                            <input type="text" value="{{catchHeader.Name$::change}}"/>
                                         </td>
                                         <td>
-                                            <input type="text" value="{{catchHeader.Value$::change}}" />
+                                            <input type="text" value="{{catchHeader.Value$::change}}"/>
                                         </td>
                                         <td>
                                             <button type="button" class="btn btn-xs btn-danger" value="{{catchHeader.DeleteTrigger$::click}}" onmousedown="++this.value;" title="Remove catch header">
@@ -61,13 +81,21 @@
                                         </td>
                                     </tr>
                                 </template>
-                            </tbody>
-                        </table>
+                                </tbody>
+                            </table>
+                        </template>
                     </div>
-                    <div class="website-catching-rules-table-add-header">
-                        <button type="button" class="btn btn-xs btn-success" value="{{catchingRule.AddHeaderTrigger$::click}}" onmousedown="++this.value;" title="Add new catch header">
-                            Add
-                        </button>
+                    <div class="website-catching-rules-buttons">
+                        <div class="website-catching-rules-buttons__add">
+                            <button type="button" class="btn btn-xs btn-success" value="{{catchingRule.AddHeaderTrigger$::click}}" onmousedown="++this.value;" title="Add new catch header">
+                                New header rule
+                            </button>
+                        </div>
+                        <div class="website-catching-rules-buttons__delete">
+                            <button type="button" class="btn btn-xs btn-danger" value="{{catchingRule.DeleteTrigger$::click}}" onmousedown="++this.value;" title="Delete this catching rule">
+                                Delete catching rule
+                            </button>
+                        </div>
                     </div>
                 </paper-collapse-item>
             </template>
