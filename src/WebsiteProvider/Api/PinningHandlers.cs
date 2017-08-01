@@ -98,32 +98,44 @@ namespace WebsiteProvider.Api
             if (mapInfo.UseCustomCatchingRule)
             {
                 // get info of already mapped Pinning Rules defined with empty Catching Rule and for the same Blending Point
-                var emptyCatchingRuleMappings = this.GetMappingInfos(info => info.SectionId == mapInfo.SectionId && !info.UseCustomCatchingRule);
-                // and map its URIs to the current token, so these Pinning Rules will be blended with the current one when the catching rule is applicable
-                foreach (var info in emptyCatchingRuleMappings)
-                {
-                    if (!Blender.IsMapped(info.ForeignUri, token))
+                this.ProcessMappingInfos(
+                    info => info.SectionId == mapInfo.SectionId && !info.UseCustomCatchingRule,
+                    emptyCatchingRuleMappings =>
                     {
-                        Blender.MapUri(info.ForeignUri, token, false, true);
-                    }
-                }
+                        // and map its URIs to the current token, so these Pinning Rules will be blended with the current one when the catching rule is applicable
+                        foreach (var info in emptyCatchingRuleMappings)
+                        {
+                            if (!Blender.IsMapped(info.ForeignUri, token))
+                            {
+                                Blender.MapUri(info.ForeignUri, token, false, true);
+                            }
+                        }
+                    });
             }
             else
             {
                 // get info of already mapped Pinning Rules with defined Catching Rule and for the same Blending Point
-                var customCatchingRuleMappings = this.GetMappingInfos(info => info.SectionId == mapInfo.SectionId && info.UseCustomCatchingRule);
-                // and map current URI to its tokens, so current Pinning Rule will be blended with these ones when its catching rules are applicable
-                foreach (var otherTokens in customCatchingRuleMappings.Select(x => x.Token).Distinct())
-                {
-                    if (!Blender.IsMapped(webMap.ForeignUrl, otherTokens))
+                this.ProcessMappingInfos(
+                    info => info.SectionId == mapInfo.SectionId && info.UseCustomCatchingRule,
+                    customCatchingRuleMappings =>
                     {
-                        Blender.MapUri(webMap.ForeignUrl, otherTokens, false, true);
-                    }
-                }
+                        // and map current URI to its tokens, so current Pinning Rule will be blended with these ones when its catching rules are applicable
+                        foreach (var otherTokens in customCatchingRuleMappings.Select(x => x.Token).Distinct())
+                        {
+                            if (!Blender.IsMapped(webMap.ForeignUrl, otherTokens))
+                            {
+                                Blender.MapUri(webMap.ForeignUrl, otherTokens, false, true);
+                            }
+                        }
+                    });
             }
 
-            // now do map current Pinning Rule's URI to the current token and save mapping info
-            Blender.MapUri(webMap.ForeignUrl, token, false, true);
+            // now do map current Pinning Rule's URI to the current token and save mapping info.
+            // this pair URI-token can be already mapped in case when TODO
+            if (!Blender.IsMapped(webMap.ForeignUrl, token))
+            {
+                Blender.MapUri(webMap.ForeignUrl, token, false, true);
+            }
 
             this.AddMappingInfo(mapInfo);
         }
@@ -237,12 +249,12 @@ namespace WebsiteProvider.Api
             }
         }
 
-        private List<PinningRuleMappingInfo> GetMappingInfos(Func<PinningRuleMappingInfo, bool> predicate)
+        private void ProcessMappingInfos(Func<PinningRuleMappingInfo, bool> predicate, Action<List<PinningRuleMappingInfo>> action)
         {
             lock (locker)
             {
                 var items = this.mappingInfos.Where(predicate).ToList();
-                return items;
+                action(items);
             }
         }
 
