@@ -14,7 +14,7 @@ namespace WebsiteProvider.Api
     {
         private static PinningHandlers instance;
         private bool isRegistered;
-        private PinningRulesMappingCollection mappings = new PinningRulesMappingCollection();
+        private readonly PinningRulesMappingCollection mappings = new PinningRulesMappingCollection();
 
         private PinningHandlers()
         {
@@ -80,7 +80,7 @@ namespace WebsiteProvider.Api
                 // some pinning rules was changed for the same blending point with the same catching rule.
                 // such state is temporary because WebsiteEditor should not allow to save pinning rules,
                 // i.e. next changed/added pinning rule's commit hook will execute unmapping of this URI-token pair.
-                this.mappings.ProcessMappingInfos(
+                this.mappings.Process(
                     info => info.ForeignUri == webMap.ForeignUrl && info.Token == token,
                     list =>
                     {
@@ -117,7 +117,7 @@ namespace WebsiteProvider.Api
             if (mapInfo.UseCustomCatchingRule)
             {
                 // get info of already mapped Pinning Rules defined with empty Catching Rule and for the same Blending Point
-                this.mappings.ProcessMappingInfos(
+                this.mappings.Process(
                     info => info.SectionId == mapInfo.SectionId && !info.UseCustomCatchingRule,
                     emptyCatchingRuleMappings =>
                     {
@@ -134,7 +134,7 @@ namespace WebsiteProvider.Api
             else
             {
                 // get info of already mapped Pinning Rules with defined Catching Rule and for the same Blending Point
-                this.mappings.ProcessMappingInfos(
+                this.mappings.Process(
                     info => info.SectionId == mapInfo.SectionId && info.UseCustomCatchingRule,
                     customCatchingRuleMappings =>
                     {
@@ -152,7 +152,7 @@ namespace WebsiteProvider.Api
             // now do map current Pinning Rule's URI to the current token and save mapping info.
             Blender.MapUri(webMap.ForeignUrl, token, false, true);
 
-            this.mappings.AddMappingInfo(mapInfo);
+            this.mappings.Add(mapInfo);
         }
 
         /// <summary>
@@ -174,7 +174,7 @@ namespace WebsiteProvider.Api
         {
             this.ValidateState(isExpectedRegistered: true);
 
-            var info = this.mappings.TakeMappingInfos(x => x.MapIds.Contains(mapId)).FirstOrDefault();
+            var info = this.mappings.Take(x => x.MapIds.Contains(mapId)).FirstOrDefault();
             if (info == null)
             {
                 return;
@@ -191,7 +191,7 @@ namespace WebsiteProvider.Api
         {
             this.ValidateState(isExpectedRegistered: true);
 
-            var mapInfos = this.mappings.TakeMappingInfos(x => x.SectionId == sectionId);
+            var mapInfos = this.mappings.Take(x => x.SectionId == sectionId);
             foreach (var info in mapInfos)
             {
                 UnmapPinningRule(info);
@@ -206,7 +206,7 @@ namespace WebsiteProvider.Api
         {
             this.ValidateState(isExpectedRegistered: true);
 
-            var infos = this.mappings.TakeMappingInfos(x => x.TemplateId == templateId);
+            var infos = this.mappings.Take(x => x.TemplateId == templateId);
             foreach (var info in infos.GroupBy(x => x.SectionId).SelectMany(x => x))
             {
                 UnmapPinningRule(info);
@@ -286,7 +286,7 @@ namespace WebsiteProvider.Api
             private readonly object locker = new object();
             private readonly List<PinningRuleMappingInfo> mappingInfos = new List<PinningRuleMappingInfo>();
 
-            public void AddMappingInfo(PinningRuleMappingInfo info)
+            public void Add(PinningRuleMappingInfo info)
             {
                 lock (locker)
                 {
@@ -294,7 +294,7 @@ namespace WebsiteProvider.Api
                 }
             }
 
-            public List<PinningRuleMappingInfo> TakeMappingInfos(Func<PinningRuleMappingInfo, bool> predicate)
+            public List<PinningRuleMappingInfo> Take(Func<PinningRuleMappingInfo, bool> predicate)
             {
                 lock (locker)
                 {
@@ -310,7 +310,7 @@ namespace WebsiteProvider.Api
                 }
             }
 
-            public void ProcessMappingInfos(Func<PinningRuleMappingInfo, bool> predicate, Action<List<PinningRuleMappingInfo>> action)
+            public void Process(Func<PinningRuleMappingInfo, bool> predicate, Action<List<PinningRuleMappingInfo>> action)
             {
                 lock (locker)
                 {
