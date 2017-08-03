@@ -67,7 +67,7 @@ namespace WebsiteProvider.Tests.Ui
 
         protected bool CheckForSurface(string searchingClassName)
         {
-            var shadowRoot = ExpandShadowRoot(Driver.FindElement(By.CssSelector("starcounter-include juicy-composition"))); //finds root starcounter-include
+            var shadowRoot = ExpandShadowRoot(Driver.FindElement(By.CssSelector("starcounter-include"))); //finds root starcounter-include
             return shadowRoot.FindElements(By.ClassName(searchingClassName)).Any();
         }
     }

@@ -3,16 +3,16 @@
         body {
             margin: 0;
         }
-        .website-defaultsurface-topbar > juicy-composition,
-        .website-defaultsurface-topbar > juicy-composition > starcounter-include > juicy-composition {
+        .website-defaultsurface-topbar,
+        .website-defaultsurface-topbar > starcounter-include {
             display: flex;
             align-items: center;
             justify-content: flex-end;
         }
         /* For ones with CSS Grid us it with 5px gutter */
         @supports( (display: grid) and (grid-column-gap: 5px) ) {
-            .website-defaultsurface-topbar > juicy-composition,
-            .website-defaultsurface-topbar > juicy-composition > starcounter-include > juicy-composition {
+            .website-defaultsurface-topbar,
+            .website-defaultsurface-topbar > starcounter-include {
                 display: grid;
                 align-items: center;
                 grid-column-gap: 5px;
@@ -22,14 +22,14 @@
         }
         /* For browsers w/o Grid break SD boundary and add gutter as margin */
         @supports( not ((display: grid) and (grid-column-gap: 5px)) ) {
-            .website-defaultsurface-topbar > juicy-composition > *,
-            .website-defaultsurface-topbar > juicy-composition > starcounter-include > juicy-composition > *,
+            .website-defaultsurface-topbar > *,
+            .website-defaultsurface-topbar > starcounter-include > *,
             /*
              Shadow DOM v1 in-compatible Shadow DOM piercing selector
              styling such things may break default compositions delivered by apps
             */
-            .website-defaultsurface-topbar > juicy-composition::shadow>*,
-            .website-defaultsurface-topbar > juicy-composition > starcounter-include > juicy-composition::shadow>* {
+            .website-defaultsurface-topbar::shadow>*,
+            .website-defaultsurface-topbar > starcounter-include::shadow>* {
                 margin-right: 5px;
             }
         }
