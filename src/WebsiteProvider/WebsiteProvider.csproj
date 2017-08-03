@@ -71,17 +71,9 @@
     <Compile Include="Helpers\MappingExtensions.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModels\SectionPage.json.cs">
-      <DependentUpon>SectionPage.json</DependentUpon>
-    </Compile>
     <Compile Include="ViewModels\SurfacePage.json.cs">
       <DependentUpon>SurfacePage.json</DependentUpon>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <TypedJSON Include="ViewModels\SectionPage.json">
-      <Generator>MsBuild:Compile</Generator>
-    </TypedJSON>
   </ItemGroup>
   <ItemGroup>
     <TypedJSON Include="ViewModels\SurfacePage.json">

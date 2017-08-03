@@ -141,74 +141,48 @@ namespace WebsiteProvider.Api
 
             foreach (WebSection section in template.Sections)
             {
-                namedSections[section.Name] = new SectionPage();
+                namedSections[section.Name] = new Json();
             }
         }
 
         protected void UpdateTemplateSections(string requestUri, Response response, SurfacePage content, WebUrl url)
         {
-            foreach (WebSection section in content.Data.Sections)
+            var json = response.Resource as Json;
+            if (json != null && content.RequestUri != requestUri)
             {
-                var sectionJson = (SectionPage)content.Sections[section.Name];
-                var json = response.Resource as Json;
-
-                var uri = section.GetPinningContentUrl(url);
-                //if (!Handle.IsHandlerRegistered("GET", uri))
-                //{
-                //    Handle.GET(uri, () => new Json(), new HandlerOptions {SelfOnly = true});
-                //}
-
-                var newJson = Self.GET(uri, () =>
+                foreach (WebSection section in content.Data.Sections)
                 {
-                    if (section.Default && json != null)
-                    {
-                        if (json is SurfacePage ||                  //we are inserting WebsiteProvider to WebsiteProvider
-                            sectionJson.RequestUri == requestUri)
-                        {
-                            return json;
-                        }
-                        
-                        //we are inserting different app to WebsiteProvider
-                        if (sectionJson.LastJson != json)
-                        {
-                            return new SurfacePage();
-                        }
+                    var sectionJson = (Json)content.Sections[section.Name];
 
-                        //these two lines should be in the above if, but do not work then
-                        sectionJson.LastJson = json;
-                        sectionJson.MergeJson(json);
+                    var uri = section.GetMappingUrl(url);
 
-                        sectionJson.RequestUri = requestUri;
-                        return null;
-                    }
-                    return new Json();
-                });
+                    // not sure if it is not required, will check later
+                    //if (!Handle.IsHandlerRegistered("GET", uri))
+                    //{
+                    //    Handle.GET(uri, () => new Json(), new HandlerOptions {SelfOnly = true});
+                    //}
 
-                sectionJson.MergeJson(newJson);
+                    //// not sure how it should work and what is the cases
+                    //if (section.Default && json is SurfacePage)
+                    //{
+                    //    //we are inserting WebsiteProvider to WebsiteProvider
+                    //    sectionJson = json; // !!
+                    //}
+                    //else
+                    //{
+                    //    //we are inserting different app to WebsiteProvider
+                    //    if (sectionJson.LastJson != json)
+                    //    {
+                    //        sectionJson = new SurfacePage();
+                    //    }
+                    //}
 
-                //if (section.Default && json != null && sectionJson.MainContent?.RequestUri != requestUri)
-                //{
-                //    if (json is SurfacePage)
-                //    {
-                //        //we are inserting WebsiteProvider to WebsiteProvider
-                //        sectionJson.MainContent = json as SurfacePage;
-                //    }
-                //    else
-                //    {
-                //        //we are inserting different app to WebsiteProvider
-                //        if (sectionJson.MainContent == null || sectionJson.MainContent.LastJson != json)
-                //        {
-                //            sectionJson.MainContent = new SurfacePage();
-                //        }
-
-                //        //these two lines should be in the above if, but do not work then
-                //        sectionJson.MainContent.LastJson = json;
-                //        sectionJson.MainContent.MergeJson(json);
-
-                //        sectionJson.MainContent.RequestUri = requestUri;
-                //    }
-                //}
+                    var newSectionJson = Self.GET(uri, () => section.Default ? json : new Json());
+                    sectionJson.MergeJson(newSectionJson);
+                }
             }
+            content.LastJson = json;
+            content.RequestUri = requestUri;
         }
 
         protected SurfacePage GetSurfacePage(WebTemplate template)
