@@ -1,3 +1,4 @@
+using System.Linq;
 using Simplified.Ring6;
 using Starcounter;
 using Starcounter.Authorization.Attributes;

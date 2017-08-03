@@ -75,8 +75,11 @@
     <Reference Include="System.Web.Extensions" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Api\Authorization\AuthEnforcementProvider.cs" />
     <Compile Include="Api\Authorization\AuthorizedHandlers.cs" />
+    <Compile Include="Api\Authorization\MasterPageMiddleware.cs" />
     <Compile Include="Api\Authorization\PartialUrlAttribute.cs" />
+    <Compile Include="Api\Authorization\Permissions\ShowSurface.cs" />
     <Compile Include="Api\Authorization\Permissions\ShowSurfaceGroups.cs" />
     <Compile Include="Api\CommitHooks.cs" />
     <Compile Include="Api\MainHandlers.cs" />
