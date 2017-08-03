@@ -81,6 +81,8 @@ namespace WebsiteEditor.ViewModels
             protected override void OnData()
             {
                 base.OnData();
+                this.UpdateHeaderString();
+
                 foreach (var header in this.Headers)
                 {
                     header.DeleteAction = this.DeleteHeader;
@@ -106,12 +108,38 @@ namespace WebsiteEditor.ViewModels
                 this.Headers.Remove(header);
                 header.Data.Delete();
             }
+
+            public void UpdateHeaderString()
+            {
+                if (this.Headers.Any())
+                {
+                    var firstHeader = this.Headers.First();
+                    this.HeadersString = $"{firstHeader.Name}: {firstHeader.Value}";
+                    if (this.Headers.Count > 1)
+                    {
+                        this.HeadersString += $" + {this.Headers.Count - 1} other headers";
+                    }
+                }
+                else
+                {
+                    this.HeadersString = "Any HTTP headers";
+                }
+            }
         }
 
         [CatchingRulesPage_json.CatchingRules.Headers]
         partial class CatchHeadersItemPage : Json, IBound<WebHttpHeader>
         {
+            private CatchingRulesPage_json.CatchingRules ParentPage => this.Parent.Parent as CatchingRulesPage_json.CatchingRules; // <========== Here
+
             public Action<CatchHeadersItemPage> DeleteAction { get; set; }
+
+            protected override void OnData()
+            {
+                base.OnData();
+
+
+            }
 
             void Handle(Input.DeleteTrigger action)
             {

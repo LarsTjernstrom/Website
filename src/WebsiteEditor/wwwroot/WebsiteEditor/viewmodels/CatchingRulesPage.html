@@ -25,21 +25,24 @@
                 <paper-collapse-item>
                     <div slot="header" class="website-catching-rules-table-header">
                         <template is="dom-if" if="{{catchingRule.Url$}}"> <!-- jak pusty to false -->
-                            <label for="websiteCatchingRulesHeaderUri" class="website-catching-rules-table-header-uri__label">URI: {{catchingRule.Url$}}</label>
+                            <label for="websiteCatchingRulesHeaderUri">URI: {{catchingRule.Url$}}</label>
                         </template>
                         <template is="dom-if" if="{{!catchingRule.Url$}}">
-                            <label for="websiteCatchingRulesHeaderUri" class="website-catching-rules-table-header-uri__label">URI: Any URI</label>
+                            <label for="websiteCatchingRulesHeaderUri">URI: Any URI</label>
                         </template>
-                        <template is="dom-if" if="{{!catchingRule.Headers.length}}"> <!-- jak pusty to false -->
-                            Headers placeholder
-                        </template>
+                        <div>
+                            {{catchingRule.HeadersString}}
+                        </div>
+                        <!--<template is="dom-if" if="{{!catchingRule.Headers.length}}">
+                            {{catchingRule.HeadersString}}
+                        </template>-->
                         <!--<div class="website-catching-rules-table-header-uri">
                             <label for="websiteCatchingRulesHeaderUri" class="website-catching-rules-table-header-uri__label">Catch URI: </label>
                             <input type="text" id="websiteCatchingRulesHeaderUri" value="{{catchingRule.Url$::change}}" class="website-catching-rules-table-header-uri__uri" on-tap="tappedOnInput"/>
                         </div>-->
                         <!--<div class="website-catching-rules-table-header-headers-summary">Catch headers: {{catchingRule.Headers.length}}</div>-->
                         <template is="dom-if" if="{{catchingRule.IsFinal$}}">
-                            <label class="website-catching-rules-table-header-uri__label">Nestable</label>
+                            <label class="website-catching-rules-table-header__nestable">Nestable</label>
                         </template>
                         <!--<label>Final <input type="checkbox" checked="{{catchingRule.IsFinal$::change}}" on-tap="tappedOnInput"/></label>-->
                     </div>

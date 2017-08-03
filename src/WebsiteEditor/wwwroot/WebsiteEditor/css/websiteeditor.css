@@ -188,6 +188,10 @@ body {
     align-items: flex-start;
 }
 
+.website-catching-rules-table-header__nestable {
+    font-weight: bold;
+}
+
 .website-catching-rules-table-header-uri__uri {
     width: 30%;
 }
