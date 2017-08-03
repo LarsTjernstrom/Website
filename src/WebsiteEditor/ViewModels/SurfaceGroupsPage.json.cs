@@ -1,8 +1,12 @@
 using Simplified.Ring6;
 using Starcounter;
+using Starcounter.Authorization.Attributes;
+using WebsiteEditor.Api.Authorization.Permissions;
 
 namespace WebsiteEditor
 {
+    [PartialUrl("/websiteeditor/surfacegroups")]
+    [RequirePermission(typeof(RunTestPage))]
     partial class SurfaceGroupsPage : Json
     {
         public void RefreshData()

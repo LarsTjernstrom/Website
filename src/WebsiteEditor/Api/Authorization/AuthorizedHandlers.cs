@@ -1,7 +1,9 @@
-﻿using Starcounter;
+﻿using System;
+using Starcounter;
 using Starcounter.Authorization.Authentication;
 using Starcounter.Authorization.Core;
 using Starcounter.Authorization.Core.Rules;
+using Starcounter.Authorization.PageSecurity;
 using Starcounter.Authorization.Routing;
 using Starcounter.Authorization.Routing.Middleware;
 using WebsiteEditor.Api.Authorization.Permissions;
@@ -18,7 +20,7 @@ namespace WebsiteEditor
             // var canI = enforcement.CheckPermission(new RunTestPage(new TestObject()));
 
             var router = Router.CreateDefault();
-            router.AddMiddleware(new ContextMiddleware());
+            router.AddMiddleware(new SecurityMiddleware(enforcement, info => Response.FromStatusCode(403), PageSecurity.CreateThrowingDeniedHandler<Exception>()));
             router.AddMiddleware(new DbScopeMiddleware(true));
         }
 
