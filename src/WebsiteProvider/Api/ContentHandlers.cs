@@ -152,17 +152,36 @@ namespace WebsiteProvider.Api
                 var sectionJson = (SectionPage)content.Sections[section.Name];
                 var json = response.Resource as Json;
 
-                var uri = section.GetMappingUrl(url);
+                var uri = section.GetPinningContentUrl(url);
+                //if (!Handle.IsHandlerRegistered("GET", uri))
+                //{
+                //    Handle.GET(uri, () => new Json(), new HandlerOptions {SelfOnly = true});
+                //}
+
                 var newJson = Self.GET(uri, () =>
                 {
-                    if (section.Default)
+                    if (section.Default && json != null)
                     {
-                        return json;
+                        if (json is SurfacePage ||                  //we are inserting WebsiteProvider to WebsiteProvider
+                            sectionJson.RequestUri == requestUri)
+                        {
+                            return json;
+                        }
+                        
+                        //we are inserting different app to WebsiteProvider
+                        if (sectionJson.LastJson != json)
+                        {
+                            return new SurfacePage();
+                        }
+
+                        //these two lines should be in the above if, but do not work then
+                        sectionJson.LastJson = json;
+                        sectionJson.MergeJson(json);
+
+                        sectionJson.RequestUri = requestUri;
+                        return null;
                     }
-                    else
-                    {
-                        return new Json();
-                    }
+                    return new Json();
                 });
 
                 sectionJson.MergeJson(newJson);
