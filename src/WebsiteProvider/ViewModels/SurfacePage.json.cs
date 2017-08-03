@@ -7,7 +7,6 @@ namespace WebsiteProvider.ViewModels
     {
         public bool IsFinal = false;
         public string RequestUri;
-        public SectionPage DefaultSection;
         public Json LastJson;
     }
 }

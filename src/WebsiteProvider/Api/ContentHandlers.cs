@@ -141,9 +141,7 @@ namespace WebsiteProvider.Api
 
             foreach (WebSection section in template.Sections)
             {
-                SectionPage sectionJson = new SectionPage();
-                namedSections[section.Name] = sectionJson;
-                sectionJson.Name = section.Name;
+                namedSections[section.Name] = new SectionPage();
             }
         }
 
