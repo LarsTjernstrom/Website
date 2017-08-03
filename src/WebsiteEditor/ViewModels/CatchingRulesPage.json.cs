@@ -37,6 +37,7 @@ namespace WebsiteEditor.ViewModels
         {
             foreach (var catchingRule in this.CatchingRules)
             {
+                catchingRule.UpdateHeaderString();
                 var emptyHeaders = catchingRule.Headers.Where(h => string.IsNullOrWhiteSpace(h.Name)).ToList();
                 foreach (var catchHeader in emptyHeaders)
                 {
@@ -130,16 +131,7 @@ namespace WebsiteEditor.ViewModels
         [CatchingRulesPage_json.CatchingRules.Headers]
         partial class CatchHeadersItemPage : Json, IBound<WebHttpHeader>
         {
-            private CatchingRulesPage_json.CatchingRules ParentPage => this.Parent.Parent as CatchingRulesPage_json.CatchingRules; // <========== Here
-
             public Action<CatchHeadersItemPage> DeleteAction { get; set; }
-
-            protected override void OnData()
-            {
-                base.OnData();
-
-
-            }
 
             void Handle(Input.DeleteTrigger action)
             {
