@@ -41,13 +41,6 @@ namespace WebsiteEditor.Api
                 return 200;
             });
 
-            Handle.GET("/websiteeditor/test", () =>
-            {
-                var a = new AuthorizedHandlers();
-                a.Register();
-                return 200;
-            });
-
             Handle.GET("/websiteeditor", () => Self.GET("/websiteeditor/surfacegroups"));
 
             Handle.GET("/websiteeditor/surfacegroups", () =>

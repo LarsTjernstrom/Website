@@ -17,9 +17,10 @@ namespace WebsiteEditor
         {
             var rules = GetAuthorizationRules();
             var enforcement = new AuthorizationEnforcement(rules, new SystemUserAuthentication());
-            // var canI = enforcement.CheckPermission(new RunTestPage(new TestObject()));
+            // var canI = enforcement.CheckPermission(new ShowSurfaceGroups(new TestObject()));
 
             var router = Router.CreateDefault();
+            router.AddMiddleware(new ContextMiddleware());
             router.AddMiddleware(new SecurityMiddleware(enforcement, info => Response.FromStatusCode(403), PageSecurity.CreateThrowingDeniedHandler<Exception>()));
             router.AddMiddleware(new DbScopeMiddleware(true));
         }
@@ -43,7 +44,7 @@ namespace WebsiteEditor
         private static AuthorizationRules GetAuthorizationRules()
         {
             var rules = new AuthorizationRules();
-            rules.AddRule(new ClaimRule<RunTestPage, SystemUserClaim>((claim, permission) => claim.SystemUser.Name == "admin"));
+            rules.AddRule(new ClaimRule<ShowSurfaceGroups, SystemUserClaim>((claim, permission) => claim.SystemUser.Name == "admi1n"));
             return rules;
         }
 

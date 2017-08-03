@@ -77,7 +77,7 @@
   <ItemGroup>
     <Compile Include="Api\Authorization\AuthorizedHandlers.cs" />
     <Compile Include="Api\Authorization\PartialUrlAttribute.cs" />
-    <Compile Include="Api\Authorization\Permissions\RunTestPage.cs" />
+    <Compile Include="Api\Authorization\Permissions\ShowSurfaceGroups.cs" />
     <Compile Include="Api\CommitHooks.cs" />
     <Compile Include="Api\MainHandlers.cs" />
     <Compile Include="Api\MappingHandlers.cs" />
