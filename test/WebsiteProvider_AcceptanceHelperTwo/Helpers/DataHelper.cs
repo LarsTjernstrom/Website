@@ -1,4 +1,5 @@
-﻿using Simplified.Ring6;
+﻿using System.Linq;
+using Simplified.Ring6;
 using Starcounter;
 
 namespace WebsiteProvider_AcceptanceHelperTwo
@@ -11,7 +12,7 @@ namespace WebsiteProvider_AcceptanceHelperTwo
             {
                 var sidebarSurface = GenerateSidebarSurface();
                 var webUrl = Db.SQL<WebUrl>("SELECT wu FROM Simplified.Ring6.WebUrl wu WHERE wu.Url = ?",
-                             "/WebsiteProvider_AcceptanceHelperTwo").First ??
+                             "/WebsiteProvider_AcceptanceHelperTwo").FirstOrDefault() ??
                          new WebUrl
                          {
                              Template = sidebarSurface,
@@ -24,14 +25,14 @@ namespace WebsiteProvider_AcceptanceHelperTwo
         protected WebTemplate GenerateSidebarSurface()
         {
             const string surfaceName = "TestSidebarSurface";
-            var surface = Db.SQL<WebTemplate>("SELECT wt FROM Simplified.Ring6.WebTemplate wt WHERE wt.Name = ?", surfaceName).First;
+            var surface = Db.SQL<WebTemplate>("SELECT wt FROM Simplified.Ring6.WebTemplate wt WHERE wt.Name = ?", surfaceName).FirstOrDefault();
 
             if (surface != null) return surface;
 
             surface = new WebTemplate
             {
                 Name = surfaceName,
-                Html = "/Websiteeditor/surfaces/SidebarSurface.html"
+                Html = "/websiteprovider/surfaces/SidebarSurface.html"
             };
 
             new WebSection

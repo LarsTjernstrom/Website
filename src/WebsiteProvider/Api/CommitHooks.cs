@@ -2,45 +2,42 @@
 using Simplified.Ring6;
 using Starcounter;
 
-namespace WebsiteProvider
+namespace WebsiteProvider.Api
 {
     internal class CommitHooks
     {
-        public MappingHandlers MappingHandlers { get; }
+        public PinningHandlers PinningHandlers { get; }
 
-        public CommitHooks(MappingHandlers mappingHandlers)
+        public CommitHooks(PinningHandlers pinningHandlers)
         {
-            MappingHandlers = mappingHandlers ?? throw new ArgumentNullException(nameof(mappingHandlers));
+            PinningHandlers = pinningHandlers ?? throw new ArgumentNullException(nameof(pinningHandlers));
         }
 
         public void Register()
         {
             Hook<WebMap>.CommitInsert += (s, webMap) =>
             {
-                MappingHandlers.MapPinningRule(webMap);
+                PinningHandlers.MapPinningRule(webMap);
             };
 
-            Hook<WebMap>.BeforeDelete += (s, webMap) =>
+            Hook<WebMap>.CommitDelete += (s, id) =>
             {
-                MappingHandlers.UnmapPinningRule(webMap);
+                PinningHandlers.UnmapPinningRule(id);
             };
 
             Hook<WebMap>.CommitUpdate += (s, webMap) =>
             {
-                MappingHandlers.UpdatePinningRule(webMap);
+                PinningHandlers.UpdatePinningRule(webMap);
             };
 
-            Hook<WebSection>.BeforeDelete += (s, webSection) =>
+            Hook<WebSection>.CommitDelete += (s, id) =>
             {
-                MappingHandlers.UnmapBlendingPoint(webSection);
+                PinningHandlers.UnmapBlendingPoint(id);
             };
 
-            Hook<WebTemplate>.BeforeDelete += (s, webTemplate) =>
+            Hook<WebTemplate>.CommitDelete += (s, id) =>
             {
-                foreach (WebSection webSection in webTemplate.Sections)
-                {
-                    MappingHandlers.UnmapBlendingPoint(webSection);
-                }
+                PinningHandlers.UnmapSurface(id);
             };
         }
     }

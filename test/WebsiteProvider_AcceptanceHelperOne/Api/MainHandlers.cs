@@ -61,6 +61,76 @@ namespace WebsiteProvider_AcceptanceHelperOne
                 Handle.SetOutgoingStatusCode(200);
                 return "Data for testing catching rule headers is set up";
             });
+
+            Handle.GET("/WebsiteProvider_AcceptanceHelperOne/SetupPinningRulesMappingTests", () =>
+            {
+                DataHelper.SetupPinningRules();
+                Handle.SetOutgoingStatusCode(200);
+                return "Data for testing pinning rules mapping/unmapping is set up";
+            });
+
+            Handle.GET("/WebsiteProvider_AcceptanceHelperOne/pin/{?}/delete", (string pinId) =>
+            {
+                if (this.DataHelper.DeleteWebMap(pinId))
+                {
+                    Handle.SetOutgoingStatusCode(200);
+                    return "Pinning rule deleted";
+                }
+                else
+                {
+                    Handle.SetOutgoingStatusCode(404);
+                    return "Pinning rule is not found";
+                }
+            });
+
+            Handle.GET("/WebsiteProvider_AcceptanceHelperOne/pin/{?}/edit/{?}", (string pinId, string newPinId) =>
+            {
+                if (this.DataHelper.EditWebMap(pinId, newPinId))
+                {
+                    Handle.SetOutgoingStatusCode(200);
+                    return "Pinning rule edited";
+                }
+                else
+                {
+                    Handle.SetOutgoingStatusCode(404);
+                    return "Pinning rule is not found";
+                }
+            });
+
+            Handle.GET("/WebsiteProvider_AcceptanceHelperOne/pin/{?}/change-url", (string pinId) =>
+            {
+                if (this.DataHelper.ChangeWebMapUrl(pinId))
+                {
+                    Handle.SetOutgoingStatusCode(200);
+                    return "Pinning rule edited";
+                }
+                else
+                {
+                    Handle.SetOutgoingStatusCode(404);
+                    return "Pinning rule is not found";
+                }
+            });
+
+            Handle.GET("/WebsiteProvider_AcceptanceHelperOne/section/renew/{?}", (string sectionId) =>
+            {
+                if (this.DataHelper.RenewWebSectionForPinningRules(sectionId))
+                {
+                    Handle.SetOutgoingStatusCode(200);
+                    return "Blending points are deleted and recreated";
+                }
+                else
+                {
+                    Handle.SetOutgoingStatusCode(404);
+                    return "Blending point is not found";
+                }
+            });
+
+            Handle.GET("/WebsiteProvider_AcceptanceHelperOne/surfaces/renew", () =>
+            {
+                DataHelper.RenewWebTemplatesForPinningRules();
+                Handle.SetOutgoingStatusCode(200);
+                return "Surfaces are deleted and recreated";
+            });
         }
     }
 }

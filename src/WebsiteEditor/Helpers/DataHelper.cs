@@ -1,7 +1,7 @@
-﻿using Starcounter;
-using Simplified.Ring6;
+﻿using Simplified.Ring6;
+using Starcounter;
 
-namespace WebsiteEditor
+namespace WebsiteEditor.Helpers
 {
     public class DataHelper
     {
@@ -55,7 +55,7 @@ namespace WebsiteEditor
             var surface = new WebTemplate
             {
                 Name = "DefaultSurface",
-                Html = "/Websiteeditor/surfaces/DefaultSurface.html",
+                Html = "/websiteprovider/surfaces/DefaultSurface.html",
                 WebTemplateGroup = group
             };
 
@@ -88,7 +88,7 @@ namespace WebsiteEditor
             var surface = new WebTemplate
             {
                 Name = "SidebarSurface",
-                Html = "/Websiteeditor/surfaces/SidebarSurface.html",
+                Html = "/websiteprovider/surfaces/SidebarSurface.html",
                 WebTemplateGroup = group
             };
 
@@ -109,10 +109,10 @@ namespace WebsiteEditor
             var templatesUrl = new WebUrl
             {
                 Template = surface,
-                Url = "/websiteeditor/surfaces"
+                Url = "/websiteprovider/surfaces"
             };
 
-            new WebMap { Url = templatesUrl, Section = sidebarLeft, ForeignUrl = "/websiteeditor/help?topic=surfaces", SortNumber = 1 };
+            new WebMap { Url = templatesUrl, Section = sidebarLeft, ForeignUrl = "/websiteprovider/help?topic=surfaces", SortNumber = 1 };
         }
 
         public void GenerateHolyGrailSurface(WebTemplateGroup group)
@@ -120,7 +120,7 @@ namespace WebsiteEditor
             var surface = new WebTemplate
             {
                 Name = "HolyGrailSurface",
-                Html = "/Websiteeditor/surfaces/HolyGrailSurface.html",
+                Html = "/websiteprovider/surfaces/HolyGrailSurface.html",
                 WebTemplateGroup = group
             };
 

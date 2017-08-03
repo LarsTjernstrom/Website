@@ -1,0 +1,11 @@
+{
+  "Html": "/WebsiteProvider_AcceptanceHelperTwo/PinningPage.html",
+  "Trn": {
+    "IsDirty": false
+  },
+  "EditPinningRuleTrigger$": 0,
+  "DeletePinningRuleTrigger$": 0,
+  "DeleteBlendingPointTrigger$": 0,
+  "SaveChangesTrigger$": 0,
+  "CancelChangesTrigger$": 0
+}

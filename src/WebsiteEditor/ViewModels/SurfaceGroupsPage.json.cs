@@ -3,7 +3,7 @@ using Starcounter;
 using Starcounter.Authorization.Attributes;
 using WebsiteEditor.Api.Authorization.Permissions;
 
-namespace WebsiteEditor
+namespace WebsiteEditor.ViewModels
 {
     [PartialUrl("/websiteeditor/surfacegroups")]
     [RequirePermission(typeof(RunTestPage))]

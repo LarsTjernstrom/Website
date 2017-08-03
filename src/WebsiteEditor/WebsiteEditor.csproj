@@ -144,10 +144,7 @@
     <TypedJSON Include="ViewModels\TestPage.json">
       <Generator>MsBuild:Compile</Generator>
     </TypedJSON>
-    <None Include="wwwroot\WebsiteEditor\surfaces\SidebarSurface.html" />
     <Content Include="wwwroot\WebsiteEditor\images\websiteeditor.png" />
-    <None Include="wwwroot\WebsiteEditor\surfaces\HolyGrailSurface.html" />
-    <Content Include="wwwroot\WebsiteEditor\surfaces\DefaultSurface.html" />
     <None Include="wwwroot\WebsiteEditor\viewmodels\CmsHelp.html" />
     <None Include="wwwroot\WebsiteEditor\viewmodels\AppIcon.html" />
     <None Include="wwwroot\WebsiteEditor\viewmodels\GeneralPage.html" />

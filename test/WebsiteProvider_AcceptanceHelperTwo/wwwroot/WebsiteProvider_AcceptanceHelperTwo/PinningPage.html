@@ -1,0 +1,27 @@
+﻿<link rel="import" href="/sys/polymer/polymer.html">
+
+<template>
+    <template is="dom-bind">
+        <h3>Pinning Rules</h3>
+        <button type="button" class="btn btn-xs btn-default websiteprovider-acceptancehelpertwo-pinning-save" value="{{model.SaveChangesTrigger$::click}}"
+                onmousedown="++this.value;" disabled="{{!model.Trn.IsDirty}}" title="Save all changes">
+            Save
+        </button>
+        <button type="button" class="btn btn-xs btn-default websiteprovider-acceptancehelpertwo-pinning-cancel" value="{{model.CancelChangesTrigger$::click}}"
+                onmousedown="++this.value;" disabled="{{!model.Trn.IsDirty}}" title="Cancel all changes">
+            Cancel
+        </button>
+        <button type="button" class="btn btn-xs btn-default websiteprovider-acceptancehelpertwo-pinning-edit-rule" value="{{model.EditPinningRuleTrigger$::click}}"
+                onmousedown="++this.value;" disabled="{{model.EditPinningRuleTrigger$}}" title="Edit pinning rule">
+            Edit pinning rule
+        </button>
+        <button type="button" class="btn btn-xs btn-default websiteprovider-acceptancehelpertwo-pinning-delete-rule" value="{{model.DeletePinningRuleTrigger$::click}}"
+                onmousedown="++this.value;" disabled="{{model.DeletePinningRuleTrigger$}}" title="Delete pinning rule">
+            Delete pinning rule
+        </button>
+        <button type="button" class="btn btn-xs btn-default websiteprovider-acceptancehelpertwo-pinning-delete-point" value="{{model.DeleteBlendingPointTrigger$::click}}"
+                onmousedown="++this.value;" disabled="{{model.DeleteBlendingPointTrigger$}}" title="Delete blending point">
+            Delete blending point
+        </button>
+    </template>
+</template>
