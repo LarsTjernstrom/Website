@@ -150,33 +150,45 @@ namespace WebsiteProvider.Api
             foreach (WebSection section in content.Data.Sections)
             {
                 var sectionJson = (SectionPage)content.Sections[section.Name];
+                var json = response.Resource as Json;
 
                 var uri = section.GetMappingUrl(url);
-                sectionJson.PinContent = Self.GET(uri);
-
-                var json = response.Resource as Json;
-                if (section.Default && json != null && sectionJson.MainContent?.RequestUri != requestUri)
+                var newJson = Self.GET(uri, () =>
                 {
-                    if (json is SurfacePage)
+                    if (section.Default)
                     {
-                        //we are inserting WebsiteProvider to WebsiteProvider
-                        sectionJson.MainContent = json as SurfacePage;
+                        return json;
                     }
                     else
                     {
-                        //we are inserting different app to WebsiteProvider
-                        if (sectionJson.MainContent == null || sectionJson.MainContent.LastJson != json)
-                        {
-                            sectionJson.MainContent = new SurfacePage();
-                        }
-
-                        //these two lines should be in the above if, but do not work then
-                        sectionJson.MainContent.LastJson = json;
-                        sectionJson.MainContent.MergeJson(json);
-
-                        sectionJson.MainContent.RequestUri = requestUri;
+                        return new Json();
                     }
-                }
+                });
+
+                sectionJson.MergeJson(newJson);
+
+                //if (section.Default && json != null && sectionJson.MainContent?.RequestUri != requestUri)
+                //{
+                //    if (json is SurfacePage)
+                //    {
+                //        //we are inserting WebsiteProvider to WebsiteProvider
+                //        sectionJson.MainContent = json as SurfacePage;
+                //    }
+                //    else
+                //    {
+                //        //we are inserting different app to WebsiteProvider
+                //        if (sectionJson.MainContent == null || sectionJson.MainContent.LastJson != json)
+                //        {
+                //            sectionJson.MainContent = new SurfacePage();
+                //        }
+
+                //        //these two lines should be in the above if, but do not work then
+                //        sectionJson.MainContent.LastJson = json;
+                //        sectionJson.MainContent.MergeJson(json);
+
+                //        sectionJson.MainContent.RequestUri = requestUri;
+                //    }
+                //}
             }
         }
 

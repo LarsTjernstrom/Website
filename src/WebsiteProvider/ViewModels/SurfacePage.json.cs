@@ -6,7 +6,5 @@ namespace WebsiteProvider.ViewModels
     partial class SurfacePage : Json, IBound<WebTemplate>
     {
         public bool IsFinal = false;
-        public string RequestUri;
-        public Json LastJson;
     }
 }

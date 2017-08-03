@@ -89,9 +89,6 @@
     </TypedJSON>
   </ItemGroup>
   <ItemGroup>
-    <None Include="wwwroot\WebsiteProvider\viewmodels\WebsiteSection.html" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="wwwroot\WebsiteProvider\surfaces\DefaultSurface.html" />
     <None Include="wwwroot\WebsiteProvider\surfaces\SidebarSurface.html" />
     <None Include="wwwroot\WebsiteProvider\surfaces\HolyGrailSurface.html" />

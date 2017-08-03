@@ -1,5 +1,3 @@
 {
-  "Html": "/WebsiteProvider/viewmodels/WebsiteSection.html",
-  "PinContent": {},
-  "MainContent": { "$": { "Reuse": "SurfacePage" } }
+  "Html": ""
 }
