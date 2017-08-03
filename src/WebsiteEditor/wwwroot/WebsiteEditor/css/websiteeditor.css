@@ -161,6 +161,7 @@ body {
 .website-catching-rules-buttons {
     display: flex;
     padding-top: 20px;
+    padding-bottom: 10px;
 }
 
 .website-catching-rules-buttons__add {
@@ -177,19 +178,26 @@ body {
 
 .website-catching-rules-table-header {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    width: 40%;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+}
+
+.website-catching-rules-table-header__uri-label {
+    width: 500px;
+}
+
+.website-catching-rules-table-header__headers {
+    width: 400px;
+}
+
+.website-catching-rules-table-header__nestable {
+    font-weight: bold;
 }
 
 .website-catching-rules-table-header-uri {
     flex: 1 0 auto;
     display: flex;
     align-items: flex-start;
-}
-
-.website-catching-rules-table-header__nestable {
-    font-weight: bold;
 }
 
 .website-catching-rules-table-header-uri__uri {

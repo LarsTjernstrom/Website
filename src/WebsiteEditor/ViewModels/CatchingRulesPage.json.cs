@@ -55,7 +55,7 @@ namespace WebsiteEditor.ViewModels
                 Data = new WebUrl
                 {
                     Template = surface,
-                    Url = string.Empty,
+                    Url = string.Empty
                 },
                 DeleteAction = this.DeleteCatchingRule
             });
