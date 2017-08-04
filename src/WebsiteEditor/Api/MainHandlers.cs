@@ -40,60 +40,6 @@ namespace WebsiteEditor.Api
 
                 return 200;
             });
-
-            Handle.GET("/websiteeditor", () => Self.GET("/websiteeditor/surfacegroups"));
-
-            Handle.GET("/websiteeditor/surfacegroups", () =>
-            {
-                return Db.Scope<MasterPage>(() =>
-                {
-                    MasterPage master = this.GetMasterPageFromSession();
-                    master.ShowNavigation = false;
-
-                    master.RefreshCurrentPage("/websiteeditor/partials/surfacegroups");
-
-                    return master;
-                });
-            });
-
-            Handle.GET("/websiteeditor/surface/{?}/general", (string key) =>
-            {
-                return Db.Scope<MasterPage>(() =>
-                {
-                    MasterPage master = this.GetMasterPageFromSession();
-                    master.ShowNavigation = true;
-                    master.Surface.Data = Db.SQL<WebTemplate>("SELECT t FROM Simplified.Ring6.WebTemplate t WHERE t.Key = ?", key).First();
-                    SetMasterCurrentPage(master, "/websiteeditor/partials/general");
-
-                    return master;
-                });
-            });
-
-            Handle.GET("/websiteeditor/surface/{?}/blendingpoints", (string key) =>
-            {
-                return Db.Scope<MasterPage>(() =>
-                {
-                    MasterPage master = this.GetMasterPageFromSession();
-                    master.ShowNavigation = true;
-                    master.Surface.Data = Db.SQL<WebTemplate>("SELECT t FROM Simplified.Ring6.WebTemplate t WHERE t.Key = ?", key).First();
-                    SetMasterCurrentPage(master, "/websiteeditor/partials/blendingpoints");
-
-                    return master;
-                });
-            });
-
-            Handle.GET("/websiteeditor/surface/{?}/catchingrules", (string key) =>
-            {
-                return Db.Scope<MasterPage>(() =>
-                {
-                    MasterPage master = this.GetMasterPageFromSession();
-                    master.ShowNavigation = true;
-                    master.Surface.Data = Db.SQL<WebTemplate>("SELECT t FROM Simplified.Ring6.WebTemplate t WHERE t.Key = ?", key).First();
-                    SetMasterCurrentPage(master, "/websiteeditor/partials/catchingrules");
-
-                    return master;
-                });
-            });
         }
 
         protected void RegisterPartials()

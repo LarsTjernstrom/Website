@@ -6,7 +6,7 @@ namespace WebsiteEditor.ViewModels
 {
     partial class MasterPage : Json
     {
-        protected string allowedSystemUserGroup = "Admin (System Users)";
+        protected string AllowedSystemUserGroup = "Admin (System Users)";
 
         public void RefreshCurrentPage(string PartialUrl)
         {
@@ -24,7 +24,7 @@ namespace WebsiteEditor.ViewModels
 
             SystemUser user = SystemUser.GetCurrentSystemUser();
 
-            if (SystemUser.IsMemberOfGroup(user, allowedSystemUserGroup))
+            if (SystemUser.IsMemberOfGroup(user, AllowedSystemUserGroup))
             {
                 this.CurrentPage = Self.GET(this.PartialUrl);
 

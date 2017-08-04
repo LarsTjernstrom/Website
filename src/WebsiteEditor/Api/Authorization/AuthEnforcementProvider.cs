@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Starcounter.Authorization.Authentication;
+﻿using Starcounter.Authorization.Authentication;
 using Starcounter.Authorization.Core;
 using Starcounter.Authorization.Core.Rules;
 using WebsiteEditor.Api.Authorization.Permissions;
