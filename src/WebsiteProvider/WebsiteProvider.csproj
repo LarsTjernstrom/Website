@@ -67,6 +67,8 @@
     <Compile Include="Api\CommitHooks.cs" />
     <Compile Include="Api\ContentHandlers.cs" />
     <Compile Include="Api\PinningHandlers.cs" />
+    <Compile Include="Api\PinningRuleMappingInfo.cs" />
+    <Compile Include="Api\PinningRulesMappingCollection.cs" />
     <Compile Include="Helpers\Storage.cs" />
     <Compile Include="Helpers\MappingExtensions.cs" />
     <Compile Include="Program.cs" />

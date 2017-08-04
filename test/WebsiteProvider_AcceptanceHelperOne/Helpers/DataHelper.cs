@@ -245,6 +245,26 @@ namespace WebsiteProvider_AcceptanceHelperOne
             return isEdited;
         }
 
+        public bool DuplicateWebMap(string pinningRuleId)
+        {
+            bool isDuplicated = false;
+            Db.Transact(() =>
+            {
+                var webMap = Db.SQL<WebMap>("SELECT m FROM Simplified.Ring6.WebMap m WHERE m.ForeignUrl = ?", "/WebsiteProvider_AcceptanceHelperTwo/pin" + pinningRuleId).FirstOrDefault();
+                if (webMap != null)
+                {
+                    new WebMap
+                    {
+                        Url = webMap.Url,
+                        Section = webMap.Section,
+                        ForeignUrl = webMap.ForeignUrl
+                    };
+                    isDuplicated = true;
+                }
+            });
+            return isDuplicated;
+        }
+
         public bool RenewWebSectionForPinningRules(string sectionId)
         {
             bool isUpdated = false;
