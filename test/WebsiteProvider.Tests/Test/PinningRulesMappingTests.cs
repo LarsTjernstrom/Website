@@ -28,7 +28,7 @@ namespace WebsiteProvider.Tests.Test
         [SetUp]
         public void SetUpFixture()
         {
-            Driver.Navigate().GoToUrl(Config.AcceptanceHelperOneUrl + "/ResetData");
+            this.ResetData();
             Driver.Navigate().GoToUrl(Config.AcceptanceHelperOneUrl + "/SetupPinningRulesMappingTests");
         }
 
@@ -306,6 +306,48 @@ namespace WebsiteProvider.Tests.Test
             Assert.AreEqual(0, topPins.Count);
             Assert.AreEqual(2, mainPins.Count);
             WaitUntil(x => mainPins.All(p => expectedMainPinsContent.Contains(p.Text)));
+        }
+
+        /// <summary>
+        /// 1) Duplicate one pinning rule, load page and check that duplication is not affected on mapping.
+        /// 2) Delete one duplicated pinning rule, load page and check that deleted one is not affected on mapping.
+        /// 2) Deletу the second duplicated pinning rule, load page and check that pinning rule's content is not blended.
+        /// </summary>
+        [Test]
+        public void RequestPage_PinningRuleDiplicatedAndDeleted_TheMappingIsNotAffectedOnDuplication()
+        {
+            Driver.Navigate().GoToUrl(Config.AcceptanceHelperOneUrl + "/pin/2/duplicate");
+
+            for (int i = 0; i < 2; i++)
+            {
+                var page = new AcceptanceHelperOneMasterPage(Driver).LoadSimplePage();
+                WaitForText(page.HeaderElement, "Simple Page");
+
+                var topPins = this.GetTopBarPins();
+                var mainPins = this.GetMainPins();
+                var expectedTopPinsContent = new[] { "Pin 1", "Pin 2", "Pin 3" };
+                var expectedMainPinsContent = new[] { "Pin 6", "Pin 7" };
+
+                Assert.AreEqual(3, topPins.Count);
+                Assert.AreEqual(2, mainPins.Count);
+                WaitUntil(x => topPins.All(p => expectedTopPinsContent.Contains(p.Text)));
+                WaitUntil(x => mainPins.All(p => expectedMainPinsContent.Contains(p.Text)));
+
+                Driver.Navigate().GoToUrl(Config.AcceptanceHelperOneUrl + "/pin/2/delete");
+            }
+
+            var page2 = new AcceptanceHelperOneMasterPage(Driver).LoadSimplePage();
+            WaitForText(page2.HeaderElement, "Simple Page");
+
+            var topPins2 = this.GetTopBarPins();
+            var mainPins2 = this.GetMainPins();
+            var expectedTopPinsContent2 = new[] { "Pin 1", "Pin 3" };
+            var expectedMainPinsContent2 = new[] { "Pin 6", "Pin 7" };
+
+            Assert.AreEqual(2, topPins2.Count);
+            Assert.AreEqual(2, mainPins2.Count);
+            WaitUntil(x => topPins2.All(p => expectedTopPinsContent2.Contains(p.Text)));
+            WaitUntil(x => mainPins2.All(p => expectedMainPinsContent2.Contains(p.Text)));
         }
 
         private ICollection<IWebElement> GetTopBarPins()

@@ -10,12 +10,11 @@ namespace WebsiteProvider.Api
     /// <summary>
     /// Do mapping/unmapping of the Pinning Rules
     /// </summary>
-    public class PinningHandlers
+    public partial class PinningHandlers
     {
         private static PinningHandlers instance;
-        private readonly object locker = new object();
         private bool isRegistered;
-        private readonly List<PinningRuleMappingInfo> mappingInfos = new List<PinningRuleMappingInfo>();
+        private readonly PinningRulesMappingCollection mappings = new PinningRulesMappingCollection();
 
         private PinningHandlers()
         {
@@ -73,11 +72,31 @@ namespace WebsiteProvider.Api
 
             // prepare mapping info
             string token = webMap.GetMappingToken();
+
+            if (Blender.IsMapped(webMap.ForeignUrl, token))
+            {
+                // if current URI is already mapped with current token we just increment Count property.
+                // actually current case is valid only on transaction committing state when
+                // some pinning rules was changed for the same blending point with the same catching rule.
+                // such state is temporary because WebsiteEditor should not allow to save pinning rules,
+                // i.e. next changed/added pinning rule's commit hook will execute unmapping of this URI-token pair.
+                this.mappings.Process(
+                    info => info.ForeignUri == webMap.ForeignUrl && info.Token == token,
+                    list =>
+                    {
+                        if (Blender.IsMapped(webMap.ForeignUrl, token))
+                        {
+                            list.First().MapIds.Add(webMap.GetObjectNo());
+                        }
+                    });
+                return;
+            }
+
             string callerUri = webMap.GetCallerUri();
 
             var mapInfo = new PinningRuleMappingInfo
             {
-                MapId = webMap.GetObjectNo(),
+                MapIds = new List<ulong> { webMap.GetObjectNo() },
                 SectionId = webMap.Section.GetObjectNo(),
                 TemplateId = webMap.Section.Template.GetObjectNo(),
                 UseCustomCatchingRule = !string.IsNullOrEmpty(webMap.Url?.Url),
@@ -92,40 +111,48 @@ namespace WebsiteProvider.Api
             if (!Blender.IsMapped(callerUri, token))
             {
                 this.RegisterEmptyHandler(callerUri);
-                Blender.MapUri(callerUri, token);
+                Blender.MapUri(callerUri, token, true, false);
             }
 
             if (mapInfo.UseCustomCatchingRule)
             {
                 // get info of already mapped Pinning Rules defined with empty Catching Rule and for the same Blending Point
-                var emptyCatchingRuleMappings = this.GetMappingInfos(info => info.SectionId == mapInfo.SectionId && !info.UseCustomCatchingRule);
-                // and map its URIs to the current token, so these Pinning Rules will be blended with the current one when the catching rule is applicable
-                foreach (var info in emptyCatchingRuleMappings)
-                {
-                    if (!Blender.IsMapped(info.ForeignUri, token))
+                this.mappings.Process(
+                    info => info.SectionId == mapInfo.SectionId && !info.UseCustomCatchingRule,
+                    emptyCatchingRuleMappings =>
                     {
-                        Blender.MapUri(info.ForeignUri, token);
-                    }
-                }
+                        // and map its URIs to the current token, so these Pinning Rules will be blended with the current one when the catching rule is applicable
+                        foreach (var info in emptyCatchingRuleMappings)
+                        {
+                            if (!Blender.IsMapped(info.ForeignUri, token))
+                            {
+                                Blender.MapUri(info.ForeignUri, token, false, true);
+                            }
+                        }
+                    });
             }
             else
             {
                 // get info of already mapped Pinning Rules with defined Catching Rule and for the same Blending Point
-                var customCatchingRuleMappings = this.GetMappingInfos(info => info.SectionId == mapInfo.SectionId && info.UseCustomCatchingRule);
-                // and map current URI to its tokens, so current Pinning Rule will be blended with these ones when its catching rules are applicable
-                foreach (var otherTokens in customCatchingRuleMappings.Select(x => x.Token).Distinct())
-                {
-                    if (!Blender.IsMapped(webMap.ForeignUrl, otherTokens))
+                this.mappings.Process(
+                    info => info.SectionId == mapInfo.SectionId && info.UseCustomCatchingRule,
+                    customCatchingRuleMappings =>
                     {
-                        Blender.MapUri(webMap.ForeignUrl, otherTokens);
-                    }
-                }
+                        // and map current URI to its tokens, so current Pinning Rule will be blended with these ones when its catching rules are applicable
+                        foreach (var otherTokens in customCatchingRuleMappings.Select(x => x.Token).Distinct())
+                        {
+                            if (!Blender.IsMapped(webMap.ForeignUrl, otherTokens))
+                            {
+                                Blender.MapUri(webMap.ForeignUrl, otherTokens, false, true);
+                            }
+                        }
+                    });
             }
 
-            // now do map current Pinning Rule's URI to the current token and save mapping info
-            Blender.MapUri(webMap.ForeignUrl, token);
+            // now do map current Pinning Rule's URI to the current token and save mapping info.
+            Blender.MapUri(webMap.ForeignUrl, token, false, true);
 
-            this.AddMappingInfo(mapInfo);
+            this.mappings.Add(mapInfo);
         }
 
         /// <summary>
@@ -147,13 +174,13 @@ namespace WebsiteProvider.Api
         {
             this.ValidateState(isExpectedRegistered: true);
 
-            var info = this.TakeMappingInfo(x => x.MapId == mapId);
+            var info = this.mappings.Take(x => x.MapIds.Contains(mapId)).FirstOrDefault();
             if (info == null)
             {
                 return;
             }
 
-            this.UnmapPinningRule(info);
+            this.UnmapPinningRule(info, mapId);
         }
 
         /// <summary>
@@ -164,7 +191,7 @@ namespace WebsiteProvider.Api
         {
             this.ValidateState(isExpectedRegistered: true);
 
-            var mapInfos = this.TakeMappingInfos(x => x.SectionId == sectionId);
+            var mapInfos = this.mappings.Take(x => x.SectionId == sectionId);
             foreach (var info in mapInfos)
             {
                 UnmapPinningRule(info);
@@ -179,15 +206,26 @@ namespace WebsiteProvider.Api
         {
             this.ValidateState(isExpectedRegistered: true);
 
-            var infos = this.TakeMappingInfos(x => x.TemplateId == templateId);
+            var infos = this.mappings.Take(x => x.TemplateId == templateId);
             foreach (var info in infos.GroupBy(x => x.SectionId).SelectMany(x => x))
             {
                 UnmapPinningRule(info);
             }
         }
 
-        private void UnmapPinningRule(PinningRuleMappingInfo info)
+        private void UnmapPinningRule(PinningRuleMappingInfo info, ulong? certainMapId = null)
         {
+            if (certainMapId.HasValue)
+            {
+                info.MapIds.Remove(certainMapId.Value);
+                if (info.MapIds.Any())
+                {
+                    // it means that at least one other pinning rule with the same properies will still be mapped
+                    return;
+                }
+            }
+            info.MapIds.Clear();    // now it is invalid mapping info
+
             // get tokens of the current Pinning Rule's Blending Point which was mapped with current Pinning Rule's URI and unmapped it
             var sectionTokens = Blender.ListByUris()[info.ForeignUri]
                 .Where(x => x.Token.StartsWith(info.TokenBase))
@@ -203,46 +241,6 @@ namespace WebsiteProvider.Api
             {
                 Blender.UnmapUri(info.CallerUri, info.Token);
                 Handle.UnregisterHttpHandler("GET", info.CallerUri);
-            }
-        }
-
-        private void AddMappingInfo(PinningRuleMappingInfo info)
-        {
-            lock (locker)
-            {
-                this.mappingInfos.Add(info);
-            }
-        }
-
-        private PinningRuleMappingInfo TakeMappingInfo(Func<PinningRuleMappingInfo, bool> predicate)
-        {
-            lock (locker)
-            {
-                var item = this.mappingInfos.FirstOrDefault(predicate);
-                this.mappingInfos.Remove(item);
-                return item;
-            }
-        }
-
-        private List<PinningRuleMappingInfo> TakeMappingInfos(Func<PinningRuleMappingInfo, bool> predicate)
-        {
-            lock (locker)
-            {
-                var items = this.mappingInfos.Where(predicate).ToList();
-                foreach (var info in items)
-                {
-                    this.mappingInfos.Remove(info);
-                }
-                return items;
-            }
-        }
-
-        private List<PinningRuleMappingInfo> GetMappingInfos(Func<PinningRuleMappingInfo, bool> predicate)
-        {
-            lock (locker)
-            {
-                var items = this.mappingInfos.Where(predicate).ToList();
-                return items;
             }
         }
 
@@ -264,23 +262,6 @@ namespace WebsiteProvider.Api
             {
                 throw new InvalidOperationException("Mappings is already registered.");
             }
-        }
-
-        /// <summary>
-        /// Summary info for Pinning Rule mapping
-        /// </summary>
-        private class PinningRuleMappingInfo
-        {
-            public ulong MapId { get; set; }
-            public ulong SectionId { get; set; }
-            public ulong TemplateId { get; set; }
-
-            public bool UseCustomCatchingRule { get; set; }
-
-            public string CallerUri { get; set; }
-            public string ForeignUri { get; set; }
-            public string Token { get; set; }
-            public string TokenBase { get; set; }
         }
     }
 }

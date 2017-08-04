@@ -39,6 +39,7 @@ namespace WebsiteEditor.ViewModels
         {
             foreach (var catchingRule in this.CatchingRules)
             {
+                catchingRule.UpdateHeaderString();
                 var emptyHeaders = catchingRule.Headers.Where(h => string.IsNullOrWhiteSpace(h.Name)).ToList();
                 foreach (var catchHeader in emptyHeaders)
                 {
@@ -56,7 +57,7 @@ namespace WebsiteEditor.ViewModels
                 Data = new WebUrl
                 {
                     Template = surface,
-                    Url = string.Empty,
+                    Url = string.Empty
                 },
                 DeleteAction = this.DeleteCatchingRule
             });
@@ -83,6 +84,8 @@ namespace WebsiteEditor.ViewModels
             protected override void OnData()
             {
                 base.OnData();
+                this.UpdateHeaderString();
+
                 foreach (var header in this.Headers)
                 {
                     header.DeleteAction = this.DeleteHeader;
@@ -107,6 +110,23 @@ namespace WebsiteEditor.ViewModels
             {
                 this.Headers.Remove(header);
                 header.Data.Delete();
+            }
+
+            public void UpdateHeaderString()
+            {
+                if (this.Headers.Any())
+                {
+                    var firstHeader = this.Headers.First();
+                    this.HeadersString = $"{firstHeader.Name}: {firstHeader.Value}";
+                    if (this.Headers.Count > 1)
+                    {
+                        this.HeadersString += $" + {this.Headers.Count - 1} other headers";
+                    }
+                }
+                else
+                {
+                    this.HeadersString = "Any HTTP headers";
+                }
             }
         }
 

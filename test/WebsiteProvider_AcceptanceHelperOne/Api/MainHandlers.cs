@@ -97,6 +97,20 @@ namespace WebsiteProvider_AcceptanceHelperOne
                 }
             });
 
+            Handle.GET("/WebsiteProvider_AcceptanceHelperOne/pin/{?}/duplicate", (string pinId) =>
+            {
+                if (this.DataHelper.DuplicateWebMap(pinId))
+                {
+                    Handle.SetOutgoingStatusCode(200);
+                    return "Pinning rule duplicated";
+                }
+                else
+                {
+                    Handle.SetOutgoingStatusCode(404);
+                    return "Pinning rule is not found";
+                }
+            });
+
             Handle.GET("/WebsiteProvider_AcceptanceHelperOne/pin/{?}/change-url", (string pinId) =>
             {
                 if (this.DataHelper.ChangeWebMapUrl(pinId))
