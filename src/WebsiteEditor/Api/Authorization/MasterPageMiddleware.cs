@@ -4,6 +4,7 @@ using System.Linq;
 using Simplified.Ring6;
 using Starcounter;
 using Starcounter.Authorization.Routing;
+using WebsiteEditor.Helpers;
 using WebsiteEditor.ViewModels;
 
 namespace WebsiteEditor.Api.Authorization
@@ -20,13 +21,7 @@ namespace WebsiteEditor.Api.Authorization
 
         public Response Run(RoutingInfo routingInfo, Func<Response> next)
         {
-            MasterPage master = Session.Ensure().Store[nameof(MasterPage)] as MasterPage;
-
-            if (master == null)
-            {
-                master = new MasterPage();
-                Session.Current.Store[nameof(MasterPage)] = master;
-            }
+            MasterPage master = SessionHelper.GetMasterPage();
 
             master.CurrentPage = next();
 

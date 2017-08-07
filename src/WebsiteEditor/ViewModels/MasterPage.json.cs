@@ -8,9 +8,9 @@ namespace WebsiteEditor.ViewModels
     {
         protected string AllowedSystemUserGroup = "Admin (System Users)";
 
-        public void RefreshCurrentPage(string PartialUrl)
+        public void RefreshCurrentPage(string partialPageUrl)
         {
-            this.PartialUrl = PartialUrl;
+            this.PartialUrl = partialPageUrl;
             this.RefreshCurrentPage();
         }
 
@@ -22,21 +22,12 @@ namespace WebsiteEditor.ViewModels
                 return;
             }
 
-            SystemUser user = SystemUser.GetCurrentSystemUser();
+            this.CurrentPage = Self.GET(this.PartialUrl);
 
-            if (SystemUser.IsMemberOfGroup(user, AllowedSystemUserGroup))
+            if (this.CurrentPage is IKnowSurfacePage page)
             {
-                this.CurrentPage = Self.GET(this.PartialUrl);
-
-                if (this.CurrentPage is IKnowSurfacePage page)
-                {
-                    page.SurfaceKey = Surface.Key;
-                    page.RefreshData();
-                }
-            }
-            else
-            {
-                this.CurrentPage = Self.GET("/WebsiteEditor/partials/deny");
+                page.SurfaceKey = Surface.Key;
+                page.RefreshData();
             }
         }
     }
