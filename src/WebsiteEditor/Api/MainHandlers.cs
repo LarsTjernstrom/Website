@@ -61,30 +61,5 @@ namespace WebsiteEditor.Api
 
             Handle.GET("/websiteeditor/partials/deny", () => new DenyPage());
         }
-
-        protected MasterPage GetMasterPageFromSession()
-        {
-            MasterPage master = Session.Ensure().Store[nameof(MasterPage)] as MasterPage;
-
-            if (master == null)
-            {
-                master = new MasterPage();
-                Session.Current.Store[nameof(MasterPage)] = master;
-            }
-
-            return master;
-        }
-
-        private static void SetMasterCurrentPage(MasterPage master, string uri)
-        {
-            try
-            {
-                master.RefreshCurrentPage(uri);
-            }
-            catch (InvalidOperationException ex)
-            {
-                master.CurrentPage = new ErrorPage { Message = ex.Message };
-            }
-        }
     }
 }
