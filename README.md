@@ -67,11 +67,11 @@ If a rule has no value in the **Catch URI** column, it becomes a "catch-all" rul
 
 ## Administrative tools
 
-### `/websiteeditor/cleardata`
+### [`/websiteeditor/cleardata`](http://localhost:8080/websiteeditor/cleardata)
 
 Calling this URI deletes all the current app data (surfaces, blending points, catching rules and pinning rules).
 
-### `/websiteeditor/resetdata`
+### [`/websiteeditor/resetdata`](http://localhost:8080/websiteeditor/resetdata)
 
 Calling thes URI replaces all the current app data (surfaces, blending points, catching rules and pinning rules) with the defaults, which are:
 
