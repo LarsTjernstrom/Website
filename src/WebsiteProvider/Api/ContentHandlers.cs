@@ -162,26 +162,16 @@ namespace WebsiteProvider.Api
                     //    Handle.GET(uri, () => new Json(), new HandlerOptions {SelfOnly = true});
                     //}
 
-                    //// not sure how it should work and what is the cases
-                    //if (section.Default && json is SurfacePage)
+                    //if (sectionJson.LastJson != json)
                     //{
-                    //    //we are inserting WebsiteProvider to WebsiteProvider
-                    //    sectionJson = json; // !!
-                    //}
-                    //else
-                    //{
-                    //    //we are inserting different app to WebsiteProvider
-                    //    if (sectionJson.LastJson != json)
-                    //    {
-                    //        sectionJson = new SurfacePage();
-                    //    }
+                    //    sectionJson = new SurfacePage();
                     //}
 
-                    var newSectionJson = Self.GET(uri, () => section.Default ? json : new Json());
+                    var newSectionJson = Self.GET<Json>(uri, () => section.Default ? json : new Json());
                     sectionJson.MergeJson(newSectionJson);
                 }
             }
-            content.LastJson = json;
+            //content.LastJson = json;
             content.RequestUri = requestUri;
         }
 
