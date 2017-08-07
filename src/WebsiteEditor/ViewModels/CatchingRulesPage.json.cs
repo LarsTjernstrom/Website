@@ -2,10 +2,12 @@ using System;
 using System.Linq;
 using Simplified.Ring6;
 using Starcounter;
+using Starcounter.Authorization.Routing;
 using WebsiteEditor.Helpers;
 
 namespace WebsiteEditor.ViewModels
 {
+    [Url("/websiteeditor/surface/{?}/catchingrules")]
     partial class CatchingRulesPage : Json, IKnowSurfacePage
     {
         public string SurfaceKey { get; set; }
