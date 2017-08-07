@@ -123,7 +123,6 @@
     <Content Include="wwwroot\WebsiteEditor\css\websiteeditor.css" />
     <Content Include="wwwroot\WebsiteEditor\css\holygrail.css" />
     <None Include="packages.config" />
-    <None Include="wwwroot\WebsiteEditor\viewmodels\TestPage.html" />
     <TypedJSON Include="ViewModels\CmsHelp.json">
       <Generator>MsBuild:Compile</Generator>
     </TypedJSON>
