@@ -8,6 +8,7 @@
       "IsFinal$": false,
       "DeleteTrigger$": 0,
       "AddHeaderTrigger$": 0,
+      "HeadersString": "", 
       "Headers": [
         {
           "Name$": "",

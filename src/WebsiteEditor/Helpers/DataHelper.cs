@@ -28,10 +28,10 @@ namespace WebsiteEditor.Helpers
             Db.Transact(() =>
             {
                 ClearData();
-                var initialGroup = GenerateGroups();
-                GenerateDefaultSurface(initialGroup);
-                GenerateSidebarSurface(initialGroup);
-                GenerateHolyGrailSurface(initialGroup);
+                var unassignedGroup = GenerateGroups();
+                GenerateDefaultSurface(unassignedGroup);
+                GenerateSidebarSurface(unassignedGroup);
+                GenerateHolyGrailSurface(unassignedGroup);
             });
         }
 
@@ -42,12 +42,7 @@ namespace WebsiteEditor.Helpers
                 Name = "Unassigned"
             };
 
-            var initial = new WebTemplateGroup
-            {
-                Name = "Initial"
-            };
-
-            return initial;
+            return unassigned;
         }
 
         public void GenerateDefaultSurface(WebTemplateGroup group)
