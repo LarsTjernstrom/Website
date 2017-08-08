@@ -227,7 +227,7 @@ namespace WebsiteProvider.Api
             info.MapIds.Clear();    // now it is invalid mapping info
 
             // get tokens of the current Pinning Rule's Blending Point which was mapped with current Pinning Rule's URI and unmapped it
-            var sectionTokens = Blender.ListByUris()[info.ForeignUri]
+            var sectionTokens = Blender.ListAllByUris()[info.ForeignUri]
                 .Where(x => x.Token.StartsWith(info.TokenBase))
                 .Select(x => x.Token)
                 .ToList();
@@ -237,7 +237,7 @@ namespace WebsiteProvider.Api
             }
 
             // if it was last Pinning Rule for the current token then unregister and unmap "caller" URI
-            if (Blender.ListByTokens()[info.Token].Count == 1)
+            if (Blender.ListAllByTokens()[info.Token].Count == 1)
             {
                 Blender.UnmapUri(info.CallerUri, info.Token);
                 Handle.UnregisterHttpHandler("GET", info.CallerUri);
