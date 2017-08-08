@@ -1,5 +1,7 @@
 using Simplified.Ring3;
 using Starcounter;
+using WebsiteEditor.Api.Authorization;
+using WebsiteEditor.Api.Authorization.Permissions;
 using WebsiteEditor.Helpers;
 
 namespace WebsiteEditor.ViewModels
@@ -22,12 +24,19 @@ namespace WebsiteEditor.ViewModels
                 return;
             }
 
-            this.CurrentPage = Self.GET(this.PartialUrl);
-
-            if (this.CurrentPage is IKnowSurfacePage page)
+            if (AuthEnforcementProvider.Instance.CheckPermission(new ShowSurfaceGroups()))
             {
-                page.SurfaceKey = Surface.Key;
-                page.RefreshData();
+                this.CurrentPage = Self.GET(this.PartialUrl);
+
+                if (this.CurrentPage is IKnowSurfacePage page)
+                {
+                    page.SurfaceKey = Surface.Key;
+                    page.RefreshData();
+                }
+            }
+            else
+            {
+                this.CurrentPage = Self.GET("/websiteeditor/partials/deny");
             }
         }
     }
