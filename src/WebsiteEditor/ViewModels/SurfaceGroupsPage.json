@@ -2,7 +2,7 @@
   "Html": "/WebsiteEditor/viewmodels/SurfaceGroupsPage.html",
   "SurfaceGroups$": [
     {
-      "Name$": "", 
+      "Name$": "",
       "CreateSurface$": 0,
       "DeleteGroup$": 0,
       "Surfaces": [
@@ -15,6 +15,14 @@
       ]
     }
   ],
-
+  "UnassignedSurfaces": [
+    {
+      "Key": "",
+      "Name": "",
+      "Html$": "",
+      "Select$": 0
+    }
+  ],
+  "CreateUnassignedSurface$": 0, 
   "CreateGroup$": 0 
 }

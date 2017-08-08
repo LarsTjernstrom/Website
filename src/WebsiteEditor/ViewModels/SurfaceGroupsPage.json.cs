@@ -16,6 +16,7 @@ namespace WebsiteEditor.ViewModels
         {
             this.SurfaceGroups.Clear();
             this.SurfaceGroups.Data = Db.SQL<WebTemplateGroup>("SELECT g FROM Simplified.Ring6.WebTemplateGroup g ORDER BY g.Name");
+            this.UnassignedSurfaces.Data = Db.SQL<WebTemplate>("SELECT wt FROM Simplified.Ring6.WebTemplate wt  WHERE wt.WebTemplateGroup IS NULL ORDER BY wt.Name");
         }
 
         void Handle(Input.CreateGroup action)
@@ -26,6 +27,19 @@ namespace WebsiteEditor.ViewModels
             });
 
             this.RefreshData();
+        }
+
+        void Handle(Input.CreateUnassignedSurface action)
+        {
+            Db.Transact(() =>
+            {
+                this.UnassignedSurfaces.Add().Data = new WebTemplate
+                {
+                    Name = "New surface"
+                };
+            });
+
+            RefreshData();
         }
 
         [SurfaceGroupsPage_json.SurfaceGroups]
@@ -61,19 +75,14 @@ namespace WebsiteEditor.ViewModels
 
             void Handle(Input.DeleteGroup action)
             {
-                var unassignedGroupName = "Unassigned";
-
                 var surfaces =
                     Db.SQL<WebTemplate>(
                         "SELECT w FROM Simplified.Ring6.WebTemplate w WHERE w.WebTemplateGroup = ?", this.Data);
 
-                var unassignedGroup =
-                    Db.SQL<WebTemplateGroup>($"SELECT g FROM Simplified.Ring6.WebTemplateGroup g WHERE g.Name = ?", unassignedGroupName).First;
-
-                // Move surfaces from this group to unassigned.
+                // Make surfaces unassigned.
                 foreach (var surface in surfaces)
                 {
-                    (surface as WebTemplate).WebTemplateGroup = unassignedGroup;
+                    (surface as WebTemplate).WebTemplateGroup = null;
                 }
 
                 this.Data.Delete();

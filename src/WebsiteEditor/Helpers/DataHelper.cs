@@ -28,30 +28,18 @@ namespace WebsiteEditor.Helpers
             Db.Transact(() =>
             {
                 ClearData();
-                var unassignedGroup = GenerateGroups();
-                GenerateDefaultSurface(unassignedGroup);
-                GenerateSidebarSurface(unassignedGroup);
-                GenerateHolyGrailSurface(unassignedGroup);
+                GenerateDefaultSurface();
+                GenerateSidebarSurface();
+                GenerateHolyGrailSurface();
             });
         }
 
-        public WebTemplateGroup GenerateGroups()
-        {
-            var unassigned = new WebTemplateGroup
-            {
-                Name = "Unassigned"
-            };
-
-            return unassigned;
-        }
-
-        public void GenerateDefaultSurface(WebTemplateGroup group)
+        public void GenerateDefaultSurface()
         {
             var surface = new WebTemplate
             {
                 Name = "DefaultSurface",
-                Html = "/websiteprovider/surfaces/DefaultSurface.html",
-                WebTemplateGroup = group
+                Html = "/websiteprovider/surfaces/DefaultSurface.html"
             };
 
             var topbar = new WebSection
@@ -78,13 +66,12 @@ namespace WebsiteEditor.Helpers
             new WebMap { Section = topbar, ForeignUrl = "/signin/user", SortNumber = 1 };
         }
 
-        public void GenerateSidebarSurface(WebTemplateGroup group)
+        public void GenerateSidebarSurface()
         {
             var surface = new WebTemplate
             {
                 Name = "SidebarSurface",
-                Html = "/websiteprovider/surfaces/SidebarSurface.html",
-                WebTemplateGroup = group
+                Html = "/websiteprovider/surfaces/SidebarSurface.html"
             };
 
             var sidebarLeft = new WebSection
@@ -110,13 +97,12 @@ namespace WebsiteEditor.Helpers
             new WebMap { Url = templatesUrl, Section = sidebarLeft, ForeignUrl = "/websiteprovider/help?topic=surfaces", SortNumber = 1 };
         }
 
-        public void GenerateHolyGrailSurface(WebTemplateGroup group)
+        public void GenerateHolyGrailSurface()
         {
             var surface = new WebTemplate
             {
                 Name = "HolyGrailSurface",
-                Html = "/websiteprovider/surfaces/HolyGrailSurface.html",
-                WebTemplateGroup = group
+                Html = "/websiteprovider/surfaces/HolyGrailSurface.html"
             };
 
             var content = new WebSection

@@ -22,7 +22,7 @@ namespace WebsiteEditor.ViewModels
             this.BlendingPoints.Data = Db.SQL<WebSection>("SELECT s FROM Simplified.Ring6.WebSection s WHERE s.Template = ? ORDER BY s.Template.Name, s.Name", this.Surface.Data);
             this.SurfaceGroups.Data = Db.SQL<WebTemplateGroup>("SELECT g FROM Simplified.Ring6.WebTemplateGroup g ORDER BY g.Name");
 
-            this.CurrentGroupKey = this.Surface.Data.WebTemplateGroup.Key;
+            this.CurrentGroupKey = this.Surface.Data.WebTemplateGroup?.Key;
             this.DefaultBlendingPointKey = this.BlendingPoints.FirstOrDefault(x => x.Default)?.Key;
             this.Trn.Data = this.Transaction as Transaction;
         }
