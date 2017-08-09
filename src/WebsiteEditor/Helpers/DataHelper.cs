@@ -91,10 +91,10 @@ namespace WebsiteEditor.Helpers
             var templatesUrl = new WebUrl
             {
                 Template = surface,
-                Url = "/websiteprovider/surfaces"
+                Url = "/websiteeditor/surfacegroups"
             };
 
-            new WebMap { Url = templatesUrl, Section = sidebarLeft, ForeignUrl = "/websiteprovider/help?topic=surfaces", SortNumber = 1 };
+            new WebMap { Url = templatesUrl, Section = sidebarLeft, ForeignUrl = "/websiteeditor/help?topic=surfaces", SortNumber = 1 };
         }
 
         public void GenerateHolyGrailSurface()
