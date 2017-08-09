@@ -80,6 +80,10 @@ body {
     font-size: 16px;
 }
 
+.website-groups {
+    padding-top: 20px;
+}
+
 .website-surface-groups-surface {
     color: #333;
     background-color: #D3D3D3;
