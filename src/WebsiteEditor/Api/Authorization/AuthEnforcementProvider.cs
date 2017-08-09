@@ -10,6 +10,7 @@ namespace WebsiteEditor.Api.Authorization
         private static AuthorizationEnforcement _instance;
         private static readonly object ThreadSync = new object();
 
+        // Since the instance is used from different components and threads (e.g. commit hooks) It's required to be thread-safety
         public static AuthorizationEnforcement Instance
         {
             get

@@ -1,5 +1,7 @@
 using Simplified.Ring3;
 using Starcounter;
+using WebsiteEditor.Api.Authorization;
+using WebsiteEditor.Api.Authorization.Permissions;
 using WebsiteEditor.Helpers;
 
 namespace WebsiteEditor.ViewModels
@@ -16,18 +18,25 @@ namespace WebsiteEditor.ViewModels
 
         public void RefreshCurrentPage()
         {
-            if (string.IsNullOrEmpty(this.PartialUrl))
+            if (AuthEnforcementProvider.Instance.CheckPermission(new ShowSurfaceGroups()))
             {
-                this.CurrentPage = null;
-                return;
+                if (string.IsNullOrEmpty(this.PartialUrl))
+                {
+                    this.CurrentPage = Self.GET("/websiteeditor/partials/surfacegroups");
+                    return;
+                }
+
+                this.CurrentPage = Self.GET(this.PartialUrl);
+
+                if (this.CurrentPage is IKnowSurfacePage page)
+                {
+                    page.SurfaceKey = Surface.Key;
+                    page.RefreshData();
+                }
             }
-
-            this.CurrentPage = Self.GET(this.PartialUrl);
-
-            if (this.CurrentPage is IKnowSurfacePage page)
+            else
             {
-                page.SurfaceKey = Surface.Key;
-                page.RefreshData();
+                this.CurrentPage = Self.GET("/websiteeditor/partials/deny");
             }
         }
     }
