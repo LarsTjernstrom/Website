@@ -2,44 +2,69 @@
 
 <template>
     <template is="dom-bind">
-        <h1>Surface groups</h1>
-        <br />
+        <h1 slot="websiteeditor/groups-header">Surface groups</h1>
         <template is="dom-repeat" items="{{model.SurfaceGroups$}}">
-            <h4>
-                <input type="text" value="{{item.Name$::change}}" class="website-surface-group-name"/>
-                <button class="btn website-surface-groups-add btn-success" title="Add new surface" value="{{item.CreateSurface$::click}}" onmousedown="++this.value;">
-                    <span class="glyphicon glyphicon-plus website-no-pointer-events"></span>
-                </button>
-                <button class="btn website-surface-groups-add btn-danger" title="Delete group" value="{{item.DeleteGroup$::click}}" onmousedown="++this.value;">
-                    <span class="glyphicon glyphicon-remove website-no-pointer-events"></span>
-                </button>
-            </h4>
-            <template is="dom-repeat" items="{{item.Surfaces}}" as="surface">
-                <a href="/WebsiteEditor/surface/{{surface.Key}}/general" class="website-surface-groups-surface">{{surface.Name}}</a>
-            </template>
-            <hr/>
+            <div slot="websiteeditor/groups">
+                <h4>
+                    <input type="text" value="{{item.Name$::change}}" class="website-surface-group-name"/>
+                    <button class="btn website-surface-groups-add btn-success" title="Add new surface" value="{{item.CreateSurface$::click}}" onmousedown="++this.value;">
+                        <span class="glyphicon glyphicon-plus website-no-pointer-events"></span>
+                    </button>
+                    <button class="btn website-surface-groups-add btn-danger" title="Delete group" value="{{item.DeleteGroup$::click}}" onmousedown="++this.value;">
+                        <span class="glyphicon glyphicon-remove website-no-pointer-events"></span>
+                    </button>
+                </h4>
+                <template is="dom-repeat" items="{{item.Surfaces}}" as="surface">
+                    <a href="/WebsiteEditor/surface/{{surface.Key}}/general" class="website-surface-groups-surface">{{surface.Name}}</a>
+                </template>
+            </div>
         </template>
 
         <!-- For unassigned surfaces -->
-        <h4>
+        <h4 slot="websiteeditor/unassigned-header">
             <label class="website-surface-group-name">Unassigned</label>
             <button class="btn website-surface-groups-add btn-success" title="Add new unassigned surface" value="{{model.CreateUnassignedSurface$::click}}" onmousedown="++this.value;">
                 <span class="glyphicon glyphicon-plus website-no-pointer-events"></span>
             </button>
         </h4>
         <template is="dom-repeat" items="{{model.UnassignedSurfaces}}" as="surface">
-            <a href="/WebsiteEditor/surface/{{surface.Key}}/general" class="website-surface-groups-surface">{{surface.Name}}</a>
+            <a
+                slot="websiteeditor/unassigned-surfaces"
+                href="/WebsiteEditor/surface/{{surface.Key}}/general"
+                class="website-surface-groups-surface">{{surface.Name}}</a>
         </template>
-        <hr/>
 
-        <button class="btn btn-success" value="{{model.CreateGroup$::click}}" onmousedown="++this.value">Add Group</button>
+        <button
+            slot="websiteeditor/add-group"
+            class="btn btn-success"
+            value="{{model.CreateGroup$::click}}"
+            onmousedown="++this.value">Add Group</button>
     </template>
-    <script>
-        var script = document._currentScript || document.currentScript;
-        var template = script.previousElementSibling;
-
-        template.isUnassignedGroup = function (name) {
-            return name === "Unassigned";
-        };
-    </script>
+    <template is="declarative-shadow-dom">
+        <style>
+            .websiteeditor-groups {
+                padding-top: 20px;
+            }
+            .websiteeditor-hr{
+                margin: 23px 0;
+                box-sizing: content-box;
+                height: 0;
+                border-top: 1px solid #eeeeee;
+            }
+            .websiteeditor-unassigned-surfaces > ::slotted(a){
+                margin: 1px;
+            }
+        </style>
+        <slot name="websiteeditor/groups-header"></slot>
+        <div class="websiteeditor-groups">
+            <slot name="websiteeditor/groups"></slot>
+        </div>
+        <hr class="websiteeditor-hr"/>
+        <slot name="websiteeditor/unassigned-header"></slot>
+        <div class="websiteeditor-unassigned-surfaces">
+            <slot name="websiteeditor/unassigned-surfaces"></slot>
+        </div>
+        <hr class="websiteeditor-hr"/>
+        <slot name="websiteeditor/add-group"></slot>
+    </template>
 </template>
