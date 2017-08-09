@@ -10,6 +10,8 @@ namespace WebsiteEditor.Api.Authorization
         private static AuthorizationEnforcement _instance;
         private static readonly object ThreadSync = new object();
 
+        // Singleton thread save pattern with usage of Double-Check Locking. 
+        // Safety for situation where two threads ask about an instance and without lock could get two of them.
         public static AuthorizationEnforcement Instance
         {
             get
